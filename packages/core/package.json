@@ -1,0 +1,27 @@
+{
+  "name": "@easyrender/core",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@easyrender/db": "workspace:*",
+    "@easyrender/harness": "workspace:*",
+    "@vercel/blob": "2.9.0",
+    "stripe": "23.1.0"
+  },
+  "devDependencies": {
+    "@easyrender/tsconfig": "workspace:*",
+    "@types/node": "26.6.6",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
+  }
+}

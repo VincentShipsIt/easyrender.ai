@@ -1,0 +1,23 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["NODE_ENV", "DATABASE_URL"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": [
+        "REPLICATE_API_TOKEN",
+        "BETTER_AUTH_*",
+        "STRIPE_*",
+        "BLOB_READ_WRITE_TOKEN",
+        "NEXT_PUBLIC_*",
+        "APP_URL",
+        "SHEET_ENABLED",
+        "FREE_PREVIEWS_PER_DAY"
+      ],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "typecheck": { "dependsOn": ["^typecheck"] },
+    "test": {},
+    "dev": { "cache": false, "persistent": true }
+  }
+}

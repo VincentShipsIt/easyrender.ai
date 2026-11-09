@@ -1,0 +1,25 @@
+{
+  "name": "@easyrender/mcp",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@easyrender/core": "workspace:*",
+    "@easyrender/harness": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@easyrender/tsconfig": "workspace:*",
+    "@types/node": "26.6.6",
+    "typescript": "6.0.3"
+  }
+}

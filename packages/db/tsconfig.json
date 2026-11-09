@@ -1,0 +1,1 @@
+{ "extends": "@easyrender/tsconfig/base.json", "include": ["src", "generated"] }
