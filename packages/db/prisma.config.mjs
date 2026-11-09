@@ -6,7 +6,9 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'prisma/config';
 
 // Prisma 7 does not load env files, so read DATABASE_URL from the app or repo env files here.
+// Schema pushes prefer Neon's direct (unpooled) connection when Vercel provides it.
 function databaseUrl() {
+  if (process.env.DATABASE_URL_UNPOOLED) return process.env.DATABASE_URL_UNPOOLED;
   if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
   for (const file of ['apps/web/.env.local', '.env.local', '.env']) {
