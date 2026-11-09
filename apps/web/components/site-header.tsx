@@ -1,11 +1,14 @@
 import { getBalance } from '@easyrender/core';
 import { Box } from 'lucide-react';
 import Link from 'next/link';
+import { connection } from 'next/server';
 import { SignOutButton } from '@/components/sign-out-button';
 import { buttonClass } from '@/components/ui/button';
 import { currentUser } from '@/lib/actor';
 
 export async function SiteHeader() {
+  // Per-request: the header reads the session, so no page (404 included) is prerendered against the database.
+  await connection();
   const user = await currentUser();
   const balance = user ? await getBalance(user.id) : 0;
   return (
