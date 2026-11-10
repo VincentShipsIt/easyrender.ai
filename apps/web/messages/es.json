@@ -318,7 +318,8 @@
     "stillWaiting": "{count, plural, one {# elemento sigue} other {# elementos siguen}} en espera.",
     "empty": {
       "title": "Suelta aquí las fotos de tu catálogo",
-      "body": "Una foto por producto. Cada una tiene una vista previa gratis; después, genéralas todas en 3D de una vez."
+      "body": "Una foto por producto. Cada una tiene una vista previa gratis; después, genéralas todas en 3D de una vez.",
+      "cost": "Las vistas previas son gratis. El 3D cuesta {credits} créditos por artículo."
     },
     "filters": {
       "all": "Todo",
@@ -361,7 +362,23 @@
     },
     "fromHome": "Tu foto de la página de inicio está aquí. Genera su hoja de ángulos o su modelo 3D abajo.",
     "generateSheet": "Ángulos · {credits}",
-    "sheetAlt": "Todos los ángulos de {name}"
+    "sheetAlt": "Todos los ángulos de {name}",
+    "dropOverlay": {
+      "title": "Suelta las fotos para añadirlas",
+      "body": "Cada una tiene una vista previa gratis. Tú eliges cuáles pasar a 3D."
+    },
+    "addMore": {
+      "title": "Añade más fotos",
+      "body": "Haz clic o suéltalas en cualquier parte de esta página"
+    },
+    "retry": "Reintentar",
+    "dismiss": "Descartar",
+    "estimate": {
+      "prices": "Las vistas previas son gratis. El 3D cuesta {credits} créditos por artículo.",
+      "previewing": "{count, plural, one {# vista previa} other {# vistas previas}} en curso.",
+      "all": "Pasar {count, plural, one {# artículo} other {# artículos}} a 3D: {credits} de tus {balance} créditos.",
+      "short": "Te faltan {credits} créditos. Comprar más"
+    }
   },
   "DashboardNav": {
     "overview": "Resumen",
