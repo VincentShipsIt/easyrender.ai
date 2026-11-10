@@ -83,7 +83,7 @@ export function StudioIndustries({ salesHref }: { salesHref: string }) {
                   />
                   <div className="shop__info">
                     <p className="shop__name">{names[CHAIR.id]}</p>
-                    <p className="shop__meta">{t('store.meta', { dims: fmt.dims(CHAIR) })}</p>
+                    <p className="shop__meta">{t('store.meta')}</p>
                     <span className="shop__btn" data-er="button">
                       <Box />
                       {t('store.button')}
@@ -167,10 +167,6 @@ export function StudioIndustries({ salesHref }: { salesHref: string }) {
                 <div>
                   <dt>{t('games.rigidbody')}</dt>
                   <dd>{t('games.dynamic')}</dd>
-                </div>
-                <div>
-                  <dt>{t('games.mass')}</dt>
-                  <dd data-er="mass">{fmt.kg(FIRST_DROP.mass)}</dd>
                 </div>
                 <div>
                   <dt>{t('games.collider')}</dt>

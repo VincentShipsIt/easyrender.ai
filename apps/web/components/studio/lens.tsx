@@ -1,8 +1,7 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { itemOf } from '@/lib/studio/catalog';
-import { createFormat } from '@/lib/studio/format';
 import { useSection } from './use-section';
 import './lens.css';
 
@@ -15,7 +14,6 @@ const LAYERS = ['texture', 'normals', 'physics', 'mesh'] as const;
 export function StudioLens() {
   const t = useTranslations('Studio.lens');
   const catalog = useTranslations('Catalog');
-  const fmt = createFormat(useLocale());
   const name = catalog(`items.${ITEM.id}.name`);
 
   const ref = useSection<HTMLDivElement>(
@@ -39,9 +37,7 @@ export function StudioLens() {
       </div>
       <p className="lens__caption" aria-hidden="true">
         <b>{name}</b>
-        <span>
-          {fmt.dims(ITEM)} · {fmt.kg(ITEM.mass)}
-        </span>
+        <span>GLB · USDZ</span>
       </p>
       <p className="lens__hint" aria-hidden="true">
         <span className="lens__hint-mouse">{t('hint')}</span>

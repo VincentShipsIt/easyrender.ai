@@ -218,9 +218,7 @@ export async function initPipeline(panel: HTMLElement, { scope, fmt, prompts }: 
     } else if (next === 'done') {
       setSteps(3, 3);
       const { item } = current;
-      say(
-        `<b>${fmt.int(item.lods[0].tris)}<span class="tri"></span></b> · ${fmt.dims(item)} · GLB · USDZ`,
-      );
+      say(`<b>${fmt.int(item.lods[0].tris)}<span class="tri"></span></b> · GLB · USDZ`);
     } else if (next === 'out') {
       view.canvas.style.transition = 'opacity .55s';
       view.canvas.style.opacity = '0';

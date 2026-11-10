@@ -139,10 +139,6 @@ export function StudioTools() {
           <span className="tag">{t('physics')}</span>
           <dl className="ctl ctl--list">
             <div>
-              <dt>{t('mass')}</dt>
-              <dd data-er="mass">{fmt.kg(VASE.mass)}</dd>
-            </div>
-            <div>
               <dt>{t('friction')}</dt>
               <dd data-er="friction">{fmt.fixed(VASE.friction)}</dd>
             </div>

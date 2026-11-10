@@ -13,14 +13,17 @@ import { Button } from '@/components/ui/button';
 export async function HomeIntro() {
   const t = await getTranslations('Home.intro');
   return (
-    <section className="sec sec--center" id="what-it-does">
+    <section className="sec sec--center" id="what-it-does" aria-labelledby="what-it-does-title">
       <div className="sec__column space-y-5">
         <Badge variant="outline">{t('eyebrow')}</Badge>
+        <h2 id="what-it-does-title" className="text-2xl font-semibold tracking-tight text-balance">
+          {t('title')}
+        </h2>
         <p className="text-lg leading-relaxed text-pretty">{t('body')}</p>
         <p className="leading-relaxed text-muted-foreground text-pretty">{t('scope')}</p>
         <div className="flex flex-wrap gap-3 pt-1">
           <Button size="lg" asChild>
-            <Link href="/#try">
+            <Link href="#try">
               {t('primaryCta')}
               <ArrowRight />
             </Link>

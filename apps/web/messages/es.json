@@ -75,8 +75,9 @@
     },
     "intro": {
       "eyebrow": "De una imagen a 3D",
-      "body": "Sube una foto de un mueble, un objeto de decoración o la fachada de un edificio. easyrender dibuja la pieza desde todos los lados para que la revises. Si la previsualización está bien, un clic la convierte en un modelo 3D que puedes girar y descargar en GLB y USDZ.",
-      "scope": "No modela habitaciones enteras. No saca el modelo a escala real. No es un programa de home staging virtual, ni de planos 3D, ni de tours.",
+      "title": "¿Qué es easyrender?",
+      "body": "easyrender pasa una imagen a 3D: convierte una foto de un mueble, un objeto de decoración o la fachada de un edificio en un modelo 3D. Primero dibuja la pieza desde todos los lados, en una hoja de ángulos gratis que revisas antes de gastar nada. Si la previsualización está bien, un clic la convierte en un modelo 3D que puedes girar y descargar en GLB y USDZ.",
+      "scope": "No modela habitaciones enteras: trabaja con una pieza cada vez. No saca el modelo a escala real.",
       "primaryCta": "Subir una foto",
       "secondaryCta": "Ver la galería"
     }
@@ -148,7 +149,7 @@
         },
         "scope": {
           "q": "¿Qué puede modelar hoy?",
-          "a": "Muebles, objetos de decoración y fachadas de edificios, a partir de una sola foto. No modela habitaciones enteras. No es una herramienta de home staging virtual, de planos 3D ni de tours virtuales. Los logos finos y el texto pequeño suelen salir suaves."
+          "a": "Muebles, objetos de decoración y fachadas de edificios, a partir de una sola foto. Modela una pieza cada vez, no habitaciones enteras. Los logos finos y el texto pequeño suelen salir suaves."
         },
         "output": {
           "q": "¿Qué obtengo?",
@@ -164,18 +165,30 @@
         },
         "public": {
           "q": "¿Mi render es público?",
-          "a": "Los modelos terminados salen en la galería pública por defecto. En la página del modelo puedes desactivar «Show in public gallery». Hoy, al ocultarlo, el enlace puede dejar de abrirse para otras personas; una opción de «solo con enlace» está pedida al producto."
+          "a": "Los modelos terminados salen en la galería pública por defecto. En la página del modelo puedes desactivar «Show in public gallery». Hoy, al ocultarlo, el enlace puede dejar de abrirse para otras personas, así que déjalo en la galería si quieres compartir el enlace."
         },
         "cost": {
           "q": "¿Cuánto cuesta un modelo 3D?",
           "a": "La previsualización es gratis. Un modelo 3D terminado cuesta {credits} créditos, y cada crédito cuesta {unit}, así que un modelo sale por {price}. Los créditos no caducan. La página de precios recoge todos los paquetes."
+        },
+        "what": {
+          "q": "¿Qué es easyrender?",
+          "a": "easyrender es una app web que convierte una foto de un objeto en un modelo 3D. Subes la foto, revisas gratis una hoja con el objeto desde todos los ángulos y solo gastas créditos si quieres el modelo terminado, que descargas en GLB y USDZ."
+        },
+        "formats": {
+          "q": "¿En qué formatos puedo descargarlo?",
+          "a": "En dos: GLB texturizado, para la web y la mayoría de programas 3D, y USDZ, para dispositivos de Apple. El modelo conserva la forma y los materiales, no las medidas reales ni la escala."
+        },
+        "ar": {
+          "q": "¿Puedo ver el modelo en mi casa?",
+          "a": "La realidad aumentada llega pronto: podrás abrir el modelo en el móvil y colocarlo en tu habitación. Muestra la forma y los materiales de la pieza, no su tamaño real."
         }
       }
     }
   },
   "AgentDemo": {
     "window": "Tu agente · easyrender MCP",
-    "ask": "Aquí tienes el catálogo de primavera. Haz un modelo 3D de cada producto y añádelos a las fichas.",
+    "ask": "Aquí tienes el catálogo de primavera. Haz un modelo 3D de cada producto.",
     "calls": {
       "create_render": "24 fotos · vistas previas gratis",
       "get_render": "24 vistas previas listas",
@@ -618,8 +631,8 @@
       "body": "La misma pieza se prueba en la habitación de un cliente, se usa en el render de un estudio y entra como prop en un juego.",
       "store": {
         "eyebrow": "E-commerce",
-        "title": "Un botón en tu ficha de producto",
-        "body": "«Verlo en tu habitación» abre la cámara del cliente y coloca el producto en la escena. Sin aplicación, en iPhone y Android.",
+        "title": "Verlo en tu habitación",
+        "body": "Realidad aumentada, muy pronto: el cliente abre la cámara de su iPhone o Android y coloca el producto en su habitación.",
         "link": "Habla con nosotros sobre RA para tiendas",
         "domain": "tutienda.com",
         "meta": "Tapizado gris · GLB y USDZ",
@@ -641,7 +654,6 @@
         "link": "Conéctalo por la API o por MCP",
         "rigidbody": "Rigidbody",
         "dynamic": "Dinámico",
-        "mass": "Masa",
         "collider": "Colisionador",
         "friction": "Fricción",
         "live": "Simulación en vivo"
@@ -663,8 +675,7 @@
       "mesh": "Malla",
       "vertexCount": "{count} vértices",
       "triangleCount": "{count} triángulos",
-      "physics": "Masa y contacto",
-      "mass": "Masa",
+      "physics": "Física y contacto",
       "friction": "Fricción",
       "restitution": "Rebote",
       "light": "Luz de proyecto",

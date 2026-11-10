@@ -71,11 +71,12 @@
     },
     "meta": {
       "title": "3D model from a photo · easyrender",
-      "description": "Turn one photo of furniture, decor or a building exterior into a 3D model. See every angle for free. Spend credits only when it looks right. Downloads: GLB and USDZ."
+      "description": "Turn one photo of furniture, decor or a building exterior into a 3D model. See every angle free; spend credits only if it looks right. Download GLB and USDZ."
     },
     "intro": {
       "eyebrow": "Photo to 3D",
-      "body": "Upload one photo of a piece of furniture, a decor object or a building exterior. easyrender draws the object from every side so you can check the shape before you spend anything. If the preview looks right, one click turns it into a 3D model you can spin and download as GLB and USDZ.",
+      "title": "What is easyrender?",
+      "body": "easyrender is an image-to-3D tool: it turns one photo of a piece of furniture, a decor object or a building exterior into a 3D model. First it draws the object from every side, a free angle sheet you can check before you spend anything. If the preview looks right, one click turns it into a 3D model you can spin and download as GLB and USDZ.",
       "scope": "It does not model whole rooms. It does not invent measurements. You get the file; you decide if it is good enough to keep.",
       "primaryCta": "Upload a photo",
       "secondaryCta": "See models made from a photo"
@@ -148,7 +149,7 @@
         },
         "scope": {
           "q": "What can it model today?",
-          "a": "Furniture, decor objects and building exteriors, from a single photo. Whole interior rooms are not supported. It is not a virtual staging tool, a 3D floor-plan tool or a virtual tour. Fine logos and small text often come out soft."
+          "a": "Furniture, decor objects and building exteriors, from a single photo. It models one object at a time, not whole interior rooms. Fine logos and small text often come out soft."
         },
         "output": {
           "q": "What do I get?",
@@ -164,18 +165,30 @@
         },
         "public": {
           "q": "Is my render public?",
-          "a": "Finished models appear in the public gallery by default. You can switch off “Show in public gallery” on the model’s page. Today, hiding a model may also stop its link from opening for other people; a link-only option is in the product queue."
+          "a": "Finished models appear in the public gallery by default. You can switch off “Show in public gallery” on the model’s page. Today, hiding a model may also stop its link from opening for other people, so keep it in the gallery if you want to share the link."
         },
         "cost": {
           "q": "How much does a 3D model cost?",
           "a": "Previews are free. A finished 3D model costs {credits} credits, and credits cost {unit} each, so a model is {price}. Credits never expire. The pricing page lists every pack."
+        },
+        "what": {
+          "q": "What is easyrender?",
+          "a": "easyrender is a web app that turns one photo of an object into a 3D model. You upload the photo, check a free sheet that shows the object from every angle, and spend credits only if you want the finished model, which you download as GLB and USDZ."
+        },
+        "formats": {
+          "q": "Which file formats can I download?",
+          "a": "Two: a textured GLB, for the web and most 3D tools, and a USDZ, for Apple devices. The model keeps its shape and materials, not real-world measurements or scale."
+        },
+        "ar": {
+          "q": "Can I see the model in my room?",
+          "a": "Augmented reality is coming soon: you will be able to open the model on your phone and place it in your room. It shows the shape and materials of the object, not its real-world size."
         }
       }
     }
   },
   "AgentDemo": {
     "window": "Your agent · easyrender MCP",
-    "ask": "Here is the spring catalogue. Make a 3D model of every product and add them to the listings.",
+    "ask": "Here is the spring catalogue. Make a 3D model of every product.",
     "calls": {
       "create_render": "24 photos · previews free",
       "get_render": "24 previews ready",
@@ -618,8 +631,8 @@
       "body": "The same piece is tried in a shopper’s room, dropped into a studio’s render and used as a prop in a game.",
       "store": {
         "eyebrow": "E-commerce",
-        "title": "One button on your product page",
-        "body": "“See it in your room” opens the shopper’s camera and places the product in the scene. No app, on iPhone and Android.",
+        "title": "See it in your room",
+        "body": "Augmented reality, coming soon: the shopper opens the camera on an iPhone or Android phone and places the product in the room.",
         "link": "Talk to us about AR for stores",
         "domain": "yourstore.com",
         "meta": "Grey upholstery · GLB and USDZ",
@@ -641,7 +654,6 @@
         "link": "Connect it over the API or MCP",
         "rigidbody": "Rigidbody",
         "dynamic": "Dynamic",
-        "mass": "Mass",
         "collider": "Collider",
         "friction": "Friction",
         "live": "Live simulation"
@@ -663,8 +675,7 @@
       "mesh": "Mesh",
       "vertexCount": "{count} vertices",
       "triangleCount": "{count} triangles",
-      "physics": "Mass and contact",
-      "mass": "Mass",
+      "physics": "Physics and contact",
       "friction": "Friction",
       "restitution": "Bounce",
       "light": "Project light",
