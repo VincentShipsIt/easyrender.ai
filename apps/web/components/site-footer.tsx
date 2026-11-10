@@ -6,8 +6,9 @@ const COLUMNS = [
   {
     title: 'Product',
     links: [
-      { href: '/#gallery', label: 'Gallery' },
       { href: '/#how-it-works', label: 'How it works' },
+      { href: '/#try', label: 'Try it' },
+      { href: '/#gallery', label: 'Gallery' },
       { href: '/credits', label: 'Pricing' },
       { href: '/#faq', label: 'FAQ' },
     ],
@@ -15,13 +16,14 @@ const COLUMNS = [
   {
     title: 'Developers',
     links: [
-      { href: '/account', label: 'API keys' },
-      { href: '/account', label: 'MCP server' },
+      { href: '/#connect', label: 'MCP server' },
+      { href: '/connectors', label: 'API keys' },
     ],
   },
   {
     title: 'Account',
     links: [
+      { href: '/dashboard', label: 'Dashboard' },
       { href: '/sign-up', label: 'Sign up' },
       { href: '/sign-in', label: 'Sign in' },
     ],
@@ -38,7 +40,8 @@ export function SiteFooter() {
             easyrender
           </Link>
           <p className="max-w-xs text-sm text-muted-foreground">
-            One listing photo to a 3D model you can spin, embed and open in AR.
+            Your agent turns product and listing photos into 3D models you can spin, embed and open
+            in AR.
           </p>
         </div>
         {COLUMNS.map((column) => (

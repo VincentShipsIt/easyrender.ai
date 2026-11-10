@@ -1,16 +1,16 @@
 import { getBalance } from '@easyrender/core';
-import { Box, Coins } from 'lucide-react';
+import { Box, Coins, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { connection } from 'next/server';
-import { SignOutButton } from '@/components/sign-out-button';
 import { Button } from '@/components/ui/button';
 import { currentUser } from '@/lib/actor';
 
 const NAV = [
-  { href: '/#gallery', label: 'Gallery' },
   { href: '/#how-it-works', label: 'How it works' },
+  { href: '/#connect', label: 'Connect' },
+  { href: '/#try', label: 'Try it' },
+  { href: '/#gallery', label: 'Gallery' },
   { href: '/#pricing', label: 'Pricing' },
-  { href: '/#faq', label: 'FAQ' },
 ];
 
 export async function SiteHeader() {
@@ -46,13 +46,12 @@ export async function SiteHeader() {
                   <span className="hidden sm:inline">credits</span>
                 </Link>
               </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/library">Library</Link>
+              <Button size="sm" asChild>
+                <Link href="/dashboard">
+                  <LayoutDashboard />
+                  Dashboard
+                </Link>
               </Button>
-              <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
-                <Link href="/account">Account</Link>
-              </Button>
-              <SignOutButton />
             </>
           ) : (
             <>
@@ -60,7 +59,9 @@ export async function SiteHeader() {
                 <Link href="/sign-in">Sign in</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="/sign-up">Get started</Link>
+                <Link href="/#connect">
+                  Connect<span className="hidden sm:inline"> your agent</span>
+                </Link>
               </Button>
             </>
           )}

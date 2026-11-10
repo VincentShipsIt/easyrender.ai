@@ -21,6 +21,8 @@ import { getFile, putFile } from './storage';
 // Who is asking: a signed-in user, an anonymous visitor (cookie), or both.
 export type Actor = { userId?: string | null; anonId?: string | null; ipHash?: string | null };
 
+export type RenderSource = 'web' | 'mcp' | 'api';
+
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -81,6 +83,7 @@ export async function createDraft(input: {
   contentType: string;
   prompt?: string | null;
   name?: string | null;
+  source?: RenderSource;
 }): Promise<Render> {
   if (!IMAGE_TYPES.has(input.contentType)) {
     throw new AppError('Upload a JPEG, PNG or WebP photo', 415, 'bad_type');
@@ -100,6 +103,7 @@ export async function createDraft(input: {
       ipHash: input.actor.ipHash ?? null,
       prompt,
       name: input.name?.trim().slice(0, 120) || null,
+      source: input.source ?? 'web',
       sourceKey,
       status: config.sheetEnabled() ? 'drafting' : 'preview_ready',
     },
@@ -252,6 +256,7 @@ export type RenderView = {
   credits: number;
   renderCredits: number;
   isPublic: boolean;
+  source: RenderSource;
   createdAt: string;
 };
 
@@ -267,6 +272,7 @@ export function toView(render: Render): RenderView {
     credits: render.credits,
     renderCredits: RENDER_CREDITS,
     isPublic: render.isPublic,
+    source: render.source as RenderSource,
     createdAt: render.createdAt.toISOString(),
   };
 }
@@ -326,4 +332,29 @@ export function listPublicRenders(take = 12) {
 
 export function listRenders(userId: string, take = 24) {
   return db().render.findMany({ where: { userId }, orderBy: { createdAt: 'desc' }, take });
+}
+
+export type DashboardStats = {
+  total: number;
+  ready: number;
+  inFlight: number;
+  byAgent: number;
+};
+
+// Counts for the dashboard overview. "By agent" covers both MCP and API-key renders.
+export async function getDashboardStats(userId: string): Promise<DashboardStats> {
+  const groups = await db().render.groupBy({
+    by: ['status', 'source'],
+    where: { userId },
+    _count: { _all: true },
+  });
+  const stats: DashboardStats = { total: 0, ready: 0, inFlight: 0, byAgent: 0 };
+  for (const group of groups) {
+    const count = group._count._all;
+    stats.total += count;
+    if (group.status === 'ready') stats.ready += count;
+    if (IN_FLIGHT.includes(group.status)) stats.inFlight += count;
+    if (group.source !== 'web') stats.byAgent += count;
+  }
+  return stats;
 }
