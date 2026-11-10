@@ -75,7 +75,7 @@ export function StudioIndustries({ salesHref }: { salesHref: string }) {
                   </div>
                   {/* The phone screen is about 200px wide, so next/image serves a resized copy of
                       the 720px product shot instead of the original. */}
-                  <Image src={photoUrl(CHAIR.id)} alt="" width={720} height={720} sizes="220px" />
+                  <Image src={photoUrl(CHAIR.id)} alt="" width={720} height={720} sizes="200px" />
                   <div className="shop__info">
                     <p className="shop__name">{names[CHAIR.id]}</p>
                     <p className="shop__meta">{t('store.meta')}</p>
