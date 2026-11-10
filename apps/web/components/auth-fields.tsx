@@ -1,6 +1,7 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { type FormEvent, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +20,7 @@ export function AuthFields({
   onDone: () => void | Promise<void>;
   submitLabel?: string;
 }) {
+  const t = useTranslations('Auth');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +40,7 @@ export function AuthFields({
           })
         : await authClient.signIn.email({ email, password });
     if (result.error) {
-      setError(result.error.message ?? 'Could not sign you in. Try again.');
+      setError(result.error.message ?? t('errors.generic'));
       setBusy(false);
       return;
     }
@@ -49,23 +51,28 @@ export function AuthFields({
     <form onSubmit={submit} className="grid gap-4">
       {mode === 'sign-up' && (
         <div className="grid gap-2">
-          <Label htmlFor={`${mode}-name`}>Name</Label>
-          <Input id={`${mode}-name`} name="name" autoComplete="name" placeholder="Jane Agent" />
+          <Label htmlFor={`${mode}-name`}>{t('name')}</Label>
+          <Input
+            id={`${mode}-name`}
+            name="name"
+            autoComplete="name"
+            placeholder={t('namePlaceholder')}
+          />
         </div>
       )}
       <div className="grid gap-2">
-        <Label htmlFor={`${mode}-email`}>Email</Label>
+        <Label htmlFor={`${mode}-email`}>{t('email')}</Label>
         <Input
           id={`${mode}-email`}
           name="email"
           type="email"
           required
           autoComplete="email"
-          placeholder="you@agency.com"
+          placeholder={t('emailPlaceholder')}
         />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor={`${mode}-password`}>Password</Label>
+        <Label htmlFor={`${mode}-password`}>{t('password')}</Label>
         <Input
           id={`${mode}-password`}
           name="password"
@@ -73,13 +80,13 @@ export function AuthFields({
           required
           minLength={8}
           autoComplete={mode === 'sign-up' ? 'new-password' : 'current-password'}
-          placeholder="At least 8 characters"
+          placeholder={t('passwordPlaceholder')}
         />
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
       <Button type="submit" className="w-full" disabled={busy}>
         {busy && <Loader2 className="animate-spin" />}
-        {submitLabel ?? (mode === 'sign-up' ? 'Create account' : 'Sign in')}
+        {submitLabel ?? (mode === 'sign-up' ? t('createAccount') : t('signIn'))}
       </Button>
     </form>
   );

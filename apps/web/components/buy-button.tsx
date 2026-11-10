@@ -1,6 +1,7 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -18,6 +19,7 @@ export function BuyButton({
   variant?: 'default' | 'outline';
   disabled?: boolean;
 }) {
+  const t = useTranslations('BuyButton');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   return (
@@ -39,7 +41,7 @@ export function BuyButton({
             window.location.href = data.url;
             return;
           }
-          setError(data.error ?? 'Checkout failed');
+          setError(data.error ?? t('failed'));
           setBusy(false);
         }}
       >

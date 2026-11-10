@@ -2,6 +2,7 @@ import { getBalance, getBillingStatus } from '@easyrender/core';
 import { ENTERPRISE_BOOKING_URL, PRO_PLAN, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
 import { Check, CircleCheck } from 'lucide-react';
 import Link from 'next/link';
+import { getFormatter, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { BuyButton } from '@/components/buy-button';
 import { PaygPicker } from '@/components/payg-picker';
@@ -21,7 +22,6 @@ import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
-const usd = (cents: number) => `$${(cents / 100).toLocaleString('en-US')}`;
 const SIGN_UP = `/sign-up?next=${encodeURIComponent('/credits')}`;
 
 function PlanCard({
@@ -77,92 +77,105 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
   const [balance, billing] = user
     ? await Promise.all([getBalance(user.id), getBillingStatus(user.id)])
     : [0, { pro: false, canManage: false }];
+  const [t, format] = await Promise.all([getTranslations('Credits'), getFormatter()]);
+  const usd = (cents: number) =>
+    format.number(cents / 100, {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
+    });
+  const credits = (value: number) => format.number(value);
   const back =
     typeof next === 'string' && next.startsWith('/') && !next.startsWith('//') ? next : null;
   const signUp = (
     <Button className="w-full" asChild>
-      <Link href={SIGN_UP}>Sign up to buy</Link>
+      <Link href={SIGN_UP}>{t('signUpToBuy')}</Link>
     </Button>
   );
 
   let proFooter: ReactNode = signUp;
   if (user && billing.pro) {
     proFooter = billing.canManage ? (
-      <BuyButton label="Manage subscription" endpoint="/api/billing/portal" variant="outline" />
+      <BuyButton label={t('manageSubscription')} endpoint="/api/billing/portal" variant="outline" />
     ) : (
       <Button className="w-full" variant="outline" disabled>
-        You are on Pro
+        {t('onPro')}
       </Button>
     );
   } else if (user) {
-    proFooter = <BuyButton label={`Subscribe to ${PRO_PLAN.label}`} body={{ plan: 'pro' }} />;
+    proFooter = (
+      <BuyButton label={t('subscribe', { plan: PRO_PLAN.label })} body={{ plan: 'pro' }} />
+    );
   }
 
   return (
     <div className="space-y-8">
       <div className="space-y-3">
-        <Badge variant="outline">Pricing</Badge>
-        <h1 className="text-3xl font-semibold tracking-tight">Credits</h1>
+        <Badge variant="outline">{t('eyebrow')}</Badge>
+        <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
         <p className="text-muted-foreground">
-          Previews are free. A full 3D render costs {RENDER_CREDITS} credits ({usd(RENDER_CREDITS)}
-          ). Credits never expire.
+          {t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
         </p>
         {user && (
           <p className="text-sm">
-            You have {balance.toLocaleString('en-US')} credits
-            {billing.pro ? ' and you are on Pro.' : '.'}
+            {billing.pro
+              ? t('balancePro', { credits: credits(balance) })
+              : t('balance', { credits: credits(balance) })}
           </p>
         )}
         {status === 'success' && (
           <Alert>
             <CircleCheck />
-            <AlertDescription>Payment received. Your credits are ready.</AlertDescription>
+            <AlertDescription>{t('success')}</AlertDescription>
           </Alert>
         )}
         {back && (
           <Button variant="outline" size="sm" asChild>
-            <Link href={back}>Back to your render</Link>
+            <Link href={back}>{t('back')}</Link>
           </Button>
         )}
       </div>
       <div className="grid gap-4 lg:grid-cols-3">
         <PlanCard
-          title="Pay as you go"
-          description="Buy exactly what you need, one cent per credit."
-          price="$0.01"
-          note="per credit"
-          features={['GLB and USDZ downloads', 'AR viewer and embeds', 'API and MCP access']}
+          title={t('payg.title')}
+          description={t('payg.description')}
+          price={usd(1)}
+          note={t('payg.note')}
+          features={[t('payg.features.downloads'), t('payg.features.ar'), t('payg.features.api')]}
           footer={user ? <PaygPicker /> : signUp}
         />
         <PlanCard
           title={PRO_PLAN.label}
-          description={`${PRO_PLAN.monthlyCredits.toLocaleString('en-US')} credits every month, about ${rendersFor(PRO_PLAN.monthlyCredits)} renders.`}
+          description={t('pro.description', {
+            credits: credits(PRO_PLAN.monthlyCredits),
+            count: rendersFor(PRO_PLAN.monthlyCredits),
+          })}
           price={usd(PRO_PLAN.priceCents)}
-          note="per month"
-          badge="Best value"
+          note={t('pro.note')}
+          badge={t('bestValue')}
           featured
           features={[
-            `${PRO_PLAN.monthlyCredits.toLocaleString('en-US')} credits added each month`,
-            'Unused credits roll over',
-            'Top up with pay as you go anytime',
-            'Cancel anytime',
+            t('pro.features.credits', { credits: credits(PRO_PLAN.monthlyCredits) }),
+            t('pro.features.rollover'),
+            t('pro.features.topUp'),
+            t('pro.features.cancel'),
           ]}
           footer={proFooter}
         />
         <PlanCard
-          title="Enterprise"
-          description="Volume pricing, invoicing and a direct line to the team."
-          price="Custom"
+          title={t('enterprise.title')}
+          description={t('enterprise.description')}
+          price={t('enterprise.price')}
           features={[
-            'Volume credit pricing',
-            'Invoice billing',
-            'Priority support',
-            'Onboarding call',
+            t('enterprise.features.volume'),
+            t('enterprise.features.invoice'),
+            t('enterprise.features.support'),
+            t('enterprise.features.onboarding'),
           ]}
           footer={
             <Button className="w-full" variant="outline" asChild>
               <a href={ENTERPRISE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-                Book a call
+                {t('enterprise.cta')}
               </a>
             </Button>
           }

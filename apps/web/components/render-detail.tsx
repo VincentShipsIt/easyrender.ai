@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,11 +28,12 @@ export function RenderDetail({
   meta: DetailMeta[];
   actions?: ReactNode;
 }) {
+  const t = useTranslations('Render');
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6 sm:py-10">
       <nav className="flex items-center gap-1 text-sm text-muted-foreground">
         <Link href="/explore" className="hover:text-foreground">
-          Gallery
+          {t('gallery')}
         </Link>
         <ChevronRight className="size-4" />
         <span className="truncate text-foreground">{title}</span>
@@ -43,14 +45,14 @@ export function RenderDetail({
           <div className="grid items-start gap-4 sm:grid-cols-[1fr_2fr]">
             <Card className="gap-3 py-4">
               <CardHeader className="px-4">
-                <CardTitle className="text-sm">Input photo</CardTitle>
+                <CardTitle className="text-sm">{t('inputPhoto')}</CardTitle>
               </CardHeader>
               <CardContent className="px-4">
                 {input ? (
                   // biome-ignore lint/performance/noImgElement: served by our own API or /public
                   <img
                     src={input}
-                    alt={`Source of ${title}`}
+                    alt={t('sourceAlt', { title })}
                     className="aspect-square w-full rounded-lg border bg-white object-contain"
                   />
                 ) : (
@@ -60,7 +62,7 @@ export function RenderDetail({
             </Card>
             <Card className="gap-3 py-4">
               <CardHeader className="px-4">
-                <CardTitle className="text-sm">Every angle</CardTitle>
+                <CardTitle className="text-sm">{t('everyAngle')}</CardTitle>
               </CardHeader>
               <CardContent className="px-4">{angles}</CardContent>
             </Card>
@@ -84,10 +86,10 @@ export function RenderDetail({
             <CardContent className="space-y-4">
               <div className="space-y-1.5">
                 <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                  Prompt
+                  {t('prompt')}
                 </p>
                 <p className="rounded-lg border bg-muted/40 p-3 text-sm">
-                  {prompt || <span className="text-muted-foreground">No prompt, photo only</span>}
+                  {prompt || <span className="text-muted-foreground">{t('noPrompt')}</span>}
                 </p>
               </div>
               <Separator />
@@ -113,5 +115,4 @@ export function RenderDetail({
   );
 }
 
-export const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+export const DATE_FORMAT = { month: 'short', day: 'numeric', year: 'numeric' } as const;

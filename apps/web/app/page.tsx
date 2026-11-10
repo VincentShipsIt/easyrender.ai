@@ -1,6 +1,7 @@
 import { config } from '@easyrender/core';
 import { ArrowRight, Bot, KeyRound, LayoutDashboard, Plug, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { AgentDemo } from '@/components/agent-demo';
 import { FlatTo3D } from '@/components/flat-to-3d';
 import { GalleryGrid } from '@/components/gallery-grid';
@@ -17,25 +18,17 @@ import { HERO_ITEM } from '@/lib/showcase';
 const CLIENTS = ['Claude Code', 'Claude Desktop', 'Cursor', 'VS Code'];
 
 const CONNECT_STEPS = [
-  {
-    icon: KeyRound,
-    title: 'Get your key',
-    body: 'Create a free account. Your API key is ready on the Connectors page.',
-  },
-  {
-    icon: Plug,
-    title: 'Paste it in your agent',
-    body: 'One command for Claude Code, one JSON block for Cursor, VS Code or Claude Desktop.',
-  },
-  {
-    icon: LayoutDashboard,
-    title: 'Ask for 3D, watch it land',
-    body: 'Every model your agent makes shows up in your web dashboard and library.',
-  },
-];
+  { icon: KeyRound, key: 'key' },
+  { icon: Plug, key: 'paste' },
+  { icon: LayoutDashboard, key: 'watch' },
+] as const;
 
 export default async function HomePage() {
-  const [user, gallery] = await Promise.all([currentUser().catch(() => null), getGallery(6)]);
+  const [user, gallery, t] = await Promise.all([
+    currentUser().catch(() => null),
+    getGallery(6),
+    getTranslations('Home'),
+  ]);
   const mcpUrl = `${config.appUrl()}/api/mcp`;
 
   return (
@@ -46,31 +39,30 @@ export default async function HomePage() {
           <div className="min-w-0 space-y-6 text-center lg:text-left">
             <Badge variant="outline" className="gap-1.5 bg-background/60 py-1">
               <Bot />
-              MCP server for photo to 3D
+              {t('hero.badge')}
             </Badge>
             <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Run your 3D renders on autopilot with your agent
+              {t('hero.title')}
             </h1>
             <p className="mx-auto max-w-xl text-lg text-muted-foreground lg:mx-0">
-              Connect easyrender to your AI agent once. It turns product and listing photos into
-              real 3D models while you work, and every model lands in your library.
+              {t('hero.description')}
             </p>
             <div className="flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
               <Button size="lg" asChild>
                 <Link href="#connect">
                   <Plug />
-                  Connect your agent
+                  {t('hero.connect')}
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link href="#try">
                   <Sparkles />
-                  Try it with a photo
+                  {t('hero.try')}
                 </Link>
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">
-              Works with {CLIENTS.join(', ')} and any MCP client.
+              {t('hero.worksWith', { clients: CLIENTS.join(', ') })}
             </p>
           </div>
           <AgentDemo item={HERO_ITEM} />
@@ -81,15 +73,15 @@ export default async function HomePage() {
 
       <Section
         id="connect"
-        eyebrow="Connect"
-        title="Plug it into your agent in 30 seconds"
-        description="easyrender speaks MCP, so any agent that supports it can create renders, check them and build 3D models on your credits."
+        eyebrow={t('connect.eyebrow')}
+        title={t('connect.title')}
+        description={t('connect.description')}
       >
         <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
           <div className="min-w-0 space-y-4">
             <ol className="space-y-4">
               {CONNECT_STEPS.map((step, index) => (
-                <li key={step.title} className="flex gap-4">
+                <li key={step.key} className="flex gap-4">
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border bg-muted">
                     <step.icon className="size-5" />
                   </div>
@@ -98,9 +90,11 @@ export default async function HomePage() {
                       <span className="mr-2 font-mono text-sm text-muted-foreground">
                         0{index + 1}
                       </span>
-                      {step.title}
+                      {t(`connect.steps.${step.key}.title`)}
                     </p>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{step.body}</p>
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {t(`connect.steps.${step.key}.body`)}
+                    </p>
                   </div>
                 </li>
               ))}
@@ -109,7 +103,7 @@ export default async function HomePage() {
               <Link
                 href={user ? '/connectors' : `/sign-up?next=${encodeURIComponent('/connectors')}`}
               >
-                {user ? 'Open your connectors' : 'Get your free API key'}
+                {user ? t('connect.openConnectors') : t('connect.getKey')}
                 <ArrowRight />
               </Link>
             </Button>
@@ -124,9 +118,9 @@ export default async function HomePage() {
 
       <Section
         id="try"
-        eyebrow="Try it"
-        title="Or try one photo right here"
-        description="Drop a photo of furniture, decor or a building exterior. The preview is free; create an account to see it."
+        eyebrow={t('try.eyebrow')}
+        title={t('try.title')}
+        description={t('try.description')}
         className="border-t bg-muted/30"
       >
         <div className="mx-auto max-w-2xl">
@@ -136,13 +130,13 @@ export default async function HomePage() {
 
       <Section
         id="gallery"
-        eyebrow="Gallery"
-        title="Made with easyrender"
-        description="Real models generated from a single photo. Open one to see the prompt, the input and every angle."
+        eyebrow={t('gallery.eyebrow')}
+        title={t('gallery.title')}
+        description={t('gallery.description')}
         action={
           <Button variant="outline" asChild>
             <Link href="/explore">
-              Explore all
+              {t('gallery.exploreAll')}
               <ArrowRight />
             </Link>
           </Button>

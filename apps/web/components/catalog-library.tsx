@@ -3,6 +3,7 @@
 import type { RenderView } from '@easyrender/core';
 import { AlertCircle, Box, ImageUp, Loader2, Sparkles, Upload } from 'lucide-react';
 import Link from 'next/link';
+import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { prepare } from '@/components/prompt-bar';
 import { Button } from '@/components/ui/button';
@@ -16,31 +17,18 @@ type QueuedUpload = { key: string; name: string; url: string; error: string | nu
 type View = 'photo' | '3d' | 'both';
 type Filter = 'all' | 'needs' | 'working' | 'done' | 'failed';
 
-const FILTERS: { id: Filter; label: string; match: (item: RenderView) => boolean }[] = [
-  { id: 'all', label: 'All', match: () => true },
-  { id: 'needs', label: 'Needs 3D', match: (item) => item.status === 'preview_ready' },
+const FILTERS: { id: Filter; match: (item: RenderView) => boolean }[] = [
+  { id: 'all', match: () => true },
+  { id: 'needs', match: (item) => item.status === 'preview_ready' },
   {
     id: 'working',
-    label: 'In progress',
     match: (item) => item.status === 'drafting' || item.status === 'rendering',
   },
-  { id: 'done', label: '3D ready', match: (item) => item.status === 'ready' },
-  { id: 'failed', label: 'Failed', match: (item) => item.status === 'failed' },
+  { id: 'done', match: (item) => item.status === 'ready' },
+  { id: 'failed', match: (item) => item.status === 'failed' },
 ];
 
-const VIEWS: { id: View; label: string }[] = [
-  { id: 'photo', label: 'Photo' },
-  { id: '3d', label: '3D' },
-  { id: 'both', label: 'Side by side' },
-];
-
-const STATUS_LABEL: Record<RenderView['status'], string> = {
-  drafting: 'Preparing preview',
-  preview_ready: 'Ready for 3D',
-  rendering: 'Building 3D',
-  ready: '3D ready',
-  failed: 'Failed',
-};
+const VIEWS: View[] = ['photo', '3d', 'both'];
 
 const baseName = (file: File) => file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
 
@@ -68,6 +56,8 @@ export function CatalogLibrary({
   initialBalance: number;
   renderCredits: number;
 }) {
+  const t = useTranslations('Library');
+  const format = useFormatter();
   const [items, setItems] = useState(initial);
   const [balance, setBalance] = useState(initialBalance);
   const [uploads, setUploads] = useState<QueuedUpload[]>([]);
@@ -153,12 +143,12 @@ export function CatalogLibrary({
     const skipped = await pool(queued, UPLOAD_CONCURRENCY, async (upload) => {
       try {
         const body = new FormData();
-        body.append('image', await prepare(upload.file), 'source.jpg');
+        body.append('image', await prepare(upload.file, t('errors.unreadable')), 'source.jpg');
         body.append('name', upload.name);
         const response = await fetch('/api/renders', { method: 'POST', body });
         const data = await response.json();
         if (!response.ok) {
-          failed(upload.key, data.error ?? 'Upload failed');
+          failed(upload.key, data.error ?? t('errors.upload'));
           if (data.code === 'preview_limit') {
             setNotice(data.error);
             return false;
@@ -168,11 +158,11 @@ export function CatalogLibrary({
         upsert(data as RenderView);
         done(upload.key);
       } catch {
-        failed(upload.key, 'Upload failed');
+        failed(upload.key, t('errors.upload'));
       }
       return true;
     });
-    for (const upload of skipped) failed(upload.key, 'Not uploaded: daily limit reached');
+    for (const upload of skipped) failed(upload.key, t('errors.dailyLimit'));
   }
 
   const pending = items.filter((item) => item.status === 'preview_ready');
@@ -194,16 +184,16 @@ export function CatalogLibrary({
             return true;
           }
           if (data.code === 'insufficient_credits') {
-            stoppedFor = 'Out of credits. Buy more to generate the rest.';
+            stoppedFor = t('errors.outOfCredits');
             return false;
           }
-          setNotice(data.error ?? 'Some items could not start');
+          setNotice(data.error ?? t('errors.someFailed'));
         } catch {
-          setNotice('Some items could not start. Check your connection and try again.');
+          setNotice(t('errors.connection'));
         }
         return true;
       });
-      if (left.length > 0) setNotice(stoppedFor ?? `${left.length} items are still waiting.`);
+      if (left.length > 0) setNotice(stoppedFor ?? t('stillWaiting', { count: left.length }));
       // Bump past the optimistic updates so the final read always lands.
       localVersion.current += 1;
       await refresh(true);
@@ -238,22 +228,21 @@ export function CatalogLibrary({
     >
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Library</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {total} {total === 1 ? 'item' : 'items'} · {counts.done} in 3D ·{' '}
-            {balance.toLocaleString('en-US')} credits
+            {t('summary', { total, done: counts.done, balance: format.number(balance) })}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" onClick={() => input.current?.click()}>
             <Upload className="size-4" />
-            Upload photos
+            {t('upload')}
           </Button>
           {pending.length > 0 && affordable === 0 ? (
             <Button asChild>
               <Link href="/credits">
                 <Sparkles className="size-4" />
-                Buy credits to generate {pending.length}
+                {t('buyToGenerate', { count: pending.length })}
               </Link>
             </Button>
           ) : (
@@ -266,9 +255,12 @@ export function CatalogLibrary({
               ) : (
                 <Sparkles className="size-4" />
               )}
-              Generate all
-              {affordable > 0 &&
-                ` (${affordable} · ${(affordable * renderCredits).toLocaleString('en-US')} credits)`}
+              {affordable > 0
+                ? t('generateAllCount', {
+                    count: affordable,
+                    credits: format.number(affordable * renderCredits),
+                  })
+                : t('generateAll')}
             </Button>
           )}
         </div>
@@ -291,7 +283,7 @@ export function CatalogLibrary({
           {notice}
           {pending.length > affordable && (
             <Link href="/credits" className="underline">
-              Buy credits
+              {t('buyCredits')}
             </Link>
           )}
         </p>
@@ -307,11 +299,8 @@ export function CatalogLibrary({
           )}
         >
           <ImageUp className="size-8" />
-          <span className="font-medium text-foreground">Drop your catalog photos here</span>
-          <span className="max-w-sm text-center text-sm">
-            One photo per product. Each one gets a free preview, then generate them all in 3D at
-            once.
-          </span>
+          <span className="font-medium text-foreground">{t('empty.title')}</span>
+          <span className="max-w-sm text-center text-sm">{t('empty.body')}</span>
         </button>
       ) : (
         <>
@@ -319,9 +308,16 @@ export function CatalogLibrary({
             <Segmented
               value={filter}
               onChange={setFilter}
-              options={FILTERS.map((f) => ({ id: f.id, label: `${f.label} ${counts[f.id]}` }))}
+              options={FILTERS.map((f) => ({
+                id: f.id,
+                label: `${t(`filters.${f.id}`)} ${counts[f.id]}`,
+              }))}
             />
-            <Segmented value={view} onChange={setView} options={VIEWS} />
+            <Segmented
+              value={view}
+              onChange={setView}
+              options={VIEWS.map((id) => ({ id, label: t(`views.${id}`) }))}
+            />
           </div>
 
           <div
@@ -340,12 +336,15 @@ export function CatalogLibrary({
                   view={view}
                   photo={upload.url}
                   title={upload.name}
-                  status={upload.error ? 'Upload failed' : 'Uploading'}
+                  status={upload.error ? t('errors.upload') : t('uploading')}
                   pane={
                     upload.error ? (
                       <Pane icon={<AlertCircle className="size-5" />} text={upload.error} />
                     ) : (
-                      <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Uploading" />
+                      <Pane
+                        icon={<Loader2 className="size-5 animate-spin" />}
+                        text={t('uploading')}
+                      />
                     )
                   }
                 />
@@ -356,8 +355,8 @@ export function CatalogLibrary({
                 view={view}
                 href={`/r/${item.id}`}
                 photo={`/api/renders/${item.id}/source`}
-                title={item.name || item.prompt || 'Untitled'}
-                status={STATUS_LABEL[item.status]}
+                title={item.name || item.prompt || t('untitled')}
+                status={t(`status.${item.status}`)}
                 pane={
                   <ModelPane
                     item={item}
@@ -371,7 +370,7 @@ export function CatalogLibrary({
             ))}
           </div>
           {visible.length === 0 && uploads.length === 0 && (
-            <p className="py-12 text-center text-sm text-muted-foreground">Nothing in this view.</p>
+            <p className="py-12 text-center text-sm text-muted-foreground">{t('emptyView')}</p>
           )}
         </>
       )}
@@ -481,12 +480,13 @@ function ModelPane({
   renderCredits: number;
   onBuild: () => void;
 }) {
+  const t = useTranslations('Library');
   if (item.hasModel) {
     return viewerReady ? (
       <div className="absolute inset-0 bg-muted">
         <model-viewer
           src={`/api/renders/${item.id}/model`}
-          alt={`3D model of ${item.name ?? 'item'}`}
+          alt={t('modelAlt', { name: item.name ?? t('untitled') })}
           loading="lazy"
           camera-controls
           auto-rotate
@@ -495,23 +495,21 @@ function ModelPane({
         />
       </div>
     ) : (
-      <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Loading 3D" />
+      <Pane icon={<Loader2 className="size-5 animate-spin" />} text={t('pane.loading')} />
     );
   }
   switch (item.status) {
     case 'drafting':
-      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Preparing preview" />;
+      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text={t('pane.drafting')} />;
     case 'rendering':
-      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Building 3D model" />;
+      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text={t('pane.rendering')} />;
     case 'failed':
-      return (
-        <Pane icon={<AlertCircle className="size-5" />} text="Failed. Credits were refunded." />
-      );
+      return <Pane icon={<AlertCircle className="size-5" />} text={t('pane.failed')} />;
     default:
       return (
-        <Pane icon={<Box className="size-5" />} text="Ready for 3D">
+        <Pane icon={<Box className="size-5" />} text={t('status.preview_ready')}>
           <Button size="sm" variant="outline" disabled={!canBuild} onClick={onBuild}>
-            Generate · {renderCredits}
+            {t('generateOne', { credits: renderCredits })}
           </Button>
         </Pane>
       );
