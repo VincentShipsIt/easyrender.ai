@@ -146,7 +146,13 @@ export function llmsFullTxt(now: Date = new Date()): string {
       // A link to a guide that is not out yet becomes its text; the rest become absolute URLs,
       // so they still work outside the site.
       const isLive = isLiveBlogLink(locale, now);
+      // A drawn diagram has no file to link to, so it becomes its alt text and caption.
       const body = post.body
+        .replace(
+          /^!\[([^\]]+)\]\(diagram:[^)\s]+(?:\s+"([^"]*)")?\)$/gm,
+          (_, alt: string, caption?: string) =>
+            caption ? `[Diagram: ${alt}] ${caption}` : `[Diagram: ${alt}]`,
+        )
         .replace(/(?<!!)\[([^\]]+)\]\((\/[^)\s]*)\)/g, (match, label: string, href: string) =>
           isLive(href) ? match : label,
         )

@@ -1,8 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { DIAGRAMS } from '@/components/blog/diagrams';
 import { postTitle } from '@/lib/seo/pages';
-import { parseImage } from './images';
+import { BLOG_DIAGRAMS, parseImage } from './images';
 import { readPosts } from './posts';
 
 // The English guides, checked against the rules they are written to: the SEO limits, the tone
@@ -95,15 +96,22 @@ describe.each(posts.map((post) => [post.slug, post] as const))('guide %s', (slug
     for (const item of media) expect(item.caption, item.src).toBeTruthy();
   });
 
-  it('puts each 3D model in one guide only', () => {
-    const models = posts.flatMap((entry) =>
-      entry.body.split('\n').flatMap((line) => {
-        const model = parseImage(line);
-        return model?.model ? [`${entry.slug} ${model.src}`] : [];
-      }),
-    );
-    const sources = models.map((entry) => entry.split(' ')[1]);
-    expect(new Set(sources).size, models.join('\n')).toBe(sources.length);
+  it('shows each picture, model and diagram once', () => {
+    const sources = post.body.split('\n').flatMap((line) => {
+      const media = parseImage(line);
+      return media ? [media.src] : [];
+    });
+    expect(new Set(sources).size, sources.join('\n')).toBe(sources.length);
+  });
+
+  it('only draws diagrams that exist, with words in the guide’s language', () => {
+    for (const line of post.body.split('\n')) {
+      const media = parseImage(line);
+      if (!media?.diagram) continue;
+      const diagram = DIAGRAMS[media.diagram];
+      expect(diagram, media.src).toBeDefined();
+      expect(diagram?.locales, media.src).toContain(post.locale);
+    }
   });
 
   it('has no typed price, no unfilled token and no plan that does not exist', () => {
@@ -131,5 +139,35 @@ describe.each(posts.map((post) => [post.slug, post] as const))('guide %s', (slug
         expect(sentence).toMatch(/\bnot\b/);
       }
     }
+  });
+});
+
+describe('across the guides', () => {
+  it('puts each picture, 3D model and diagram in one guide only', () => {
+    // No creative repeats across guides: not a photo, an angle sheet, a crop, a GLB or a diagram.
+    // A second use of the same object needs its own file, a crop with an honest caption.
+    const guidesBySrc = new Map<string, Set<string>>();
+    for (const entry of posts) {
+      for (const line of entry.body.split('\n')) {
+        const media = parseImage(line);
+        if (media)
+          guidesBySrc.set(media.src, (guidesBySrc.get(media.src) ?? new Set()).add(entry.slug));
+      }
+    }
+    const shared = [...guidesBySrc]
+      .filter(([, guides]) => guides.size > 1)
+      .map(([src, guides]) => `${src}: ${[...guides].sort().join(', ')}`);
+    expect(shared).toEqual([]);
+  });
+});
+
+describe('the diagram registry', () => {
+  it('lists the same diagrams in images.ts and components/blog/diagrams', () => {
+    expect([...BLOG_DIAGRAMS].sort()).toEqual(Object.keys(DIAGRAMS).sort());
+  });
+
+  it('treats an unknown diagram like an unknown image: no size, so it shows as text', () => {
+    expect(parseImage('![A diagram that was never drawn](diagram:nope "x")')?.size).toBeNull();
+    expect(parseImage('![The GLB anatomy](diagram:glb-anatomy "x")')?.diagram).toBe('glb-anatomy');
   });
 });

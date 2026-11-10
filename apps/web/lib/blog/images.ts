@@ -3,8 +3,11 @@
 // easyrender output or a real screenshot (decisiones/claims.md). So the list is closed: a path
 // that is not here is rendered as plain text, which makes it obvious in review, and a test fails.
 //
-// All of these come from public/showcase (see lib/showcase.ts): the input photos of the demo
-// renders and the free angle sheets the easyrender harness drew from them, unretouched.
+// They come from public/showcase (see lib/showcase.ts): the input photos of the demo renders and
+// the free angle sheets the easyrender harness drew from them, unretouched. The files under
+// public/blog/figures/{guide} are plain crops of those same assets, or a texture copied byte for
+// byte out of a showcase GLB, so one asset file is never shown in two guides (content.test.ts).
+// A crop's caption says what it is cropped from.
 
 export type BlogImage = { width: number; height: number };
 
@@ -15,7 +18,49 @@ export const BLOG_IMAGES: Record<string, BlogImage> = {
   '/showcase/swivel-chair.jpg': { width: 720, height: 720 },
   '/showcase/bedside-table.jpg': { width: 720, height: 720 },
   '/showcase/vase-angles.jpg': { width: 1200, height: 1200 },
+  // Two cells of /showcase/armchair-angles.jpg: the predicted front and three-quarter views.
+  '/blog/figures/product-photography-for-ecommerce/armchair-front.jpg': { width: 388, height: 388 },
+  '/blog/figures/product-photography-for-ecommerce/armchair-three-quarter.jpg': {
+    width: 388,
+    height: 388,
+  },
+  // The lower drawer of /showcase/bedside-table.jpg, and the same corner of the model's poster.
+  '/blog/figures/sell-vintage-furniture-online/bedside-photo-detail.jpg': {
+    width: 320,
+    height: 320,
+  },
+  '/blog/figures/sell-vintage-furniture-online/bedside-model-detail.webp': {
+    width: 380,
+    height: 380,
+  },
+  // The base colour texture inside /showcase/clay-vase.glb, copied out of the file unchanged.
+  '/blog/figures/glb-file/clay-vase-texture.webp': { width: 1024, height: 1024 },
 };
+
+// Diagrams drawn for the guides, as React components (components/blog/diagrams). They are
+// rendered on the server as inline HTML and SVG on the site's colour tokens, so they read
+// without JavaScript and follow the light or dark scheme. Written `![alt](diagram:name "caption")`.
+// The size is the box the diagram is drawn for, kept only so a diagram parses like an image.
+export const DIAGRAM_PREFIX = 'diagram:';
+
+export const BLOG_DIAGRAMS: readonly string[] = [
+  'photo-vs-photogrammetry',
+  'image-to-3d-pipeline',
+  'window-light-setup',
+  'camera-height',
+  'lens-distance',
+  'store-files',
+  'sideboard-photo-pick',
+  'vintage-shot-list',
+  'listing-title',
+  'glb-anatomy',
+  'method-decision-tree',
+  'photogrammetry-rings',
+  'blockout-side-table',
+  'usdz-anatomy',
+  'quick-look-path',
+];
+const DIAGRAM_SIZE: BlogImage = { width: 720, height: 405 };
 
 // The 3D models a guide may embed, from the same closed source: the GLBs in public/showcase are
 // easyrender output from one photo (see lib/showcase.ts), with their textures compressed to WebP
@@ -56,13 +101,20 @@ export const BLOG_MODELS: Record<string, BlogModel> = {
     height: 960,
     orbit: '30deg 75deg auto',
   },
+  '/showcase/vase.glb': {
+    poster: '/blog/models/vase.webp',
+    width: 960,
+    height: 960,
+    orbit: '30deg 75deg auto',
+  },
 };
 
 const IMAGE = /!\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/;
 
 /**
  * `![alt](/path "caption")`, or null when the line is not exactly one image. A path in BLOG_MODELS
- * is a 3D model: `model` holds its poster and `size` the poster's size.
+ * is a 3D model: `model` holds its poster and `size` the poster's size. A `diagram:` path in
+ * BLOG_DIAGRAMS is a drawn diagram, with `diagram` set to its name.
  */
 export function parseImage(line: string): {
   alt: string;
@@ -70,11 +122,23 @@ export function parseImage(line: string): {
   caption?: string;
   size: BlogImage | null;
   model?: BlogModel;
+  diagram?: string;
 } | null {
   const match = new RegExp(`^${IMAGE.source}$`).exec(line.trim());
   if (!match) return null;
   const src = match[2] as string;
   const model = BLOG_MODELS[src];
+  const name = src.startsWith(DIAGRAM_PREFIX) ? src.slice(DIAGRAM_PREFIX.length) : null;
+  if (name !== null) {
+    const isKnown = BLOG_DIAGRAMS.includes(name);
+    return {
+      alt: match[1] as string,
+      src,
+      ...(match[3] ? { caption: match[3] } : {}),
+      size: isKnown ? DIAGRAM_SIZE : null,
+      ...(isKnown ? { diagram: name } : {}),
+    };
+  }
   return {
     alt: match[1] as string,
     src,
@@ -91,7 +155,7 @@ const MIN_SCHEMA_WIDTH = 1200;
 export function schemaImage(body: string): { src: string; width: number; height: number } | null {
   for (const line of body.split('\n')) {
     const image = parseImage(line);
-    if (image?.size && !image.model && image.size.width >= MIN_SCHEMA_WIDTH)
+    if (image?.size && !image.model && !image.diagram && image.size.width >= MIN_SCHEMA_WIDTH)
       return { src: image.src, ...image.size };
   }
   return null;

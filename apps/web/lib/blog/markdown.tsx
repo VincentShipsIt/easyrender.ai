@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { BlogModel } from '@/components/blog/blog-model';
+import { DIAGRAMS } from '@/components/blog/diagrams';
 import { Separator } from '@/components/ui/separator';
 import {
   Table,
@@ -14,8 +15,8 @@ import {
 import { parseImage } from './images';
 
 // Renders the markdown subset the guides are written in: headings, paragraphs, lists, quotes,
-// rules, tables, images and 3D models from the closed lists in images.ts, and inline emphasis,
-// code and links. It returns React elements rather than HTML, so no
+// rules, tables, images, 3D models and drawn diagrams from the closed lists in images.ts, and
+// inline emphasis, code and links. It returns React elements rather than HTML, so no
 // post can inject markup into the page, and there is no markdown dependency to keep current.
 //
 // Anything outside the subset is shown as plain text instead of being dropped, which makes an
@@ -38,7 +39,11 @@ export type Media = {
   caption?: string;
   width: number;
   height: number;
-} & ({ type: 'image' } | { type: 'model'; poster: string; orbit: string });
+} & (
+  | { type: 'image' }
+  | { type: 'model'; poster: string; orbit: string }
+  | { type: 'diagram'; name: string }
+);
 
 const HEADING = /^(#{2,4})\s+(.*)$/;
 const UNORDERED = /^[-*]\s+(.*)$/;
@@ -64,6 +69,7 @@ function toMedia(line: string): Media | null {
     width: image.size.width,
     height: image.size.height,
   };
+  if (image.diagram) return { ...base, type: 'diagram', name: image.diagram };
   return image.model
     ? { ...base, type: 'model', poster: image.model.poster, orbit: image.model.orbit }
     : { ...base, type: 'image' };
@@ -235,10 +241,30 @@ export function renderInline(text: string, isLive: LinkGate = ALWAYS): ReactNode
   return nodes;
 }
 
-function Figure({ media, hint, isLive }: { media: Media; hint: string; isLive: LinkGate }) {
+function Figure({
+  media,
+  hint,
+  isLive,
+  locale,
+}: {
+  media: Media;
+  hint: string;
+  isLive: LinkGate;
+  locale: string;
+}) {
   return (
     <figure>
-      {media.type === 'model' ? (
+      {media.type === 'diagram' ? (
+        // Drawn on the server from the site's tokens: the words are in the HTML, it needs no
+        // JavaScript, and it follows the light or dark scheme. The alt text names the picture.
+        <div
+          role="img"
+          aria-label={media.alt}
+          className="rounded-lg border bg-card p-4 text-card-foreground sm:p-6"
+        >
+          {DIAGRAMS[media.name]?.render(locale)}
+        </div>
+      ) : media.type === 'model' ? (
         <BlogModel
           src={media.src}
           alt={media.alt}
@@ -272,10 +298,13 @@ export function Markdown({
   source,
   isLive = ALWAYS,
   modelHint = '',
+  locale = 'en',
 }: {
   source: string;
   isLive?: LinkGate;
   modelHint?: string;
+  /** The guide's language, for the words inside diagrams. */
+  locale?: string;
 }) {
   return (
     <>
@@ -287,12 +316,23 @@ export function Markdown({
           case 'media':
             return block.items.length === 1 ? (
               <div key={key} className="mt-8">
-                <Figure media={block.items[0] as Media} hint={modelHint} isLive={isLive} />
+                <Figure
+                  media={block.items[0] as Media}
+                  hint={modelHint}
+                  isLive={isLive}
+                  locale={locale}
+                />
               </div>
             ) : (
               <div key={key} className="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
                 {block.items.map((media) => (
-                  <Figure key={media.src} media={media} hint={modelHint} isLive={isLive} />
+                  <Figure
+                    key={media.src}
+                    media={media}
+                    hint={modelHint}
+                    isLive={isLive}
+                    locale={locale}
+                  />
                 ))}
               </div>
             );

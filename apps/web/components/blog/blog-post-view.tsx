@@ -61,6 +61,7 @@ export async function BlogPostView({ post }: { post: BlogPost }) {
         <Markdown
           source={post.body}
           isLive={isLiveBlogLink(post.locale)}
+          locale={post.locale}
           modelHint={t('post.modelHint')}
         />
       </div>

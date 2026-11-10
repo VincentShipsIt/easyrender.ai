@@ -34,7 +34,19 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
   GLBs listed in `BLOG_MODELS` (`lib/blog/images.ts`) render. Each has a poster, a still of that
   GLB captured in model-viewer and not edited, which is in the server HTML with the alt text and
   the caption; the viewer loads when it nears the screen and takes the poster's place. Use each
-  model in one guide only (`content.test.ts` checks it).
+  model in one guide only.
+- **Diagrams**: `![Alt text that says what the diagram shows](diagram:glb-anatomy "Caption")`. A
+  diagram is a React component in `components/blog/diagrams`, listed in `DIAGRAMS` there and in
+  `BLOG_DIAGRAMS` (`lib/blog/images.ts`). It is drawn on the server as HTML or inline SVG on the
+  site's colour tokens, so it reads without JavaScript and follows the light or dark scheme. Its
+  words are per language inside the component (`{ en: {...} }`): a translated guide that uses a
+  diagram needs its own block there, and `content.test.ts` fails until it has one. Diagrams stay
+  greyscale and never carry measurements, scale bars or "will it fit" marks (claims.md).
+- **Crops**: a second picture of an object already shown in another guide is its own file under
+  `public/blog/figures/{slug}/`, cropped from the real asset and registered in `BLOG_IMAGES`, with
+  a caption that says what it is cropped from. Never re-colour or reshape it.
+- **One guide per asset**: no image, crop, model or diagram path appears in two guides, and none
+  twice in the same guide (`content.test.ts` checks both).
 - **Side by side**: two image or model lines with no blank line between them show as two columns,
   for a comparison such as the photo next to the model built from it.
 - **Tables**: a markdown table with a header row and a `| --- |` divider. Use one only when it
@@ -42,7 +54,10 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
 - **Every guide shows at least one real picture or model**, with alt text and a caption. A table
   does not count.
 - **Missing images**: leave `<!-- IMAGE PENDING: what the picture must show -->`. Comments are
-  stripped before rendering, structured data and llms-full.txt.
+  stripped before rendering, structured data and llms-full.txt. A drawn illustration that is still
+  to be generated is `<!-- ILLUSTRATION PENDING: target path, ratio, what it shows -->`; its caption
+  has to say it is an illustration, never an easyrender result, and it is only added once the file
+  exists.
 - **FAQ**: a `## FAQ` section with one `### Question?` per item. The same questions become the
   page's FAQPage structured data, so what crawlers read is what readers see.
 - **Links between guides**: link freely. A link to a guide whose date has not come yet shows as
