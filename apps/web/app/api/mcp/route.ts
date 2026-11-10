@@ -1,4 +1,4 @@
-import { bearerToken, verifyApiKey } from '@easyrender/core';
+import { bearerToken, resourceMetadataUrl, verifyApiKey } from '@easyrender/core';
 import { createMcpServer } from '@easyrender/mcp';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { NextResponse } from 'next/server';
@@ -11,7 +11,10 @@ async function serve(request: Request): Promise<Response> {
   if (!userId) {
     return NextResponse.json(
       { error: 'Pass an easyrender API key as `Authorization: Bearer er_...`' },
-      { status: 401, headers: { 'www-authenticate': 'Bearer' } },
+      {
+        status: 401,
+        headers: { 'www-authenticate': `Bearer resource_metadata="${resourceMetadataUrl()}"` },
+      },
     );
   }
   const server = createMcpServer({ userId });

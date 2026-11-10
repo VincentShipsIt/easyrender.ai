@@ -94,14 +94,29 @@ export function McpSetup({ url, apiKey }: { url: string; apiKey?: string | null 
   const t = useTranslations('McpSetup');
   const key = apiKey ?? KEY_PLACEHOLDER;
   return (
-    <Tabs defaultValue={MCP_CLIENTS[0].id} className="w-full gap-3">
+    <Tabs defaultValue="claude-ai" className="w-full gap-3">
       <TabsList className="h-auto max-w-full flex-wrap justify-start">
+        <TabsTrigger value="claude-ai">claude.ai</TabsTrigger>
         {MCP_CLIENTS.map((client) => (
           <TabsTrigger key={client.id} value={client.id}>
             {client.label}
           </TabsTrigger>
         ))}
       </TabsList>
+      <TabsContent value="claude-ai" className="space-y-3">
+        <ol className="list-decimal space-y-1 pl-5 text-xs text-muted-foreground">
+          {(['one', 'two', 'three'] as const).map((step) => (
+            <li key={step}>{t(`claudeAi.${step}`)}</li>
+          ))}
+        </ol>
+        <div className="relative">
+          <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-3 pr-12 font-mono text-xs leading-relaxed">
+            {url}
+          </pre>
+          <CopyButton text={url} />
+        </div>
+        <p className="text-xs text-muted-foreground">{t('claudeAi.note')}</p>
+      </TabsContent>
       {MCP_CLIENTS.map((client) => {
         const code = client.code(url, key);
         return (
