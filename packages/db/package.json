@@ -12,7 +12,8 @@
     "generate": "prisma generate",
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",

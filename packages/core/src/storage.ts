@@ -26,6 +26,12 @@ export async function putFile(
     });
     return blob.url;
   }
+  // Vercel's filesystem is read-only, so local disk only works off-platform.
+  if (process.env.VERCEL) {
+    throw new Error(
+      'BLOB_READ_WRITE_TOKEN is not set: connect a Blob store to this Vercel project',
+    );
+  }
   const dot = pathname.lastIndexOf('.');
   const suffixed = `${pathname.slice(0, dot)}-${randomBytes(6).toString('hex')}${pathname.slice(dot)}`;
   const target = join(localRoot(), suffixed);

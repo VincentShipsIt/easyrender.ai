@@ -1,11 +1,18 @@
-import { AppError, createDraft, MAX_UPLOAD_BYTES, toView } from '@easyrender/core';
+import {
+  AppError,
+  createDraft,
+  getBalance,
+  listLibrary,
+  MAX_UPLOAD_BYTES,
+  toView,
+} from '@easyrender/core';
 import { NextResponse } from 'next/server';
 import { resolveActor } from '@/lib/actor';
 import { handle } from '@/lib/http';
 
 export const maxDuration = 60;
 
-// Multipart upload: `image` (file) and an optional `prompt`. Starts the free preview.
+// Multipart upload: `image` (file), an optional `prompt` and an optional catalog `name`. Starts the free preview.
 export const POST = (request: Request) =>
   handle(async () => {
     const actor = await resolveActor(request.headers);
@@ -15,11 +22,25 @@ export const POST = (request: Request) =>
     if (image.size > MAX_UPLOAD_BYTES)
       throw new AppError('Photo is larger than 4 MB', 413, 'too_large');
     const prompt = form?.get('prompt');
+    const name = form?.get('name');
     const render = await createDraft({
       actor,
       bytes: new Uint8Array(await image.arrayBuffer()),
       contentType: image.type,
       prompt: typeof prompt === 'string' ? prompt.slice(0, 500) : null,
+      name: typeof name === 'string' ? name : null,
     });
     return NextResponse.json(toView(render), { status: 201 });
+  });
+
+// The signed-in user's catalog, for the library grid.
+export const GET = (request: Request) =>
+  handle(async () => {
+    const actor = await resolveActor(request.headers);
+    if (!actor.userId) throw new AppError('Sign in to see your library', 401, 'unauthorized');
+    const [renders, balance] = await Promise.all([
+      listLibrary(actor.userId),
+      getBalance(actor.userId),
+    ]);
+    return NextResponse.json({ renders: renders.map(toView), balance });
   });
