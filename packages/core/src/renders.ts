@@ -9,6 +9,7 @@ import {
   findGlbUrl,
   isSettled,
   RENDER_CREDITS,
+  SHEET_CREDITS,
   SHEET_MODEL,
   sheetOutputUrl,
   sheetRequest,
@@ -199,23 +200,30 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     throw new AppError('This render cannot be built', 409, 'bad_state');
   }
 
+  // An angle sheet bought earlier already counts toward the price.
+  const alreadyPaid = render.credits;
+  const owed = Math.max(0, RENDER_CREDITS - alreadyPaid);
+
   // Claim the render first so a double click cannot spend twice.
   const { count } = await db().render.updateMany({
     where: { id, status: 'preview_ready' },
-    data: { status: 'rendering', userId: actor.userId, credits: RENDER_CREDITS },
+    data: { status: 'rendering', userId: actor.userId, credits: alreadyPaid + owed },
   });
   if (count === 0) return (await db().render.findUnique({ where: { id } })) as Render;
 
   try {
     await spendCredits({
       userId: actor.userId,
-      amount: RENDER_CREDITS,
+      amount: owed,
       key: `render:${id}`,
       reason: 'render',
       renderId: id,
     });
   } catch (error) {
-    await db().render.update({ where: { id }, data: { status: 'preview_ready', credits: 0 } });
+    await db().render.update({
+      where: { id },
+      data: { status: 'preview_ready', credits: alreadyPaid },
+    });
     throw error;
   }
 
@@ -245,6 +253,70 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
   }
 }
 
+// The angle sheet on its own, for a render that has none yet. SHEET_ENABLED=false stops the free
+// sheet at upload; this is the paid, on-demand way to get one, and its price counts toward the
+// 3D render.
+export async function startSheet(id: string, actor: Actor): Promise<Render> {
+  if (!actor.userId) throw new AppError('Sign in to generate an angle sheet', 401, 'sign_in');
+  const render = await db().render.findUnique({ where: { id } });
+  if (!render || !canAccess(render, actor)) throw notFound();
+  if (render.sheetKey || render.sheetPredictionId) return render;
+  if (render.status !== 'preview_ready') {
+    throw new AppError('This render cannot get an angle sheet', 409, 'bad_state');
+  }
+
+  // Claim first so a double click cannot spend twice. `credits` marks what is paid so far.
+  const { count } = await db().render.updateMany({
+    where: { id, status: 'preview_ready', sheetKey: null, sheetPredictionId: null },
+    data: { status: 'drafting', userId: actor.userId, credits: SHEET_CREDITS },
+  });
+  if (count === 0) return (await db().render.findUnique({ where: { id } })) as Render;
+
+  try {
+    await spendCredits({
+      userId: actor.userId,
+      amount: SHEET_CREDITS,
+      key: `sheet:${id}`,
+      reason: 'angle_sheet',
+      renderId: id,
+    });
+  } catch (error) {
+    await db().render.update({
+      where: { id },
+      data: { status: 'preview_ready', credits: render.credits, userId: render.userId },
+    });
+    throw error;
+  }
+
+  try {
+    const client = replicate();
+    const bytes = await getFile(render.sourceKey);
+    const contentType = render.sourceKey.endsWith('.png')
+      ? 'image/png'
+      : render.sourceKey.endsWith('.webp')
+        ? 'image/webp'
+        : 'image/jpeg';
+    const sourceUrl = await client.upload(bytes, `source.${extension(contentType)}`, contentType);
+    const request = sheetRequest(sourceUrl, render.prompt);
+    const prediction = await client.start(
+      request.path,
+      request.body,
+      config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
+    );
+    return await db().render.update({
+      where: { id },
+      data: { sourceUrl, sheetPredictionId: prediction.id },
+    });
+  } catch (error) {
+    await fail(id, error);
+    throw new AppError(
+      'Could not start the angle sheet. Your credits were refunded.',
+      502,
+      'upstream',
+    );
+  }
+}
+
 export type RenderView = {
   id: string;
   status: Render['status'];
@@ -252,9 +324,12 @@ export type RenderView = {
   name: string | null;
   error: string | null;
   hasPreview: boolean;
+  // True once the 3x3 angle sheet exists. Without it the preview is the plain photo.
+  hasSheet: boolean;
   hasModel: boolean;
   credits: number;
   renderCredits: number;
+  sheetCredits: number;
   isPublic: boolean;
   source: RenderSource;
   createdAt: string;
@@ -268,9 +343,11 @@ export function toView(render: Render): RenderView {
     name: render.name,
     error: render.status === 'failed' ? 'Generation failed. Credits, if any, were refunded.' : null,
     hasPreview: render.status !== 'drafting' && render.status !== 'failed',
+    hasSheet: Boolean(render.sheetKey),
     hasModel: render.status === 'ready' && Boolean(render.glbKey),
     credits: render.credits,
     renderCredits: RENDER_CREDITS,
+    sheetCredits: SHEET_CREDITS,
     isPublic: render.isPublic,
     source: render.source as RenderSource,
     createdAt: render.createdAt.toISOString(),

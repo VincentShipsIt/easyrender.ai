@@ -334,8 +334,10 @@
     "showInGallery": "Show in public gallery",
     "finishedOnly": "Finished models only",
     "errors": {
-      "start": "Could not start the render"
-    }
+      "start": "Could not start the render",
+      "sheet": "Could not generate the angle sheet"
+    },
+    "generateSheet": "Generate angle sheet ({credits} credits)"
   },
   "PromptBar": {
     "steps": {
@@ -421,8 +423,12 @@
       "dailyLimit": "Not uploaded: daily limit reached",
       "outOfCredits": "Out of credits. Buy more to generate the rest.",
       "someFailed": "Some items could not start",
-      "connection": "Some items could not start. Check your connection and try again."
-    }
+      "connection": "Some items could not start. Check your connection and try again.",
+      "sheetOutOfCredits": "Not enough credits for an angle sheet. Buy more to continue."
+    },
+    "fromHome": "Your photo from the home page is here. Generate its angle sheet or 3D model below.",
+    "generateSheet": "Angles · {credits}",
+    "sheetAlt": "Every angle of {name}"
   },
   "DashboardNav": {
     "overview": "Overview",

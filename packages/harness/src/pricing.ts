@@ -12,6 +12,11 @@ export function creditsFor(costUsd: number): number {
 
 export const RENDER_CREDITS = creditsFor(RENDER_COST_USD);
 
+// The angle sheet alone (one 2K image). Normally it comes free with the preview; this is what
+// generating one later, from the library, costs. It counts toward the 3D render's price.
+export const SHEET_COST_USD = 0.15;
+export const SHEET_CREDITS = creditsFor(SHEET_COST_USD);
+
 // Pay as you go: buy any number of credits at CREDIT_USD each, through one Stripe price of $0.01.
 export const PAYG = { min: 500, max: 100_000, presets: [1000, 2500, 5000, 10_000] };
 
