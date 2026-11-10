@@ -1,5 +1,13 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { isRoutableLocale, LOCALE_HEADER, PATH_HEADER } from './i18n/config';
+import {
+  COUNTRY_HEADER,
+  decideHome,
+  HOME_LOCALE_COOKIE,
+  HOME_LOCALE_MAX_AGE,
+  HOME_VARY,
+  homePath,
+} from './lib/home-locale';
 import { LEGACY_HOSTS, SITE_HOST } from './lib/seo/site';
 
 const ANON_COOKIE = 'er_anon';
@@ -32,22 +40,87 @@ function canonicalHostRedirect(request: NextRequest): NextResponse | null {
   return NextResponse.redirect(target, 301);
 }
 
+/** Adds the headers the redirect depends on, so no cache serves one visitor's answer to another. */
+function varyHome(response: NextResponse): NextResponse {
+  const current = response.headers.get('vary');
+  const values = new Set([
+    ...(current ? current.split(',').map((value) => value.trim()) : []),
+    ...HOME_VARY,
+  ]);
+  response.headers.set('vary', [...values].filter(Boolean).join(', '));
+  return response;
+}
+
+const homeCookie = (request: NextRequest) => ({
+  // Not httpOnly: the language picker writes it from the browser on click.
+  httpOnly: false,
+  sameSite: 'lax' as const,
+  secure: request.nextUrl.protocol === 'https:',
+  path: '/',
+  maxAge: HOME_LOCALE_MAX_AGE,
+});
+
+/**
+ * The first-visit language of the marketing root, see lib/home-locale.ts. A 307, never a 301:
+ * the answer depends on who asks, so neither browsers nor crawlers may remember it.
+ */
+function homeRedirect(request: NextRequest) {
+  const decision = decideHome({
+    method: request.method,
+    pathname: request.nextUrl.pathname,
+    host: request.headers.get('host'),
+    country: request.headers.get(COUNTRY_HEADER),
+    userAgent: request.headers.get('user-agent'),
+    cookie: request.cookies.get(HOME_LOCALE_COOKIE)?.value ?? null,
+    referer: request.headers.get('referer'),
+    // Only a browser-level prefetch is visible here. Next.js strips its own RSC headers and the
+    // `_rsc` query before the proxy runs, and turns a redirect of a router fetch into
+    // x-nextjs-redirect, which the router follows to the same home.
+    isRouterRequest:
+      request.headers.get('purpose') === 'prefetch' ||
+      request.headers.get('sec-purpose')?.includes('prefetch') === true,
+  });
+  if (decision.kind !== 'redirect') return decision;
+
+  const target = request.nextUrl.clone();
+  target.pathname = homePath(decision.locale);
+  const response = NextResponse.redirect(target, 307);
+  response.headers.set('cache-control', 'private, no-store');
+  if (decision.cookie)
+    response.cookies.set(HOME_LOCALE_COOKIE, decision.cookie, homeCookie(request));
+  return varyHome(response);
+}
+
 /** The locale the URL asks for: /es/... is Spanish, everything else is the English root. */
 function localeOf(pathname: string): string {
   const first = pathname.split('/')[1];
   return isRoutableLocale(first) ? first : 'en';
 }
 
-// Canonical host first, then an anonymous id for every visitor so a free preview can be tied to
-// them before sign up, then the locale of the URL for the layout and next-intl to read.
+// Canonical host first, then the first-visit language of the root, then an anonymous id for every
+// visitor so a free preview can be tied to them before sign up, then the locale of the URL for
+// the layout and next-intl to read.
 export function proxy(request: NextRequest) {
   const redirect = canonicalHostRedirect(request);
   if (redirect) return redirect;
+
+  const home = homeRedirect(request);
+  if (home instanceof NextResponse) return home;
 
   const headers = new Headers(request.headers);
   headers.set(LOCALE_HEADER, localeOf(request.nextUrl.pathname));
   headers.set(PATH_HEADER, request.nextUrl.pathname);
 
+  const response = withAnonymousId(request, headers);
+  // The English root after an explicit choice of English. Its Vary is the page's own: Next.js
+  // replaces it, and the dynamic page is served private, no-store, so no shared cache keeps it.
+  if (home.kind === 'stay' && home.cookie) {
+    response.cookies.set(HOME_LOCALE_COOKIE, home.cookie, homeCookie(request));
+  }
+  return response;
+}
+
+function withAnonymousId(request: NextRequest, headers: Headers): NextResponse {
   const anon = request.cookies.get(ANON_COOKIE)?.value;
   if (anon) return NextResponse.next({ request: { headers } });
 
