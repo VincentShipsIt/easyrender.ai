@@ -1,5 +1,3 @@
-import { GeistMono } from 'geist/font/mono';
-import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -7,6 +5,7 @@ import type { ReactNode } from 'react';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { HTML_LANG, type Locale } from '@/i18n/config';
+import { geistMono, geistSans } from '@/lib/fonts';
 import { SITE_URL } from '@/lib/seo/site';
 import './globals.css';
 
@@ -24,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = (await getLocale()) as Locale;
   return (
-    <html lang={HTML_LANG[locale]} className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang={HTML_LANG[locale]} className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="flex min-h-dvh flex-col font-sans antialiased">
         <NextIntlClientProvider>
           <SiteHeader />
