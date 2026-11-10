@@ -93,7 +93,9 @@ describe('the publication date is a schedule', () => {
     expect(published.map((entry) => entry.slug)).toEqual(['yesterday']);
   });
 
-  it('hides every post of a language that is not routable yet', () => {
+  // de is routable (its home is open) but its guides section is not published: its posts stay
+  // out of the sitemap, hreflang and llms.txt until ROUTES.blog.published lists it.
+  it('hides every post of a language whose guides section is not published', () => {
     const root = mkdtempSync(join(tmpdir(), 'easyrender-blog-de-'));
     mkdirSync(join(root, 'de'), { recursive: true });
     writeFileSync(join(root, 'de', 'glb-oder-usdz.md'), post({ ...VALID, date: '2026-11-01' }));
