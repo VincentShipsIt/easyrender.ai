@@ -47,8 +47,13 @@ async function assertPreviewAllowance(actor: Actor) {
   const user = actor.userId
     ? await db().user.findUnique({ where: { id: actor.userId }, select: { credits: true } })
     : null;
-  const paying = (user?.credits ?? 0) >= RENDER_CREDITS;
-  const limit = paying ? config.paidPreviewsPerDay() : config.freePreviewsPerDay();
+  const credits = user?.credits ?? 0;
+  const paying = credits >= RENDER_CREDITS;
+  // A paying user can always preview as many items as their balance can build, so a catalog
+  // import is not capped at the daily allowance.
+  const limit = paying
+    ? Math.max(config.paidPreviewsPerDay(), Math.floor(credits / RENDER_CREDITS))
+    : config.freePreviewsPerDay();
   const used = await db().render.count({
     where: { createdAt: { gte: since }, OR: paying ? [{ userId: actor.userId as string }] : or },
   });
@@ -68,6 +73,7 @@ export async function createDraft(input: {
   bytes: Uint8Array;
   contentType: string;
   prompt?: string | null;
+  name?: string | null;
 }): Promise<Render> {
   if (!IMAGE_TYPES.has(input.contentType)) {
     throw new AppError('Upload a JPEG, PNG or WebP photo', 415, 'bad_type');
@@ -86,6 +92,7 @@ export async function createDraft(input: {
       anonId: input.actor.anonId ?? null,
       ipHash: input.actor.ipHash ?? null,
       prompt,
+      name: input.name?.trim().slice(0, 120) || null,
       sourceKey,
       status: config.sheetEnabled() ? 'drafting' : 'preview_ready',
     },
@@ -231,6 +238,7 @@ export type RenderView = {
   id: string;
   status: Render['status'];
   prompt: string | null;
+  name: string | null;
   error: string | null;
   hasPreview: boolean;
   hasModel: boolean;
@@ -244,6 +252,7 @@ export function toView(render: Render): RenderView {
     id: render.id,
     status: render.status,
     prompt: render.prompt,
+    name: render.name,
     error: render.status === 'failed' ? 'Generation failed. Credits, if any, were refunded.' : null,
     hasPreview: render.status !== 'drafting' && render.status !== 'failed',
     hasModel: render.status === 'ready' && Boolean(render.glbKey),
@@ -261,6 +270,30 @@ export async function getRender(id: string, actor: Actor): Promise<Render> {
     return (await advance(id)) ?? render;
   }
   return render;
+}
+
+const IN_FLIGHT: Render['status'][] = ['drafting', 'rendering'];
+const MAX_ADVANCE_PER_LIST = 8;
+
+// The user's whole catalog, newest first. Nudges a few in-flight items forward so the
+// library makes progress even where Replicate cannot call the webhook (local dev).
+export async function listLibrary(userId: string, take = 500): Promise<Render[]> {
+  const renders = await db().render.findMany({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+    take,
+  });
+  const stale = renders
+    .filter((render) => IN_FLIGHT.includes(render.status))
+    .sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime())
+    .slice(0, MAX_ADVANCE_PER_LIST);
+  if (stale.length === 0) return renders;
+  const advanced = new Map(
+    (await Promise.all(stale.map((render) => advance(render.id))))
+      .filter((render) => render !== null)
+      .map((render) => [render.id, render]),
+  );
+  return renders.map((render) => advanced.get(render.id) ?? render);
 }
 
 export function listRenders(userId: string, take = 24) {

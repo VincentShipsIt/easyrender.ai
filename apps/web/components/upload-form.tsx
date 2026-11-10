@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 const MAX_SIDE = 2048;
 
 // Downscales on the client so uploads stay under the 4 MB request limit.
-async function prepare(file: File): Promise<Blob> {
+export async function prepare(file: File): Promise<Blob> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement('canvas');

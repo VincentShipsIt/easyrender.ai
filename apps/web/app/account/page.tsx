@@ -28,7 +28,12 @@ export default async function AccountPage() {
         </p>
       </div>
       <Card>
-        <h2 className="mb-4 font-semibold">Your renders</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-semibold">Your renders</h2>
+          <Link href="/library" className="text-sm underline">
+            Open library
+          </Link>
+        </div>
         {renders.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             Nothing yet.{' '}
