@@ -1,4 +1,10 @@
-import { CREDIT_PACKS, RENDER_CREDITS, rendersInPack } from '@easyrender/harness';
+import {
+  ENTERPRISE_BOOKING_URL,
+  PAYG,
+  PRO_PLAN,
+  RENDER_CREDITS,
+  rendersFor,
+} from '@easyrender/harness';
 import {
   Building2,
   Check,
@@ -136,19 +142,40 @@ export function Pricing() {
       cta: { href: '/sign-up', label: 'Start free' },
       featured: false,
     },
-    ...CREDIT_PACKS.map((pack, index) => ({
-      name: pack.label,
-      price: usd(pack.priceCents),
-      note: `${pack.credits.toLocaleString('en-US')} credits`,
+    {
+      name: 'Pay as you go',
+      price: '$0.01',
+      note: 'per credit',
       features: [
-        `About ${rendersInPack(pack)} 3D models`,
+        `From ${PAYG.min.toLocaleString('en-US')} credits`,
         'GLB and USDZ downloads',
         'AR viewer and embeds',
         'MCP server and REST API',
       ],
-      cta: { href: `/sign-up?next=${encodeURIComponent('/credits')}`, label: `Get ${pack.label}` },
-      featured: index === CREDIT_PACKS.length - 1,
-    })),
+      cta: { href: `/sign-up?next=${encodeURIComponent('/credits')}`, label: 'Buy credits' },
+      featured: false,
+    },
+    {
+      name: PRO_PLAN.label,
+      price: usd(PRO_PLAN.priceCents),
+      note: 'per month',
+      features: [
+        `${PRO_PLAN.monthlyCredits.toLocaleString('en-US')} credits every month`,
+        `About ${rendersFor(PRO_PLAN.monthlyCredits)} 3D models`,
+        'Unused credits roll over',
+        'Cancel anytime',
+      ],
+      cta: { href: `/sign-up?next=${encodeURIComponent('/credits')}`, label: 'Go Pro' },
+      featured: true,
+    },
+    {
+      name: 'Enterprise',
+      price: 'Custom',
+      note: 'volume pricing',
+      features: ['Volume credit pricing', 'Invoice billing', 'Priority support', 'Onboarding call'],
+      cta: { href: ENTERPRISE_BOOKING_URL, label: 'Book a call' },
+      featured: false,
+    },
   ];
 
   return (
@@ -163,7 +190,7 @@ export function Pricing() {
         </Button>
       }
     >
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {plans.map((plan) => (
           <Card key={plan.name} className={cn(plan.featured && 'border-primary shadow-md')}>
             <CardHeader>
@@ -188,7 +215,13 @@ export function Pricing() {
             </CardContent>
             <CardFooter>
               <Button className="w-full" variant={plan.featured ? 'default' : 'outline'} asChild>
-                <Link href={plan.cta.href}>{plan.cta.label}</Link>
+                {plan.cta.href.startsWith('/') ? (
+                  <Link href={plan.cta.href}>{plan.cta.label}</Link>
+                ) : (
+                  <a href={plan.cta.href} target="_blank" rel="noopener noreferrer">
+                    {plan.cta.label}
+                  </a>
+                )}
               </Button>
             </CardFooter>
           </Card>
