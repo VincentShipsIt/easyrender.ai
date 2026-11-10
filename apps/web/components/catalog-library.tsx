@@ -85,27 +85,48 @@ export function CatalogLibrary({
     import('@google/model-viewer').then(() => setViewerReady(true));
   }, []);
 
-  const refresh = useCallback(async () => {
-    const response = await fetch('/api/renders', { cache: 'no-store' });
-    if (!response.ok) return;
-    const data = (await response.json()) as { renders: RenderView[]; balance: number };
-    setItems(data.renders);
-    setBalance(data.balance);
+  // One poll at a time. A poll that started before a local change (an upload or a build
+  // response) is dropped, so it cannot roll the grid or the balance back.
+  const polling = useRef<Promise<void> | null>(null);
+  const localVersion = useRef(0);
+  const refresh = useCallback(async (force = false) => {
+    if (polling.current) {
+      if (!force) return;
+      await polling.current;
+    }
+    const startedAt = localVersion.current;
+    const run = (async () => {
+      try {
+        const response = await fetch('/api/renders', { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = (await response.json()) as { renders: RenderView[]; balance: number };
+        if (localVersion.current !== startedAt) return;
+        setItems(data.renders);
+        setBalance(data.balance);
+      } catch {
+        // The next poll retries.
+      }
+    })();
+    polling.current = run;
+    await run;
+    polling.current = null;
   }, []);
 
   const inFlight = items.some((item) => item.status === 'drafting' || item.status === 'rendering');
   useEffect(() => {
     if (!inFlight && !building) return;
-    const timer = setInterval(refresh, POLL_MS);
+    const timer = setInterval(() => refresh(), POLL_MS);
     return () => clearInterval(timer);
   }, [inFlight, building, refresh]);
 
-  const upsert = (next: RenderView) =>
+  const upsert = (next: RenderView) => {
+    localVersion.current += 1;
     setItems((current) => {
       const index = current.findIndex((item) => item.id === next.id);
       if (index === -1) return [next, ...current];
       return current.map((item) => (item.id === next.id ? next : item));
     });
+  };
 
   async function addFiles(list: FileList | File[] | null) {
     const files = Array.from(list ?? []).filter((file) => file.type.startsWith('image/'));
@@ -164,24 +185,33 @@ export function CatalogLibrary({
     setBuilding(true);
     setNotice(null);
     let stoppedFor: string | null = null;
-    const left = await pool(targets, BUILD_CONCURRENCY, async (item) => {
-      const response = await fetch(`/api/renders/${item.id}/render`, { method: 'POST' });
-      const data = await response.json();
-      if (response.ok) {
-        upsert(data as RenderView);
-        setBalance((current) => Math.max(0, current - renderCredits));
+    try {
+      const left = await pool(targets, BUILD_CONCURRENCY, async (item) => {
+        try {
+          const response = await fetch(`/api/renders/${item.id}/render`, { method: 'POST' });
+          const data = await response.json().catch(() => ({}));
+          if (response.ok) {
+            upsert(data as RenderView);
+            setBalance((current) => Math.max(0, current - renderCredits));
+            return true;
+          }
+          if (data.code === 'insufficient_credits') {
+            stoppedFor = 'Out of credits. Buy more to generate the rest.';
+            return false;
+          }
+          setNotice(data.error ?? 'Some items could not start');
+        } catch {
+          setNotice('Some items could not start. Check your connection and try again.');
+        }
         return true;
-      }
-      if (data.code === 'insufficient_credits') {
-        stoppedFor = 'Out of credits. Buy more to generate the rest.';
-        return false;
-      }
-      setNotice(data.error ?? 'Some items could not start');
-      return true;
-    });
-    if (left.length > 0) setNotice(stoppedFor ?? `${left.length} items are still waiting.`);
-    await refresh();
-    setBuilding(false);
+      });
+      if (left.length > 0) setNotice(stoppedFor ?? `${left.length} items are still waiting.`);
+      // Bump past the optimistic updates so the final read always lands.
+      localVersion.current += 1;
+      await refresh(true);
+    } finally {
+      setBuilding(false);
+    }
   }
 
   const counts = useMemo(
