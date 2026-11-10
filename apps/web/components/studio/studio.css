@@ -460,6 +460,14 @@ body:has(.er-studio) {
   .sec {
     padding: clamp(84px, 10vw, 148px) var(--gutter) 0;
   }
+  /* Long sections without 3D, below the first screen: the browser skips their layout and paint
+     until they come near the viewport, so the first paint does not wait for the whole page to be
+     laid out. The markup and the text stay in the DOM (crawlers, find in page, screen readers);
+     only rendering is deferred. `auto` keeps the real height once a section has been seen. */
+  .defer-paint {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
   .statement {
     max-width: 31em;
     margin-bottom: clamp(32px, 4vw, 56px);

@@ -58,7 +58,7 @@ export function StudioClosing({
   href: string;
 }) {
   return (
-    <section className="cta" aria-labelledby="studio-cta-title">
+    <section className="cta defer-paint" aria-labelledby="studio-cta-title">
       <h2 className="cta__title reveal" id="studio-cta-title">
         {title}
       </h2>
