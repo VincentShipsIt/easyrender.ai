@@ -8,16 +8,37 @@ import { localeEntries, localeSitemapXml, sitemapIndexXml, sitemapLocales } from
 // that must hold on the day the first post lands.
 
 describe('the per-language sitemaps', () => {
-  it('only exist for languages that have something to list', () => {
-    expect(sitemapLocales()).toEqual(['en', 'es']);
+  it('exist for every language with a live home', () => {
+    expect(sitemapLocales()).toEqual(['en', 'es', 'de', 'fr', 'it', 'pt']);
+  });
+
+  it('lists the English home and pricing page, and each other home alone', () => {
+    expect(localeEntries('en').map((entry) => entry.path)).toEqual(['/', '/credits']);
+    expect(localeEntries('es').map((entry) => entry.path)).toEqual(['/es']);
+    // Only the home is open in these languages: no guides, pricing or legal URL is listed.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(localeEntries(locale), locale).toEqual([]);
+      expect(
+        localeEntries(locale).map((entry) => entry.path),
+        locale,
+      ).toEqual([`/${locale}`]);
     }
   });
 
-  it('lists the English home and pricing page, and the Spanish home', () => {
-    expect(localeEntries('en').map((entry) => entry.path)).toEqual(['/', '/credits']);
-    expect(localeEntries('es').map((entry) => entry.path)).toEqual(['/es']);
+  it('gives each home the full hreflang block of the six homes', () => {
+    const xml = localeSitemapXml('de');
+    expect(xml).toContain(`<loc>${SITE_URL}/de</loc>`);
+    for (const [tag, path] of [
+      ['en', ''],
+      ['es', '/es'],
+      ['es-ES', '/es'],
+      ['de', '/de'],
+      ['fr', '/fr'],
+      ['it', '/it'],
+      ['pt-PT', '/pt'],
+      ['x-default', ''],
+    ]) {
+      expect(xml, tag).toContain(`hreflang="${tag}" href="${SITE_URL}${path}"`);
+    }
   });
 
   it('leaves the guides hub out while it is thin', () => {
@@ -56,6 +77,8 @@ describe('the sitemap index', () => {
     const xml = sitemapIndexXml();
     expect(xml).toContain(`<loc>${SITE_URL}/sitemap-en.xml</loc>`);
     expect(xml).toContain(`<loc>${SITE_URL}/sitemap-es.xml</loc>`);
-    expect(xml).not.toContain('sitemap-de.xml');
+    for (const locale of ['de', 'fr', 'it', 'pt']) {
+      expect(xml).toContain(`<loc>${SITE_URL}/sitemap-${locale}.xml</loc>`);
+    }
   });
 });

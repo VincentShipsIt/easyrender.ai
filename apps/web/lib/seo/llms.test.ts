@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { LOCALES } from '@/i18n/config';
 import { FAQ_KEYS } from '@/lib/faq';
+import de from '@/messages/de.json';
 import en from '@/messages/en.json';
 import es from '@/messages/es.json';
+import fr from '@/messages/fr.json';
+import itMessages from '@/messages/it.json';
+import pt from '@/messages/pt.json';
 import { faqText, llmsFullTxt, llmsTxt } from './llms';
 import { NOINDEX_PREFIXES } from './noindex';
 import { DISALLOWED_PREFIXES } from './routes';
@@ -28,7 +32,20 @@ const FORBIDDEN = [
   /a tama[nñ]o real/i,
   /\bembed\b/i,
   /\bin (two|2) minutes\b/i,
+  /3D-Druck/i,
+  /impression 3D/i,
+  /stampa 3D/i,
+  /impress[aã]o 3D/i,
+  /in Originalgr[oö](ß|ss)e/i,
+  /ma[ßs]stabsgetreu/i,
+  /[àa] l'[ée]chelle r[ée]elle/i,
+  /in scala reale/i,
+  /a grandezza naturale/i,
+  /\bem tamanho real\b/i,
+  /\bvocê\b/i,
 ];
+
+const MESSAGES = { en, es, de, fr, it: itMessages, pt };
 
 describe('llms.txt', () => {
   const text = llmsTxt();
@@ -47,7 +64,15 @@ describe('llms.txt', () => {
     const listed = urlsIn(text).filter((url) => !url.endsWith('.txt'));
     expect(listed.sort()).toEqual([...sitemap].sort());
     expect(listed).toEqual(
-      expect.arrayContaining([SITE_URL, `${SITE_URL}/es`, `${SITE_URL}/credits`]),
+      expect.arrayContaining([
+        SITE_URL,
+        `${SITE_URL}/es`,
+        `${SITE_URL}/de`,
+        `${SITE_URL}/fr`,
+        `${SITE_URL}/it`,
+        `${SITE_URL}/pt`,
+        `${SITE_URL}/credits`,
+      ]),
     );
   });
 
@@ -59,7 +84,8 @@ describe('llms.txt', () => {
         expect(path.startsWith(prefix), `${url} vs ${prefix}`).toBe(false);
       }
     }
-    expect(text).not.toMatch(/\/de\b|\/fr\b|\/it\b|\/pt\b/);
+    // de, fr, it and pt are open for their home only: nothing below it is listed.
+    expect(text).not.toMatch(/\/(de|fr|it|pt)\//);
   });
 
   it('describes the product within claims.md', () => {
@@ -73,8 +99,8 @@ describe('llms.txt', () => {
 describe('llms-full.txt', () => {
   const text = llmsFullTxt();
 
-  it('carries every FAQ answer of both homes, with prices filled in', () => {
-    for (const locale of ['en', 'es'] as const) {
+  it('carries every FAQ answer of every home, with prices filled in', () => {
+    for (const locale of LOCALES) {
       for (const item of faqText(locale)) {
         expect(text).toContain(item.question);
         expect(text).toContain(item.answer);
@@ -93,8 +119,8 @@ describe('llms-full.txt', () => {
 });
 
 describe('the home FAQ copy', () => {
-  it('has every FAQ key in both languages', () => {
-    for (const messages of [en, es]) {
+  it('has every FAQ key in every language', () => {
+    for (const messages of Object.values(MESSAGES)) {
       const items = messages.Landing.faq.items as Record<string, { q?: string; a?: string }>;
       for (const key of FAQ_KEYS) {
         expect(items[key]?.q, key).toBeTruthy();
@@ -104,7 +130,9 @@ describe('the home FAQ copy', () => {
   });
 
   it('makes no roadmap promise about link-only sharing', () => {
-    const answers = [en, es].map((messages) => messages.Landing.faq.items.public.a).join(' ');
+    const answers = Object.values(MESSAGES)
+      .map((messages) => messages.Landing.faq.items.public.a)
+      .join(' ');
     expect(answers).not.toMatch(/product queue|pedida al producto|link-only|solo con enlace/i);
   });
 });

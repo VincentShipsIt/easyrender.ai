@@ -7,7 +7,16 @@ export const DEFAULT_LOCALE: Locale = 'en';
 // A locale is routable once its UI strings exist in messages/{locale}.json, reviewed by a native
 // speaker. Anything else 404s: a URL without approved text is never served, never linked and
 // never listed in a sitemap. Adding messages/de.json and 'de' here is all it takes to open /de.
-export const ROUTABLE_LOCALES = ['en', 'es'] as const satisfies readonly Locale[];
+// Routable is not published: each page still opens per locale in lib/seo/routes.ts, so de, fr,
+// it and pt serve their home only, and every other page in those languages stays a 404.
+export const ROUTABLE_LOCALES = [
+  'en',
+  'es',
+  'de',
+  'fr',
+  'it',
+  'pt',
+] as const satisfies readonly Locale[];
 export type RoutableLocale = (typeof ROUTABLE_LOCALES)[number];
 
 // The hreflang values each locale answers for. pt is Portugal only: never pt-BR.
