@@ -703,6 +703,17 @@
       "previous": "Anterior",
       "next": "Siguiente",
       "elements": "{count, plural, one {# elemento} other {# elementos}}"
+    },
+    "lens": {
+      "label": "{name} en cuatro lecturas a la vez: malla, colisionador, normales y render con textura. El render terminado sigue a tu cursor.",
+      "layers": {
+        "mesh": "Malla",
+        "physics": "Física",
+        "normals": "Normales",
+        "texture": "Textura"
+      },
+      "hint": "Mueve el cursor",
+      "hintTouch": "Arrastra sobre el modelo"
     }
   },
   "Catalog": {

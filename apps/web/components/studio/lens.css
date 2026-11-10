@@ -1,0 +1,185 @@
+/* Sign in and sign up: the form beside the lens stage. Scoped like studio.css. */
+.er-studio {
+  .auth {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.78fr) minmax(0, 1.6fr);
+    gap: clamp(20px, 3vw, 56px);
+    /* Fills the window under the 57px site header. */
+    min-height: calc(100dvh - 57px);
+    padding: clamp(16px, 2vw, 28px) var(--gutter);
+  }
+  .auth__form {
+    display: grid;
+    align-content: center;
+    padding-block: 32px;
+  }
+
+  /* The form card, flattened onto the page so the title reads like the rest of the site. */
+  .auth__form [data-slot="card"] {
+    width: min(100%, 380px);
+    max-width: none;
+    gap: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .auth__form :where([data-slot="card-header"], [data-slot="card-content"]) {
+    padding-inline: 0;
+  }
+  .auth__form [data-slot="card-header"] {
+    gap: 12px;
+  }
+  .auth__form [data-slot="card-title"] {
+    font-size: clamp(32px, 3.1vw, 46px);
+    font-weight: 300;
+    font-stretch: 110%;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+  .auth__form [data-slot="card-description"] {
+    max-width: 34ch;
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--ash);
+  }
+
+  /* ───────── the stage ───────── */
+  .lens {
+    min-height: 480px;
+    /* A finger moves the lens sideways and still scrolls the page up and down. */
+    touch-action: pan-y;
+    user-select: none;
+  }
+  .lens .view-canvas {
+    opacity: 0;
+    transition: opacity 0.9s ease;
+  }
+  .lens.is-ready .view-canvas {
+    opacity: 1;
+  }
+
+  /* One label per reading. */
+  .lens__tags {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .lens__tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-stretch: 87.5%;
+    line-height: 1.2;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(236, 235, 231, 0.86);
+    opacity: 0;
+    transition: opacity 0.6s ease 0.5s;
+  }
+  .lens.is-ready .lens__tag {
+    opacity: 1;
+  }
+  /* Beside the form, each label rides its band: the 3D code writes --x and --y every frame. */
+  @media (min-width: 901px) {
+    .lens__tags {
+      inset: 0;
+    }
+    .lens__tag {
+      position: absolute;
+      left: 0;
+      top: 0;
+      translate: var(--x, 0) var(--y, 0);
+      transform: translate(-50%, -50%);
+      padding: 4px 7px;
+      background: rgba(10, 10, 11, 0.62);
+      backdrop-filter: blur(6px);
+    }
+  }
+  /* The collider is drawn in the Y-axis green. */
+  .lens__tag[data-layer="physics"] {
+    color: #a9e079;
+  }
+
+  .lens__caption,
+  .lens__hint {
+    position: absolute;
+    bottom: 18px;
+    z-index: 2;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-stretch: 87.5%;
+    line-height: 1.5;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ash);
+    pointer-events: none;
+  }
+  .lens__caption {
+    left: 20px;
+    display: grid;
+  }
+  .lens__caption b {
+    font-weight: 500;
+    color: var(--bone);
+  }
+  .lens__hint {
+    right: 20px;
+    transition: opacity 0.6s ease;
+  }
+  /* Once the pointer has been on the stage, the hint has done its job. */
+  .lens.is-used .lens__hint {
+    opacity: 0;
+  }
+  .lens__hint-touch {
+    display: none;
+  }
+  @media (hover: none) {
+    .lens__hint-mouse {
+      display: none;
+    }
+    .lens__hint-touch {
+      display: inline;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .auth {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+    }
+    .auth__form {
+      padding-block: 8px 48px;
+    }
+    .auth__form [data-slot="card"] {
+      margin-inline: auto;
+    }
+    .lens {
+      order: -1;
+      min-height: 0;
+      height: clamp(230px, 36dvh, 340px);
+    }
+    /* The bands are too narrow here to carry a label each: the labels become one line that
+       reads from the outside in. */
+    .lens__tags {
+      inset: 12px 12px auto 14px;
+      display: flex;
+      flex-flow: row-reverse wrap;
+      justify-content: flex-end;
+      gap: 2px 7px;
+    }
+    .lens__tag:not(:last-child)::before {
+      content: "›";
+      margin-right: 7px;
+      color: var(--ash);
+    }
+    .lens__caption {
+      left: 14px;
+      bottom: 12px;
+    }
+    .lens__hint {
+      display: none;
+    }
+  }
+}
