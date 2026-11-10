@@ -1,16 +1,10 @@
 name: Mobile release
 
 # Builds the app on EAS and submits it: iOS to TestFlight, Android to Google Play (internal track).
-# Runs on every merge to main that touches apps/mobile, or by hand from the Actions tab.
+# Manual only: Actions tab, Mobile release, Run workflow.
 # Setup and the secrets it needs: apps/mobile/README.md.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "apps/mobile/**"
-      - "!apps/mobile/**/*.md"
-      - ".github/workflows/mobile-release.yml"
   workflow_dispatch:
     inputs:
       platform:

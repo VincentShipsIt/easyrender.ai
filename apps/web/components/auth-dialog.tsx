@@ -44,10 +44,20 @@ export function AuthDialog({
             <TabsTrigger value="sign-in">{t('signIn')}</TabsTrigger>
           </TabsList>
           <TabsContent value="sign-up">
-            <AuthFields mode="sign-up" onDone={onDone} submitLabel={t('signUpContinue')} />
+            <AuthFields
+              mode="sign-up"
+              callbackURL={() => '/library'}
+              onDone={onDone}
+              submitLabel={t('signUpContinue')}
+            />
           </TabsContent>
           <TabsContent value="sign-in">
-            <AuthFields mode="sign-in" onDone={onDone} submitLabel={t('signInContinue')} />
+            <AuthFields
+              mode="sign-in"
+              callbackURL={() => '/library'}
+              onDone={onDone}
+              submitLabel={t('signInContinue')}
+            />
           </TabsContent>
         </Tabs>
         <p className="text-center text-xs text-muted-foreground">{t('dialogNote')}</p>

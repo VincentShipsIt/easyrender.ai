@@ -167,6 +167,8 @@ export async function loadHarness(
     skills: skills ?? DEFAULT_HARNESS.skills,
     source: { skills: skills ? 'remote' : 'default', harness: harness ? 'remote' : 'default' },
   };
+  // One line per refresh (every five minutes at most) so the deploy logs show what is live.
+  console.info(`harness loaded: skills=${value.source.skills} harness=${value.source.harness}`);
   cache = { at: now, value };
   return value;
 }
