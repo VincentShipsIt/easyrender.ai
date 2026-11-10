@@ -721,6 +721,17 @@
       "previous": "Previous",
       "next": "Next",
       "elements": "{count, plural, one {# element} other {# elements}}"
+    },
+    "lens": {
+      "label": "{name} drawn in four readings at once: mesh, collider, surface normals and textured render. The finished render follows your pointer.",
+      "layers": {
+        "mesh": "Mesh",
+        "physics": "Physics",
+        "normals": "Normals",
+        "texture": "Texture"
+      },
+      "hint": "Move the pointer",
+      "hintTouch": "Drag across the model"
     }
   },
   "Catalog": {
