@@ -1,0 +1,139 @@
+name: Mobile release
+
+# Builds the app on EAS and submits it: iOS to TestFlight, Android to Google Play (internal track).
+# Runs on every merge to main that touches apps/mobile, or by hand from the Actions tab.
+# Setup and the secrets it needs: apps/mobile/README.md.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/mobile/**"
+      - "!apps/mobile/**/*.md"
+      - ".github/workflows/mobile-release.yml"
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Which store to build for
+        type: choice
+        options: [all, ios, android]
+        default: all
+      android_track:
+        description: Google Play track (production needs the app to be live already)
+        type: choice
+        options: [internal, alpha, beta, production]
+        default: internal
+
+concurrency:
+  group: mobile-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      platforms: ${{ steps.pick.outputs.platforms }}
+    steps:
+      - id: pick
+        env:
+          PLATFORM: ${{ inputs.platform || 'all' }}
+        run: |
+          if [ "$PLATFORM" = "all" ]; then echo 'platforms=["ios","android"]' >> "$GITHUB_OUTPUT"
+          else echo "platforms=[\"$PLATFORM\"]" >> "$GITHUB_OUTPUT"; fi
+
+  release:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(needs.plan.outputs.platforms) }}
+    defaults:
+      run:
+        working-directory: apps/mobile
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EAS_PROJECT_ID: ${{ vars.EAS_PROJECT_ID }}
+      EXPO_OWNER: ${{ vars.EXPO_OWNER }}
+      CI: "1"
+    steps:
+      - name: Check the Expo token
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::error::EXPO_TOKEN is not set. See apps/mobile/README.md, 'Release pipeline'."
+            exit 1
+          fi
+        working-directory: .
+
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Bun
+        run: npm install -g bun@1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Typecheck
+        run: bun run typecheck
+
+      # Store credentials come from GitHub secrets and are written to files that are git-ignored.
+      - name: Write store credentials
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+          PLAY_KEY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          if [ "${{ matrix.platform }}" = "ios" ] && [ -z "$ASC_KEY_P8" ]; then
+            echo "::error::ASC_API_KEY_P8 is not set; an iOS build needs the App Store Connect API key. See apps/mobile/README.md, 'Release pipeline'."
+            exit 1
+          fi
+          if [ "${{ matrix.platform }}" = "ios" ] && [ -n "$ASC_KEY_P8" ]; then
+            printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/keys/AuthKey.p8"
+          fi
+          if [ "${{ matrix.platform }}" = "android" ] && [ -n "$PLAY_KEY_JSON" ]; then
+            printf '%s' "$PLAY_KEY_JSON" > "$RUNNER_TEMP/keys/play-service-account.json"
+          fi
+
+      - name: Prepare the store submission
+        id: store
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          ASC_KEY_PATH: ${{ runner.temp }}/keys/AuthKey.p8
+          ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+          ASC_APP_ID: ${{ vars.ASC_APP_ID }}
+          PLAY_KEY_PATH: ${{ runner.temp }}/keys/play-service-account.json
+          ANDROID_TRACK: ${{ inputs.android_track }}
+        run: |
+          # A missing key file means the secret was empty: let the script treat that as "not set".
+          [ -s "$ASC_KEY_PATH" ] || export ASC_KEY_PATH=''
+          [ -s "$PLAY_KEY_PATH" ] || export PLAY_KEY_PATH=''
+          node scripts/ci-eas-submit-config.mjs
+
+      # EAS refuses to build a dirty tree; the submit config above is only for this run.
+      - name: Commit the run-only config
+        run: |
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qam "ci: store credentials" || true
+          git status --short
+
+      - name: Build on EAS${{ steps.store.outputs.ready == 'true' && ' and submit' || '' }}
+        env:
+          # Lets EAS create and reuse the iOS certificates and provisioning profile without an Apple login.
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/keys/AuthKey.p8
+          EXPO_ASC_KEY_ID: ${{ vars.ASC_KEY_ID }}
+          EXPO_ASC_ISSUER_ID: ${{ vars.ASC_ISSUER_ID }}
+          EXPO_APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          EXPO_APPLE_TEAM_TYPE: ${{ vars.APPLE_TEAM_TYPE }}
+          PLATFORM: ${{ matrix.platform }}
+          READY: ${{ steps.store.outputs.ready }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'manual run' }}
+        run: |
+          # The build and submission run on EAS; this job only starts them (see the EAS dashboard for progress).
+          args=(--platform "$PLATFORM" --profile production --non-interactive --no-wait)
+          if [ "$READY" = "true" ]; then args+=(--auto-submit); fi
+          if [ "$PLATFORM" = "ios" ]; then args+=(--what-to-test "Build ${GITHUB_SHA::7} from main"); fi
+          args+=(--message "${GITHUB_SHA::7} $(printf '%s' "$COMMIT_MESSAGE" | head -n1 | cut -c1-100)")
+          bunx eas-cli@27.7.1 build "${args[@]}"
