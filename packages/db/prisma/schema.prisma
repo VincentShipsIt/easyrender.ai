@@ -16,6 +16,9 @@ model User {
   emailVerified Boolean  @default(false)
   image         String?
   credits       Int      @default(0)
+  stripeCustomerId   String? @unique
+  subscriptionId     String? @unique
+  subscriptionStatus String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

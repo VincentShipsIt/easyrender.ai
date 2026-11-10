@@ -9,7 +9,13 @@ import {
   startBuild,
   toView,
 } from '@easyrender/core';
-import { CREDIT_PACKS, RENDER_CREDITS } from '@easyrender/harness';
+import {
+  CREDIT_USD,
+  ENTERPRISE_BOOKING_URL,
+  PAYG,
+  PRO_PLAN,
+  RENDER_CREDITS,
+} from '@easyrender/harness';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
@@ -124,14 +130,25 @@ export function createMcpServer(actor: Actor & { userId: string }) {
     'get_credits',
     {
       title: 'Get credits',
-      description: 'Credit balance, the cost of one 3D render and the packs for sale.',
+      description: 'Credit balance, the cost of one 3D render and the plans for sale.',
       inputSchema: {},
     },
     () =>
       run(async () => ({
         balance: await getBalance(actor.userId),
         render_credits: RENDER_CREDITS,
-        packs: CREDIT_PACKS,
+        plans: {
+          pay_as_you_go: {
+            usd_per_credit: CREDIT_USD,
+            min_credits: PAYG.min,
+            max_credits: PAYG.max,
+          },
+          pro: {
+            usd_per_month: PRO_PLAN.priceCents / 100,
+            credits_per_month: PRO_PLAN.monthlyCredits,
+          },
+          enterprise: { book_a_call: ENTERPRISE_BOOKING_URL },
+        },
         buy: `${config.appUrl()}/credits`,
       })),
   );

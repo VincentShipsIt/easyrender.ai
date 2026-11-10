@@ -1,7 +1,14 @@
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import { buildCostUsd, buildRequest } from './models';
-import { CREDIT_PACKS, creditsFor, RENDER_CREDITS, rendersInPack } from './pricing';
+import {
+  creditsFor,
+  isValidPaygCredits,
+  PRO_PLAN,
+  paygPriceCents,
+  RENDER_CREDITS,
+  rendersFor,
+} from './pricing';
 import { findGlbUrl } from './replicate';
 import { cutCells, sheetOutputUrl, sheetPrompt, VIEWS } from './sheet';
 import { watermark } from './watermark';
@@ -15,8 +22,19 @@ describe('pricing', () => {
     expect(RENDER_CREDITS * 0.01 * 0.3).toBeGreaterThanOrEqual(0.24 - 1e-9);
   });
 
-  it('sells whole renders per pack', () => {
-    expect(CREDIT_PACKS.map(rendersInPack)).toEqual([12, 62]);
+  it('prices pay as you go at one cent per credit', () => {
+    expect(paygPriceCents(1000)).toBe(1000);
+    expect(paygPriceCents(2500)).toBe(2500);
+    expect(isValidPaygCredits(499)).toBe(false);
+    expect(isValidPaygCredits(500)).toBe(true);
+    expect(isValidPaygCredits(100_000)).toBe(true);
+    expect(isValidPaygCredits(100_001)).toBe(false);
+    expect(isValidPaygCredits(1000.5)).toBe(false);
+  });
+
+  it('counts whole renders per credit amount', () => {
+    expect(rendersFor(1000)).toBe(12);
+    expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(62);
   });
 });
 
