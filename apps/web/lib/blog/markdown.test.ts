@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseBlocks } from './markdown';
+import { parseBlocks, renderInline } from './markdown';
 
 describe('the markdown subset the guides are written in', () => {
   it('reads headings, paragraphs, lists, quotes and rules', () => {
@@ -45,5 +45,28 @@ describe('the markdown subset the guides are written in', () => {
 
   it('has nothing to render for an empty body', () => {
     expect(parseBlocks('\n\n   \n')).toEqual([]);
+  });
+
+  it('shows a known image with its real size and caption, and leaves an unknown one as text', () => {
+    expect(parseBlocks('![The input photo](/showcase/armchair.jpg "One photo")')).toEqual([
+      {
+        kind: 'image',
+        alt: 'The input photo',
+        src: '/showcase/armchair.jpg',
+        caption: 'One photo',
+        width: 720,
+        height: 720,
+      },
+    ]);
+    expect(parseBlocks('![Invented](/made-up.jpg)')).toEqual([
+      { kind: 'paragraph', text: '![Invented](/made-up.jpg)' },
+    ]);
+  });
+
+  it('shows a link to a guide that is not out yet as its text, and other links as links', () => {
+    const isLive = (href: string) => href !== '/learn/later';
+    const nodes = renderInline('See [the later guide](/learn/later) or [the home](/).', isLive);
+    expect(nodes[1]).toBe('the later guide');
+    expect(typeof nodes[3]).toBe('object');
   });
 });

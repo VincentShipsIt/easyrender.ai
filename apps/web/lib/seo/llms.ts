@@ -1,6 +1,6 @@
 import { CREDIT_USD, PAYG, PRO_PLAN, RENDER_CREDITS } from '@easyrender/harness';
 import type { Locale } from '@/i18n/config';
-import { type BlogPost, listPosts } from '@/lib/blog/posts';
+import { type BlogPost, isLiveBlogLink, listPosts } from '@/lib/blog/posts';
 import { FAQ_KEYS } from '@/lib/faq';
 import en from '@/messages/en.json';
 import es from '@/messages/es.json';
@@ -143,7 +143,15 @@ export function llmsFullTxt(now: Date = new Date()): string {
   }
   for (const locale of sitemapLocales(now)) {
     for (const post of listPosts(locale, now)) {
-      lines.push(`## ${post.title}`, '', `Source: ${absoluteUrl(post.path)}`, '', post.body, '');
+      // A link to a guide that is not out yet becomes its text; the rest become absolute URLs,
+      // so they still work outside the site.
+      const isLive = isLiveBlogLink(locale, now);
+      const body = post.body
+        .replace(/(?<!!)\[([^\]]+)\]\((\/[^)\s]*)\)/g, (match, label: string, href: string) =>
+          isLive(href) ? match : label,
+        )
+        .replace(/\]\(\//g, `](${absoluteUrl('/')}/`);
+      lines.push(`## ${post.title}`, '', `Source: ${absoluteUrl(post.path)}`, '', body, '');
     }
   }
   return lines.join('\n');

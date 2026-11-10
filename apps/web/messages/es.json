@@ -915,6 +915,7 @@
       "home": "Inicio"
     },
     "post": {
+      "by": "Por {author}",
       "published": "Publicado el {date}",
       "updated": "Actualizado el {date}",
       "backToIndex": "Todas las guías",

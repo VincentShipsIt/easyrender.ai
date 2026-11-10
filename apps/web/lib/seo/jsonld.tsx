@@ -1,6 +1,6 @@
 import { CREDIT_USD, PAYG, PRO_PLAN } from '@easyrender/harness';
 import { HTML_LANG, type Locale } from '@/i18n/config';
-import { absoluteUrl, OG_IMAGE, SITE_NAME, SITE_URL } from './site';
+import { absoluteUrl, OG_IMAGE, OG_IMAGE_SIZE, SITE_NAME, SITE_URL } from './site';
 
 // Structured data, built from what the site actually publishes. Nothing here may carry a rating,
 // a user count, a price the pricing page does not show, or a real-world size: see
@@ -89,9 +89,10 @@ export function webPage(locale: Locale, path: string, name: string, description:
   };
 }
 
-export function faqPage(items: { question: string; answer: string }[]): Thing {
+export function faqPage(items: { question: string; answer: string }[], id?: string): Thing {
   return {
     '@type': 'FAQPage',
+    ...(id ? { '@id': id } : {}),
     mainEntity: items.map((item) => ({
       '@type': 'Question',
       name: item.question,
@@ -112,6 +113,11 @@ export function breadcrumbList(items: { name: string; path: string }[]): Thing {
   };
 }
 
+/**
+ * A guide. BlogPosting, signed by its author: a named Person only when one has been agreed,
+ * otherwise the easyrender team as an Organization. dateModified is never earlier than
+ * datePublished, even for a post that was edited before its publication day.
+ */
 export function article(post: {
   locale: Locale;
   title: string;
@@ -119,17 +125,42 @@ export function article(post: {
   date: string;
   updated?: string;
   path: string;
+  keyword?: string;
+  author?: { name: string; type: 'Person' | 'Organization'; url?: string };
+  image?: { src: string; width: number; height: number };
 }): Thing {
+  const url = absoluteUrl(post.path);
+  const image = post.image ?? { src: OG_IMAGE, ...OG_IMAGE_SIZE };
+  const author = post.author ?? { name: 'easyrender team', type: 'Organization' as const };
+  const modified = post.updated && post.updated > post.date ? post.updated : post.date;
   return {
-    '@type': 'Article',
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    url,
     headline: post.title,
     description: post.description,
     inLanguage: HTML_LANG[post.locale],
     datePublished: post.date,
-    dateModified: post.updated ?? post.date,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(post.path) },
-    image: absoluteUrl(OG_IMAGE),
-    author: { '@id': ORGANIZATION_ID },
+    dateModified: modified,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    isPartOf: { '@id': WEBSITE_ID },
+    image: {
+      '@type': 'ImageObject',
+      url: absoluteUrl(image.src),
+      width: image.width,
+      height: image.height,
+    },
+    ...(post.keyword ? { keywords: post.keyword } : {}),
+    author: {
+      '@type': author.type,
+      name: author.name,
+      url: author.url
+        ? /^https?:/.test(author.url)
+          ? author.url
+          : absoluteUrl(author.url)
+        : SITE_URL,
+      ...(author.type === 'Organization' ? { parentOrganization: { '@id': ORGANIZATION_ID } } : {}),
+    },
     publisher: { '@id': ORGANIZATION_ID },
   };
 }

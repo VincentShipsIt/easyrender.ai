@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import { Button } from '@/components/ui/button';
 import { Markdown } from '@/lib/blog/markdown';
-import type { BlogPost } from '@/lib/blog/posts';
+import { type BlogPost, isLiveBlogLink, modifiedDate } from '@/lib/blog/posts';
 import { ROUTES } from '@/lib/seo/routes';
 import { DATE_FORMAT } from './blog-index-view';
 
@@ -39,15 +39,17 @@ export async function BlogPostView({ post }: { post: BlogPost }) {
         </h1>
         <p className="text-lg text-muted-foreground text-pretty">{post.description}</p>
         <p className="text-sm text-muted-foreground">
+          {t('post.by', { author: post.author.name })}
+          {' · '}
           <time dateTime={post.date}>
             {t('post.published', { date: format.dateTime(new Date(post.date), DATE_FORMAT) })}
           </time>
-          {post.updated && post.updated !== post.date && (
+          {modifiedDate(post) !== post.date && (
             <>
               {' · '}
-              <time dateTime={post.updated}>
+              <time dateTime={modifiedDate(post)}>
                 {t('post.updated', {
-                  date: format.dateTime(new Date(post.updated), DATE_FORMAT),
+                  date: format.dateTime(new Date(modifiedDate(post)), DATE_FORMAT),
                 })}
               </time>
             </>
@@ -56,12 +58,13 @@ export async function BlogPostView({ post }: { post: BlogPost }) {
       </header>
 
       <div className="mt-10">
-        <Markdown source={post.body} />
+        <Markdown source={post.body} isLive={isLiveBlogLink(post.locale)} />
       </div>
 
       <footer className="mt-16 space-y-6 border-t pt-8">
         <div className="space-y-3">
           <p className="text-xl font-medium tracking-tight">{t('post.cta.title')}</p>
+          {post.cta && <p className="text-muted-foreground text-pretty">{post.cta}</p>}
           <Button asChild>
             <Link href={`${ROUTES.home.paths[post.locale]}#try`}>
               {t('post.cta.button')}

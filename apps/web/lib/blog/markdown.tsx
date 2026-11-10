@@ -1,9 +1,11 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Separator } from '@/components/ui/separator';
+import { parseImage } from './images';
 
 // Renders the markdown subset the guides are written in: headings, paragraphs, lists, quotes,
-// rules and inline emphasis, code and links. It returns React elements rather than HTML, so no
+// rules, images from the closed list in images.ts, and inline emphasis, code and links. It returns React elements rather than HTML, so no
 // post can inject markup into the page, and there is no markdown dependency to keep current.
 //
 // Anything outside the subset is shown as plain text instead of being dropped, which makes an
@@ -14,6 +16,7 @@ type Block =
   | { kind: 'paragraph'; text: string }
   | { kind: 'list'; ordered: boolean; items: string[] }
   | { kind: 'quote'; text: string }
+  | { kind: 'image'; alt: string; src: string; caption?: string; width: number; height: number }
   | { kind: 'rule' };
 
 const HEADING = /^(#{2,4})\s+(.*)$/;
@@ -37,6 +40,20 @@ export function parseBlocks(markdown: string): Block[] {
 
     if (RULE.test(line)) {
       blocks.push({ kind: 'rule' });
+      index += 1;
+      continue;
+    }
+
+    const image = parseImage(line);
+    if (image?.size) {
+      blocks.push({
+        kind: 'image',
+        alt: image.alt,
+        src: image.src,
+        ...(image.caption ? { caption: image.caption } : {}),
+        width: image.size.width,
+        height: image.size.height,
+      });
       index += 1;
       continue;
     }
@@ -83,6 +100,7 @@ export function parseBlocks(markdown: string): Block[] {
     while (index < lines.length) {
       const next = (lines[index] as string).trim();
       if (!next || RULE.test(next) || HEADING.test(next) || QUOTE.test(next)) break;
+      if (parts.length && parseImage(next)?.size) break;
       if (UNORDERED.test(next) || ORDERED.test(next)) break;
       parts.push(next);
       index += 1;
@@ -96,8 +114,16 @@ export function parseBlocks(markdown: string): Block[] {
 // `**bold**`, `*italic*`, `` `code` `` and `[text](href)`, in one pass so nesting cannot loop.
 const INLINE = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]+\]\([^)\s]+\))/g;
 
+/**
+ * Decides whether a site-relative link is shown as a link. Guides are written a week ahead and
+ * link to each other, so a link to a guide that is not published yet is shown as plain text and
+ * becomes a link on that guide's day, with no deploy and no 404 in between.
+ */
+export type LinkGate = (href: string) => boolean;
+const ALWAYS: LinkGate = () => true;
+
 /** Turns inline markdown into React nodes. Exported for tests. */
-export function renderInline(text: string): ReactNode[] {
+export function renderInline(text: string, isLive: LinkGate = ALWAYS): ReactNode[] {
   const nodes: ReactNode[] = [];
   let cursor = 0;
   let key = 0;
@@ -125,7 +151,9 @@ export function renderInline(text: string): ReactNode[] {
         const href = link[2] as string;
         const label = link[1] as string;
         nodes.push(
-          href.startsWith('/') ? (
+          href.startsWith('/') && !isLive(href) ? (
+            label
+          ) : href.startsWith('/') ? (
             <Link key={key} href={href} className="underline underline-offset-4">
               {label}
             </Link>
@@ -152,7 +180,7 @@ export function renderInline(text: string): ReactNode[] {
 }
 
 /** The article body of a post, as prose. */
-export function Markdown({ source }: { source: string }) {
+export function Markdown({ source, isLive = ALWAYS }: { source: string; isLive?: LinkGate }) {
   return (
     <>
       {parseBlocks(source).map((block, index) => {
@@ -160,24 +188,44 @@ export function Markdown({ source }: { source: string }) {
         switch (block.kind) {
           case 'rule':
             return <Separator key={key} className="my-10" />;
+          case 'image':
+            // Below the fold in every guide, so next/image's default lazy loading applies. The
+            // width and height reserve the space, so the text never jumps while it loads.
+            return (
+              <figure key={key} className="mt-8">
+                <Image
+                  src={block.src}
+                  alt={block.alt}
+                  width={block.width}
+                  height={block.height}
+                  sizes="(min-width: 768px) 720px, 100vw"
+                  className="h-auto w-full rounded-lg border bg-muted"
+                />
+                {block.caption && (
+                  <figcaption className="mt-2 text-sm text-muted-foreground">
+                    {renderInline(block.caption, isLive)}
+                  </figcaption>
+                )}
+              </figure>
+            );
           case 'heading': {
             if (block.level === 2) {
               return (
                 <h2 key={key} className="mt-12 text-2xl font-semibold tracking-tight">
-                  {renderInline(block.text)}
+                  {renderInline(block.text, isLive)}
                 </h2>
               );
             }
             if (block.level === 3) {
               return (
                 <h3 key={key} className="mt-8 text-xl font-semibold tracking-tight">
-                  {renderInline(block.text)}
+                  {renderInline(block.text, isLive)}
                 </h3>
               );
             }
             return (
               <h4 key={key} className="mt-6 text-lg font-semibold tracking-tight">
-                {renderInline(block.text)}
+                {renderInline(block.text, isLive)}
               </h4>
             );
           }
@@ -188,27 +236,27 @@ export function Markdown({ source }: { source: string }) {
                   // A rendered post never reorders: the list comes from the file, in file order,
                   // so the position is the item's identity.
                   // biome-ignore lint/suspicious/noArrayIndexKey: static content, never reordered
-                  <li key={`${key}-${position}`}>{renderInline(item)}</li>
+                  <li key={`${key}-${position}`}>{renderInline(item, isLive)}</li>
                 ))}
               </ol>
             ) : (
               <ul key={key} className="mt-5 list-disc space-y-2 pl-6">
                 {block.items.map((item, position) => (
                   // biome-ignore lint/suspicious/noArrayIndexKey: static content, never reordered
-                  <li key={`${key}-${position}`}>{renderInline(item)}</li>
+                  <li key={`${key}-${position}`}>{renderInline(item, isLive)}</li>
                 ))}
               </ul>
             );
           case 'quote':
             return (
               <blockquote key={key} className="mt-6 border-l-2 pl-5 text-muted-foreground italic">
-                {renderInline(block.text)}
+                {renderInline(block.text, isLive)}
               </blockquote>
             );
           default:
             return (
               <p key={key} className="mt-5 leading-relaxed">
-                {renderInline(block.text)}
+                {renderInline(block.text, isLive)}
               </p>
             );
         }
