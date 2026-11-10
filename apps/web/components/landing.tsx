@@ -111,7 +111,6 @@ export async function Pricing() {
   return (
     <Section
       id="pricing"
-      className="defer-paint"
       title={t('title')}
       description={t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
       action={
@@ -185,7 +184,7 @@ export async function faqItems(): Promise<FaqItem[]> {
 export async function Faq() {
   const [t, items] = await Promise.all([getTranslations('Landing.faq'), faqItems()]);
   return (
-    <Section id="faq" title={t('title')} className="defer-paint" narrow>
+    <Section id="faq" title={t('title')} narrow>
       <div className="sec__column">
         {items.map((item) => (
           <details key={item.question} className="group border-b last:border-b-0">

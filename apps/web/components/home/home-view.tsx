@@ -46,13 +46,7 @@ export async function HomeView() {
       <HomeIntro />
       <StudioPipeline />
 
-      <Section
-        id="try"
-        title={t('try.title')}
-        description={t('try.description')}
-        className="defer-paint"
-        narrow
-      >
+      <Section id="try" title={t('try.title')} description={t('try.description')} narrow>
         <div className="sec__column">
           <PromptBar signedIn={Boolean(user)} />
         </div>
@@ -63,12 +57,7 @@ export async function HomeView() {
       <StudioWheel />
       <StudioProof />
 
-      <Section
-        id="connect"
-        title={t('connect.title')}
-        description={t('connect.description')}
-        className="defer-paint"
-      >
+      <Section id="connect" title={t('connect.title')} description={t('connect.description')}>
         <div className="grid items-start gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
           <AgentDemo item={HERO_ITEM} />
           <div className="min-w-0 space-y-6">
