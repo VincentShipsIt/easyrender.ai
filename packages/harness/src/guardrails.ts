@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 import { cleanNote } from './note';
-import { cutCells } from './sheet';
+import { cutCells, VIEWS } from './sheet';
 
 // Checks that run before and after the paid model calls. Inputs are rejected early, so a bad
 // photo never costs a generation; outputs are checked before they are stored, so a broken sheet
@@ -20,7 +20,14 @@ export const LIMITS = {
   minSheetSide: 768,
   maxEmptyCells: 2,
   minGlbBytes: 20_000,
+  // Two views count as the same picture when their 64px greyscale copies differ by less than
+  // this fraction. Measured: distinct turnaround views differ by 0.03+, a sheet that repeats one
+  // view differs by under 0.01.
+  duplicateViewDistance: 0.015,
+  maxDuplicateViews: 3,
 };
+
+export type Limits = typeof LIMITS;
 
 // Notes that try to rewrite the instructions are rejected rather than passed to the model.
 const OVERRIDE =
@@ -107,7 +114,7 @@ export async function checkPhoto(bytes: Uint8Array): Promise<Check> {
 }
 
 // The sheet must be a usable 3x3 grid: big enough, with an object in nearly every cell.
-export async function checkSheet(sheet: Uint8Array): Promise<Check> {
+export async function checkSheet(sheet: Uint8Array, limits: Limits = LIMITS): Promise<Check> {
   let side: number;
   try {
     const { width = 0, height = 0 } = await sharp(sheet).metadata();
@@ -115,11 +122,12 @@ export async function checkSheet(sheet: Uint8Array): Promise<Check> {
   } catch {
     return reject('sheet_unreadable', 'The angle sheet could not be read.');
   }
-  if (side < LIMITS.minSheetSide)
+  if (side < limits.minSheetSide)
     return reject('sheet_small', 'The angle sheet came back too small.');
 
   const cells = await cutCells(sheet);
   let empty = 0;
+  const signatures: Uint8Array[] = [];
   for (const cell of cells) {
     const { data, info } = await sharp(cell)
       .resize(64, 64, { fit: 'fill' })
@@ -133,11 +141,31 @@ export async function checkSheet(sheet: Uint8Array): Promise<Check> {
       if (min < 235) object++;
     }
     if (object / (info.width * info.height) < 0.005) empty++;
+    signatures.push(
+      new Uint8Array(
+        await sharp(cell).greyscale().resize(64, 64, { fit: 'fill' }).raw().toBuffer(),
+      ),
+    );
   }
-  if (empty > LIMITS.maxEmptyCells) {
+  if (empty > limits.maxEmptyCells) {
     return reject('sheet_empty', `The angle sheet is missing the object in ${empty} of 9 views.`);
   }
-  return ok(empty > 0 ? ['empty_cell'] : []);
+
+  // The eight turnaround views must be different pictures: a model that repeats one view (or
+  // pastes the photo into every cell) gives TRELLIS nothing to reconstruct from.
+  const ring = signatures.slice(0, VIEWS.length - 1);
+  const distance = (a: Uint8Array, b: Uint8Array) =>
+    a.reduce((sum, value, i) => sum + Math.abs(value - (b[i] as number)), 0) / a.length / 255;
+  const repeated = ring.filter((view, i) =>
+    ring.some((other, j) => i !== j && distance(view, other) < limits.duplicateViewDistance),
+  ).length;
+  if (repeated > limits.maxDuplicateViews) {
+    return reject(
+      'sheet_repeated_views',
+      `The angle sheet repeats the same view in ${repeated} of 8 cells.`,
+    );
+  }
+  return ok([...(empty > 0 ? ['empty_cell'] : []), ...(repeated > 0 ? ['similar_views'] : [])]);
 }
 
 // A binary glTF: magic, version 2, and a declared length that matches the file.

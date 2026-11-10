@@ -13,10 +13,11 @@ import {
   download,
   findGlbUrl,
   isSettled,
+  loadHarness,
   RENDER_CREDITS,
   SHEET_CREDITS,
   SHEET_MODEL,
-  selectSkill,
+  selectSkillFrom,
   sheetOutputUrl,
   sheetRequest,
 } from '@easyrender/harness';
@@ -36,6 +37,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // A sheet takes ~1 minute and a 3D build ~2: anything still running after this has been lost.
 const STALE_MS = 45 * 60 * 1000;
 
+const harness = () => loadHarness({ token: config.harnessToken() });
 const replicate = () => createReplicate(config.replicateToken());
 const extension = (contentType: string) =>
   contentType.split('/')[1]?.replace('jpeg', 'jpg') ?? 'bin';
@@ -132,7 +134,14 @@ export async function createDraft(input: {
   try {
     const client = replicate();
     const sourceUrl = await client.upload(input.bytes, `source.${ext}`, input.contentType);
-    const request = sheetRequest(sourceUrl, prompt, selectSkill(render.name, prompt));
+    const recipe = await harness();
+    const request = sheetRequest(
+      sourceUrl,
+      prompt,
+      selectSkillFrom(recipe.skills, render.name, prompt),
+      recipe.sheet,
+      recipe.sheetPrompt,
+    );
     const prediction = await client.start(
       request.path,
       request.body,
@@ -188,7 +197,7 @@ export async function advance(id: string): Promise<Render | null> {
       const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `sheet ${prediction.status}`);
       const sheet = await download(url);
-      const quality = await checkSheet(sheet);
+      const quality = await checkSheet(sheet, (await harness()).limits);
       if (!quality.ok) throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
       const sheetKey = await putFile('sheets/sheet.png', sheet, 'image/png');
       const { count } = await db().render.updateMany({
@@ -275,7 +284,7 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     }
     const prediction = await client.start(
       '/predictions',
-      buildRequest(images),
+      buildRequest(images, (await harness()).build),
       config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
     );
     return await db().render.update({ where: { id }, data: { buildPredictionId: prediction.id } });
@@ -333,7 +342,14 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
         ? 'image/webp'
         : 'image/jpeg';
     const sourceUrl = await client.upload(bytes, `source.${extension(contentType)}`, contentType);
-    const request = sheetRequest(sourceUrl, render.prompt, selectSkill(render.name, render.prompt));
+    const recipe = await harness();
+    const request = sheetRequest(
+      sourceUrl,
+      render.prompt,
+      selectSkillFrom(recipe.skills, render.name, render.prompt),
+      recipe.sheet,
+      recipe.sheetPrompt,
+    );
     const prediction = await client.start(
       request.path,
       request.body,

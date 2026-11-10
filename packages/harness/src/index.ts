@@ -2,6 +2,7 @@ export * from './guardrails';
 export * from './models';
 export * from './note';
 export * from './pricing';
+export * from './remote';
 export * from './replicate';
 export * from './sheet';
 export * from './skills';

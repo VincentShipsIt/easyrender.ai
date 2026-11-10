@@ -6,6 +6,8 @@ export const config = {
       '',
     ),
   replicateToken: () => process.env.REPLICATE_API_TOKEN ?? '',
+  // Read-only token for the private easyrenderai/harness repo. Without it the defaults are used.
+  harnessToken: () => process.env.HARNESS_GITHUB_TOKEN ?? '',
   sheetEnabled: () => process.env.SHEET_ENABLED !== 'false',
   freePreviewsPerDay: () => Number(process.env.FREE_PREVIEWS_PER_DAY ?? 2),
   paidPreviewsPerDay: () => Number(process.env.PAID_PREVIEWS_PER_DAY ?? 30),

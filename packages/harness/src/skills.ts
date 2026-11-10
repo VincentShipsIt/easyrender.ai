@@ -171,11 +171,14 @@ export const SKILLS: RenderSkill[] = [
 const normalise = (text: string) => text.toLowerCase();
 
 // Picks the skill whose keywords appear most often in the name and note; the general skill otherwise.
-export function selectSkill(...texts: (string | null | undefined)[]): RenderSkill {
+export function selectSkillFrom(
+  skills: RenderSkill[],
+  ...texts: (string | null | undefined)[]
+): RenderSkill {
   const haystack = normalise(texts.filter(Boolean).join(' '));
   if (!haystack) return DEFAULT_SKILL;
   let best: { skill: RenderSkill; hits: number } | null = null;
-  for (const skill of SKILLS) {
+  for (const skill of skills) {
     const hits = skill.keywords.filter((keyword) =>
       new RegExp(`(^|[^\\p{L}])${keyword}`, 'u').test(haystack),
     ).length;
@@ -183,3 +186,6 @@ export function selectSkill(...texts: (string | null | undefined)[]): RenderSkil
   }
   return best?.skill ?? DEFAULT_SKILL;
 }
+
+export const selectSkill = (...texts: (string | null | undefined)[]) =>
+  selectSkillFrom(SKILLS, ...texts);
