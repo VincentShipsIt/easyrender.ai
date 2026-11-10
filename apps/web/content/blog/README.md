@@ -1,5 +1,9 @@
 # Guides
 
+How a guide is researched, written, checked, illustrated and translated is in
+[`docs/blog/PIPELINE.md`](../../../../docs/blog/PIPELINE.md), with a prompt for every stage. This
+file is the format.
+
 One markdown file per post per language: `content/blog/{locale}/{slug}.md`. The file name is the
 slug, so the English `glb-vs-usdz.md` is served at `/learn/glb-vs-usdz` and the Spanish one at
 `/es/guias/glb-vs-usdz`. Native slugs per language are the point: write the Spanish slug in
@@ -28,8 +32,9 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
   from `@easyrender/harness`, the same source as the pricing page.
 - **Images**: `![Alt text that describes the picture](/showcase/armchair.jpg "Optional caption")`
   on a line of its own. Only paths listed in `lib/blog/images.ts` render (with `next/image`, their
-  real width and height, lazy loading). Only real easyrender output or real screenshots go in
-  that list. Any other path shows as text and fails `content.test.ts`.
+  real width and height, lazy loading; the hero is preloaded). Only real easyrender output, real
+  screenshots, crops of them and drawn illustrations captioned as such go in that list. Any other
+  path shows as text and fails `content.test.ts`.
 - **3D models**: the same syntax with a GLB, `![Alt text](/showcase/armchair.glb "Caption")`. Only
   GLBs listed in `BLOG_MODELS` (`lib/blog/images.ts`) render. Each has a poster, a still of that
   GLB captured in model-viewer and not edited, which is in the server HTML with the alt text and
@@ -42,6 +47,12 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
   words are per language inside the component (`{ en: {...} }`): a translated guide that uses a
   diagram needs its own block there, and `content.test.ts` fails until it has one. Diagrams stay
   greyscale and never carry measurements, scale bars or "will it fit" marks (claims.md).
+- **The hero illustration**: every guide opens with its own illustration, on the line right after
+  the first paragraph: `![What is drawn](/blog/illustrations/{group}/hero.webp "Illustration, not an easyrender result: …")`.
+  It is a flat editorial drawing made for that guide (no text, logos or measurements), at least
+  1200 pixels wide, registered in `BLOG_IMAGES`, and it is also the guide's BlogPosting and Open
+  Graph image. Other drawn illustrations live in the same folder, and every one says in its
+  caption that it is an illustration, never an easyrender result.
 - **Crops**: a second picture of an object already shown in another guide is its own file under
   `public/blog/figures/{slug}/`, cropped from the real asset and registered in `BLOG_IMAGES`, with
   a caption that says what it is cropped from. Never re-colour or reshape it.
@@ -58,8 +69,10 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
   to be generated is `<!-- ILLUSTRATION PENDING: target path, ratio, what it shows -->`; its caption
   has to say it is an illustration, never an easyrender result, and it is only added once the file
   exists.
-- **FAQ**: a `## FAQ` section with one `### Question?` per item. The same questions become the
-  page's FAQPage structured data, so what crawlers read is what readers see.
+- **FAQ**: a `## FAQ` section with one `### Question?` per item. It always renders as an accordion
+  (the shadcn `Accordion`), with every answer mounted in the server HTML while closed and shown
+  without JavaScript. The same questions become the page's FAQPage structured data, so what
+  crawlers read is what readers can open.
 - **Links between guides**: link freely. A link to a guide whose date has not come yet shows as
   plain text and becomes a link on that guide's day.
 - The closing call to action is the button under the post (with the `cta` sentence). The body
@@ -67,7 +80,11 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
 
 `lib/blog/content.test.ts` checks every English guide against these rules and the tone guide:
 title and description length, the 40-60 word opening answer, paragraph length, the FAQ, the
-link to the core guide, prices, images and the claims.
+link to the core guide, prices, images and the claims. `lib/blog/guide-rules.test.ts` checks the
+pipeline's rules (stage 5): the hero under the first paragraph and as the Open Graph image, the
+FAQ accordion against the FAQPage, one creative per 400 words of prose (at least five), and
+inline sources from at least three outside sites. It covers every English guide and each
+translation once it carries its illustration.
 
 ## The fields
 
