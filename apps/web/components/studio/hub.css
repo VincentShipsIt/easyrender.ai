@@ -1,0 +1,478 @@
+/* Hub: the element grid, its filters and the spec sheet. Scoped like studio.css. */
+.er-studio {
+  /* ───────── heading ───────── */
+  .hubhead {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.8fr);
+    align-items: end;
+    gap: 32px clamp(32px, 6vw, 96px);
+    padding: clamp(56px, 8vw, 112px) var(--gutter) clamp(36px, 4.5vw, 64px);
+  }
+  .hubhead .eyebrow {
+    margin-bottom: 22px;
+  }
+  .hubhead h1 {
+    max-width: 11em;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 1;
+    font-weight: 370;
+    font-stretch: 110%;
+    letter-spacing: -0.034em;
+    text-wrap: balance;
+  }
+  .hubhead__sub {
+    max-width: 30em;
+    padding-bottom: 8px;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.4;
+    color: var(--ash);
+  }
+
+  /* ───────── filter bar ───────── */
+  .hubbar {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding: 14px var(--gutter);
+    background: rgba(10, 10, 11, 0.86);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: -4px;
+    padding: 4px;
+  }
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+  .chips button,
+  .modes button,
+  .sheet__passes button {
+    flex: none;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--ash);
+    white-space: nowrap;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .chips button sup {
+    margin-left: 6px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-stretch: 87.5%;
+    vertical-align: 5px;
+    opacity: 0.7;
+  }
+  .chips button:hover,
+  .modes button:hover,
+  .sheet__passes button:hover {
+    color: var(--bone);
+  }
+  .chips button[aria-pressed="true"],
+  .modes button[aria-pressed="true"],
+  .sheet__passes button[aria-pressed="true"] {
+    background: var(--bone);
+    color: var(--ink);
+  }
+  .hubbar__tools {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: none;
+  }
+  .search {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search svg {
+    position: absolute;
+    left: 12px;
+    color: var(--ash);
+    pointer-events: none;
+  }
+  .search input {
+    width: clamp(160px, 18vw, 250px);
+    height: 36px;
+    padding: 0 12px 0 36px;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--bone);
+    font: inherit;
+    font-size: 14px;
+    outline-offset: 2px;
+  }
+  .search input::placeholder {
+    color: var(--smoke);
+  }
+  .search input:hover {
+    border-color: rgba(236, 235, 231, 0.4);
+  }
+  .modes,
+  .sheet__passes {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--line-strong);
+    border-radius: 11px;
+  }
+  .modes button,
+  .sheet__passes button {
+    height: 28px;
+    padding: 0 11px;
+    border-radius: 7px;
+    font-size: 13px;
+  }
+
+  /* ───────── grid ───────── */
+  .hubgrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(10px, 1.2vw, 18px);
+    padding: clamp(20px, 2.4vw, 32px) var(--gutter) 0;
+  }
+  .el {
+    min-width: 0;
+  }
+  .el[hidden] {
+    display: none;
+  }
+  .el__btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border-radius: 0;
+  }
+  .el__view {
+    position: relative;
+    aspect-ratio: 1 / 1.08;
+    overflow: hidden;
+    background: var(--graphite);
+    box-shadow: inset 0 0 0 1px rgba(236, 235, 231, 0.05);
+    transition: background-color 0.35s;
+  }
+  .el__btn:hover .el__view,
+  .el__btn:focus-visible .el__view {
+    background: #19191c;
+  }
+  .el__view .view-canvas {
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .el.is-ready .view-canvas {
+    opacity: 1;
+  }
+  .el__view .tag {
+    color: var(--ash);
+  }
+  .el__spin {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 3;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-stretch: 87.5%;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--smoke);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .el__btn:hover .el__spin {
+    opacity: 1;
+  }
+  .el__meta {
+    padding: 14px 0 22px;
+  }
+  .el__name {
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 400;
+    letter-spacing: -0.008em;
+  }
+  .el__btn:hover .el__name {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+  .el__dims {
+    margin-top: 3px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-stretch: 87.5%;
+    letter-spacing: 0.03em;
+    color: var(--ash);
+  }
+  .hubempty {
+    padding: 72px var(--gutter) 24px;
+    font-size: clamp(20px, 2vw, 28px);
+    letter-spacing: -0.02em;
+    color: var(--ash);
+    max-width: 28em;
+  }
+  .hubempty b {
+    color: var(--bone);
+  }
+
+  /* ───────── sheet ───────── */
+  .sheet {
+    /* Tailwind's reset removes the dialog's own centring. */
+    margin: auto;
+    width: min(1320px, calc(100vw - 2 * var(--gutter)));
+    max-width: none;
+    height: min(820px, calc(100dvh - 48px));
+    max-height: none;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    background: var(--carbon);
+    color: var(--bone);
+    overflow: hidden;
+  }
+  .sheet::backdrop {
+    background: rgba(0, 0, 0, 0.72);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .sheet[open] {
+    animation: er-sheet-in 0.45s var(--ease);
+  }
+  .sheet__in {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
+    height: 100%;
+  }
+  .sheet__stage {
+    position: relative;
+    min-height: 0;
+    background: radial-gradient(90% 70% at 50% 30%, #222225 0%, #131315 62%, #0e0e10 100%);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: background-color 0.3s;
+  }
+  .sheet__stage.is-dragging {
+    cursor: grabbing;
+  }
+  .sheet__stage[data-pass="wire"] {
+    background: #111113;
+  }
+  .sheet__stage[data-pass="normal"] {
+    background: #15152b;
+  }
+  .sheet__stage[data-pass="depth"] {
+    background: #000;
+  }
+  .sheet__passes {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    z-index: 3;
+    translate: -50% 0;
+    background: rgba(10, 10, 11, 0.7);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  .sheet__hint {
+    position: absolute;
+    left: 20px;
+    top: 18px;
+    z-index: 3;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-stretch: 87.5%;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--smoke);
+    pointer-events: none;
+  }
+  .sheet__side {
+    position: relative;
+    overflow-y: auto;
+    padding: clamp(24px, 2.6vw, 36px);
+    border-left: 1px solid var(--line);
+  }
+  .sheet__close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    transition: background-color 0.2s;
+  }
+  .sheet__close:hover {
+    background: rgba(236, 235, 231, 0.08);
+  }
+  .sheet__name {
+    margin-top: 14px;
+    padding-right: 48px;
+    font-size: clamp(26px, 2.5vw, 36px);
+    line-height: 1.05;
+    font-weight: 380;
+    font-stretch: 108%;
+    letter-spacing: -0.03em;
+  }
+  .sheet__prompt {
+    margin-top: 10px;
+    color: var(--ash);
+  }
+  .spec {
+    margin-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .spec div {
+    display: grid;
+    grid-template-columns: 124px 1fr;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .spec dt {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-stretch: 87.5%;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ash);
+    padding-top: 3px;
+  }
+  .spec dd {
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+  }
+  .spec dd small {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--ash);
+  }
+  .sheet__src {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .sheet__src img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    background: #fff;
+  }
+  .sheet__src figcaption {
+    display: grid;
+    gap: 2px;
+    font-size: 14px;
+  }
+  .sheet__src span {
+    color: var(--ash);
+  }
+  .sheet__actions {
+    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .sheet__actions .btn {
+    gap: 9px;
+    flex: 1 1 auto;
+  }
+
+  /* ───────── responsive ───────── */
+  @media (max-width: 1180px) {
+    .hubgrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 900px) {
+    .hubhead {
+      grid-template-columns: 1fr;
+    }
+    .hubbar {
+      flex-direction: column;
+      align-items: stretch;
+      top: var(--nav-h);
+    }
+    .hubbar__tools {
+      justify-content: space-between;
+    }
+    .search {
+      flex: 1;
+    }
+    .search input {
+      width: 100%;
+    }
+    .hubgrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sheet {
+      width: 100vw;
+      height: 100dvh;
+      border: 0;
+      border-radius: 0;
+    }
+    .sheet__in {
+      grid-template-columns: 1fr;
+      grid-template-rows: minmax(260px, 46%) 1fr;
+    }
+    .sheet__side {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+    .sheet__passes {
+      bottom: 12px;
+      max-width: calc(100% - 24px);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sheet__hint {
+      display: none;
+    }
+  }
+  @media (max-width: 520px) {
+    .hubgrid {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .el__name {
+      font-size: 14px;
+    }
+    .el__view .tag {
+      left: 8px;
+      top: 8px;
+      font-size: 9px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet[open] {
+      animation: none;
+    }
+  }
+}
+
+@keyframes er-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+}

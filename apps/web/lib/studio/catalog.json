@@ -1,0 +1,444 @@
+[
+  {
+    "id": "swivel-chair",
+    "category": "furniture",
+    "engine": "trellis",
+    "dims": [0.76, 0.81, 0.81],
+    "material": "upholstery",
+    "mass": 17.8,
+    "friction": 0.82,
+    "restitution": 0.08,
+    "collider": "hull",
+    "hullVerts": 28,
+    "wireTris": 2398,
+    "lods": [
+      {
+        "file": "swivel-chair.glb",
+        "tris": 24268,
+        "verts": 17292,
+        "kb": 311
+      },
+      {
+        "file": "swivel-chair.lod1.glb",
+        "tris": 5338,
+        "verts": 6071,
+        "kb": 107
+      },
+      {
+        "file": "swivel-chair.lod2.glb",
+        "tris": 3470,
+        "verts": 4541,
+        "kb": 76
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "armchair",
+    "category": "furniture",
+    "engine": "trellisSheet",
+    "dims": [0.7, 0.77, 0.85],
+    "material": "upholstery",
+    "mass": 14.1,
+    "friction": 0.82,
+    "restitution": 0.08,
+    "collider": "hull",
+    "hullVerts": 39,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "armchair.glb",
+        "tris": 25879,
+        "verts": 17522,
+        "kb": 330
+      },
+      {
+        "file": "armchair.lod1.glb",
+        "tris": 5692,
+        "verts": 5871,
+        "kb": 111
+      },
+      {
+        "file": "armchair.lod2.glb",
+        "tris": 2906,
+        "verts": 3614,
+        "kb": 66
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "coffee-table",
+    "category": "furniture",
+    "engine": "trellis",
+    "dims": [0.5, 0.485, 0.5],
+    "material": "wood",
+    "mass": 16,
+    "friction": 0.55,
+    "restitution": 0.18,
+    "collider": "cylinder",
+    "hullVerts": 33,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "coffee-table.glb",
+        "tris": 16228,
+        "verts": 9591,
+        "kb": 177
+      },
+      {
+        "file": "coffee-table.lod1.glb",
+        "tris": 3570,
+        "verts": 2704,
+        "kb": 55
+      },
+      {
+        "file": "coffee-table.lod2.glb",
+        "tris": 892,
+        "verts": 892,
+        "kb": 21
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "bedside-table",
+    "category": "furniture",
+    "engine": "trellis",
+    "dims": [0.36, 0.5, 0.52],
+    "material": "wood",
+    "mass": 12,
+    "friction": 0.55,
+    "restitution": 0.18,
+    "collider": "box",
+    "hullVerts": 36,
+    "wireTris": 2398,
+    "lods": [
+      {
+        "file": "bedside-table.glb",
+        "tris": 69910,
+        "verts": 43424,
+        "kb": 641
+      },
+      {
+        "file": "bedside-table.lod1.glb",
+        "tris": 15380,
+        "verts": 14157,
+        "kb": 223
+      },
+      {
+        "file": "bedside-table.lod2.glb",
+        "tris": 4920,
+        "verts": 6382,
+        "kb": 102
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "vase",
+    "category": "decor",
+    "engine": "trellisSheet",
+    "dims": [0.125, 0.2, 0.12],
+    "material": "ceramic",
+    "mass": 0.89,
+    "friction": 0.48,
+    "restitution": 0.12,
+    "collider": "hull",
+    "hullVerts": 38,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "vase.glb",
+        "tris": 16708,
+        "verts": 9254,
+        "kb": 166
+      },
+      {
+        "file": "vase.lod1.glb",
+        "tris": 3674,
+        "verts": 2489,
+        "kb": 49
+      },
+      {
+        "file": "vase.lod2.glb",
+        "tris": 918,
+        "verts": 798,
+        "kb": 19
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "clay-vase",
+    "category": "decor",
+    "engine": "trellis",
+    "dims": [0.35, 0.4, 0.35],
+    "material": "ceramic",
+    "mass": 6.6,
+    "friction": 0.48,
+    "restitution": 0.12,
+    "collider": "hull",
+    "hullVerts": 26,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "clay-vase.glb",
+        "tris": 14590,
+        "verts": 8454,
+        "kb": 183
+      },
+      {
+        "file": "clay-vase.lod1.glb",
+        "tris": 3208,
+        "verts": 2378,
+        "kb": 57
+      },
+      {
+        "file": "clay-vase.lod2.glb",
+        "tris": 802,
+        "verts": 760,
+        "kb": 21
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "sofa",
+    "category": "furniture",
+    "engine": "tripo",
+    "dims": [1.797, 0.72, 0.822],
+    "material": "upholstery",
+    "mass": 35.1,
+    "friction": 0.82,
+    "restitution": 0.08,
+    "collider": "hull",
+    "hullVerts": 39,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "sofa.glb",
+        "tris": 38395,
+        "verts": 22157,
+        "kb": 630
+      },
+      {
+        "file": "sofa.lod1.glb",
+        "tris": 8446,
+        "verts": 6685,
+        "kb": 139
+      },
+      {
+        "file": "sofa.lod2.glb",
+        "tris": 2110,
+        "verts": 2029,
+        "kb": 42
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "lamp",
+    "category": "lighting",
+    "engine": "tripo",
+    "dims": [0.296, 0.42, 0.296],
+    "material": "metal",
+    "mass": 2.9,
+    "friction": 0.42,
+    "restitution": 0.22,
+    "collider": "hull",
+    "hullVerts": 40,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "lamp.glb",
+        "tris": 39170,
+        "verts": 22313,
+        "kb": 381
+      },
+      {
+        "file": "lamp.lod1.glb",
+        "tris": 8616,
+        "verts": 6706,
+        "kb": 110
+      },
+      {
+        "file": "lamp.lod2.glb",
+        "tris": 2154,
+        "verts": 2103,
+        "kb": 38
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "cactus",
+    "category": "outdoor",
+    "engine": "tripo",
+    "dims": [0.456, 0.95, 0.455],
+    "material": "concrete",
+    "mass": 20.5,
+    "friction": 0.7,
+    "restitution": 0.05,
+    "collider": "hull",
+    "hullVerts": 31,
+    "wireTris": 2388,
+    "lods": [
+      {
+        "file": "cactus.glb",
+        "tris": 37384,
+        "verts": 25169,
+        "kb": 624
+      },
+      {
+        "file": "cactus.lod1.glb",
+        "tris": 8113,
+        "verts": 8281,
+        "kb": 202
+      },
+      {
+        "file": "cactus.lod2.glb",
+        "tris": 2723,
+        "verts": 4171,
+        "kb": 92
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "sneaker",
+    "category": "product",
+    "engine": "tripo",
+    "dims": [0.109, 0.115, 0.27],
+    "material": "leather",
+    "mass": 0.41,
+    "friction": 0.74,
+    "restitution": 0.2,
+    "collider": "hull",
+    "hullVerts": 37,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "sneaker.glb",
+        "tris": 38718,
+        "verts": 22876,
+        "kb": 504
+      },
+      {
+        "file": "sneaker.lod1.glb",
+        "tris": 8490,
+        "verts": 6860,
+        "kb": 155
+      },
+      {
+        "file": "sneaker.lod2.glb",
+        "tris": 2126,
+        "verts": 2166,
+        "kb": 55
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "espresso",
+    "category": "product",
+    "engine": "tripo",
+    "dims": [0.248, 0.33, 0.431],
+    "material": "metal",
+    "mass": 8.69,
+    "friction": 0.42,
+    "restitution": 0.22,
+    "collider": "box",
+    "hullVerts": 38,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "espresso.glb",
+        "tris": 33506,
+        "verts": 21046,
+        "kb": 491
+      },
+      {
+        "file": "espresso.lod1.glb",
+        "tris": 7370,
+        "verts": 6688,
+        "kb": 163
+      },
+      {
+        "file": "espresso.lod2.glb",
+        "tris": 1841,
+        "verts": 2268,
+        "kb": 62
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "crate",
+    "category": "props",
+    "engine": "tripo",
+    "dims": [0.695, 0.6, 0.633],
+    "material": "wood",
+    "mass": 17.2,
+    "friction": 0.55,
+    "restitution": 0.18,
+    "collider": "box",
+    "hullVerts": 39,
+    "wireTris": 2398,
+    "lods": [
+      {
+        "file": "crate.glb",
+        "tris": 25172,
+        "verts": 15451,
+        "kb": 634
+      },
+      {
+        "file": "crate.lod1.glb",
+        "tris": 5537,
+        "verts": 4730,
+        "kb": 160
+      },
+      {
+        "file": "crate.lod2.glb",
+        "tris": 1384,
+        "verts": 1523,
+        "kb": 56
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  },
+  {
+    "id": "barrel",
+    "category": "props",
+    "engine": "tripo",
+    "dims": [0.59, 0.88, 0.589],
+    "material": "steel",
+    "mass": 18.6,
+    "friction": 0.45,
+    "restitution": 0.28,
+    "collider": "cylinder",
+    "hullVerts": 39,
+    "wireTris": 2400,
+    "lods": [
+      {
+        "file": "barrel.glb",
+        "tris": 29288,
+        "verts": 16328,
+        "kb": 310
+      },
+      {
+        "file": "barrel.lod1.glb",
+        "tris": 6442,
+        "verts": 4713,
+        "kb": 92
+      },
+      {
+        "file": "barrel.lod2.glb",
+        "tris": 1610,
+        "verts": 1394,
+        "kb": 31
+      }
+    ],
+    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+  }
+]

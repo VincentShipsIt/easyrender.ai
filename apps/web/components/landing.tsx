@@ -5,17 +5,7 @@ import {
   RENDER_CREDITS,
   rendersFor,
 } from '@easyrender/harness';
-import {
-  Building2,
-  Check,
-  Code2,
-  Home,
-  type LucideIcon,
-  Rotate3d,
-  Smartphone,
-  Sofa,
-  Store,
-} from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
@@ -27,94 +17,40 @@ import {
 } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+// A home page section in the studio layout: a two-tone statement (title, then description in
+// grey), an optional link on the right, and the content below. Rendered inside <StudioShell>.
 export function Section({
   id,
-  eyebrow,
   title,
   description,
   children,
   className,
   action,
+  narrow = false,
 }: {
   id?: string;
-  eyebrow: string;
   title: string;
   description?: string;
   children: ReactNode;
   className?: string;
   action?: ReactNode;
+  // Centres the statement in a narrower column.
+  narrow?: boolean;
 }) {
   return (
-    <section id={id} className={cn('scroll-mt-20 py-16 sm:py-24', className)}>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div className="max-w-2xl space-y-3">
-            <Badge variant="outline">{eyebrow}</Badge>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
-            {description && <p className="text-lg text-muted-foreground">{description}</p>}
-          </div>
-          {action}
+    <section id={id} className={cn('sec', narrow && 'sec--center', className)}>
+      <div className={cn('sec__head', narrow && 'sec__head--narrow')}>
+        <div className={cn('statement reveal', narrow && 'statement--narrow')}>
+          <h2>{title}</h2>
+          {description && <p>{description}</p>}
         </div>
-        {children}
+        {action}
       </div>
+      {children}
     </section>
-  );
-}
-
-const AUDIENCES: { icon: LucideIcon; key: 'agents' | 'stagers' | 'builders' | 'stores' }[] = [
-  { icon: Home, key: 'agents' },
-  { icon: Sofa, key: 'stagers' },
-  { icon: Building2, key: 'builders' },
-  { icon: Store, key: 'stores' },
-];
-
-const PERKS: { icon: LucideIcon; key: 'embed' | 'ar' | 'api' }[] = [
-  { icon: Rotate3d, key: 'embed' },
-  { icon: Smartphone, key: 'ar' },
-  { icon: Code2, key: 'api' },
-];
-
-export async function RealEstate() {
-  const t = await getTranslations('Landing.realEstate');
-  return (
-    <Section
-      eyebrow={t('eyebrow')}
-      title={t('title')}
-      description={t('description')}
-      className="border-y bg-muted/30"
-    >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {AUDIENCES.map((audience) => (
-          <Card key={audience.key} className="gap-3">
-            <CardHeader>
-              <audience.icon className="mb-2 size-5 text-muted-foreground" />
-              <CardTitle>{t(`audiences.${audience.key}.title`)}</CardTitle>
-              <CardDescription className="leading-relaxed">
-                {t(`audiences.${audience.key}.body`)}
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-      <div className="mt-6 flex flex-col gap-3 rounded-xl border bg-card p-4 sm:flex-row sm:items-center sm:justify-around">
-        {PERKS.map((perk) => (
-          <div key={perk.key} className="flex items-center gap-2 text-sm">
-            <perk.icon className="size-4 text-muted-foreground" />
-            {t(`perks.${perk.key}`)}
-          </div>
-        ))}
-      </div>
-    </Section>
   );
 }
 
@@ -179,13 +115,12 @@ export async function Pricing() {
   return (
     <Section
       id="pricing"
-      eyebrow={t('eyebrow')}
       title={t('title')}
       description={t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
       action={
-        <Button variant="outline" asChild>
-          <Link href="/credits">{t('seeAll')}</Link>
-        </Button>
+        <Link className="link" href="/credits">
+          {t('seeAll')} <ArrowRight />
+        </Link>
       }
     >
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -243,8 +178,8 @@ const FAQ_KEYS = [
 export async function Faq() {
   const t = await getTranslations('Landing.faq');
   return (
-    <Section id="faq" eyebrow={t('eyebrow')} title={t('title')}>
-      <Accordion type="single" collapsible className="mx-auto max-w-3xl">
+    <Section id="faq" title={t('title')} narrow>
+      <Accordion type="single" collapsible className="sec__column">
         {FAQ_KEYS.map((key) => (
           <AccordionItem key={key} value={key}>
             <AccordionTrigger className="text-base">{t(`items.${key}.q`)}</AccordionTrigger>
@@ -255,32 +190,5 @@ export async function Faq() {
         ))}
       </Accordion>
     </Section>
-  );
-}
-
-export async function FinalCta() {
-  const t = await getTranslations('Landing.finalCta');
-  return (
-    <section className="px-4 pb-24 sm:px-6">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-2xl border bg-primary px-6 py-14 text-center text-primary-foreground">
-        <h2 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          {t('title')}
-        </h2>
-        <p className="max-w-xl text-primary-foreground/70">{t('description')}</p>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Button size="lg" variant="secondary" asChild>
-            <Link href="/#connect">{t('connect')}</Link>
-          </Button>
-          <Button
-            size="lg"
-            variant="ghost"
-            className="text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-            asChild
-          >
-            <Link href="/#try">{t('try')}</Link>
-          </Button>
-        </div>
-      </div>
-    </section>
   );
 }
