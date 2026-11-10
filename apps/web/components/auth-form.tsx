@@ -5,13 +5,15 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { AuthFields, type AuthMode } from '@/components/auth-fields';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { hasPending } from '@/lib/pending-upload';
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const t = useTranslations('Auth');
   const router = useRouter();
   const params = useSearchParams();
-  const raw = params.get('next') ?? '/dashboard';
-  const next = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/dashboard';
+  const raw = params.get('next');
+  const requested = raw?.startsWith('/') && !raw.startsWith('//') ? raw : null;
+  const next = requested ?? '/dashboard';
   const other = mode === 'sign-up' ? 'sign-in' : 'sign-up';
 
   return (
@@ -27,8 +29,9 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       <CardContent className="grid gap-4">
         <AuthFields
           mode={mode}
-          onDone={() => {
-            router.push(next);
+          onDone={async () => {
+            // A photo attached on the home page before signing up goes to the Library.
+            router.push(!requested && (await hasPending()) ? '/library' : next);
             router.refresh();
           }}
         />

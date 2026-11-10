@@ -1,7 +1,7 @@
 'use client';
 
 import type { RenderView as View } from '@easyrender/core';
-import { Box, Globe, Loader2, Lock, Sparkles } from 'lucide-react';
+import { Box, Globe, Grid3x3, Loader2, Lock, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -51,6 +51,16 @@ export function RenderView({
     setStarting(false);
   }
 
+  async function makeSheet() {
+    setStarting(true);
+    setError(null);
+    const response = await fetch(`/api/renders/${render.id}/sheet`, { method: 'POST' });
+    const data = await response.json().catch(() => ({}));
+    if (response.ok) setRender(data);
+    else setError(data.error ?? t('errors.sheet'));
+    setStarting(false);
+  }
+
   async function setPublic(isPublic: boolean) {
     setSaving(true);
     const response = await fetch(`/api/renders/${render.id}`, {
@@ -62,6 +72,8 @@ export function RenderView({
     setSaving(false);
   }
 
+  // An angle sheet bought earlier already counts toward the price.
+  const owed = Math.max(0, render.renderCredits - render.credits);
   const base = `/api/renders/${render.id}`;
   const next = encodeURIComponent(`/r/${render.id}`);
   const title = render.prompt || t('untitled');
@@ -120,16 +132,25 @@ export function RenderView({
               {t('signUpToRender')}
             </Link>
           </Button>
-        ) : balance < render.renderCredits ? (
+        ) : balance < owed ? (
           <Button size="lg" className="w-full" asChild>
             <Link href={`/credits?next=${next}`}>{t('buyToRender')}</Link>
           </Button>
         ) : (
           <Button size="lg" className="w-full" onClick={build} disabled={starting}>
             {starting ? <Loader2 className="animate-spin" /> : <Box />}
-            {t('render3d', { credits: render.renderCredits })}
+            {t('render3d', { credits: owed })}
           </Button>
         ))}
+      {render.status === 'preview_ready' &&
+        signedIn &&
+        !render.hasSheet &&
+        balance >= render.sheetCredits && (
+          <Button variant="outline" className="w-full" onClick={makeSheet} disabled={starting}>
+            {starting ? <Loader2 className="animate-spin" /> : <Grid3x3 />}
+            {t('generateSheet', { credits: render.sheetCredits })}
+          </Button>
+        )}
       {render.status === 'failed' && (
         <Button variant="outline" className="w-full" asChild>
           <Link href="/">{t('tryAnother')}</Link>

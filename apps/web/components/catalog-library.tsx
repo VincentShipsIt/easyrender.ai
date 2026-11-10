@@ -1,12 +1,13 @@
 'use client';
 
 import type { RenderView } from '@easyrender/core';
-import { AlertCircle, Box, ImageUp, Loader2, Sparkles, Upload } from 'lucide-react';
+import { AlertCircle, Box, Grid3x3, ImageUp, Loader2, Sparkles, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { prepare } from '@/components/prompt-bar';
 import { Button } from '@/components/ui/button';
+import { takePending } from '@/lib/pending-upload';
 import { cn } from '@/lib/utils';
 
 const UPLOAD_CONCURRENCY = 2;
@@ -51,10 +52,12 @@ export function CatalogLibrary({
   initial,
   initialBalance,
   renderCredits,
+  sheetCredits,
 }: {
   initial: RenderView[];
   initialBalance: number;
   renderCredits: number;
+  sheetCredits: number;
 }) {
   const t = useTranslations('Library');
   const format = useFormatter();
@@ -116,7 +119,7 @@ export function CatalogLibrary({
     });
   };
 
-  async function addFiles(list: FileList | File[] | null) {
+  async function addFiles(list: FileList | File[] | null, prompt?: string) {
     const files = Array.from(list ?? []).filter((file) => file.type.startsWith('image/'));
     if (files.length === 0) return;
     setNotice(null);
@@ -145,6 +148,7 @@ export function CatalogLibrary({
         const body = new FormData();
         body.append('image', await prepare(upload.file, t('errors.unreadable')), 'source.jpg');
         body.append('name', upload.name);
+        if (prompt) body.append('prompt', prompt);
         const response = await fetch('/api/renders', { method: 'POST', body });
         const data = await response.json();
         if (!response.ok) {
@@ -165,8 +169,31 @@ export function CatalogLibrary({
     for (const upload of skipped) failed(upload.key, t('errors.dailyLimit'));
   }
 
+  // A photo attached on the home page before signing up is uploaded here, once, for this account.
+  const claimed = useRef(false);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  useEffect(() => {
+    if (claimed.current) return;
+    claimed.current = true;
+    void takePending().then(async (saved) => {
+      if (!saved) return;
+      await addFiles([saved.file], saved.prompt);
+      setNotice(t('fromHome'));
+    });
+  }, []);
+
   const pending = items.filter((item) => item.status === 'preview_ready');
-  const affordable = Math.min(pending.length, Math.floor(balance / renderCredits));
+  // An angle sheet bought earlier already counts toward an item's price.
+  const owed = (item: RenderView) => Math.max(0, renderCredits - item.credits);
+  let affordable = 0;
+  let spendable = balance;
+  let totalOwed = 0;
+  for (const item of pending) {
+    if (owed(item) > spendable) break;
+    spendable -= owed(item);
+    totalOwed += owed(item);
+    affordable += 1;
+  }
 
   async function build(targets: RenderView[]) {
     if (targets.length === 0) return;
@@ -180,7 +207,7 @@ export function CatalogLibrary({
           const data = await response.json().catch(() => ({}));
           if (response.ok) {
             upsert(data as RenderView);
-            setBalance((current) => Math.max(0, current - renderCredits));
+            setBalance((current) => Math.max(0, current - owed(item)));
             return true;
           }
           if (data.code === 'insufficient_credits') {
@@ -199,6 +226,22 @@ export function CatalogLibrary({
       await refresh(true);
     } finally {
       setBuilding(false);
+    }
+  }
+
+  async function makeSheet(item: RenderView) {
+    setNotice(null);
+    try {
+      const response = await fetch(`/api/renders/${item.id}/sheet`, { method: 'POST' });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok) {
+        upsert(data as RenderView);
+        setBalance((current) => Math.max(0, current - sheetCredits));
+        return;
+      }
+      setNotice(data.code === 'insufficient_credits' ? t('errors.sheetOutOfCredits') : data.error);
+    } catch {
+      setNotice(t('errors.connection'));
     }
   }
 
@@ -258,7 +301,7 @@ export function CatalogLibrary({
               {affordable > 0
                 ? t('generateAllCount', {
                     count: affordable,
-                    credits: format.number(affordable * renderCredits),
+                    credits: format.number(totalOwed),
                   })
                 : t('generateAll')}
             </Button>
@@ -361,9 +404,12 @@ export function CatalogLibrary({
                   <ModelPane
                     item={item}
                     viewerReady={viewerReady}
-                    canBuild={!building && balance >= renderCredits}
-                    renderCredits={renderCredits}
+                    canBuild={!building && balance >= owed(item)}
+                    canSheet={balance >= sheetCredits}
+                    renderCredits={owed(item)}
+                    sheetCredits={sheetCredits}
                     onBuild={() => build([item])}
+                    onSheet={() => makeSheet(item)}
                   />
                 }
               />
@@ -471,14 +517,20 @@ function ModelPane({
   item,
   viewerReady,
   canBuild,
+  canSheet,
   renderCredits,
+  sheetCredits,
   onBuild,
+  onSheet,
 }: {
   item: RenderView;
   viewerReady: boolean;
   canBuild: boolean;
+  canSheet: boolean;
   renderCredits: number;
+  sheetCredits: number;
   onBuild: () => void;
+  onSheet: () => void;
 }) {
   const t = useTranslations('Library');
   if (item.hasModel) {
@@ -505,13 +557,45 @@ function ModelPane({
       return <Pane icon={<Loader2 className="size-5 animate-spin" />} text={t('pane.rendering')} />;
     case 'failed':
       return <Pane icon={<AlertCircle className="size-5" />} text={t('pane.failed')} />;
-    default:
+    default: {
+      const buy = !canBuild && !(canSheet && !item.hasSheet);
+      const build = buy ? (
+        <Button size="sm" asChild>
+          <Link href="/credits">{t('buyCredits')}</Link>
+        </Button>
+      ) : (
+        <Button size="sm" variant="outline" disabled={!canBuild} onClick={onBuild}>
+          {t('generateOne', { credits: renderCredits })}
+        </Button>
+      );
+      // The angle sheet is the preview: show it here, with the 3D action on top.
+      if (item.hasSheet) {
+        return (
+          <>
+            {/* biome-ignore lint/performance/noImgElement: authenticated API image, not optimizable */}
+            <img
+              src={`/api/renders/${item.id}/preview`}
+              alt={t('sheetAlt', { name: item.name ?? t('untitled') })}
+              loading="lazy"
+              className="absolute inset-0 size-full bg-white object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black/50 to-transparent p-2 pt-8">
+              {build}
+            </div>
+          </>
+        );
+      }
       return (
         <Pane icon={<Box className="size-5" />} text={t('status.preview_ready')}>
-          <Button size="sm" variant="outline" disabled={!canBuild} onClick={onBuild}>
-            {t('generateOne', { credits: renderCredits })}
-          </Button>
+          {canSheet && (
+            <Button size="sm" variant="secondary" onClick={onSheet}>
+              <Grid3x3 className="size-4" />
+              {t('generateSheet', { credits: sheetCredits })}
+            </Button>
+          )}
+          {build}
         </Pane>
       );
+    }
   }
 }

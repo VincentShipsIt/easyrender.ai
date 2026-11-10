@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
+import { savePending } from '@/lib/pending-upload';
 import { SHOWCASE } from '@/lib/showcase';
 import { cn } from '@/lib/utils';
 
@@ -102,8 +103,14 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
     if (input.current) input.current.value = '';
   }
 
-  // Logged out: play the generation, then ask for an account to reveal it.
-  function simulate() {
+  // Logged out: play the generation, then ask for an account to reveal it. The photo is kept
+  // in the browser so the Library can upload it for the new account, wherever they sign up.
+  function simulate(source: File) {
+    void prepare(source, t('errors.unreadable'))
+      .then((blob) =>
+        savePending(blob, source.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' '), prompt),
+      )
+      .catch(() => undefined);
     setPhase('simulating');
     setProgress(2);
     const started = Date.now();
@@ -152,7 +159,7 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
     }
     if (authed) void generate(file);
     else if (phase === 'teaser') setAuthOpen(true);
-    else simulate();
+    else simulate(file);
   }
 
   const busy = phase === 'simulating' || phase === 'uploading';
@@ -339,11 +346,12 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
         onOpenChange={setAuthOpen}
         title={t('auth.title')}
         description={t('auth.description')}
-        onDone={async () => {
+        onDone={() => {
           setAuthOpen(false);
           setAuthed(true);
+          // The Library picks up the saved photo and shows it next to its 3D model.
+          router.push('/library');
           router.refresh();
-          if (file) await generate(file);
         }}
       >
         {thumb && (

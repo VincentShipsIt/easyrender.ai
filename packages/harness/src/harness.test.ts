@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
-import { buildCostUsd, buildRequest } from './models';
+import { buildCostUsd, buildRequest, SHEET_MODEL } from './models';
 import {
   creditsFor,
   isValidPaygCredits,
@@ -8,6 +8,8 @@ import {
   paygPriceCents,
   RENDER_CREDITS,
   rendersFor,
+  SHEET_COST_USD,
+  SHEET_CREDITS,
 } from './pricing';
 import { findGlbUrl } from './replicate';
 import { cutCells, sheetOutputUrl, sheetPrompt, VIEWS } from './sheet';
@@ -20,6 +22,12 @@ describe('pricing', () => {
     expect(RENDER_CREDITS).toBe(80);
     // revenue per render covers cost / (1 - margin)
     expect(RENDER_CREDITS * 0.01 * 0.3).toBeGreaterThanOrEqual(0.24 - 1e-9);
+  });
+
+  it('prices the angle sheet alone below the full render', () => {
+    expect(SHEET_COST_USD).toBe(SHEET_MODEL.costUsd);
+    expect(SHEET_CREDITS).toBe(50);
+    expect(SHEET_CREDITS).toBeLessThan(RENDER_CREDITS);
   });
 
   it('prices pay as you go at one cent per credit', () => {
