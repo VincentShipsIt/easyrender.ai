@@ -8,11 +8,13 @@ import type { ShowcaseItem } from '@/lib/showcase';
 export function HeroShowcase({ item }: { item: ShowcaseItem }) {
   return (
     <div className="relative mx-auto aspect-square w-full max-w-md lg:max-w-none">
-      <div className="absolute inset-[8%] rounded-full bg-gradient-to-tr from-zinc-300/60 via-zinc-100/40 to-transparent blur-3xl dark:from-zinc-700/50 dark:via-zinc-800/30" />
+      <div className="pointer-events-none absolute inset-[8%] rounded-full bg-gradient-to-tr from-zinc-300/60 via-zinc-100/40 to-transparent blur-3xl dark:from-zinc-700/50 dark:via-zinc-800/30" />
       <div className="animate-float absolute inset-0">
         <ModelViewer
           src={item.model}
           alt={`3D model: ${item.title}`}
+          interactive
+          zoom={false}
           lazy={false}
           rotationSpeed="18deg"
         />

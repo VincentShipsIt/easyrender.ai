@@ -30,6 +30,7 @@ declare module 'react' {
         'shadow-intensity'?: string;
         'shadow-softness'?: string;
         'environment-image'?: string;
+        'touch-action'?: string;
         exposure?: string;
       };
     }
@@ -48,6 +49,7 @@ type Props = {
   className?: string;
   style?: CSSProperties;
   interactive?: boolean;
+  zoom?: boolean;
   ar?: boolean;
   lazy?: boolean;
   rotationSpeed?: string;
@@ -60,6 +62,7 @@ export function ModelViewer({
   className,
   style,
   interactive = false,
+  zoom = true,
   ar = false,
   lazy = true,
   rotationSpeed = '24deg',
@@ -85,7 +88,8 @@ export function ModelViewer({
           rotation-per-second={rotationSpeed}
           interaction-prompt="none"
           camera-controls={interactive || undefined}
-          disable-zoom={!interactive || undefined}
+          disable-zoom={!interactive || !zoom || undefined}
+          touch-action={interactive ? 'pan-y' : undefined}
           ar={ar || undefined}
           ar-modes={ar ? 'webxr scene-viewer quick-look' : undefined}
           shadow-intensity="1"
@@ -96,6 +100,7 @@ export function ModelViewer({
             height: '100%',
             background: 'transparent',
             pointerEvents: interactive ? 'auto' : 'none',
+            cursor: interactive ? 'grab' : undefined,
           }}
         />
       )}
