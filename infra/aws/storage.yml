@@ -1,0 +1,124 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: easyrender.ai asset storage (private S3 bucket behind CloudFront) and a Vercel OIDC role that can write to it.
+
+Parameters:
+  VercelProject:
+    Type: String
+    Default: easyrender.ai
+  CreateOidcProvider:
+    Type: String
+    AllowedValues: ['true', 'false']
+    Default: 'true'
+    Description: Set to false when the account already has the oidc.vercel.com/<team> provider.
+
+Conditions:
+  MakeProvider: !Equals [!Ref CreateOidcProvider, 'true']
+
+Resources:
+  AssetsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-oac'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: easyrender.ai assets
+        HttpVersion: http2and3
+        PriceClass: PriceClass_100
+        Origins:
+          - Id: assets
+            DomainName: !GetAtt AssetsBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt OriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultCacheBehavior:
+          TargetOriginId: assets
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          # Managed CachingOptimized policy.
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+
+  AssetsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref AssetsBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CloudFrontRead
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${AssetsBucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
+
+  VercelOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Condition: MakeProvider
+    Properties:
+      Url: !Sub 'https://oidc.vercel.com/shipshitdev'
+      ClientIdList:
+        - !Sub 'https://vercel.com/shipshitdev'
+
+  VercelRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Assumed by easyrender.ai Vercel deployments to write assets.
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub 'arn:aws:iam::${AWS::AccountId}:oidc-provider/oidc.vercel.com/shipshitdev'
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                # Condition keys cannot be intrinsics, so the team slug is fixed here.
+                oidc.vercel.com/shipshitdev:aud: https://vercel.com/shipshitdev
+              StringLike:
+                oidc.vercel.com/shipshitdev:sub: !Sub 'owner:shipshitdev:project:${VercelProject}:environment:*'
+      Policies:
+        - PolicyName: assets-write
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: s3:PutObject
+                Resource: !Sub '${AssetsBucket.Arn}/*'
+
+Outputs:
+  S3Bucket:
+    Value: !Ref AssetsBucket
+  AssetsCdnUrl:
+    Value: !Sub 'https://${Distribution.DomainName}'
+  AwsRoleArn:
+    Value: !GetAtt VercelRole.Arn
