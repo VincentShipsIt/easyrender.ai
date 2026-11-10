@@ -1,4 +1,5 @@
 import 'server-only';
+import { dash } from '@better-auth/infra';
 import { db } from '@easyrender/db';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
@@ -8,7 +9,8 @@ function createAuth() {
   return betterAuth({
     database: prismaAdapter(db(), { provider: 'postgresql' }),
     emailAndPassword: { enabled: true, minPasswordLength: 8 },
-    plugins: [nextCookies()],
+    // dash() reads BETTER_AUTH_API_KEY; it powers the hosted Better Auth dashboard.
+    plugins: [dash(), nextCookies()],
   });
 }
 
