@@ -1,6 +1,7 @@
 import { getBalance, getBillingStatus } from '@easyrender/core';
 import { ENTERPRISE_BOOKING_URL, PRO_PLAN, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
 import { Check, CircleCheck } from 'lucide-react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
@@ -18,9 +19,28 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { currentUser } from '@/lib/actor';
+import { breadcrumbList, JsonLd } from '@/lib/seo/jsonld';
+import { pageMetadata } from '@/lib/seo/metadata';
+import { livePaths, ROUTES } from '@/lib/seo/routes';
 import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
+
+// The public pricing page, and the only indexable route in the dashboard group: it overrides the
+// layout's noindex. /es/precios and the rest arrive with their own copy.
+export async function generateMetadata(): Promise<Metadata> {
+  const [t, format] = await Promise.all([getTranslations('Credits'), getFormatter()]);
+  return pageMetadata({
+    locale: 'en',
+    path: ROUTES.pricing.paths.en,
+    title: t('metaTitle'),
+    description: t('metaDescription', {
+      credits: RENDER_CREDITS,
+      price: format.number(RENDER_CREDITS / 100, { style: 'currency', currency: 'USD' }),
+    }),
+    alternates: livePaths('pricing'),
+  });
+}
 
 const SIGN_UP = `/sign-up?next=${encodeURIComponent('/credits')}`;
 
@@ -110,6 +130,14 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
 
   return (
     <div className="space-y-8">
+      <JsonLd
+        graph={[
+          breadcrumbList([
+            { name: 'easyrender', path: ROUTES.home.paths.en },
+            { name: t('title'), path: ROUTES.pricing.paths.en },
+          ]),
+        ]}
+      />
       <div className="space-y-3">
         <Badge variant="outline">{t('eyebrow')}</Badge>
         <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>

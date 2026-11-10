@@ -1,24 +1,29 @@
 import { Box } from 'lucide-react';
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Separator } from '@/components/ui/separator';
+import type { Locale } from '@/i18n/config';
+import { isPublished, ROUTES } from '@/lib/seo/routes';
 
+// Links stay inside the visitor's language. The only way across is the language picker, which
+// links to the equivalent page, which is what hreflang declares (arch doc, section 6).
 const COLUMNS = [
   {
     title: 'product',
     links: [
-      { href: '/#how-it-works', key: 'howItWorks' },
-      { href: '/#try', key: 'try' },
+      { hash: '#how-it-works', key: 'howItWorks' },
+      { hash: '#try', key: 'try' },
+      { route: 'blog', key: 'guides' },
       { href: '/hub', key: 'hub' },
       { href: '/explore', key: 'gallery' },
-      { href: '/credits', key: 'pricing' },
-      { href: '/#faq', key: 'faq' },
+      { route: 'pricing', key: 'pricing' },
+      { hash: '#faq', key: 'faq' },
     ],
   },
   {
     title: 'developers',
     links: [
-      { href: '/#connect', key: 'mcp' },
+      { hash: '#connect', key: 'mcp' },
       { href: '/connectors', key: 'apiKeys' },
     ],
   },
@@ -32,13 +37,24 @@ const COLUMNS = [
   },
 ] as const;
 
+type FooterLink = (typeof COLUMNS)[number]['links'][number];
+
+/** The URL of a footer link in this language, or null when that page is not published in it. */
+function hrefFor(link: FooterLink, locale: Locale, home: string): string | null {
+  if ('hash' in link) return `${home}${link.hash}`;
+  if ('href' in link) return link.href;
+  return isPublished(link.route, locale) ? ROUTES[link.route].paths[locale] : null;
+}
+
 export async function SiteFooter() {
-  const t = await getTranslations('Footer');
+  const [t, locale] = await Promise.all([getTranslations('Footer'), getLocale()]);
+  const home = ROUTES.home.paths[locale as Locale];
+
   return (
     <footer className="border-t bg-muted/30">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.5fr_repeat(3,1fr)]">
         <div className="space-y-3">
-          <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
+          <Link href={home} className="flex items-center gap-2 font-semibold tracking-tight">
             <Box className="size-5" />
             easyrender
           </Link>
@@ -48,13 +64,17 @@ export async function SiteFooter() {
           <div key={column.title} className="space-y-3">
             <p className="text-sm font-medium">{t(column.title)}</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              {column.links.map((link) => (
-                <li key={link.key}>
-                  <Link href={link.href} className="transition-colors hover:text-foreground">
-                    {t(`links.${link.key}`)}
-                  </Link>
-                </li>
-              ))}
+              {column.links.map((link) => {
+                const href = hrefFor(link, locale as Locale, home);
+                if (!href) return null;
+                return (
+                  <li key={link.key}>
+                    <Link href={href} className="transition-colors hover:text-foreground">
+                      {t(`links.${link.key}`)}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}

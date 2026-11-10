@@ -1,6 +1,10 @@
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { DashboardNav } from '@/components/dashboard-nav';
 import { currentUser } from '@/lib/actor';
+
+// The app itself is noindex. /credits overrides this: it is the public pricing page.
+export const metadata: Metadata = { robots: { index: false, follow: true } };
 
 // The signed-in web app: a dashboard for what your agent generates, your library and connectors.
 // Credits is public too, so visitors get it without the sidebar.

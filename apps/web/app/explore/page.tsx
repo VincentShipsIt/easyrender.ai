@@ -3,10 +3,11 @@ import { getTranslations } from 'next-intl/server';
 import { GalleryGrid } from '@/components/gallery-grid';
 import { Badge } from '@/components/ui/badge';
 import { getGallery } from '@/lib/gallery';
+import { noindexMetadata } from '@/lib/seo/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Explore');
-  return { title: t('metaTitle') };
+  return noindexMetadata(t('metaTitle'));
 }
 
 export default async function ExplorePage() {

@@ -173,18 +173,34 @@ const FAQ_KEYS = [
   'freePreview',
   'failed',
   'public',
+  'cost',
 ] as const;
 
+export type FaqItem = { question: string; answer: string };
+
+/**
+ * The home FAQ as plain strings, so the accordion and the FAQPage structured data are built from
+ * one list and cannot drift apart.
+ */
+export async function faqItems(): Promise<FaqItem[]> {
+  const [t, format] = await Promise.all([getTranslations('Landing.faq'), getFormatter()]);
+  const price = format.number(RENDER_CREDITS / 100, { style: 'currency', currency: 'USD' });
+  return FAQ_KEYS.map((key) => ({
+    question: t(`items.${key}.q`),
+    answer: t(`items.${key}.a`, { credits: RENDER_CREDITS, price }),
+  }));
+}
+
 export async function Faq() {
-  const t = await getTranslations('Landing.faq');
+  const [t, items] = await Promise.all([getTranslations('Landing.faq'), faqItems()]);
   return (
     <Section id="faq" title={t('title')} narrow>
       <Accordion type="single" collapsible className="sec__column">
-        {FAQ_KEYS.map((key) => (
-          <AccordionItem key={key} value={key}>
-            <AccordionTrigger className="text-base">{t(`items.${key}.q`)}</AccordionTrigger>
+        {items.map((item) => (
+          <AccordionItem key={item.question} value={item.question}>
+            <AccordionTrigger className="text-base">{item.question}</AccordionTrigger>
             <AccordionContent className="text-muted-foreground leading-relaxed">
-              {t(`items.${key}.a`)}
+              {item.answer}
             </AccordionContent>
           </AccordionItem>
         ))}

@@ -9,6 +9,7 @@ import { DATE_FORMAT, RenderDetail } from '@/components/render-detail';
 import { RenderView } from '@/components/render-view';
 import { Button } from '@/components/ui/button';
 import { resolveActor } from '@/lib/actor';
+import { noindexMetadata } from '@/lib/seo/metadata';
 import { findShowcase } from '@/lib/showcase';
 
 export const dynamic = 'force-dynamic';
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<'/r/[id]'>): Promis
   const demo = findShowcase(id);
   const t = await getTranslations();
   const title = demo ? t(`Showcase.items.${demo.slug}.title`) : t('Render.metaTitle');
-  return { title: `${title} · easyrender` };
+  return noindexMetadata(`${title} · easyrender`);
 }
 
 export default async function RenderPage({ params }: PageProps<'/r/[id]'>) {

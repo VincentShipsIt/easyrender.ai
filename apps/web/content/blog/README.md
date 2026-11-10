@@ -7,6 +7,7 @@ Spanish.
 
 ```md
 ---
+
 group: glb-vs-usdz
 title: GLB or USDZ: which file do you need?
 description: One sentence, under about 155 characters. It is the meta description and the card.
@@ -21,14 +22,14 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
 
 ## The fields
 
-| Field | Required | What it does |
-|---|---|---|
-| `group` | yes | Ties the translations of one post together. The six files of the same post share it, and that is how hreflang and the language picker find each other. Keep it stable: changing it breaks the link between languages. |
-| `title` | yes | The `<h1>` and the `<title>` (with ` · easyrender` appended). |
-| `description` | yes | The meta description, the Open Graph description and the card text. |
-| `date` | yes | Publication date, `YYYY-MM-DD` (00:00 UTC) or a full ISO instant. |
-| `updated` | no | Shown next to the date and used as `dateModified` and `lastmod`. |
-| `keyword` | no | The target query, for the record. Not rendered. |
+| Field         | Required | What it does                                                                                                                                                                                                          |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `group`       | yes      | Ties the translations of one post together. The six files of the same post share it, and that is how hreflang and the language picker find each other. Keep it stable: changing it breaks the link between languages. |
+| `title`       | yes      | The `<h1>` and the `<title>` (with ` · easyrender` appended).                                                                                                                                                         |
+| `description` | yes      | The meta description, the Open Graph description and the card text.                                                                                                                                                   |
+| `date`        | yes      | Publication date, `YYYY-MM-DD` (00:00 UTC) or a full ISO instant.                                                                                                                                                     |
+| `updated`     | no       | Shown next to the date and used as `dateModified` and `lastmod`.                                                                                                                                                      |
+| `keyword`     | no       | The target query, for the record. Not rendered.                                                                                                                                                                       |
 
 ## Publishing one post a day in six languages
 
