@@ -3,7 +3,7 @@
   "private": true,
   "packageManager": "bun@1.4.2",
   "workspaces": [
-    "apps/*",
+    "apps/web",
     "packages/*"
   ],
   "scripts": {
@@ -14,11 +14,17 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "db:push": "bun run --cwd packages/db db:push",
-    "db:generate": "bun run --cwd packages/db generate"
+    "db:generate": "bun run --cwd packages/db generate",
+    "preflight": "bun scripts/preflight.ts",
+    "check:ui-guards": "bun scripts/check-ui-guards.ts",
+    "check:secrets": "bun scripts/check-secrets.ts",
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
     "turbo": "2.11.10",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7"
   }
 }

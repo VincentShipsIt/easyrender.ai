@@ -1,0 +1,73 @@
+name: CI
+run-name: "CI · ${{ github.event.pull_request.title }}"
+
+# Production deploys through the Vercel Git integration on merge to main. This workflow only checks
+# pull requests; it never deploys. "CI Gate" is the one required check: it fails if any job fails.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Prisma needs a URL to generate the client; nothing connects to it in these checks.
+      DATABASE_URL: postgresql://localhost:5432/easyrender
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Biome
+        run: bunx biome check .
+      - name: UI guards
+        run: bun run check:ui-guards
+      - name: Secrets
+        run: bun run check:secrets
+      - name: Typecheck
+        run: bun run typecheck
+      - name: Tests
+        run: bun run test
+
+  mobile:
+    name: Mobile typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+
+  gate:
+    name: CI Gate
+    if: ${{ always() }}
+    needs: [checks, mobile]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every job to pass
+        run: |
+          if [ "${{ needs.checks.result }}" != "success" ] || [ "${{ needs.mobile.result }}" != "success" ]; then
+            echo "checks: ${{ needs.checks.result }}, mobile: ${{ needs.mobile.result }}"
+            exit 1
+          fi

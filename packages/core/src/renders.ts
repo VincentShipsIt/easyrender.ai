@@ -3,14 +3,21 @@ import {
   BUILD_MODEL,
   buildCostUsd,
   buildRequest,
+  checkGlb,
+  checkNote,
+  checkPhoto,
+  checkSheet,
+  cleanNote,
   createReplicate,
   cutCells,
   download,
   findGlbUrl,
   isSettled,
+  loadHarness,
   RENDER_CREDITS,
   SHEET_CREDITS,
   SHEET_MODEL,
+  selectSkillFrom,
   sheetOutputUrl,
   sheetRequest,
 } from '@easyrender/harness';
@@ -27,7 +34,10 @@ export type RenderSource = 'web' | 'mcp' | 'api';
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const DAY_MS = 24 * 60 * 60 * 1000;
+// A sheet takes ~1 minute and a 3D build ~2: anything still running after this has been lost.
+const STALE_MS = 45 * 60 * 1000;
 
+const harness = () => loadHarness({ token: config.harnessToken() });
 const replicate = () => createReplicate(config.replicateToken());
 const extension = (contentType: string) =>
   contentType.split('/')[1]?.replace('jpeg', 'jpg') ?? 'bin';
@@ -43,6 +53,12 @@ export const isListed = (render: Pick<Render, 'isPublic' | 'status' | 'glbKey'>)
 
 export const canView = (render: Render, actor: Actor) =>
   canAccess(render, actor) || isListed(render);
+
+// Turns a failed harness check into the API error the caller sees.
+function enforce(check: Awaited<ReturnType<typeof checkPhoto>>, status = 422) {
+  if (!check.ok) throw new AppError(check.message, status, check.code);
+  return check.warnings;
+}
 
 // Each preview costs a real sheet generation, so visitors get a small daily allowance.
 async function assertPreviewAllowance(actor: Actor) {
@@ -92,11 +108,15 @@ export async function createDraft(input: {
   if (input.bytes.byteLength > MAX_UPLOAD_BYTES) {
     throw new AppError('Photo is larger than 4 MB', 413, 'too_large');
   }
+  // Guardrails first: a bad photo or note is refused before it uses an allowance or a generation.
+  const warnings = enforce(await checkPhoto(input.bytes));
+  enforce(checkNote(input.prompt), 400);
+  if (warnings.length > 0) console.warn(`photo warnings: ${warnings.join(', ')}`);
   await assertPreviewAllowance(input.actor);
 
   const ext = extension(input.contentType);
   const sourceKey = await putFile(`sources/source.${ext}`, input.bytes, input.contentType);
-  const prompt = input.prompt?.trim().slice(0, 500) || null;
+  const prompt = cleanNote(input.prompt) || null;
   const render = await db().render.create({
     data: {
       userId: input.actor.userId ?? null,
@@ -114,7 +134,14 @@ export async function createDraft(input: {
   try {
     const client = replicate();
     const sourceUrl = await client.upload(input.bytes, `source.${ext}`, input.contentType);
-    const request = sheetRequest(sourceUrl, prompt);
+    const recipe = await harness();
+    const request = sheetRequest(
+      sourceUrl,
+      prompt,
+      selectSkillFrom(recipe.skills, render.name, prompt),
+      recipe.sheet,
+      recipe.sheetPrompt,
+    );
     const prediction = await client.start(
       request.path,
       request.body,
@@ -154,13 +181,25 @@ export async function advance(id: string): Promise<Render | null> {
   const render = await db().render.findUnique({ where: { id } });
   if (!render) return null;
 
+  const stale = Date.now() - render.updatedAt.getTime() > STALE_MS;
+
   try {
+    // Never started (the request died between claiming the render and starting Replicate).
+    if (stale && !render.sheetPredictionId && !render.buildPredictionId) {
+      throw new Error('never started');
+    }
     if (render.status === 'drafting' && render.sheetPredictionId) {
       const prediction = await replicate().get(render.sheetPredictionId);
-      if (!isSettled(prediction.status)) return render;
+      if (!isSettled(prediction.status)) {
+        if (stale) throw new Error('angle sheet timed out');
+        return render;
+      }
       const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `sheet ${prediction.status}`);
-      const sheetKey = await putFile('sheets/sheet.png', await download(url), 'image/png');
+      const sheet = await download(url);
+      const quality = await checkSheet(sheet, (await harness()).limits);
+      if (!quality.ok) throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
+      const sheetKey = await putFile('sheets/sheet.png', sheet, 'image/png');
       const { count } = await db().render.updateMany({
         where: { id, status: 'drafting' },
         data: { status: 'preview_ready', sheetKey, costUsd: { increment: SHEET_MODEL.costUsd } },
@@ -170,10 +209,16 @@ export async function advance(id: string): Promise<Render | null> {
 
     if (render.status === 'rendering' && render.buildPredictionId) {
       const prediction = await replicate().get(render.buildPredictionId);
-      if (!isSettled(prediction.status)) return render;
+      if (!isSettled(prediction.status)) {
+        if (stale) throw new Error('3D render timed out');
+        return render;
+      }
       const url = prediction.status === 'succeeded' ? findGlbUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `${BUILD_MODEL.name} ${prediction.status}`);
-      const glbKey = await putFile('models/model.glb', await download(url), 'model/gltf-binary');
+      const glb = await download(url);
+      const quality = checkGlb(glb);
+      if (!quality.ok) throw new Error(`model rejected (${quality.code}): ${quality.message}`);
+      const glbKey = await putFile('models/model.glb', glb, 'model/gltf-binary');
       await db().render.updateMany({
         where: { id, status: 'rendering' },
         data: {
@@ -239,7 +284,7 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     }
     const prediction = await client.start(
       '/predictions',
-      buildRequest(images),
+      buildRequest(images, (await harness()).build),
       config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
     );
     return await db().render.update({ where: { id }, data: { buildPredictionId: prediction.id } });
@@ -297,7 +342,14 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
         ? 'image/webp'
         : 'image/jpeg';
     const sourceUrl = await client.upload(bytes, `source.${extension(contentType)}`, contentType);
-    const request = sheetRequest(sourceUrl, render.prompt);
+    const recipe = await harness();
+    const request = sheetRequest(
+      sourceUrl,
+      render.prompt,
+      selectSkillFrom(recipe.skills, render.name, render.prompt),
+      recipe.sheet,
+      recipe.sheetPrompt,
+    );
     const prediction = await client.start(
       request.path,
       request.body,

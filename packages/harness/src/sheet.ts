@@ -1,5 +1,7 @@
 import sharp from 'sharp';
-import { SHEET_MODEL } from './models';
+import { DEFAULT_SHEET_SETTINGS, type SheetSettings } from './models';
+import { cleanNote } from './note';
+import { DEFAULT_SKILL, type RenderSkill } from './skills';
 
 // Reading order of the cells, left to right, top to bottom.
 export const VIEWS = [
@@ -16,29 +18,39 @@ export const VIEWS = [
 
 export const SHEET_PROMPT = `Using the product in the reference photo, create a 3x3 turnaround sheet of this exact object.
 Keep the same shape, proportions, materials, colour and every detail. Do not add, remove or redesign any part. Show the full object in every cell, centred, at the same scale, with a small margin.
+Every cell is a different camera position: the camera circles the object in 45 degree steps, so each cell shows the surface texture and details from its own side. Never repeat or copy a view.
 Row 1: straight-on front view, front-right three-quarter view, right side view.
 Row 2: back-right three-quarter view, straight-on back view, back-left three-quarter view.
 Row 3: left side view, front-left three-quarter view, top-down view.
 Plain pure white background, even soft studio light, no cast shadows. Nine equal square cells with no text, labels, grid lines or borders.`;
 
-const MAX_USER_PROMPT = 500;
-
-// The user's note is appended as guidance; it never replaces the turnaround instructions.
-export function sheetPrompt(userPrompt?: string | null): string {
-  const note = userPrompt?.trim().slice(0, MAX_USER_PROMPT);
-  return note ? `${SHEET_PROMPT}\nAdditional notes about the object: ${note}` : SHEET_PROMPT;
+// The skill adds category rules and the user's note is appended as guidance; neither replaces
+// the turnaround instructions.
+export function sheetPrompt(
+  userPrompt?: string | null,
+  skill: RenderSkill = DEFAULT_SKILL,
+  template: string = SHEET_PROMPT,
+): string {
+  const note = cleanNote(userPrompt);
+  const parts = [template, `Product guidance: ${skill.guidance}`];
+  if (note) parts.push(`Additional notes about the object: ${note}`);
+  return parts.join('\n');
 }
 
-export function sheetRequest(sourceUrl: string, userPrompt?: string | null) {
+export function sheetRequest(
+  sourceUrl: string,
+  userPrompt?: string | null,
+  skill: RenderSkill = DEFAULT_SKILL,
+  settings: SheetSettings = DEFAULT_SHEET_SETTINGS,
+  template: string = SHEET_PROMPT,
+) {
   return {
-    path: SHEET_MODEL.path,
+    path: settings.path,
     body: {
       input: {
-        prompt: sheetPrompt(userPrompt),
+        ...settings.input,
+        prompt: sheetPrompt(userPrompt, skill, template),
         image_input: [sourceUrl],
-        aspect_ratio: '1:1',
-        resolution: '2K',
-        output_format: 'png',
       },
     },
   };

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Biome on staged files, then the secret scan on what is staged.
+export PATH="$HOME/.bun/bin:$PATH"
+
+if ! command -v bun >/dev/null 2>&1; then
+  echo "Bun is required for the pre-commit hook. Install Bun or add it to PATH." >&2
+  exit 127
+fi
+
+bunx lint-staged || exit 1
+bun scripts/check-secrets.ts --staged

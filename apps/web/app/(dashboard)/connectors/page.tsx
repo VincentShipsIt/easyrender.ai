@@ -1,5 +1,5 @@
 import { config, listApiKeys } from '@easyrender/core';
-import { Bot, Globe, ShoppingBag, Store } from 'lucide-react';
+import { Globe, ShoppingBag, Store } from 'lucide-react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
@@ -15,7 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const SOON = [
-  { icon: Bot, key: 'oneClick' },
   { icon: ShoppingBag, key: 'shopify' },
   { icon: Store, key: 'woo' },
   { icon: Globe, key: 'listings' },

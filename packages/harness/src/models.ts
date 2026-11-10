@@ -23,8 +23,23 @@ export const BUILD_MODEL = {
   },
 } as const;
 
-export function buildRequest(images: string[]) {
-  return { version: BUILD_MODEL.version, input: { ...BUILD_MODEL.input, images } };
+// The tunable part of each step. The private harness can override these; the cost and the model
+// name stay in code so pricing never drifts from what is actually run.
+export type SheetSettings = { path: string; input: Record<string, unknown> };
+export type BuildSettings = { version: string; input: Record<string, unknown> };
+
+export const DEFAULT_SHEET_SETTINGS: SheetSettings = {
+  path: SHEET_MODEL.path,
+  input: { aspect_ratio: '1:1', resolution: '2K', output_format: 'png' },
+};
+
+export const DEFAULT_BUILD_SETTINGS: BuildSettings = {
+  version: BUILD_MODEL.version,
+  input: { ...BUILD_MODEL.input },
+};
+
+export function buildRequest(images: string[], settings: BuildSettings = DEFAULT_BUILD_SETTINGS) {
+  return { version: settings.version, input: { ...settings.input, images } };
 }
 
 export function buildCostUsd(predictSeconds: number | undefined): number {

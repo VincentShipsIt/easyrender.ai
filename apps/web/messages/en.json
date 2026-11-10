@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "easyrender: 3D renders on autopilot with your agent",
-    "description": "Connect easyrender to your AI agent over MCP and turn product and listing photos into 3D models you can spin, embed and view in AR."
+    "title": "easyrender: the 3D engine to sell, design and play",
+    "description": "Turn one product photo into a 3D model with real scale, materials and physics. Use it in your store with AR, in architectural renders and in game engines, or let your AI agent do it over MCP."
   },
   "LocaleSwitcher": {
     "switchTo": "Switch to {language}"
@@ -9,9 +9,9 @@
   "Header": {
     "nav": {
       "howItWorks": "How it works",
+      "hub": "Hub",
       "connect": "Connect",
       "try": "Try it",
-      "gallery": "Gallery",
       "pricing": "Pricing"
     },
     "credits": "credits",
@@ -28,6 +28,7 @@
     "links": {
       "howItWorks": "How it works",
       "try": "Try it",
+      "hub": "Hub",
       "gallery": "Gallery",
       "pricing": "Pricing",
       "faq": "FAQ",
@@ -41,22 +42,13 @@
     "pricesNote": "Prices in USD. Credits never expire."
   },
   "Home": {
-    "hero": {
-      "badge": "MCP server for photo to 3D",
-      "title": "Run your 3D renders on autopilot with your agent",
-      "description": "Connect easyrender to your AI agent once. It turns product and listing photos into real 3D models while you work, and every model lands in your library.",
-      "connect": "Connect your agent",
-      "try": "Try it with a photo",
-      "worksWith": "Works with {clients} and any MCP client."
-    },
     "connect": {
-      "eyebrow": "Connect",
-      "title": "Plug it into your agent in 30 seconds",
+      "title": "Or let your agent do it",
       "description": "easyrender speaks MCP, so any agent that supports it can create renders, check them and build 3D models on your credits.",
       "steps": {
         "key": {
           "title": "Get your key",
-          "body": "Create a free account. Your API key is ready on the Connectors page."
+          "body": "Create a free account and add easyrender to claude.ai with one URL, or grab an API key for Claude Code and other agents."
         },
         "paste": {
           "title": "Paste it in your agent",
@@ -68,51 +60,16 @@
         }
       },
       "openConnectors": "Open your connectors",
-      "getKey": "Get your free API key"
+      "getKey": "Get your free API key",
+      "worksWith": "Works with {clients} and any MCP client."
     },
     "try": {
-      "eyebrow": "Try it",
-      "title": "Or try one photo right here",
-      "description": "Drop a photo of furniture, decor or a building exterior. The preview is free; create an account to see it."
-    },
-    "gallery": {
-      "eyebrow": "Gallery",
-      "title": "Made with easyrender",
-      "description": "Real models generated from a single photo. Open one to see the prompt, the input and every angle.",
-      "exploreAll": "Explore all"
+      "title": "Try it with one photo, right here",
+      "description": "Drop a photo of furniture, decor or a product. The preview is free; create an account to see it."
     }
   },
   "Landing": {
-    "realEstate": {
-      "eyebrow": "Built for real estate",
-      "title": "3D for listings, without the 3D team",
-      "description": "Works best today on furniture, decor and building exteriors. Full rooms are on the way.",
-      "audiences": {
-        "agents": {
-          "title": "Agents and brokers",
-          "body": "Make a listing stand out with exteriors and key pieces buyers can spin and walk around."
-        },
-        "stagers": {
-          "title": "Home stagers",
-          "body": "Turn your furniture inventory into 3D once, then drop it into every virtual staging job."
-        },
-        "builders": {
-          "title": "Developers and builders",
-          "body": "Show off-plan facades and show-home furniture before the photos exist."
-        },
-        "stores": {
-          "title": "Furniture and decor stores",
-          "body": "Give every product page a 3D viewer and a “view in your room” button."
-        }
-      },
-      "perks": {
-        "embed": "Embeddable 3D viewer for any listing site",
-        "ar": "AR on iPhone and Android, no app",
-        "api": "MCP server and REST API for your agents"
-      }
-    },
     "pricing": {
-      "eyebrow": "Pricing",
       "title": "Pay per model. Credits never expire.",
       "description": "Previews are free. A finished 3D model costs {credits} credits ({price}).",
       "seeAll": "See all pricing",
@@ -162,7 +119,6 @@
       }
     },
     "faq": {
-      "eyebrow": "FAQ",
       "title": "Questions, answered",
       "items": {
         "connect": {
@@ -198,12 +154,6 @@
           "a": "Finished models appear in the public gallery by default. You can hide any of yours from its page at any time."
         }
       }
-    },
-    "finalCta": {
-      "title": "Hand your 3D renders to your agent",
-      "description": "Connect once. Previews are free, and you only pay for the models you keep.",
-      "connect": "Connect your agent",
-      "try": "Try it with a photo"
     }
   },
   "AgentDemo": {
@@ -217,34 +167,17 @@
     "done": "Done. 24 models are in your easyrender library, with GLB and USDZ for AR. Here is the first one:",
     "modelAlt": "3D model: {title}"
   },
-  "FlatTo3D": {
-    "eyebrow": "How it works",
-    "title": "From a flat photo to a 3D model",
-    "steps": {
-      "photo": {
-        "title": "One flat photo",
-        "body": "Your agent grabs a product photo from your catalogue, a listing or a supplier email. No scan, no studio."
-      },
-      "shape": {
-        "title": "Read the shape",
-        "body": "easyrender reads depth, proportions and materials from that single image."
-      },
-      "sides": {
-        "title": "Build every side",
-        "body": "A clean mesh is rebuilt all the way round, even the sides the camera never saw."
-      },
-      "model": {
-        "title": "A real 3D model",
-        "body": "Textured GLB and USDZ, saved to your library. Spin it on a listing or open it in AR."
-      }
-    },
-    "animationLabel": "Animation: a flat photo ({title}) turning into a 3D model as you scroll."
-  },
   "McpSetup": {
     "terminal": "Run in your terminal",
     "addTo": "Add to {file}",
     "copy": "Copy",
-    "copied": "Copied"
+    "copied": "Copied",
+    "claudeAi": {
+      "one": "Open claude.ai → Settings → Connectors → Add custom connector.",
+      "two": "Paste this URL as the connector URL.",
+      "three": "Click Connect, sign in to easyrender and allow access. No key needed.",
+      "note": "The same sign-in works for any MCP client that supports OAuth. Each connection creates a key you can revoke below."
+    }
   },
   "Gallery": {
     "modelAlt": "3D model: {title}",
@@ -482,10 +415,6 @@
     "more": "More connectors",
     "comingSoon": "Coming soon",
     "soon": {
-      "oneClick": {
-        "title": "One-click connect",
-        "body": "Add easyrender to Claude.ai or ChatGPT with a sign-in instead of a key."
-      },
       "shopify": {
         "title": "Shopify",
         "body": "Sync products and publish 3D viewers to product pages."
@@ -510,8 +439,8 @@
     "connect": {
       "title": "Connect your agent",
       "created": "Your new key is filled in below. Copy the snippet now: the key will not be shown again.",
-      "noKeys": "Create a key, then paste the snippet into your agent.",
-      "hasKeys": "Paste the snippet into your agent and replace {placeholder} with one of your keys."
+      "noKeys": "Use the claude.ai tab to connect with a sign-in. For other agents, create a key, then paste the snippet.",
+      "hasKeys": "Paste the snippet into your agent and replace {placeholder} with one of your keys. The claude.ai tab needs no key."
     },
     "createMyKey": "Create my key",
     "keys": {
@@ -619,5 +548,314 @@
     },
     "google": "Continue with Google",
     "or": "or"
+  },
+  "OAuth": {
+    "title": "Connect {client} to easyrender?",
+    "description": "{client} will be able to use easyrender on your behalf. You will be sent back to {host} afterwards.",
+    "can": {
+      "create": "Upload photos and start previews",
+      "read": "Read your renders and their status",
+      "spend": "Build 3D models, which spends your credits"
+    },
+    "revoke": "You can disconnect it any time by revoking its key on the Connectors page.",
+    "approve": "Allow access",
+    "deny": "Cancel",
+    "invalidTitle": "This connection request is not valid",
+    "invalidBody": "Go back to the app you came from and try connecting again."
+  },
+  "Studio": {
+    "hero": {
+      "title": "The 3D engine to sell, design and play",
+      "cta": "Get started",
+      "note": "Free preview · no card",
+      "stackLabel": "One object seen through five passes of the engine. Drag to turn it.",
+      "photo": "Input photo",
+      "mesh": "Mesh",
+      "normals": "Normals",
+      "depth": "Depth",
+      "render": "PBR render",
+      "element": "Element",
+      "size": "Size",
+      "mass": "Mass",
+      "hint": "Drag to turn"
+    },
+    "pipeline": {
+      "lead": "Upload one photo. The engine does the rest.",
+      "body": "It rebuilds your product's geometry, materials and real scale, and shows you every angle before you pay.",
+      "photo": "Input photo",
+      "placeholder": "Describe your product",
+      "generate": "Generate",
+      "steps": {
+        "angles": "Angles",
+        "mesh": "Mesh",
+        "texture": "Texture",
+        "ready": "Ready"
+      },
+      "noteTitle": "Free preview",
+      "noteBody": "The engine draws the object from every side before it builds the mesh. If something is off, you see it before you spend a credit.",
+      "noteLink": "Try it with a photo"
+    },
+    "industries": {
+      "lead": "One model. Three industries.",
+      "body": "The same piece is tried in a shopper's living room, dropped into a studio's render and falls with its real weight inside a game.",
+      "store": {
+        "eyebrow": "E-commerce",
+        "title": "One button on your product page",
+        "body": "“View in your space” opens the shopper's camera and places the product at real scale. No app, on iPhone and Android.",
+        "link": "Talk to us about AR for stores",
+        "domain": "yourstore.com",
+        "meta": "Grey upholstery · {dims}",
+        "button": "View in your space",
+        "searching": "Finding the floor…",
+        "placed": "Placed · 1:1 scale"
+      },
+      "interior": {
+        "eyebrow": "Architecture and interiors",
+        "title": "Real pieces for your renders",
+        "body": "Architects, interior designers and lighting designers bring in furniture and fixtures that exist and that the client can buy.",
+        "link": "Explore the hub for studios",
+        "kelvin": "Colour temperature"
+      },
+      "games": {
+        "eyebrow": "Games",
+        "title": "Props with physics built in",
+        "body": "Every element reaches Unity or Unreal with its collider, mass and friction. Drop it in the scene and it behaves.",
+        "link": "Connect it over the API or MCP",
+        "rigidbody": "Rigidbody",
+        "dynamic": "Dynamic",
+        "mass": "Mass",
+        "collider": "Collider",
+        "friction": "Friction",
+        "live": "Live simulation"
+      }
+    },
+    "tools": {
+      "lead": "It looks real. It behaves real.",
+      "body": "Every element ships with what an engine needs to use it, not only with how it looks.",
+      "link": "Explore the spec sheet",
+      "topology": "Topology",
+      "triangles": "Triangles",
+      "material": "PBR material",
+      "roughness": "Roughness",
+      "metalness": "Metalness",
+      "scale": "Real scale",
+      "collider": "Collider",
+      "box": "Box",
+      "hull": "Hull",
+      "mesh": "Mesh",
+      "vertexCount": "{count} vertices",
+      "triangleCount": "{count} triangles",
+      "physics": "Mass and contact",
+      "mass": "Mass",
+      "friction": "Friction",
+      "restitution": "Bounce",
+      "light": "Project light",
+      "temperature": "Temperature",
+      "uv": "UVs and textures",
+      "export": "Export",
+      "formats": {
+        "glb": "Web · Android",
+        "usdz": "iPhone · Vision Pro",
+        "fbx": "Unity · Unreal",
+        "obj": "Render · CAD"
+      }
+    },
+    "wheel": {
+      "lead": "It enters the hub once. It works everywhere.",
+      "body": "The store uploads its catalogue, the studio uses it in its projects and the client ends up buying the piece they saw in the render.",
+      "link": "Explore the hub",
+      "photo": "Input photo",
+      "chip": "Available in the store",
+      "stops": {
+        "store": {
+          "title": "The store uploads a photo",
+          "body": "of every product in its catalogue"
+        },
+        "hub": {
+          "title": "The hub keeps the model",
+          "body": "with its size, materials and physics"
+        },
+        "studio": {
+          "title": "A studio uses it",
+          "body": "in a render, a floor plan or a level"
+        },
+        "client": {
+          "title": "The client buys the piece",
+          "body": "and more stores want to be in"
+        }
+      }
+    },
+    "proof": {
+      "title": "The 3D catalogue that was missing",
+      "quote": "There are not enough 3D objects with real physics. The catalogues that exist are small, and every format lives on its own island.",
+      "by": "Why we are building easyrender",
+      "byline": "A universe of elements that works with everything",
+      "stat": "≈ 3 min",
+      "statBody": "From one catalogue photo to a textured model, ready to spin, embed and open in AR.",
+      "marquee": "Formats and tools it works with"
+    },
+    "cta": {
+      "title": "Your catalogue no longer has to wait for a 3D team",
+      "button": "Get started"
+    },
+    "shelf": {
+      "lead": "Explore the hub.",
+      "body": "Furniture, lighting, decor and props, ready to use.",
+      "link": "See every element",
+      "count": "{current} of {total}",
+      "previous": "Previous",
+      "next": "Next",
+      "elements": "{count, plural, one {# element} other {# elements}}"
+    },
+    "lens": {
+      "label": "{name} drawn in four readings at once: mesh, collider, surface normals and textured render. The finished render follows your pointer.",
+      "layers": {
+        "mesh": "Mesh",
+        "physics": "Physics",
+        "normals": "Normals",
+        "texture": "Texture"
+      },
+      "hint": "Move the pointer",
+      "hintTouch": "Drag across the model"
+    }
+  },
+  "Catalog": {
+    "items": {
+      "swivel-chair": {
+        "name": "Swivel armchair",
+        "prompt": "Grey upholstered swivel armchair"
+      },
+      "armchair": {
+        "name": "Bouclé lounge armchair",
+        "prompt": "Bouclé lounge armchair with a brushed steel frame"
+      },
+      "coffee-table": {
+        "name": "Round coffee table",
+        "prompt": "Round solid wood coffee table"
+      },
+      "bedside-table": {
+        "name": "Bedside table",
+        "prompt": "Solid wood bedside table with a drawer"
+      },
+      "vase": {
+        "name": "Stoneware vase",
+        "prompt": "Matte stoneware vase"
+      },
+      "clay-vase": {
+        "name": "Clay vase",
+        "prompt": "Aged clay vase"
+      },
+      "sofa": {
+        "name": "Three-seat sofa",
+        "prompt": "Low three-seat sofa in charcoal bouclé"
+      },
+      "lamp": {
+        "name": "Brass table lamp",
+        "prompt": "Mushroom table lamp in brushed brass"
+      },
+      "cactus": {
+        "name": "Planter with cactus",
+        "prompt": "Round concrete planter with a columnar cactus"
+      },
+      "sneaker": {
+        "name": "Leather sneaker",
+        "prompt": "Low-top white leather sneaker with a gum sole"
+      },
+      "espresso": {
+        "name": "Espresso machine",
+        "prompt": "Home espresso machine in stainless steel"
+      },
+      "crate": {
+        "name": "Wooden crate",
+        "prompt": "Pine shipping crate with steel corner braces"
+      },
+      "barrel": {
+        "name": "200 L steel drum",
+        "prompt": "200-litre steel drum painted oxide red"
+      }
+    },
+    "categories": {
+      "furniture": "Furniture",
+      "decor": "Decor",
+      "lighting": "Lighting",
+      "product": "Products",
+      "props": "Props",
+      "outdoor": "Outdoor"
+    },
+    "materials": {
+      "upholstery": "Upholstery",
+      "wood": "Solid wood",
+      "ceramic": "Ceramic",
+      "metal": "Metal",
+      "steel": "Steel",
+      "concrete": "Concrete",
+      "leather": "Leather",
+      "polymer": "Polymer"
+    },
+    "colliders": {
+      "box": "Box",
+      "cylinder": "Cylinder",
+      "hull": "Convex hull"
+    },
+    "engines": {
+      "trellis": "TRELLIS",
+      "trellisSheet": "TRELLIS + angle sheet",
+      "tripo": "Tripo H3.1"
+    }
+  },
+  "Hub": {
+    "metaTitle": "Hub · easyrender",
+    "metaDescription": "Furniture, lighting, decor and props in 3D with real measurements, materials, a collider and mass. Ready for your store, your render and your engine.",
+    "eyebrow": "Hub · {count, plural, one {# element} other {# elements}}",
+    "title": "Every element, ready to use",
+    "description": "Each piece comes with real measurements, materials, a collider and mass. Take it to your store, your render or your engine.",
+    "all": "All",
+    "categoryLabel": "Category",
+    "search": "Search elements",
+    "viewLabel": "Thumbnail view",
+    "render": "Render",
+    "mesh": "Mesh",
+    "openSheet": "Open the sheet for {name}",
+    "viewSheet": "View sheet",
+    "emptyQuery": "Nothing matches “{query}”. Try another word or clear the filter.",
+    "emptyCategory": "There are no elements in {category} yet.",
+    "cta": {
+      "title": "Have a catalogue? Add it to the hub",
+      "button": "Get started"
+    },
+    "sheet": {
+      "passLabel": "Engine pass",
+      "passes": {
+        "beauty": "Render",
+        "wire": "Mesh",
+        "normal": "Normals",
+        "depth": "Depth",
+        "collider": "Collider"
+      },
+      "hint": "Drag to turn · scroll to zoom",
+      "viewer": "3D viewer. Arrow keys turn it, plus and minus zoom.",
+      "close": "Close sheet",
+      "size": "Size",
+      "sizeNote": "Width × height × depth",
+      "triangles": "Triangles",
+      "lods": "LOD 1: {lod1} · LOD 2: {lod2}",
+      "file": "File",
+      "fileNote": "GLB with a compressed texture",
+      "material": "Material",
+      "mass": "Estimated mass",
+      "contact": "Contact",
+      "friction": "Friction {value}",
+      "restitution": "Bounce {value}",
+      "collider": "Collider",
+      "hullNote": "{count} vertices",
+      "primitive": "Primitive",
+      "formats": "Formats",
+      "photo": "Input photo",
+      "engine": "Generated with {engine}",
+      "download": "Download GLB",
+      "embed": "Copy embed code",
+      "copied": "Code copied",
+      "copyFailed": "Could not copy. Try again"
+    }
   }
 }
