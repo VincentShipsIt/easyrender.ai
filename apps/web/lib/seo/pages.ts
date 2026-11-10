@@ -10,6 +10,7 @@ import {
   faqPage,
   organization,
   softwareApplication,
+  webPage,
   website,
 } from './jsonld';
 import { pageMetadata } from './metadata';
@@ -29,7 +30,7 @@ export async function homeMetadata(locale: Locale): Promise<Metadata> {
   });
 }
 
-/** Organization, WebSite, SoftwareApplication and the FAQ, cross-referenced by @id. */
+/** Organization, WebSite, WebPage, SoftwareApplication and the FAQ, cross-referenced by @id. */
 export async function homeGraph(locale: Locale) {
   const [t, items] = await Promise.all([
     getTranslations({ locale, namespace: 'Home.meta' }),
@@ -38,6 +39,7 @@ export async function homeGraph(locale: Locale) {
   return [
     organization(),
     website(locale),
+    webPage(locale, ROUTES.home.paths[locale], t('title'), t('description')),
     softwareApplication(locale, t('description')),
     faqPage(items),
   ];

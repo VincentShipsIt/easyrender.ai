@@ -17,6 +17,7 @@ export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
-// One social card for now: a frame of the engine's own output. No width/height is declared
-// because a wrong pair is worse than none.
-export const OG_IMAGE = '/studio/interior.jpg';
+// The social card: one input photo beside the free angle sheet easyrender drew from it, both real
+// output from public/showcase. 1200x630, the size Open Graph and summary_large_image expect.
+export const OG_IMAGE = '/og.jpg';
+export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const;

@@ -39,6 +39,7 @@ export function StudioHero({ ctaHref }: { ctaHref: string }) {
           {/* biome-ignore lint/performance/noImgElement: swapped by the 3D code as the object changes */}
           <img
             data-er="photo"
+            fetchPriority="high"
             src={photoUrl(FIRST.id)}
             alt=""
             width={720}

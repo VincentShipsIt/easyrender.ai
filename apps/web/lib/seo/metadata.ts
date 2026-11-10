@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { type Locale, OG_LOCALE } from '@/i18n/config';
 import { hreflangFor } from './routes';
-import { absoluteUrl, OG_IMAGE, SITE_NAME } from './site';
+import { absoluteUrl, OG_IMAGE, OG_IMAGE_SIZE, SITE_NAME } from './site';
 
 // One place that builds the head of every marketing page: a self-referencing absolute canonical,
 // the hreflang block of its group, and Open Graph and Twitter cards that match the page rather
@@ -45,7 +45,13 @@ export function pageMetadata({
       locale: OG_LOCALE[locale],
       title,
       description,
-      images: [{ url: absoluteUrl(image), alt: title }],
+      images: [
+        {
+          url: absoluteUrl(image),
+          alt: title,
+          ...(image === OG_IMAGE ? OG_IMAGE_SIZE : {}),
+        },
+      ],
       ...(type === 'article' ? { publishedTime, modifiedTime } : {}),
     },
     twitter: {

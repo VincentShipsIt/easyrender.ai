@@ -10,6 +10,7 @@ type Thing = Record<string, unknown>;
 
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
+const SOFTWARE_ID = `${SITE_URL}/#software`;
 
 // No logo and no sameAs: the site has neither a logo file nor a confirmed social profile, and a
 // structured-data property pointing at a 404 is worse than a missing one.
@@ -40,7 +41,7 @@ export function website(locale: Locale): Thing {
 export function softwareApplication(locale: Locale, description: string): Thing {
   return {
     '@type': 'SoftwareApplication',
-    '@id': `${SITE_URL}/#software`,
+    '@id': SOFTWARE_ID,
     name: SITE_NAME,
     url: SITE_URL,
     applicationCategory: 'DesignApplication',
@@ -66,6 +67,25 @@ export function softwareApplication(locale: Locale, description: string): Thing 
         url: absoluteUrl('/credits'),
       },
     ],
+  };
+}
+
+/**
+ * The page itself, so the graph says which page in which language the FAQ and the product belong
+ * to. Each locale's home is its own WebPage under the one WebSite.
+ */
+export function webPage(locale: Locale, path: string, name: string, description: string): Thing {
+  const url = absoluteUrl(path);
+  return {
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name,
+    description,
+    inLanguage: HTML_LANG[locale],
+    isPartOf: { '@id': WEBSITE_ID },
+    about: { '@id': SOFTWARE_ID },
+    publisher: { '@id': ORGANIZATION_ID },
   };
 }
 
