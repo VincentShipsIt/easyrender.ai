@@ -62,13 +62,13 @@ Resources:
         Comment: easyrender.ai assets
         HttpVersion: http2and3
         PriceClass: PriceClass_100
-        Aliases: !If [HasDomain, [!Ref CdnDomain], !Ref 'AWS::NoValue']
+        Aliases: !If [HasDomain, [!Ref CdnDomain], !Ref "AWS::NoValue"]
         ViewerCertificate: !If
           - HasDomain
           - AcmCertificateArn: !Ref CertificateArn
             SslSupportMethod: sni-only
             MinimumProtocolVersion: TLSv1.2_2021
-          - !Ref 'AWS::NoValue'
+          - !Ref "AWS::NoValue"
         Origins:
           - Id: assets
             DomainName: !GetAtt AssetsBucket.RegionalDomainName
