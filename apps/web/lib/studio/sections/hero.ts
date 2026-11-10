@@ -46,8 +46,6 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
     photo: part<HTMLImageElement>(root, 'photo'),
     tris: part(root, 'tris'),
     name: part(root, 'name'),
-    dims: part(root, 'dims'),
-    mass: part(root, 'mass'),
   };
 
   type PassView = { view: View; pivot: THREE.Group; fit: Fit | null; blob: THREE.Mesh | null };
@@ -120,8 +118,6 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
     ui.photo.src = photoUrl(id);
     ui.tris.textContent = fmt.int(item.wireTris);
     ui.name.textContent = names[id] ?? id;
-    ui.dims.textContent = fmt.dims(item);
-    ui.mass.textContent = fmt.kg(item.mass);
   }
 
   let index = 0;

@@ -168,7 +168,7 @@
         },
         "cost": {
           "q": "How much does a 3D model cost?",
-          "a": "Previews are free. A finished 3D model costs {credits} credits, and credits cost $0.01 each, so a model is {price}. Credits never expire. The pricing page lists every pack."
+          "a": "Previews are free. A finished 3D model costs {credits} credits, and credits cost {unit} each, so a model is {price}. Credits never expire. The pricing page lists every pack."
         }
       }
     }
@@ -528,7 +528,7 @@
       "cta": "Book a call"
     },
     "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for 5,000 credits a month."
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month."
   },
   "PaygPicker": {
     "custom": "Or enter an amount",
@@ -591,8 +591,6 @@
       "depth": "Depth",
       "render": "PBR render",
       "element": "Element",
-      "size": "Size",
-      "mass": "Mass",
       "hint": "Drag to turn",
       "subtitle": "See it from every angle for free. You only spend credits when it looks right."
     },
@@ -688,11 +686,11 @@
         },
         "hub": {
           "title": "The hub keeps the model",
-          "body": "with its size, materials and physics"
+          "body": "with its mesh, materials and physics"
         },
         "studio": {
           "title": "A studio uses it",
-          "body": "in a render, a floor plan or a level"
+          "body": "in a render, a scene or a level"
         },
         "client": {
           "title": "The client buys the piece",

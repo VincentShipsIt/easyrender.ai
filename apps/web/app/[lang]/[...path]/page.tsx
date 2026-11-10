@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { BlogIndexView } from '@/components/blog/blog-index-view';
 import { BlogPostView } from '@/components/blog/blog-post-view';
 import { isRoutableLocale, type Locale } from '@/i18n/config';
-import { type BlogPost, getPost, isBlogIndexIndexable } from '@/lib/blog/posts';
+import { type BlogPost, getPost } from '@/lib/blog/posts';
 import { JsonLd } from '@/lib/seo/jsonld';
 import { blogIndexGraph, blogIndexMetadata, postGraph, postMetadata } from '@/lib/seo/pages';
 import { isPublished, ROUTES } from '@/lib/seo/routes';
@@ -44,12 +44,7 @@ export async function generateMetadata({
   const { lang, path } = await params;
   const match = resolve(lang, path);
   if (match.kind === 'post') return postMetadata(match.post);
-  if (match.kind === 'blogIndex') {
-    const metadata = await blogIndexMetadata(match.locale);
-    return isBlogIndexIndexable(match.locale)
-      ? metadata
-      : { ...metadata, robots: { index: false, follow: true } };
-  }
+  if (match.kind === 'blogIndex') return blogIndexMetadata(match.locale);
   return {};
 }
 

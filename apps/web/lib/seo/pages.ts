@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { faqItems } from '@/components/landing';
 import type { Locale } from '@/i18n/config';
 import type { BlogPost } from '@/lib/blog/posts';
-import { postLivePaths } from '@/lib/blog/posts';
+import { indexableBlogIndexPaths, isBlogIndexIndexable, postLivePaths } from '@/lib/blog/posts';
 import {
   article,
   breadcrumbList,
@@ -43,15 +43,21 @@ export async function homeGraph(locale: Locale) {
   ];
 }
 
+/**
+ * The guides hub. noindex while it has fewer than MIN_INDEXABLE_POSTS guides, and its hreflang
+ * only lists hubs that are themselves indexable, so no alternate ever points at a noindex page.
+ */
 export async function blogIndexMetadata(locale: Locale): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'Blog.index' });
-  return pageMetadata({
+  const isIndexable = isBlogIndexIndexable(locale);
+  const metadata = pageMetadata({
     locale,
     path: ROUTES.blog.paths[locale],
     title: t('metaTitle'),
     description: t('metaDescription'),
-    alternates: livePaths('blog'),
+    ...(isIndexable ? { alternates: indexableBlogIndexPaths() } : {}),
   });
+  return isIndexable ? metadata : { ...metadata, robots: { index: false, follow: true } };
 }
 
 export async function blogIndexGraph(locale: Locale) {

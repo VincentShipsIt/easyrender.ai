@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { Separator } from '@/components/ui/separator';
 
 // Renders the markdown subset the guides are written in: headings, paragraphs, lists, quotes,
 // rules and inline emphasis, code and links. It returns React elements rather than HTML, so no
@@ -158,7 +159,7 @@ export function Markdown({ source }: { source: string }) {
         const key = `${block.kind}-${index}`;
         switch (block.kind) {
           case 'rule':
-            return <hr key={key} className="my-10 border-t" />;
+            return <Separator key={key} className="my-10" />;
           case 'heading': {
             if (block.level === 2) {
               return (

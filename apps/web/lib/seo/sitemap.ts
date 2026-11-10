@@ -1,5 +1,10 @@
 import { LOCALES, type Locale } from '@/i18n/config';
-import { isBlogIndexIndexable, listPosts, postLivePaths } from '@/lib/blog/posts';
+import {
+  indexableBlogIndexPaths,
+  isBlogIndexIndexable,
+  listPosts,
+  postLivePaths,
+} from '@/lib/blog/posts';
 import {
   type ChangeFrequency,
   hreflangFor,
@@ -37,7 +42,8 @@ export function localeEntries(locale: Locale, now: Date = new Date()): SitemapEn
       path: entry.paths[locale],
       changeFrequency: entry.changeFrequency,
       priority: entry.priority,
-      alternates: livePaths(key),
+      // The hub's alternates are the other indexable hubs only: never a noindex page.
+      alternates: key === 'blog' ? indexableBlogIndexPaths(now) : livePaths(key),
       // The guides index changes when its newest guide does.
       ...(posts[0] ? { lastModified: posts[0].updated ?? posts[0].date } : {}),
     });

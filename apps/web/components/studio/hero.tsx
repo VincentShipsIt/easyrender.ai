@@ -66,14 +66,6 @@ export function StudioHero({ ctaHref }: { ctaHref: string }) {
               <dt>{t('element')}</dt>
               <dd data-er="name">{names[FIRST.id]}</dd>
             </div>
-            <div>
-              <dt>{t('size')}</dt>
-              <dd data-er="dims">{fmt.dims(FIRST)}</dd>
-            </div>
-            <div>
-              <dt>{t('mass')}</dt>
-              <dd data-er="mass">{fmt.kg(FIRST.mass)}</dd>
-            </div>
           </dl>
         </div>
         <p className="stack__hint" aria-hidden="true">

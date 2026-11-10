@@ -168,7 +168,7 @@
         },
         "cost": {
           "q": "¿Cuánto cuesta un modelo 3D?",
-          "a": "La previsualización es gratis. Un modelo 3D terminado cuesta {credits} créditos, y cada crédito cuesta 0,01 USD, así que un modelo sale por {price}. Los créditos no caducan. La página de precios recoge todos los paquetes."
+          "a": "La previsualización es gratis. Un modelo 3D terminado cuesta {credits} créditos, y cada crédito cuesta {unit}, así que un modelo sale por {price}. Los créditos no caducan. La página de precios recoge todos los paquetes."
         }
       }
     }
@@ -591,8 +591,6 @@
       "depth": "Profundidad",
       "render": "Render PBR",
       "element": "Elemento",
-      "size": "Medidas",
-      "mass": "Masa",
       "hint": "Arrastra para girar",
       "subtitle": "Mira el objeto desde todos los ángulos sin pagar. Solo gastas créditos cuando la forma te convence."
     },
@@ -688,11 +686,11 @@
         },
         "hub": {
           "title": "El hub guarda el modelo",
-          "body": "con medidas, materiales y física"
+          "body": "con su malla, materiales y física"
         },
         "studio": {
           "title": "Un estudio lo usa",
-          "body": "en un render, un plano o un nivel"
+          "body": "en un render, una escena o un nivel"
         },
         "client": {
           "title": "El cliente compra la pieza",

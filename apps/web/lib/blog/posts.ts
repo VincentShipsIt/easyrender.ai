@@ -150,3 +150,21 @@ export function postLivePaths(
   }
   return paths;
 }
+
+/**
+ * The guides hubs that are in the index today, keyed by locale. A hub stays noindex until it has
+ * MIN_INDEXABLE_POSTS guides, and hreflang must never point at a noindex page, so the hreflang
+ * block of a hub (in the head and in the sitemap) is built from this list only.
+ */
+export function indexableBlogIndexPaths(now: Date = new Date()): Partial<Record<Locale, string>> {
+  const paths: Partial<Record<Locale, string>> = {};
+  for (const locale of LOCALES) {
+    if (isRoutable(locale) && isPublishedIndex(locale) && isBlogIndexIndexable(locale, now)) {
+      paths[locale] = ROUTES.blog.paths[locale];
+    }
+  }
+  return paths;
+}
+
+const isPublishedIndex = (locale: Locale): boolean =>
+  (ROUTES.blog.published as readonly Locale[]).includes(locale);

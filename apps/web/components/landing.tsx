@@ -1,4 +1,5 @@
 import {
+  CREDIT_USD,
   ENTERPRISE_BOOKING_URL,
   PAYG,
   PRO_PLAN,
@@ -184,10 +185,12 @@ export type FaqItem = { question: string; answer: string };
  */
 export async function faqItems(): Promise<FaqItem[]> {
   const [t, format] = await Promise.all([getTranslations('Landing.faq'), getFormatter()]);
-  const price = format.number(RENDER_CREDITS / 100, { style: 'currency', currency: 'USD' });
+  const usd = (value: number) => format.number(value, { style: 'currency', currency: 'USD' });
+  const price = usd(RENDER_CREDITS * CREDIT_USD);
+  const unit = usd(CREDIT_USD);
   return FAQ_KEYS.map((key) => ({
     question: t(`items.${key}.q`),
-    answer: t(`items.${key}.a`, { credits: RENDER_CREDITS, price }),
+    answer: t(`items.${key}.a`, { credits: RENDER_CREDITS, price, unit }),
   }));
 }
 

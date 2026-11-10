@@ -1,5 +1,11 @@
 import { getBalance, getBillingStatus } from '@easyrender/core';
-import { ENTERPRISE_BOOKING_URL, PRO_PLAN, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
+import {
+  CREDIT_USD,
+  ENTERPRISE_BOOKING_URL,
+  PRO_PLAN,
+  RENDER_CREDITS,
+  rendersFor,
+} from '@easyrender/harness';
 import { Check, CircleCheck } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -30,16 +36,20 @@ export const dynamic = 'force-dynamic';
 // layout's noindex. /es/precios and the rest arrive with their own copy.
 export async function generateMetadata(): Promise<Metadata> {
   const [t, format] = await Promise.all([getTranslations('Credits'), getFormatter()]);
-  return pageMetadata({
+  const metadata = pageMetadata({
     locale: 'en',
     path: ROUTES.pricing.paths.en,
     title: t('metaTitle'),
     description: t('metaDescription', {
       credits: RENDER_CREDITS,
-      price: format.number(RENDER_CREDITS / 100, { style: 'currency', currency: 'USD' }),
+      price: format.number(RENDER_CREDITS * CREDIT_USD, { style: 'currency', currency: 'USD' }),
+      proCredits: format.number(PRO_PLAN.monthlyCredits),
     }),
     alternates: livePaths('pricing'),
   });
+  // The dashboard layout is noindex; metadata merges field by field, so the override has to be
+  // explicit or the public pricing page inherits it.
+  return { ...metadata, robots: { index: true, follow: true } };
 }
 
 const SIGN_UP = `/sign-up?next=${encodeURIComponent('/credits')}`;
