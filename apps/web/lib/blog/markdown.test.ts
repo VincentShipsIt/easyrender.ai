@@ -50,16 +50,74 @@ describe('the markdown subset the guides are written in', () => {
   it('shows a known image with its real size and caption, and leaves an unknown one as text', () => {
     expect(parseBlocks('![The input photo](/showcase/armchair.jpg "One photo")')).toEqual([
       {
-        kind: 'image',
-        alt: 'The input photo',
-        src: '/showcase/armchair.jpg',
-        caption: 'One photo',
-        width: 720,
-        height: 720,
+        kind: 'media',
+        items: [
+          {
+            type: 'image',
+            alt: 'The input photo',
+            src: '/showcase/armchair.jpg',
+            caption: 'One photo',
+            width: 720,
+            height: 720,
+          },
+        ],
       },
     ]);
     expect(parseBlocks('![Invented](/made-up.jpg)')).toEqual([
       { kind: 'paragraph', text: '![Invented](/made-up.jpg)' },
+    ]);
+  });
+
+  it('shows a known GLB as a 3D model with its real poster, and an unknown one as text', () => {
+    expect(parseBlocks('![The armchair in 3D](/showcase/armchair.glb)')).toEqual([
+      {
+        kind: 'media',
+        items: [
+          {
+            type: 'model',
+            alt: 'The armchair in 3D',
+            src: '/showcase/armchair.glb',
+            poster: '/blog/models/armchair.webp',
+            orbit: '30deg 75deg auto',
+            width: 960,
+            height: 960,
+          },
+        ],
+      },
+    ]);
+    expect(parseBlocks('![Invented](/showcase/made-up.glb)')).toEqual([
+      { kind: 'paragraph', text: '![Invented](/showcase/made-up.glb)' },
+    ]);
+  });
+
+  it('puts image lines with no blank line between them side by side, and splits them otherwise', () => {
+    const pair = '![The photo](/showcase/armchair.jpg)\n![The model](/showcase/armchair.glb)';
+    const [together] = parseBlocks(pair);
+    expect(together?.kind === 'media' && together.items.map((item) => item.type)).toEqual([
+      'image',
+      'model',
+    ]);
+    expect(parseBlocks(pair.replace('\n', '\n\n')).map((block) => block.kind)).toEqual([
+      'media',
+      'media',
+    ]);
+  });
+
+  it('reads a table with a header and a divider, and leaves pipes without a divider as text', () => {
+    expect(
+      parseBlocks('| Format | Opens on |\n| --- | --- |\n| GLB | Android |\n| USDZ | iPhone |'),
+    ).toEqual([
+      {
+        kind: 'table',
+        header: ['Format', 'Opens on'],
+        rows: [
+          ['GLB', 'Android'],
+          ['USDZ', 'iPhone'],
+        ],
+      },
+    ]);
+    expect(parseBlocks('| not | a table |')).toEqual([
+      { kind: 'paragraph', text: '| not | a table |' },
     ]);
   });
 

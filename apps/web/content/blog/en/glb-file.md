@@ -28,7 +28,7 @@ You need a viewer, not a converter. These open GLB files without extra setup:
 
 iPhones and iPads do not open GLB files in AR Quick Look. Apple's AR uses USDZ, so stores that want AR on both systems keep both files.
 
-<!-- IMAGE PENDING: a real screenshot of an easyrender GLB (for example the bouclé armchair from public/showcase/armchair.glb) open in the Babylon.js Sandbox, unretouched. -->
+![An aged clay vase as a GLB file, open in Google's model-viewer and ready to turn](/showcase/clay-vase.glb "A real easyrender GLB of an aged clay vase, open in model-viewer, the component linked above. The file is 301 KB: one mesh of about 14,600 triangles and one 1024-pixel WebP texture, packed with glTF Transform.")
 
 Once it is open, spin it slowly. Look underneath, behind, and close up at fine details such as handles and stitching.
 
@@ -55,6 +55,12 @@ easyrender, for example, gives you a GLB and a USDZ for every finished model it 
 ## GLB to USDZ: do you need both?
 
 For AR on iPhone and iPad, yes. Apple's Reality Converter, a free Mac app, turns a GLB into a USDZ, and recent versions of Blender export USDZ directly. [What a USDZ file is](/learn/usdz-file) covers the Apple side.
+
+| File | What is inside                                             | Opens on                                     | Use it for                                         |
+| ---- | ---------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------- |
+| GLB  | One binary file: geometry, materials and textures          | Browsers, Blender, Android Scene Viewer      | Product pages, web 3D, AR on Android               |
+| glTF | A JSON .gltf file, a .bin file and separate texture images | The same viewers, if the files stay together | Editing and inspecting, since the JSON is readable |
+| USDZ | An uncompressed zip of USD layers and their images         | iPhone, iPad and Mac Quick Look              | AR on Apple devices                                |
 
 ## What does a GLB file not tell you?
 

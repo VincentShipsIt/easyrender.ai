@@ -919,6 +919,7 @@
       "published": "Published {date}",
       "updated": "Updated {date}",
       "backToIndex": "All guides",
+      "modelHint": "Drag to turn",
       "cta": {
         "title": "Try it with one photo",
         "button": "Upload a photo"

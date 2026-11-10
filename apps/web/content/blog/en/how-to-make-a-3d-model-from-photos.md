@@ -63,6 +63,8 @@ That sheet is real easyrender output from the photo in step 1. The preview is fr
 
 Once the shape looks right, the tool builds a textured 3D model. Most export GLB, the standard format for the web and Android. Many also give you USDZ, the format iPhones and iPads open in AR Quick Look.
 
+![The bouclé lounge armchair as a textured 3D model, built from the photo in step 1 and shown in a 3D viewer](/showcase/armchair.glb "The model easyrender built from that photo and its angle sheet, textures compressed for this page. Drag to turn it and check the back. Under this viewer's light the fabric reads more yellow than in the photo, which is the kind of thing to check before you publish.")
+
 A GLB opens in Blender (File, Import, glTF 2.0) and in free browser viewers such as the [Babylon.js Sandbox](https://sandbox.babylonjs.com/). Open it there once before you use it anywhere, and spin it slowly. What is inside the file is explained in [what a GLB file is](/learn/glb-file) and [what a USDZ file is](/learn/usdz-file).
 
 easyrender gives you both files for every finished model. AR is coming soon, so you will be able to open a chair on your phone and see it in your room. It shows the shape and materials, not the real size.

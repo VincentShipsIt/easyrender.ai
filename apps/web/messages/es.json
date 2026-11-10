@@ -919,6 +919,7 @@
       "published": "Publicado el {date}",
       "updated": "Actualizado el {date}",
       "backToIndex": "Todas las guías",
+      "modelHint": "Arrastra para girarlo",
       "cta": {
         "title": "Pruébalo con una foto",
         "button": "Subir una foto"

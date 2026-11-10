@@ -30,6 +30,17 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
   on a line of its own. Only paths listed in `lib/blog/images.ts` render (with `next/image`, their
   real width and height, lazy loading). Only real easyrender output or real screenshots go in
   that list. Any other path shows as text and fails `content.test.ts`.
+- **3D models**: the same syntax with a GLB, `![Alt text](/showcase/armchair.glb "Caption")`. Only
+  GLBs listed in `BLOG_MODELS` (`lib/blog/images.ts`) render. Each has a poster, a still of that
+  GLB captured in model-viewer and not edited, which is in the server HTML with the alt text and
+  the caption; the viewer loads when it nears the screen and takes the poster's place. Use each
+  model in one guide only (`content.test.ts` checks it).
+- **Side by side**: two image or model lines with no blank line between them show as two columns,
+  for a comparison such as the photo next to the model built from it.
+- **Tables**: a markdown table with a header row and a `| --- |` divider. Use one only when it
+  helps the reader decide (tone guide 5c), never the same table in two guides.
+- **Every guide shows at least one real picture or model**, with alt text and a caption. A table
+  does not count.
 - **Missing images**: leave `<!-- IMAGE PENDING: what the picture must show -->`. Comments are
   stripped before rendering, structured data and llms-full.txt.
 - **FAQ**: a `## FAQ` section with one `### Question?` per item. The same questions become the

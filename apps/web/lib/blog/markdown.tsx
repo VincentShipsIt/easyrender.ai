@@ -1,11 +1,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { BlogModel } from '@/components/blog/blog-model';
 import { Separator } from '@/components/ui/separator';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { parseImage } from './images';
 
 // Renders the markdown subset the guides are written in: headings, paragraphs, lists, quotes,
-// rules, images from the closed list in images.ts, and inline emphasis, code and links. It returns React elements rather than HTML, so no
+// rules, tables, images and 3D models from the closed lists in images.ts, and inline emphasis,
+// code and links. It returns React elements rather than HTML, so no
 // post can inject markup into the page, and there is no markdown dependency to keep current.
 //
 // Anything outside the subset is shown as plain text instead of being dropped, which makes an
@@ -16,14 +26,48 @@ type Block =
   | { kind: 'paragraph'; text: string }
   | { kind: 'list'; ordered: boolean; items: string[] }
   | { kind: 'quote'; text: string }
-  | { kind: 'image'; alt: string; src: string; caption?: string; width: number; height: number }
+  | { kind: 'media'; items: Media[] }
+  | { kind: 'table'; header: string[]; rows: string[][] }
   | { kind: 'rule' };
+
+/** A picture or a 3D model. Image lines with no blank line between them form one media block,
+ * shown side by side, for a comparison such as a photo next to the model built from it. */
+export type Media = {
+  alt: string;
+  src: string;
+  caption?: string;
+  width: number;
+  height: number;
+} & ({ type: 'image' } | { type: 'model'; poster: string; orbit: string });
 
 const HEADING = /^(#{2,4})\s+(.*)$/;
 const UNORDERED = /^[-*]\s+(.*)$/;
 const ORDERED = /^\d+[.)]\s+(.*)$/;
 const QUOTE = /^>\s?(.*)$/;
 const RULE = /^(-{3,}|\*{3,}|_{3,})$/;
+const TABLE_ROW = /^\|.*\|$/;
+const TABLE_DIVIDER = /^\|(\s*:?-{3,}:?\s*\|)+$/;
+
+const cells = (row: string) =>
+  row
+    .slice(1, -1)
+    .split('|')
+    .map((cell) => cell.trim());
+
+function toMedia(line: string): Media | null {
+  const image = parseImage(line);
+  if (!image?.size) return null;
+  const base = {
+    alt: image.alt,
+    src: image.src,
+    ...(image.caption ? { caption: image.caption } : {}),
+    width: image.size.width,
+    height: image.size.height,
+  };
+  return image.model
+    ? { ...base, type: 'model', poster: image.model.poster, orbit: image.model.orbit }
+    : { ...base, type: 'image' };
+}
 
 /** Splits markdown into blocks. Exported for tests. */
 export function parseBlocks(markdown: string): Block[] {
@@ -44,17 +88,29 @@ export function parseBlocks(markdown: string): Block[] {
       continue;
     }
 
-    const image = parseImage(line);
-    if (image?.size) {
-      blocks.push({
-        kind: 'image',
-        alt: image.alt,
-        src: image.src,
-        ...(image.caption ? { caption: image.caption } : {}),
-        width: image.size.width,
-        height: image.size.height,
-      });
-      index += 1;
+    if (toMedia(line)) {
+      const items: Media[] = [];
+      while (index < lines.length) {
+        const media = toMedia((lines[index] as string).trim());
+        if (!media) break;
+        items.push(media);
+        index += 1;
+      }
+      blocks.push({ kind: 'media', items });
+      continue;
+    }
+
+    // A table needs its header row and the |---| divider under it; anything else stays text.
+    const divider = (lines[index + 1] ?? '').trim();
+    if (TABLE_ROW.test(line) && TABLE_DIVIDER.test(divider)) {
+      const header = cells(line);
+      const rows: string[][] = [];
+      index += 2;
+      while (index < lines.length && TABLE_ROW.test((lines[index] as string).trim())) {
+        rows.push(cells((lines[index] as string).trim()));
+        index += 1;
+      }
+      blocks.push({ kind: 'table', header, rows });
       continue;
     }
 
@@ -179,8 +235,48 @@ export function renderInline(text: string, isLive: LinkGate = ALWAYS): ReactNode
   return nodes;
 }
 
-/** The article body of a post, as prose. */
-export function Markdown({ source, isLive = ALWAYS }: { source: string; isLive?: LinkGate }) {
+function Figure({ media, hint, isLive }: { media: Media; hint: string; isLive: LinkGate }) {
+  return (
+    <figure>
+      {media.type === 'model' ? (
+        <BlogModel
+          src={media.src}
+          alt={media.alt}
+          poster={{ src: media.poster, width: media.width, height: media.height }}
+          orbit={media.orbit}
+          hint={hint}
+        />
+      ) : (
+        // Below the fold in every guide, so next/image's default lazy loading applies. The width
+        // and height reserve the space, so the text never jumps while it loads.
+        <Image
+          src={media.src}
+          alt={media.alt}
+          width={media.width}
+          height={media.height}
+          sizes="(min-width: 768px) 720px, 100vw"
+          className="h-auto w-full rounded-lg border bg-muted"
+        />
+      )}
+      {media.caption && (
+        <figcaption className="mt-2 text-sm text-muted-foreground">
+          {renderInline(media.caption, isLive)}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+/** The article body of a post, as prose. `modelHint` labels a 3D model once it can be turned. */
+export function Markdown({
+  source,
+  isLive = ALWAYS,
+  modelHint = '',
+}: {
+  source: string;
+  isLive?: LinkGate;
+  modelHint?: string;
+}) {
   return (
     <>
       {parseBlocks(source).map((block, index) => {
@@ -188,25 +284,45 @@ export function Markdown({ source, isLive = ALWAYS }: { source: string; isLive?:
         switch (block.kind) {
           case 'rule':
             return <Separator key={key} className="my-10" />;
-          case 'image':
-            // Below the fold in every guide, so next/image's default lazy loading applies. The
-            // width and height reserve the space, so the text never jumps while it loads.
+          case 'media':
+            return block.items.length === 1 ? (
+              <div key={key} className="mt-8">
+                <Figure media={block.items[0] as Media} hint={modelHint} isLive={isLive} />
+              </div>
+            ) : (
+              <div key={key} className="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
+                {block.items.map((media) => (
+                  <Figure key={media.src} media={media} hint={modelHint} isLive={isLive} />
+                ))}
+              </div>
+            );
+          case 'table':
             return (
-              <figure key={key} className="mt-8">
-                <Image
-                  src={block.src}
-                  alt={block.alt}
-                  width={block.width}
-                  height={block.height}
-                  sizes="(min-width: 768px) 720px, 100vw"
-                  className="h-auto w-full rounded-lg border bg-muted"
-                />
-                {block.caption && (
-                  <figcaption className="mt-2 text-sm text-muted-foreground">
-                    {renderInline(block.caption, isLive)}
-                  </figcaption>
-                )}
-              </figure>
+              <div key={key} className="mt-8 rounded-lg border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      {block.header.map((cell) => (
+                        <TableHead key={cell} scope="col" className="whitespace-normal">
+                          {renderInline(cell, isLive)}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {block.rows.map((row) => (
+                      <TableRow key={row.join('|')}>
+                        {row.map((cell, column) => (
+                          // biome-ignore lint/suspicious/noArrayIndexKey: static content, never reordered
+                          <TableCell key={column} className="whitespace-normal align-top">
+                            {renderInline(cell, isLive)}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             );
           case 'heading': {
             if (block.level === 2) {

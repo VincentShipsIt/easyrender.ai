@@ -15,6 +15,9 @@ cta: Pick one piece with depth, an armchair or a sideboard, and check every angl
 
 A photo shows the view you chose. A 3D model lets the shopper choose: the back of a bookcase, the underside of a coffee table, how thick the cushion on a lounge chair really is.
 
+![A grey upholstered swivel armchair in its catalogue photo, seen from behind at three-quarters](/showcase/swivel-chair.jpg "The catalogue photo: one view, from behind, chosen by the photographer.")
+![The same grey swivel armchair as a 3D model in a viewer, which the shopper can turn to see the front and the seat](/showcase/swivel-chair.glb "The model easyrender built from that photo: the shopper picks the view. The front is a prediction, because the photo only shows the back.")
+
 On iPhone and iPad, a USDZ file opens in [AR Quick Look](https://developer.apple.com/augmented-reality/quick-look/) and places the object in the room through the camera. On Android, Google's [Scene Viewer](https://developers.google.com/ar/develop/scene-viewer) does the same with a GLB.
 
 AR shows how a piece looks in a room. It only shows the real size if the file was made with correct dimensions, and many models are not.

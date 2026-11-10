@@ -58,7 +58,11 @@ export async function BlogPostView({ post }: { post: BlogPost }) {
       </header>
 
       <div className="mt-10">
-        <Markdown source={post.body} isLive={isLiveBlogLink(post.locale)} />
+        <Markdown
+          source={post.body}
+          isLive={isLiveBlogLink(post.locale)}
+          modelHint={t('post.modelHint')}
+        />
       </div>
 
       <footer className="mt-16 space-y-6 border-t pt-8">

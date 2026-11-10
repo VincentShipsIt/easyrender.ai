@@ -68,7 +68,12 @@ The photos and the listing work the same way. Show the back, the joints and any 
 
 A vintage piece has no catalogue shoot and no second unit. You photograph it once, and a buyer two hundred miles away has to judge it from those pictures.
 
-A 3D model made from one good photo lets that buyer turn the piece round on screen. Marketplaces set their own rules for 3D files, so in practice you send a link when someone asks for more angles, or add the GLB to your own Shopify store as product media.
+A 3D model made from one good photo lets that buyer turn the piece round on screen.
+
+![A solid wood bedside table with two drawers, photographed straight from the front on a white background](/showcase/bedside-table.jpg "The photo of a solid wood bedside table.")
+![The 3D model built from that photo, a wooden bedside table shown from three-quarters in a viewer](/showcase/bedside-table.glb "The model easyrender built from it. Shape and wood colour carry over, the drawer fronts do not match the photo line for line, and wear never shows. Close-ups and your own description stay in the listing.")
+
+Marketplaces set their own rules for 3D files, so in practice you send a link when someone asks for more angles, or add the GLB to your own Shopify store as product media.
 
 The routes to a model are in [how to make a 3D model](/learn/how-to-make-a-3d-model), and what a store does with one is in [3D for ecommerce](/learn/3d-models-for-ecommerce).
 

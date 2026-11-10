@@ -17,12 +17,12 @@ const raw = (slug: string) =>
 
 const words = (text: string) => text.split(/\s+/).filter(Boolean).length;
 
-/** Prose paragraphs of a body: not headings, lists, quotes, images or rules. */
+/** Prose paragraphs of a body: not headings, lists, quotes, images, tables or rules. */
 const paragraphs = (body: string) =>
   body
     .split(/\n{2,}/)
     .map((block) => block.trim())
-    .filter((block) => block && !/^(#{2,4}\s|[-*]\s|\d+[.)]\s|>|!\[|-{3,})/.test(block));
+    .filter((block) => block && !/^(#{2,4}\s|[-*]\s|\d+[.)]\s|>|!\[|\||-{3,})/.test(block));
 
 describe.each(posts.map((post) => [post.slug, post] as const))('guide %s', (slug, post) => {
   it('fits a search result: title and <title> at most 60 characters, description at most 155', () => {
@@ -82,6 +82,28 @@ describe.each(posts.map((post) => [post.slug, post] as const))('guide %s', (slug
         expect(image.alt.length).toBeGreaterThan(10);
       }
     }
+  });
+
+  it('shows at least one real picture or 3D model, each with its alt text and a caption', () => {
+    // Tone guide 5c: every guide carries a creative that explains something. A table alone does
+    // not count, and a missing asset is an IMAGE PENDING note, never a stand-in picture.
+    const media = post.body.split('\n').flatMap((line) => {
+      const image = parseImage(line);
+      return image?.size ? [image] : [];
+    });
+    expect(media.length).toBeGreaterThan(0);
+    for (const item of media) expect(item.caption, item.src).toBeTruthy();
+  });
+
+  it('puts each 3D model in one guide only', () => {
+    const models = posts.flatMap((entry) =>
+      entry.body.split('\n').flatMap((line) => {
+        const model = parseImage(line);
+        return model?.model ? [`${entry.slug} ${model.src}`] : [];
+      }),
+    );
+    const sources = models.map((entry) => entry.split(' ')[1]);
+    expect(new Set(sources).size, models.join('\n')).toBe(sources.length);
   });
 
   it('has no typed price, no unfilled token and no plan that does not exist', () => {

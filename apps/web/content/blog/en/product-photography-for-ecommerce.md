@@ -53,6 +53,9 @@ Keep one order for every product. Buyers learn where to look, and you stop forge
 
 The three-quarter main image does the most work. It shows the front and one side at once, so the shopper reads the shape from a thumbnail.
 
+![A mustard bouclé lounge armchair with a steel frame, shot from three-quarters on a white background, showing the front, one side and the depth of the seat](/showcase/armchair.jpg "Three-quarter: front, side and depth in one frame. This is the main image.")
+![A wooden bedside table with two drawers, shot straight from the front on a white background, so its depth cannot be seen](/showcase/bedside-table.jpg "Straight front: the drawers read well, the depth does not. Keep it as image 2.")
+
 ## What do Amazon and Shopify ask for?
 
 [Amazon's seller guide to product photos](https://sell.amazon.com/blog/product-photos) asks for a pure white background (RGB 255, 255, 255) on the main image, with the product filling 85% or more of the frame. It recommends images larger than 1,000 pixels so shoppers can zoom.
@@ -76,6 +79,8 @@ A 360 spin is a different thing: a set of photos taken on a turntable, which the
 easyrender builds a model from one of those photos and shows a free preview of every angle first. It works on single pieces like a floor lamp or an armchair, not on a styled room, and small logos come out soft. [Upload a photo](/)
 
 ## What are the common mistakes?
+
+<!-- IMAGE PENDING: a real pair shot by the team of the same piece, once under mixed light (window plus warm ceiling bulbs) and once in window light only, to show the colour cast. Do not use a stock photo. -->
 
 Mixed light is the most common one: daylight from the window plus warm bulbs overhead. After that come crooked horizons and a busy backdrop that competes with the product.
 

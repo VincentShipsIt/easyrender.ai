@@ -17,6 +17,14 @@ If the object does not exist yet, model it in software or hire an artist. If it 
 
 Accuracy roughly follows effort. An artist working from measurements gives the most exact model. A model generated from one photo is the quickest to get, and its back is an estimate.
 
+| Method               | What you need                                     | Best for                                     | Watch for                                      |
+| -------------------- | ------------------------------------------------- | -------------------------------------------- | ---------------------------------------------- |
+| Model it in software | Weeks of practice, reference photos, measurements | Objects that do not exist yet                | Proportions, textures and UV mapping           |
+| Photogrammetry       | The object in hand, 20 to 100 or more photos      | Real surface detail                          | Plain white surfaces, glass, polished metal    |
+| LiDAR on a phone     | An iPhone Pro or iPad Pro, the object in hand     | Large, simple shapes like a sofa             | Less detail: turned legs, woven seats          |
+| AI from a photo      | One sharp photo                                   | A supplier photo of a piece you cannot touch | The back is an estimate, with no measured size |
+| Hire a 3D artist     | Photos, measurements and a budget                 | Exact models, or one model in several sizes  | Time to brief and commission                   |
+
 One thing none of this covers is 3D printing. This guide is about models for screens, product pages and AR. A part you want to print needs a CAD model built from real measurements, which is a different job.
 
 ## Method 1: Model it yourself in software

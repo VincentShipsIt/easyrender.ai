@@ -49,7 +49,11 @@ easyrender gives you both files for every finished model. AR is coming soon, so 
 
 Send yourself the USDZ of an oak side table by Messages and tap it. Quick Look opens the Object view first, where you can spin it with one finger. Switch to AR, point the camera at the floor, and the table appears on the spot you tap.
 
-Walk round it and look where the legs meet the floor. A model whose base sits slightly off will appear to float. Then check the grain under your own lamp, which is warmer than the studio light in the original photo.
+Walk round it and look where the legs meet the floor. A model whose base sits slightly off will appear to float.
+
+![A round solid wood table as a 3D model in a viewer, that can be turned to check the legs from every side](/showcase/coffee-table.glb "A round solid wood table easyrender modelled from one photo, shown here from its GLB. easyrender makes the USDZ download from this same GLB, in your browser. Turn it and look where the legs meet the ground.")
+
+Then check the grain under your own lamp, which is warmer than the studio light in the original photo.
 
 ## GLB to USDZ: should you keep both?
 
