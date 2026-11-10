@@ -3,6 +3,11 @@ import {
   BUILD_MODEL,
   buildCostUsd,
   buildRequest,
+  checkGlb,
+  checkNote,
+  checkPhoto,
+  checkSheet,
+  cleanNote,
   createReplicate,
   cutCells,
   download,
@@ -11,6 +16,7 @@ import {
   RENDER_CREDITS,
   SHEET_CREDITS,
   SHEET_MODEL,
+  selectSkill,
   sheetOutputUrl,
   sheetRequest,
 } from '@easyrender/harness';
@@ -45,6 +51,12 @@ export const isListed = (render: Pick<Render, 'isPublic' | 'status' | 'glbKey'>)
 
 export const canView = (render: Render, actor: Actor) =>
   canAccess(render, actor) || isListed(render);
+
+// Turns a failed harness check into the API error the caller sees.
+function enforce(check: Awaited<ReturnType<typeof checkPhoto>>, status = 422) {
+  if (!check.ok) throw new AppError(check.message, status, check.code);
+  return check.warnings;
+}
 
 // Each preview costs a real sheet generation, so visitors get a small daily allowance.
 async function assertPreviewAllowance(actor: Actor) {
@@ -94,11 +106,15 @@ export async function createDraft(input: {
   if (input.bytes.byteLength > MAX_UPLOAD_BYTES) {
     throw new AppError('Photo is larger than 4 MB', 413, 'too_large');
   }
+  // Guardrails first: a bad photo or note is refused before it uses an allowance or a generation.
+  const warnings = enforce(await checkPhoto(input.bytes));
+  enforce(checkNote(input.prompt), 400);
+  if (warnings.length > 0) console.warn(`photo warnings: ${warnings.join(', ')}`);
   await assertPreviewAllowance(input.actor);
 
   const ext = extension(input.contentType);
   const sourceKey = await putFile(`sources/source.${ext}`, input.bytes, input.contentType);
-  const prompt = input.prompt?.trim().slice(0, 500) || null;
+  const prompt = cleanNote(input.prompt) || null;
   const render = await db().render.create({
     data: {
       userId: input.actor.userId ?? null,
@@ -116,7 +132,7 @@ export async function createDraft(input: {
   try {
     const client = replicate();
     const sourceUrl = await client.upload(input.bytes, `source.${ext}`, input.contentType);
-    const request = sheetRequest(sourceUrl, prompt);
+    const request = sheetRequest(sourceUrl, prompt, selectSkill(render.name, prompt));
     const prediction = await client.start(
       request.path,
       request.body,
@@ -171,7 +187,10 @@ export async function advance(id: string): Promise<Render | null> {
       }
       const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `sheet ${prediction.status}`);
-      const sheetKey = await putFile('sheets/sheet.png', await download(url), 'image/png');
+      const sheet = await download(url);
+      const quality = await checkSheet(sheet);
+      if (!quality.ok) throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
+      const sheetKey = await putFile('sheets/sheet.png', sheet, 'image/png');
       const { count } = await db().render.updateMany({
         where: { id, status: 'drafting' },
         data: { status: 'preview_ready', sheetKey, costUsd: { increment: SHEET_MODEL.costUsd } },
@@ -187,7 +206,10 @@ export async function advance(id: string): Promise<Render | null> {
       }
       const url = prediction.status === 'succeeded' ? findGlbUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `${BUILD_MODEL.name} ${prediction.status}`);
-      const glbKey = await putFile('models/model.glb', await download(url), 'model/gltf-binary');
+      const glb = await download(url);
+      const quality = checkGlb(glb);
+      if (!quality.ok) throw new Error(`model rejected (${quality.code}): ${quality.message}`);
+      const glbKey = await putFile('models/model.glb', glb, 'model/gltf-binary');
       await db().render.updateMany({
         where: { id, status: 'rendering' },
         data: {
@@ -311,7 +333,7 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
         ? 'image/webp'
         : 'image/jpeg';
     const sourceUrl = await client.upload(bytes, `source.${extension(contentType)}`, contentType);
-    const request = sheetRequest(sourceUrl, render.prompt);
+    const request = sheetRequest(sourceUrl, render.prompt, selectSkill(render.name, render.prompt));
     const prediction = await client.start(
       request.path,
       request.body,
