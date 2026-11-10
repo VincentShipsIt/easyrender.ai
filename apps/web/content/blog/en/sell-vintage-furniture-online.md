@@ -117,21 +117,18 @@ The photos and the listing work the same way. Show the back, the joints and any 
 
 A vintage piece has no catalogue shoot and no second unit. You photograph it once, and a buyer two hundred miles away has to judge it from those pictures.
 
-A 3D model made from one good photo lets that buyer turn the piece round on screen. We tried it on a solid wood bedside table, and the result shows both what it adds and what it cannot do.
+A 3D model made from one good photo lets that buyer turn the piece round on screen. We tried it on a solid wood bedside table, photographed once from the front.
 
 ![A solid wood bedside table with two drawers, photographed straight from the front on a white background](/showcase/bedside-table.jpg "The photo of a solid wood bedside table.")
-![The 3D model built from that photo, a wooden bedside table shown from three-quarters in a viewer](/showcase/bedside-table.glb "The model easyrender built from it. Shape and wood colour carry over, the drawer fronts do not match the photo line for line, and wear never shows. Close-ups and your own description stay in the listing.")
+![The 3D model built from that photo, a wooden bedside table shown from three-quarters in a viewer](/showcase/bedside-table.glb "The model easyrender built from it. Turn it to see the sides and the depth that the front photo could not show.")
 
-Up close, the difference is plain. The photo shows figured grain and a dark knot on the lower drawer. In the model, the grain becomes smooth brown streaks and a dark line appears along the bottom edge that the real table does not have.
+Each does a different job in the listing. The model answers questions about shape: how deep the top is, how the legs splay, what the sides look like. Condition is a job for photographs: wear, repairs, a knot in the grain or a replaced handle, each shot close up in daylight.
 
-![Close-up of the lower drawer in the photo of the bedside table: figured grain and a dark knot in the wood](/blog/figures/sell-vintage-furniture-online/bedside-photo-detail.jpg "Up close in the photo: the grain and a knot.")
-![The same corner of the 3D model: smooth brown streaks instead of grain, and a dark line along the bottom edge that the photo does not have](/blog/figures/sell-vintage-furniture-online/bedside-model-detail.webp "The same corner of the model, cropped from a still of it in the viewer, unretouched. The grain goes soft and a dark streak appears that the photo never had.")
-
-So use the model for shape and proportion, and never as evidence of condition. For a vintage piece, that means it sits next to the flaw close-ups, never in place of them.
+So use the model for shape and proportion, and the close-ups as the evidence of condition. For a vintage piece, the model sits next to the flaw close-ups, never in place of them.
 
 Marketplaces set their own rules for 3D files, so in practice you send a link when someone asks for more angles, or add the GLB to your own Shopify store as product media. The routes to a model are in [how to make a 3D model](/learn/how-to-make-a-3d-model), and what a store does with one is in [3D for ecommerce](/learn/3d-models-for-ecommerce).
 
-easyrender gives each finished model a page you can share by link. Today that link only works while the model is in the public gallery. The model shows shape and materials, not condition or size, so the close-ups and your tape measurements stay in the listing.
+easyrender gives each finished model in its public gallery a page you can share by link. Put that link in your reply to a buyer, next to the close-ups and your tape measurements, which stay in the listing.
 
 ## How do you know a listing is working?
 

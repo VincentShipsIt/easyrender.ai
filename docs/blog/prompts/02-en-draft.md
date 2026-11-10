@@ -29,7 +29,11 @@ two published guides, to match their structure.
    return or sales figure of ours (claims.md); outside figures only with their source inline.
 5. **Errors.** A symptom → cause → fix section, specific to the topic. A table is right here.
 6. **Our point of view.** easyrender's own numbers and what we learned, from the brief, with the
-   limit next to every mention of the product. At most two or three mentions plus the CTA.
+   claims.md limits (size, printing, embedding) respected wherever the product is named. At most
+   two or three mentions plus the CTA. Never publish weaknesses or limitations of easyrender's
+   own models or exports. Internal findings go to the product team as a bug list, not into the
+   post. Generic format or method facts may stay, phrased generically, never as a defect of our
+   output.
 7. **Comparisons** only where they help the reader decide: state the criteria, then the verdict
    for each case.
 8. **FAQ.** `## FAQ` with 3 to 5 `### Question?` items, answers of 40 to 60 words. They render as

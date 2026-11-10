@@ -132,7 +132,7 @@ The 2048-pixel export above is plenty. easyrender rejects photos under 400 pixel
 
 A 360 spin is a different thing: a set of photos taken on a turntable, which the shopper scrubs through. A 3D model is one file the shopper can turn freely and, on a phone, place in the room.
 
-easyrender builds a model from one of those photos and shows a free preview of every angle first. It works on single pieces like a floor lamp or an armchair, not on a styled room, and small logos come out soft. [Upload a photo](/)
+easyrender builds a model from one of those photos and shows a free preview of every angle first. It works on single pieces like a floor lamp or an armchair, so give it the piece alone rather than a styled room. [Upload a photo](/)
 
 ## What are the common mistakes?
 

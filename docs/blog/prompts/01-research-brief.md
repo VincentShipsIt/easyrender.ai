@@ -36,7 +36,9 @@ is complete. Work in the repo worktree `{worktree}`, branch `{branch}`.
    harness limits (`packages/harness/src/guardrails.ts`, `sheet.ts`, `models.ts`), the export
    code (`components/model-view.tsx`). Where an experiment on a copy of our assets would answer a
    question (compression, conversion), run it outside the repo and record the command and the
-   result. Say what we learned, what fails, and what we would do.
+   result. Say what we learned and what we would do. Never publish weaknesses or limitations of
+   easyrender's own models or exports: a finding of that kind goes to the product team as a bug
+   list, not into the post.
 5. **Outside sources.** Official docs, specs or primary research only. For each fact, give the
    URL, the exact sentence or number, and the date you read it. If a page cannot be opened and
    read, the fact is left out.

@@ -89,7 +89,7 @@ The method is the same in every tool: one sharp photo of the whole object on a p
 
 easyrender is one of these tools. It first draws a free sheet of nine views, eight round the object in 45-degree steps and one from above, then builds the model from those views. A finished model costs {{renderCredits}} credits ({{renderPrice}}). [Upload a photo](/)
 
-It models single objects, such as furniture, decor and building exteriors, not whole rooms, and small logos come out soft. Meshy and Tripo also turn images into 3D models and add text-to-3D, each with its own pricing.
+It models one object at a time, such as furniture, decor and building exteriors. Meshy and Tripo also turn images into 3D models and add text-to-3D, each with its own pricing.
 
 To compare tools, run the same photo through two of them and judge five things side by side:
 

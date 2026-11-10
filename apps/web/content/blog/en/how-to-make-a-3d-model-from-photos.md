@@ -42,7 +42,7 @@ Eight cells circle the object in 45-degree steps, from the front round to front-
 
 The prediction is good at overall shape and colour and weak at what one photo cannot show, like what sits behind an open weave. It also leans on symmetry. Our default instructions tell the model to infer a hidden side conservatively from the visible construction, and never to invent logos, text or decoration.
 
-For furniture we add rules of our own, written from what went wrong in testing: keep the exact number of legs, arms, cushions and drawers, and keep the direction of the wood grain and the seams. The other routes to a model are compared in [how to make a 3D model](/learn/how-to-make-a-3d-model).
+For furniture we add rules of our own, written from testing: keep the exact number of legs, arms, cushions and drawers, and keep the direction of the wood grain and the seams. The other routes to a model are compared in [how to make a 3D model](/learn/how-to-make-a-3d-model).
 
 ## Step 1: Pick the right photo
 
@@ -89,7 +89,7 @@ Some failures are caught before you see them. Our checks reject a sheet smaller 
 
 That last check came from testing. On small greyscale copies, two truly different views of an object differ by 3% or more, and a repeated view by under 1%. A sheet that pastes the photo into every cell gives the build nothing to reconstruct from.
 
-What no check can do is count. A cabinet with four doors that comes back with three passes every automatic test, so that one is on you. If the preview is wrong, change the photo or add a note to it rather than trying again with the same input.
+Counting is the check that needs a person. Count the doors, drawers and legs in every cell against the real piece before you build. If the preview is wrong, change the photo or add a note to it rather than trying again with the same input.
 
 easyrender takes a short note with each photo, for facts the photo hides: "four doors", "open back", "brass handles". The sheet above is real easyrender output from the photo in step 1, the preview is free, and you only spend credits if you build the model. [Upload a photo](/)
 
@@ -97,15 +97,15 @@ easyrender takes a short note with each photo, for facts the photo hides: "four 
 
 Once the shape looks right, the tool builds a textured 3D model. Most export GLB, the standard format for the web and Android. Many also give you USDZ, the format iPhones and iPads open in AR Quick Look.
 
-Our build asks for a 2048-pixel texture and returns one mesh with one material, coloured by a single base colour image. There is no normal map or roughness map, so fine relief such as stitching lives in the colour, not in the shape.
+Our build asks for a 2048-pixel texture and returns one mesh with one material, coloured by a base colour image. One mesh and one material are the simplest case for every viewer, and well inside the 10 materials Scene Viewer recommends at most.
 
-The six models on our showcase run from 14,590 triangles for a clay vase to 69,910 for a bedside table with drawers. All six sit under the 100,000 triangles that [Google's Scene Viewer](https://developers.google.com/ar/develop/scene-viewer) recommends, and the bedside table is above its ideal range of 30,000 to 50,000.
+The six models on our showcase run from 14,590 triangles for a clay vase to 69,910 for a bedside table with drawers. All six sit under the 100,000 triangles that [Google's Scene Viewer](https://developers.google.com/ar/develop/scene-viewer) recommends as a maximum.
 
-![The bouclé lounge armchair as a textured 3D model, built from the photo in step 1 and shown in a 3D viewer](/showcase/armchair.glb "The model easyrender built from that photo and its angle sheet, textures compressed for this page: 25,879 triangles, 538 KB. Drag to turn it and check the back. Under this viewer's light the fabric reads more yellow than in the photo, which is the kind of thing to check before you publish.")
+![The bouclé lounge armchair as a textured 3D model, built from the photo in step 1 and shown in a 3D viewer](/showcase/armchair.glb "The model easyrender built from that photo and its angle sheet, textures compressed for this page: 25,879 triangles, 538 KB. Drag to turn it and check the back, then look at the fabric under neutral light before you publish.")
 
 A GLB opens in Blender (File, Import, glTF 2.0) and in free browser viewers such as the [Babylon.js Sandbox](https://sandbox.babylonjs.com/). In Blender, turn on Statistics in the viewport overlays to read the triangle count. Open the file once before you use it anywhere, and spin it slowly.
 
-easyrender gives you both files for every finished model. The USDZ is converted from the GLB in your browser when you download it, so the two always match. AR is coming soon, and it will show the chair in your room at the size stored in the file, which is not a measured size.
+easyrender gives you both files for every finished model. The USDZ is converted from the GLB in your browser when you download it, so the two always match. AR is coming soon, and AR viewers place a model at the size stored in its file, so keep the real dimensions in the listing.
 
 What is inside each file is explained in [what a GLB file is](/learn/glb-file) and [what a USDZ file is](/learn/usdz-file).
 
@@ -113,16 +113,16 @@ What is inside each file is explained in [what a GLB file is](/learn/glb-file) a
 
 Most bad models trace back to the photo. This is the list we work through, from symptom to fix.
 
-| Symptom                                           | Cause                                                                                                                                                     | Fix                                                                                    |
-| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Upload rejected as too small                      | The shortest side is under 400 pixels, usually a thumbnail or a screenshot                                                                                | Use the original file from the camera or the supplier                                  |
-| Upload rejected as too narrow                     | The image is more than four times wider than tall, such as a banner crop                                                                                  | Crop to the object, with a margin on every side                                        |
-| Two chair legs merge into one                     | From the front, the back legs hide behind the front ones                                                                                                  | Use a three-quarter photo where all four legs stand apart                              |
-| Four doors come back as three                     | Low-contrast seams between the doors                                                                                                                      | Shoot with light raking across the front, or write "four doors" in the note            |
-| The back is a copy of the front                   | Hidden sides are inferred from visible symmetry                                                                                                           | Write "open back" or "plain back" in the note, or use a photo that shows a back corner |
-| Rattan or cane becomes a printed pattern          | One photo cannot see through the gaps                                                                                                                     | Accept it for a small viewer, or scan the piece with photogrammetry                    |
-| Fabric looks yellower or darker than in the photo | The viewer's light differs from the photo's, and with no metallic value set, the glTF default of fully metallic applies                                   | Check under neutral light, and set Metallic to 0 in Blender before you publish         |
-| Surfaces look faceted under side light            | The file stores no vertex normals, so viewers calculate flat ones, as the [glTF spec](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) requires | In Blender, use Shade Smooth and export again                                          |
+| Symptom                                           | Cause                                                                                                                                                        | Fix                                                                                    |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| Upload rejected as too small                      | The shortest side is under 400 pixels, usually a thumbnail or a screenshot                                                                                   | Use the original file from the camera or the supplier                                  |
+| Upload rejected as too narrow                     | The image is more than four times wider than tall, such as a banner crop                                                                                     | Crop to the object, with a margin on every side                                        |
+| Two chair legs merge into one                     | From the front, the back legs hide behind the front ones                                                                                                     | Use a three-quarter photo where all four legs stand apart                              |
+| Four doors come back as three                     | Low-contrast seams between the doors                                                                                                                         | Shoot with light raking across the front, or write "four doors" in the note            |
+| The back is a copy of the front                   | Hidden sides are inferred from visible symmetry                                                                                                              | Write "open back" or "plain back" in the note, or use a photo that shows a back corner |
+| Rattan or cane becomes a printed pattern          | One photo cannot see through the gaps                                                                                                                        | Accept it for a small viewer, or scan the piece with photogrammetry                    |
+| Fabric looks yellower or darker than in the photo | The viewer's light differs from the photo's, or the material leaves Metallic unset, so the glTF default of fully metallic applies                            | Check under neutral light, and set Metallic to 0 in Blender before you publish         |
+| Surfaces look faceted under side light            | A file without vertex normals, for which viewers calculate flat ones, as the [glTF spec](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) requires | In Blender, use Shade Smooth and export again                                          |
 
 ## How do you know the model is ready to publish?
 

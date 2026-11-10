@@ -15,6 +15,10 @@ Rules set by Jorge on 10-nov-2026 that every stage serves:
 - **The FAQ always renders as an accordion**, with the answers in the server HTML and the same
   questions in the FAQPage JSON-LD.
 - **No creative repeats across guides**: images, crops, diagrams, 3D models, illustrations.
+- **Never publish weaknesses or limitations of easyrender's own models or exports.** Internal
+  findings go to the product team as a bug list, not into the post. Generic facts about a format
+  or a method may stay when they are phrased generically, never as a defect of our output.
+  (10-nov-2026 ~23:48, «Quítalos del blog».)
 - The pipeline enforces these by design (22:39, «rehaz el pipeline para que sea acorde a estos
   requisitos»).
 
@@ -57,7 +61,9 @@ Before a word of the guide is written, the writer fills a brief from
 - The methods to cover, step by step, with the settings that matter.
 - The typical errors, as symptom, cause and fix.
 - easyrender's angle and first-hand data: which repo files and which numbers (asset sizes,
-  triangle counts, harness limits, experiments run on copies of our assets).
+  triangle counts, harness limits, experiments run on copies of our assets). A finding that shows
+  a weakness or limitation of our own models or exports goes to the product team as a bug list,
+  not into the brief's material for the post.
 - The outside sources, each with its URL and the exact fact taken from it. A fact we cannot open
   and read is left out.
 - The SERP gaps: what the top results do not cover, and how this guide will.
@@ -81,7 +87,8 @@ an outside figure has its source link inline, or it goes.
 
 A second Claude session scores the draft against the rubric in
 [`prompts/03-depth-gate.md`](prompts/03-depth-gate.md): methods, goals, errors, own point of view,
-sourced data, no padding, originality against the SERP, plus tone and claims.
+sourced data, no padding, originality against the SERP, plus tone, claims and own output (no
+weakness or limitation of easyrender's own models or exports in the post).
 
 - **Who decides:** the depth editor gives the verdict. Jorge or Ale can override it either way.
 - **How it is recorded:** the editor appends the filled rubric and the verdict (`PASS` or

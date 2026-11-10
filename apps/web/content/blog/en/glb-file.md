@@ -21,7 +21,7 @@ The layout is simple. A 12-byte header holds the word glTF, the version number 2
 
 We check those three header fields on every model we deliver. A file that does not start with glTF, is not version 2, or whose stated length differs from its real length is rejected as broken before anyone downloads it, and so is anything under 20,000 bytes.
 
-![The clay vase GLB on this page drawn in proportion to its bytes: a 1.4 KB JSON chunk, then a binary chunk of 85 KB of triangle indices, 164 KB of vertex positions and texture coordinates and a 50 KB WebP texture, with the same model as three separate glTF files below](diagram:glb-anatomy "Inside the clay vase GLB further down this page, read from the file itself: 301 KB in all. Its texture is already WebP, so here the uncompressed geometry is the heavy part.")
+![The clay vase GLB on this page drawn in proportion to its bytes: a 1.4 KB JSON chunk, then a binary chunk of 85 KB of triangle indices, 164 KB of vertex positions and texture coordinates and a 50 KB WebP texture, with the same model as three separate glTF files below](diagram:glb-anatomy "Inside the clay vase GLB further down this page, read from the file itself: 301 KB in all. With a 1024-pixel WebP texture, most of the bytes are geometry.")
 
 The numbers in that diagram add up exactly, and the arithmetic is worth knowing. The vase has 14,590 triangles, and each one names its three corners with 2 bytes apiece: 87,540 bytes of indices. Its 8,406 vertices each store a position and a texture coordinate in 20 bytes: 168,120 bytes.
 
@@ -46,17 +46,17 @@ Materials follow the PBR metallic-roughness model. PBR, physically based renderi
 
 ![The single texture image inside the clay vase GLB: the surface of the vase cut into patches and laid flat, rings of whitewashed clay, the rim and the base](/blog/figures/glb-file/clay-vase-texture.webp "The base colour texture inside that GLB, copied out of the file unchanged, 1024 by 1024 pixels. The texture coordinates tell the viewer which patch wraps onto which part of the vase.")
 
-Reading our own files taught us something here. Their material sets a base colour texture and nothing else, and the spec's default for an unset metallic value is 1, fully metallic. So every viewer is told to draw clay and bouclé as rough metal, which can darken or tint them.
+Every value a material leaves out falls back to a default in the spec, and one of them catches people out. An unset metallic value means 1, fully metallic, so a material that sets only a base colour is drawn as rough metal. Clay, wood and fabric can then look darker or tinted.
 
-The fix is one setting: Metallic at 0 on the material in Blender, then export again. We would make that check on any GLB before it goes on a product page, whoever made it.
+The check is one setting: Metallic at 0 on the material in Blender, then export again. We would make that check on any GLB before it goes on a product page, whoever made it.
 
 ## Why can a GLB look faceted?
 
-Our files also store no vertex normals, the per-corner directions a viewer uses to shade a curved surface smoothly. They hold positions and texture coordinates only.
+Vertex normals are the per-corner directions a viewer uses to shade a curved surface smoothly. They are optional in glTF, so a file can hold positions and texture coordinates only.
 
-The spec covers this case: when normals are not given, viewers must calculate flat ones. On a model of 15,000 to 70,000 triangles the facets are small, but under a low side light a vase can show faint flat panels where the photo had a smooth curve.
+The spec covers that case: when normals are not given, viewers must calculate flat ones. On a dense mesh the facets are small, but under a low side light a curved surface can show faint flat panels.
 
-Adding normals costs 12 bytes per vertex, three numbers of 4 bytes each. For the clay vase that is 100,872 more bytes, about a third more file, which is the trade our pipeline makes for a lighter page. In Blender, Shade Smooth and an export with normals ticked reverses it.
+Normals cost 12 bytes per vertex, three numbers of 4 bytes each, so a mesh of 8,000 vertices carries about 96,000 bytes of them. In Blender, Shade Smooth and an export with Normals ticked writes smooth ones. `gltf-transform inspect` shows whether a file has a NORMAL attribute.
 
 ## How do you open a GLB file?
 
@@ -85,7 +85,7 @@ For AR on Android the file has to fit Scene Viewer's budget: it recommends at mo
 
 ## How do you reduce GLB file size?
 
-We tried the usual commands on a copy of our heaviest file, the bedside table, with glTF Transform 4.5. The triangle count stays the same unless you simplify.
+To see what each command does, we ran them on a copy of the bedside table, the model with the most triangles in the table above, with glTF Transform 4.5. The triangle count stays the same unless you simplify.
 
 | Version of the bedside table                                             | Size (bytes) | Triangles |
 | ------------------------------------------------------------------------ | ------------ | --------- |
@@ -96,7 +96,7 @@ We tried the usual commands on a copy of our heaviest file, the bedside table, w
 
 Draco gave the smallest file, 82% lighter. Meshopt took 67% off, and on the clay vase it took the file from 308,448 to 135,740 bytes. Simplifying alone saved less than either, because the remaining triangles were still stored uncompressed.
 
-Smaller is not free. A viewer has to support the compression: model-viewer and three.js can decode both, but Scene Viewer's documentation lists neither extension. We have not shipped these versions, so check yours in every viewer it will meet.
+Smaller is not free. A viewer has to support the compression: model-viewer and three.js can decode both, but Scene Viewer's documentation lists neither extension. Check a compressed file in every viewer it will meet before it goes on a page.
 
 Our verdict by destination:
 
@@ -114,7 +114,7 @@ easyrender, for example, gives you a GLB and a USDZ for every finished model it 
 
 ## GLB to USDZ: do you need both?
 
-For AR on iPhone and iPad, yes. Apple's Reality Converter, a free Mac app, turns a GLB into a USDZ, and recent versions of Blender export USDZ directly. [What a USDZ file is](/learn/usdz-file) covers the Apple side, including why our USDZ files come out several times larger than the GLB they are made from.
+For AR on iPhone and iPad, yes. Apple's Reality Converter, a free Mac app, turns a GLB into a USDZ, and recent versions of Blender export USDZ directly. [What a USDZ file is](/learn/usdz-file) covers the Apple side, including why a USDZ can come out larger than the GLB it is made from.
 
 | File | What is inside                                             | Opens on                                     | Use it for                                         |
 | ---- | ---------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------- |
@@ -158,7 +158,7 @@ Open it in Blender, which imports GLB and exports FBX, OBJ, USD and USDZ, among 
 
 ### Why is my GLB file so big?
 
-Usually large textures, or uncompressed geometry once the textures are small. Our 69,910-triangle bedside table is 1,287,432 bytes, 97% of it geometry; Draco compression took it to 235,776. Resize textures to 2048 or 1024 pixels, compress the geometry with glTF Transform, then check in a viewer that the surfaces still look right.
+Usually large textures, or uncompressed geometry once the textures are small. In our tests, Draco compression took a 69,910-triangle model from 1,287,432 bytes to 235,776. Resize textures to 2048 or 1024 pixels, compress the geometry with glTF Transform, then check in a viewer that the surfaces still look right.
 
 ### Why does my GLB look grey or untextured?
 

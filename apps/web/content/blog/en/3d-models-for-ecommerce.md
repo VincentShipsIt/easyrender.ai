@@ -59,7 +59,7 @@ Shopify takes big files, but a shopper's phone does not want them. Scene Viewer 
 | Materials | Up to 10                                        | One each                       |
 | File size | 10 MB; bigger models may give a poor experience | 308,448 to 1,287,432 bytes     |
 
-One line in that table needs care. The copies on our pages use WebP textures, through a glTF extension that Scene Viewer's documentation does not list. For AR on Android we would serve a version with PNG or JPEG textures, and test it on a real phone before relying on it.
+Scene Viewer also lists the glTF extensions it supports. A file that relies on one outside that list, such as WebP textures, may not open, so a GLB meant for Android AR is safest with PNG or JPEG textures. Open it on a real Android phone before you link it from a product page.
 
 ## Ways to create 3D product models
 
@@ -119,7 +119,7 @@ Say a shop has three supplier photos of a walnut sideboard: front, three-quarter
 
 ![Three supplier photos of a sideboard drawn as frames: a straight front view with no depth, a three-quarter view showing the front and one end panel, marked as the one to use, and a close-up of a bar handle](diagram:sideboard-photo-pick "Of the three supplier shots, only the three-quarter one shows the end panel, so the tool has less depth to guess. A drawing for this example, not a real listing.")
 
-Expect the doors, legs and wood grain to read well. Expect the brass handles to come out softer than in the photo, and look closely at the back, which the tool has never seen.
+Expect the doors, legs and wood grain to read well. Check the brass handles against the close-up, since small hardware is where any method loses detail first, and look closely at the back, which the tool has never seen.
 
 Then upload the GLB with your platform's own tools and open the page on an iPhone and an Android phone before you publish. On Shopify, the USDZ for the iPhone is made for you from the same upload.
 

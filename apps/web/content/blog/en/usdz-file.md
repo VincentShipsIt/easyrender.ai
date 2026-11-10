@@ -19,27 +19,32 @@ USD is the scene format Pixar built for film production. The [USDZ specification
 
 ![A USDZ file drawn as a zip archive stored with zero compression, holding a USD layer with the mesh and materials and the texture images it points to](diagram:usdz-anatomy "What the USDZ specification describes. Because nothing is compressed, an iPhone reads each part straight out of the archive.")
 
-USD layers come in two encodings: .usda is text you can read, and .usdc is binary. Textures are usually PNG or JPEG. Which ones a USDZ holds depends on the tool that wrote it, and that choice decides most of the file size, as our own files show below.
+USD layers come in two encodings: .usda is text you can read, and .usdc is binary. Textures are usually PNG or JPEG. Which ones a USDZ holds depends on the tool that wrote it, and that choice decides most of the file size.
 
 Apple [introduced USDZ with ARKit 2](https://www.apple.com/newsroom/2018/06/apple-unveils-arkit-2/) at WWDC in June 2018, for iOS 12, alongside AR Quick Look. Since then it has been the format Apple devices expect for AR from a web page or a message.
 
-## What did we find inside our own USDZ files?
+## What decides the size of a USDZ file?
 
-easyrender makes the USDZ download in your browser, from the GLB, with the USDZ exporter in three.js. We ran that same exporter on the GLB of our round coffee table and unzipped the result. Every file inside was stored with 0% compression, as the specification asks.
+Two choices made by the tool that writes it. Geometry written as text, in .usda, takes several times the bytes of the same mesh in binary .usdc, because every number is spelled out in digits. Textures are the other half: a lossless PNG of a photo-like texture is usually several times the size of a JPEG of the same picture.
 
-| File inside the USDZ           | What it holds                                                              | Size (bytes) |
-| ------------------------------ | -------------------------------------------------------------------------- | ------------ |
-| `model.usda`                   | The scene: the object, its material, and an anchor to a horizontal surface | 2,576        |
-| `geometries/Geometry_2.usda`   | The mesh, written out as text                                              | 1,055,461    |
-| `textures/Texture_6_false.png` | The base colour texture, 1024 by 1024 pixels, as PNG                       | 991,437      |
+The image types the specification lists include PNG and JPEG but not WebP. So a GLB with WebP textures has its images converted on the way to USDZ, and the converter's choice of format decides how much they grow.
 
-The whole USDZ came to 2,050,078 bytes, from a GLB of 322,876: more than six times larger. The clay vase did the same, from 308,448 bytes to 2,085,756.
+| Choice in the exporter | Smaller file                              | Larger file                    |
+| ---------------------- | ----------------------------------------- | ------------------------------ |
+| Geometry               | Binary .usdc                              | Text .usda                     |
+| Texture format         | JPEG, unless the model needs transparency | PNG                            |
+| Texture size           | 1024 or 2048 pixels                       | 4096 pixels                    |
+| Mesh                   | Simplified to what a phone screen shows   | Every triangle of a dense scan |
 
-Two choices explain it. The geometry is written as text rather than binary, and the 34,266-byte WebP texture became a PNG almost 29 times its size. Neither is wrong, since Quick Look reads both, but a 2 MB file is slower to send in Messages and to load on mobile data.
+None of these is an error, since Quick Look reads both encodings and both image formats. Size still matters, because a file of several megabytes is slower to send in Messages and to load on mobile data.
 
-The scene file also says what Quick Look will do with it: one unit is one metre, Y points up, and the object anchors to a horizontal plane, a floor or a table top. The exporter warned that the normals were missing, which matches what we found in the GLB, so the AR view shades the same flat panels.
+## How do you check what is inside a USDZ?
 
-What we would change: write the geometry as binary .usdc and the texture as JPEG. We still have to test these exports in AR on iPhones, which is why this guide shows no AR screenshot yet.
+A USDZ is a zip, so `unzip -l side-table.usdz` lists every file inside with its size. You can see at once whether the geometry is .usda or .usdc and whether the textures are PNG or JPEG. Because the specification asks for no compression, the sizes listed are the real ones.
+
+Then unzip a copy and open the main .usda layer in a text editor. `metersPerUnit` and `upAxis` say how big the model will appear and which way is up, and an anchoring line says whether Quick Look puts it on a horizontal surface, like a floor, or a vertical one, like a wall.
+
+What to ask of an exporter: binary .usdc geometry, JPEG textures unless the model needs transparency, and textures of 2048 pixels or less. Compare the result with the size of the GLB, then open it in Quick Look on a Mac before it goes on a page.
 
 ## USDZ viewer: how do you open a USDZ file?
 
@@ -74,20 +79,20 @@ AR Quick Look places the model at the size stored in the file. If that size was 
 
 There are four common ways, and they differ in where they run and what they are good at.
 
-| Tool                       | Runs on             | Good at                                                       | Watch for                                       |
-| -------------------------- | ------------------- | ------------------------------------------------------------- | ----------------------------------------------- |
-| Apple's Reality Converter  | Mac                 | Checking the materials before you export                      | Mac only                                        |
-| Blender 3.5 and later      | Mac, Windows, Linux | Editing the model before you export                           | Some Blender materials come out flatter in USD  |
-| The three.js USDZ exporter | Any browser         | No server, and the USDZ always matches its GLB                | Text geometry and PNG textures make large files |
-| Shopify                    | Your store admin    | Converting each uploaded model so a GLB and a USDZ both exist | It decides the result, not you                  |
+| Tool                       | Runs on             | Good at                                                       | Watch for                                      |
+| -------------------------- | ------------------- | ------------------------------------------------------------- | ---------------------------------------------- |
+| Apple's Reality Converter  | Mac                 | Checking the materials before you export                      | Mac only                                       |
+| Blender 3.5 and later      | Mac, Windows, Linux | Editing the model before you export                           | Some Blender materials come out flatter in USD |
+| The three.js USDZ exporter | Any browser         | No server, and the USDZ always matches its GLB                | Check the size and the materials in Quick Look |
+| Shopify                    | Your store admin    | Converting each uploaded model so a GLB and a USDZ both exist | It decides the result, not you                 |
 
 Reality Converter [converts files such as OBJ, glTF, FBX and USD](https://developer.apple.com/videos/play/wwdc2022/10141/) to USDZ. In Blender, use File, Export, Universal Scene Description and give the file a .usdz extension.
 
-Our verdict: if you edit models, export from Blender and check the result in Quick Look on a Mac. If you sell on Shopify, upload the GLB and let it make the USDZ. If you build your own site, an in-browser export keeps one source file, at the cost of size.
+Our verdict: if you edit models, export from Blender and check the result in Quick Look on a Mac. If you sell on Shopify, upload the GLB and let it make the USDZ. If you build your own site, an in-browser export keeps one source file, so check its size against the GLB.
 
 If you start from a photo, some image-to-3D tools export USDZ next to the GLB, so you skip the conversion. The steps are in [how to turn a photo into a 3D model](/learn/how-to-make-a-3d-model-from-photos).
 
-easyrender gives you both files for every finished model. AR is coming soon, so you will be able to open the piece on your phone and see it in your room. The model shows its shape and materials, not its real-world size.
+easyrender gives you both files for every finished model. AR is coming soon, so you will be able to open the piece on your phone and see it in your room. Keep the real dimensions in the product text, since AR shows a model at the size stored in its file.
 
 ## An example: an oak side table on an iPhone
 
@@ -95,7 +100,7 @@ Send yourself the USDZ of an oak side table by Messages and tap it. Quick Look o
 
 Walk round it and look where the legs meet the floor. A model whose base sits slightly off will appear to float.
 
-![A round solid wood table as a 3D model in a viewer, that can be turned to check the legs from every side](/showcase/coffee-table.glb "A round solid wood table easyrender modelled from one photo, shown here from its GLB: 16,228 triangles. Its USDZ is the 2,050,078-byte file unpacked above, made from this same GLB in the browser. Turn it and look where the legs meet the ground.")
+![A round solid wood table as a 3D model in a viewer, that can be turned to check the legs from every side](/showcase/coffee-table.glb "A round solid wood table easyrender modelled from one photo, shown here from its GLB: 16,228 triangles. Its USDZ is made from this same GLB, so the two always match. Turn it and look where the legs meet the ground.")
 
 Then check the grain under your own lamp, which is warmer than the studio light in the original photo.
 
@@ -135,7 +140,7 @@ AR Quick Look uses the size stored in the file. If the model was never made with
 
 ### Why is a USDZ bigger than the GLB it came from?
 
-Usually because of what the converter writes. Our coffee table went from a 322,876-byte GLB to a 2,050,078-byte USDZ, because the exporter wrote the geometry as text and turned a small WebP texture into a PNG almost 29 times larger. Binary geometry and JPEG textures bring the size back down.
+Usually because of what the converter writes. Geometry written as text takes several times the bytes of binary, and USDZ does not list WebP among its image types, so a small WebP texture is converted, often to a much larger PNG. Exporting binary .usdc geometry and JPEG textures brings the size back down.
 
 ### Is USDZ the same as USD?
 

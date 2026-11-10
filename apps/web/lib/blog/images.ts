@@ -24,15 +24,6 @@ export const BLOG_IMAGES: Record<string, BlogImage> = {
     width: 388,
     height: 388,
   },
-  // The lower drawer of /showcase/bedside-table.jpg, and the same corner of the model's poster.
-  '/blog/figures/sell-vintage-furniture-online/bedside-photo-detail.jpg': {
-    width: 320,
-    height: 320,
-  },
-  '/blog/figures/sell-vintage-furniture-online/bedside-model-detail.webp': {
-    width: 380,
-    height: 380,
-  },
   // The base colour texture inside /showcase/clay-vase.glb, copied out of the file unchanged.
   '/blog/figures/glb-file/clay-vase-texture.webp': { width: 1024, height: 1024 },
 
