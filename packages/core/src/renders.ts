@@ -27,6 +27,8 @@ export type RenderSource = 'web' | 'mcp' | 'api';
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const DAY_MS = 24 * 60 * 60 * 1000;
+// A sheet takes ~1 minute and a 3D build ~2: anything still running after this has been lost.
+const STALE_MS = 45 * 60 * 1000;
 
 const replicate = () => createReplicate(config.replicateToken());
 const extension = (contentType: string) =>
@@ -154,10 +156,19 @@ export async function advance(id: string): Promise<Render | null> {
   const render = await db().render.findUnique({ where: { id } });
   if (!render) return null;
 
+  const stale = Date.now() - render.updatedAt.getTime() > STALE_MS;
+
   try {
+    // Never started (the request died between claiming the render and starting Replicate).
+    if (stale && !render.sheetPredictionId && !render.buildPredictionId) {
+      throw new Error('never started');
+    }
     if (render.status === 'drafting' && render.sheetPredictionId) {
       const prediction = await replicate().get(render.sheetPredictionId);
-      if (!isSettled(prediction.status)) return render;
+      if (!isSettled(prediction.status)) {
+        if (stale) throw new Error('angle sheet timed out');
+        return render;
+      }
       const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `sheet ${prediction.status}`);
       const sheetKey = await putFile('sheets/sheet.png', await download(url), 'image/png');
@@ -170,7 +181,10 @@ export async function advance(id: string): Promise<Render | null> {
 
     if (render.status === 'rendering' && render.buildPredictionId) {
       const prediction = await replicate().get(render.buildPredictionId);
-      if (!isSettled(prediction.status)) return render;
+      if (!isSettled(prediction.status)) {
+        if (stale) throw new Error('3D render timed out');
+        return render;
+      }
       const url = prediction.status === 'succeeded' ? findGlbUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `${BUILD_MODEL.name} ${prediction.status}`);
       const glbKey = await putFile('models/model.glb', await download(url), 'model/gltf-binary');
