@@ -11,8 +11,20 @@ Parameters:
     Default: "true"
     Description: Set to false when the account already has the oidc.vercel.com/<team> provider.
 
+  CdnDomain:
+    Type: String
+    Default: ""
+    Description: Optional custom hostname for the CDN, e.g. cdn.easyrender.ai. Needs CertificateArn too.
+  CertificateArn:
+    Type: String
+    Default: ""
+    Description: ACM certificate for CdnDomain. CloudFront only accepts certificates from us-east-1.
+
 Conditions:
   MakeProvider: !Equals [!Ref CreateOidcProvider, "true"]
+  HasDomain: !And
+    - !Not [!Equals [!Ref CdnDomain, ""]]
+    - !Not [!Equals [!Ref CertificateArn, ""]]
 
 Resources:
   AssetsBucket:
@@ -50,6 +62,13 @@ Resources:
         Comment: easyrender.ai assets
         HttpVersion: http2and3
         PriceClass: PriceClass_100
+        Aliases: !If [HasDomain, [!Ref CdnDomain], !Ref 'AWS::NoValue']
+        ViewerCertificate: !If
+          - HasDomain
+          - AcmCertificateArn: !Ref CertificateArn
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2021
+          - !Ref 'AWS::NoValue'
         Origins:
           - Id: assets
             DomainName: !GetAtt AssetsBucket.RegionalDomainName
@@ -119,6 +138,11 @@ Outputs:
   S3Bucket:
     Value: !Ref AssetsBucket
   AssetsCdnUrl:
-    Value: !Sub "https://${Distribution.DomainName}"
+    Value: !If
+      - HasDomain
+      - !Sub "https://${CdnDomain}"
+      - !Sub "https://${Distribution.DomainName}"
+  DistributionDomain:
+    Value: !GetAtt Distribution.DomainName
   AwsRoleArn:
     Value: !GetAtt VercelRole.Arn
