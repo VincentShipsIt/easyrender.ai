@@ -11,15 +11,52 @@ cta: If you have a sharp photo of a lamp or a chair, you can see it from every a
 
 A GLB file is a 3D model saved in the binary version of glTF 2.0, an open format from the Khronos Group. One .glb file holds the shape, materials, textures and any animation, so it loads on the web without extra files. It is the usual format for 3D on product pages and for AR on Android.
 
+![Illustration of three loose sheets, a vase drawn as a wireframe, a wood-grain texture and a shaded sphere for the material, flowing into one transparent box that holds them as stacked layers along with a looping arrow for animation](/blog/illustrations/glb-file/hero.webp "Illustration, not an easyrender result: mesh, texture, material and animation travel together inside one GLB file.")
+
 ## What is inside a GLB file?
 
 A glTF model can come as a .gltf text file plus separate texture images and a .bin file for the geometry. A GLB packs all of that into one binary file, which is easier to upload, email and host. The [glTF 2.0 specification](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) defines both.
 
+The layout is simple. A 12-byte header holds the word glTF, the version number 2 and the total length of the file. Then come two chunks: a JSON chunk that describes the scene, and a binary chunk with the geometry and the images.
+
+We check those three header fields on every model we deliver. A file that does not start with glTF, is not version 2, or whose stated length differs from its real length is rejected as broken before anyone downloads it, and so is anything under 20,000 bytes.
+
 ![The clay vase GLB on this page drawn in proportion to its bytes: a 1.4 KB JSON chunk, then a binary chunk of 85 KB of triangle indices, 164 KB of vertex positions and texture coordinates and a 50 KB WebP texture, with the same model as three separate glTF files below](diagram:glb-anatomy "Inside the clay vase GLB further down this page, read from the file itself: 301 KB in all. Its texture is already WebP, so here the uncompressed geometry is the heavy part.")
+
+The numbers in that diagram add up exactly, and the arithmetic is worth knowing. The vase has 14,590 triangles, and each one names its three corners with 2 bytes apiece: 87,540 bytes of indices. Its 8,406 vertices each store a position and a texture coordinate in 20 bytes: 168,120 bytes.
+
+## How big are real GLB files, and where do the bytes go?
+
+We read every model on our showcase the same way. All six are one mesh with one material and one 1024-pixel WebP texture, packed with glTF Transform for the web.
+
+| Model              | File size (bytes) | Triangles | Texture (bytes) | Share that is geometry |
+| ------------------ | ----------------- | --------- | --------------- | ---------------------- |
+| Clay vase          | 308,448           | 14,590    | 51,354          | 83%                    |
+| Stoneware vase     | 312,816           | 16,708    | 28,466          | 90%                    |
+| Round coffee table | 322,876           | 16,228    | 34,266          | 89%                    |
+| Swivel armchair    | 519,988           | 24,268    | 57,680          | 89%                    |
+| Bouclé armchair    | 551,068           | 25,879    | 70,690          | 87%                    |
+| Bedside table      | 1,287,432         | 69,910    | 40,628          | 97%                    |
+
+The usual advice is that textures are the heavy part of a GLB. That is true for a file with 4096-pixel PNGs. Once the texture is a 1024-pixel WebP, as here, the uncompressed geometry is 83% to 97% of every file, and the triangle count decides the size.
+
+## What do the materials in a GLB describe?
 
 Materials follow the PBR metallic-roughness model. PBR, physically based rendering, describes a surface by its base colour, how metallic it is and how rough it is. That is why the same GLB looks much the same in every viewer that follows the standard.
 
 ![The single texture image inside the clay vase GLB: the surface of the vase cut into patches and laid flat, rings of whitewashed clay, the rim and the base](/blog/figures/glb-file/clay-vase-texture.webp "The base colour texture inside that GLB, copied out of the file unchanged, 1024 by 1024 pixels. The texture coordinates tell the viewer which patch wraps onto which part of the vase.")
+
+Reading our own files taught us something here. Their material sets a base colour texture and nothing else, and the spec's default for an unset metallic value is 1, fully metallic. So every viewer is told to draw clay and bouclé as rough metal, which can darken or tint them.
+
+The fix is one setting: Metallic at 0 on the material in Blender, then export again. We would make that check on any GLB before it goes on a product page, whoever made it.
+
+## Why can a GLB look faceted?
+
+Our files also store no vertex normals, the per-corner directions a viewer uses to shade a curved surface smoothly. They hold positions and texture coordinates only.
+
+The spec covers this case: when normals are not given, viewers must calculate flat ones. On a model of 15,000 to 70,000 triangles the facets are small, but under a low side light a vase can show faint flat panels where the photo had a smooth curve.
+
+Adding normals costs 12 bytes per vertex, three numbers of 4 bytes each. For the clay vase that is 100,872 more bytes, about a third more file, which is the trade our pipeline makes for a lighter page. In Blender, Shade Smooth and an export with normals ticked reverses it.
 
 ## How do you open a GLB file?
 
@@ -32,9 +69,11 @@ You need a viewer, not a converter. These open GLB files without extra setup:
 
 iPhones and iPads do not open GLB files in AR Quick Look. Apple's AR uses USDZ, so stores that want AR on both systems keep both files.
 
-![An aged clay vase as a GLB file, open in Google's model-viewer and ready to turn](/showcase/clay-vase.glb "A real easyrender GLB of an aged clay vase, open in model-viewer, the component linked above. The file is 301 KB: one mesh of about 14,600 triangles and one 1024-pixel WebP texture, packed with glTF Transform.")
+![An aged clay vase as a GLB file, open in Google's model-viewer and ready to turn](/showcase/clay-vase.glb "A real easyrender GLB of an aged clay vase, open in model-viewer, the component linked above. The file is 301 KB: one mesh of 14,590 triangles and one 1024-pixel WebP texture, packed with glTF Transform.")
 
 Once it is open, spin it slowly. Look underneath, behind, and close up at fine details such as handles and stitching.
+
+To see what is inside without a viewer, run `gltf-transform inspect` from [glTF Transform](https://gltf-transform.dev/cli) on the file. It lists every mesh, texture and extension, with vertex counts and sizes, so you can check a file against the table above.
 
 ## What is a GLB file used for?
 
@@ -42,15 +81,32 @@ On product pages, Shopify accepts GLB files as product media. On a site you buil
 
 Outside ecommerce, GLB is common in web 3D, games and AR apps, because it is compact, open and read by most 3D software. Blender exports it, and so do most scanning and AI tools.
 
+For AR on Android the file has to fit Scene Viewer's budget: it recommends at most 10 MB, 100,000 triangles and 2048-pixel textures. Every file in the table above is inside it.
+
 ## How do you reduce GLB file size?
 
-Make it small enough to load on a phone over mobile data. Texture images are usually the heaviest part, so 2048-pixel textures, or 1024 for small items, are a common choice for product pages.
+We tried the usual commands on a copy of our heaviest file, the bedside table, with glTF Transform 4.5. The triangle count stays the same unless you simplify.
 
-[glTF Transform](https://gltf-transform.dev/cli) is a free command-line tool that compresses the geometry with Draco or Meshopt and resizes PNG and JPEG textures. Check the result in a viewer afterwards: heavy compression can blur a linen texture or round off a sharp table edge.
+| Version of the bedside table                                             | Size (bytes) | Triangles |
+| ------------------------------------------------------------------------ | ------------ | --------- |
+| As shown on this site                                                    | 1,287,432    | 69,910    |
+| Geometry compressed with Meshopt (`gltf-transform meshopt`)              | 422,480      | 69,910    |
+| Geometry compressed with Draco (`gltf-transform draco`)                  | 235,776      | 69,910    |
+| Simplified to half the triangles (`gltf-transform simplify --ratio 0.5`) | 710,072      | 34,954    |
+
+Draco gave the smallest file, 82% lighter. Meshopt took 67% off, and on the clay vase it took the file from 308,448 to 135,740 bytes. Simplifying alone saved less than either, because the remaining triangles were still stored uncompressed.
+
+Smaller is not free. A viewer has to support the compression: model-viewer and three.js can decode both, but Scene Viewer's documentation lists neither extension. We have not shipped these versions, so check yours in every viewer it will meet.
+
+Our verdict by destination:
+
+- Your own site with model-viewer: Meshopt or Draco on the geometry and WebP textures, then check the edges for rounding.
+- Android AR through Scene Viewer: a plain GLB with JPEG or PNG textures at 2048 pixels or less, simplified only if it is over 100,000 triangles.
+- Shopify: upload the uncompressed file, since Shopify optimises anything over 15 MB itself.
 
 ## How do you get a GLB from Blender, a scan or a photo?
 
-In Blender, use File, Export, glTF 2.0 and pick the binary .glb option, so the textures travel inside the file. Scanning apps and AI tools usually offer GLB as a download.
+In Blender, use File, Export, glTF 2.0 and set the format to glTF Binary (.glb), so the textures travel inside the file. Tick Normals and UVs under Mesh, and pick JPEG for images unless the model needs transparency. Scanning apps and AI tools usually offer GLB as a download.
 
 The routes to a model in the first place, from modelling to a single photo, are compared in [how to make a 3D model](/learn/how-to-make-a-3d-model). For a store catalogue, [3D for ecommerce](/learn/3d-models-for-ecommerce) covers which route suits which product.
 
@@ -58,7 +114,7 @@ easyrender, for example, gives you a GLB and a USDZ for every finished model it 
 
 ## GLB to USDZ: do you need both?
 
-For AR on iPhone and iPad, yes. Apple's Reality Converter, a free Mac app, turns a GLB into a USDZ, and recent versions of Blender export USDZ directly. [What a USDZ file is](/learn/usdz-file) covers the Apple side.
+For AR on iPhone and iPad, yes. Apple's Reality Converter, a free Mac app, turns a GLB into a USDZ, and recent versions of Blender export USDZ directly. [What a USDZ file is](/learn/usdz-file) covers the Apple side, including why our USDZ files come out several times larger than the GLB they are made from.
 
 | File | What is inside                                             | Opens on                                     | Use it for                                         |
 | ---- | ---------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------- |
@@ -66,11 +122,25 @@ For AR on iPhone and iPad, yes. Apple's Reality Converter, a free Mac app, turns
 | glTF | A JSON .gltf file, a .bin file and separate texture images | The same viewers, if the files stay together | Editing and inspecting, since the JSON is readable |
 | USDZ | An uncompressed zip of USD layers and their images         | iPhone, iPad and Mac Quick Look              | AR on Apple devices                                |
 
+## What goes wrong with a GLB, and how do you fix it?
+
+Most GLB problems come from one of a few causes. This is the list we work through, from what you see to what to change.
+
+| Symptom                                     | Cause                                                                               | Fix                                                       |
+| ------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| The model is plain grey                     | A .gltf saved without its texture files, or an export with images off               | Export again as binary .glb, so the textures are embedded |
+| The file is tens of megabytes               | 4096-pixel textures, or many of them                                                | Resize textures to 2048 or 1024 and compress the geometry |
+| Curved surfaces look faceted                | No vertex normals, so viewers draw flat ones                                        | Shade Smooth in Blender and export with normals           |
+| Clay or fabric looks dark or tinted         | Metallic left unset, so the default of fully metallic applies                       | Set Metallic to 0 and export again                        |
+| Black patches, or parts seen from inside    | Faces pointing the wrong way                                                        | In Blender, recalculate normals to point outside          |
+| It opens in one viewer and fails in another | A glTF extension the second viewer does not support, such as Draco or WebP textures | Export a plain version for that viewer                    |
+| An upload says the file is not valid        | A download cut short, so the stated length does not match                           | Download it again and compare the file size               |
+
 ## What does a GLB file not tell you?
 
 glTF measures in metres, but a model is only the right size if whoever made it set the size right. A model generated from a photo has no measured size, so keep dimensions in the product text.
 
-A GLB also says nothing about how good the model is. A file can be valid and still have a melted chair leg or a blurry texture, which only a look in a viewer will catch.
+A GLB also says nothing about how good the model is. A file can pass the [glTF Validator](https://github.khronos.org/glTF-Validator/) and still have a melted chair leg or a blurry texture, which only a look in a viewer will catch.
 
 ## FAQ
 
@@ -88,7 +158,7 @@ Open it in Blender, which imports GLB and exports FBX, OBJ, USD and USDZ, among 
 
 ### Why is my GLB file so big?
 
-Usually the textures. A model with several 4096-pixel images can weigh tens of megabytes before the geometry counts at all. Resize the textures to 2048 or 1024 pixels and compress the geometry with Draco or Meshopt, for example with glTF Transform, then check in a viewer that the surfaces still look right.
+Usually large textures, or uncompressed geometry once the textures are small. Our 69,910-triangle bedside table is 1,287,432 bytes, 97% of it geometry; Draco compression took it to 235,776. Resize textures to 2048 or 1024 pixels, compress the geometry with glTF Transform, then check in a viewer that the surfaces still look right.
 
 ### Why does my GLB look grey or untextured?
 

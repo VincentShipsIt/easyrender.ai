@@ -11,13 +11,35 @@ cta: Pick a sharp photo of one piece, an oak side table or a floor lamp, and che
 
 A USDZ file is a 3D model packed in Pixar's Universal Scene Description format, USD, inside an uncompressed zip archive. Apple uses it for AR Quick Look, so an iPhone or iPad can open a USDZ from Safari, Files, Mail or Messages and place the object in the room through the camera. Android does not open USDZ.
 
+![Illustration of two hands holding a tablet that shows a green side table placed on a living room rug in AR, next to an open zipped pouch holding layered sheets and fabric and wood texture swatches](/blog/illustrations/usdz-file/hero.webp "Illustration, not an easyrender result: AR Quick Look places the table in the room from the layers and textures packed inside one USDZ.")
+
 ## What is inside a USDZ file?
 
-USD is the scene format Pixar built for film production. The [USDZ specification](https://openusd.org/release/spec_usdz.html) describes a zip archive with zero compression that holds USD layers and the images they use, laid out so a device can read them in place.
+USD is the scene format Pixar built for film production. The [USDZ specification](https://openusd.org/release/spec_usdz.html) describes a zip archive with zero compression that holds USD layers and the images they use. Each file inside starts at a multiple of 64 bytes, so a device can read it in place without unpacking anything.
 
 ![A USDZ file drawn as a zip archive stored with zero compression, holding a USD layer with the mesh and materials and the texture images it points to](diagram:usdz-anatomy "What the USDZ specification describes. Because nothing is compressed, an iPhone reads each part straight out of the archive.")
 
+USD layers come in two encodings: .usda is text you can read, and .usdc is binary. Textures are usually PNG or JPEG. Which ones a USDZ holds depends on the tool that wrote it, and that choice decides most of the file size, as our own files show below.
+
 Apple [introduced USDZ with ARKit 2](https://www.apple.com/newsroom/2018/06/apple-unveils-arkit-2/) at WWDC in June 2018, for iOS 12, alongside AR Quick Look. Since then it has been the format Apple devices expect for AR from a web page or a message.
+
+## What did we find inside our own USDZ files?
+
+easyrender makes the USDZ download in your browser, from the GLB, with the USDZ exporter in three.js. We ran that same exporter on the GLB of our round coffee table and unzipped the result. Every file inside was stored with 0% compression, as the specification asks.
+
+| File inside the USDZ           | What it holds                                                              | Size (bytes) |
+| ------------------------------ | -------------------------------------------------------------------------- | ------------ |
+| `model.usda`                   | The scene: the object, its material, and an anchor to a horizontal surface | 2,576        |
+| `geometries/Geometry_2.usda`   | The mesh, written out as text                                              | 1,055,461    |
+| `textures/Texture_6_false.png` | The base colour texture, 1024 by 1024 pixels, as PNG                       | 991,437      |
+
+The whole USDZ came to 2,050,078 bytes, from a GLB of 322,876: more than six times larger. The clay vase did the same, from 308,448 bytes to 2,085,756.
+
+Two choices explain it. The geometry is written as text rather than binary, and the 34,266-byte WebP texture became a PNG almost 29 times its size. Neither is wrong, since Quick Look reads both, but a 2 MB file is slower to send in Messages and to load on mobile data.
+
+The scene file also says what Quick Look will do with it: one unit is one metre, Y points up, and the object anchors to a horizontal plane, a floor or a table top. The exporter warned that the normals were missing, which matches what we found in the GLB, so the AR view shades the same flat panels.
+
+What we would change: write the geometry as binary .usdc and the texture as JPEG. We still have to test these exports in AR on iPhones, which is why this guide shows no AR screenshot yet.
 
 ## USDZ viewer: how do you open a USDZ file?
 
@@ -27,13 +49,20 @@ The device you are on decides how:
 - Mac: select it in Finder and press the space bar for a Quick Look preview.
 - Windows and Android: there is no built-in viewer. [Blender 3.5 and later](https://developer.blender.org/docs/release_notes/3.5/pipeline_assets_io/) import USDZ, so you can open it there.
 
-If you need the same model on Android or in a browser, use its GLB version instead. [What a GLB file is](/learn/glb-file) covers that side.
+[Apple's Quick Look page](https://developer.apple.com/augmented-reality/quick-look/) lists Safari, Messages, Mail, News and Notes among the apps that open USDZ, on iOS 12 or iPadOS 12 and later. If you need the same model on Android or in a browser, use its GLB version instead. [What a GLB file is](/learn/glb-file) covers that side.
 
 <!-- IMAGE PENDING: a real iPhone screenshot of an easyrender USDZ (for example the bouclé armchair) open in Quick Look's Object view, unretouched. Not the AR view until AR is tested on device (REQ-00). -->
 
 ## How does AR Quick Look work on a web page?
 
 A page links to the USDZ with `rel="ar"` around a preview image, and Safari adds a small AR badge to that image. [WebKit's guide](https://webkit.org/blog/8421/viewing-augmented-reality-assets-in-safari-for-ios/) shows the markup. Tapping the image opens the model in the room, with no app to install.
+
+The setup has four details, and each one breaks it if it is missing:
+
+1. Host the USDZ over HTTPS, served with the content type `model/vnd.usdz+zip`, which is the type Safari looks for.
+2. Wrap a preview image in a link to the file: `<a rel="ar" href="side-table.usdz"><img src="side-table.jpg"></a>`.
+3. Give the link a single child, an `img` or a `picture`, and nothing else.
+4. Check support in script with `a.relList.supports("ar")`, and show a plain download link where it is false.
 
 Google's open-source [model-viewer](https://modelviewer.dev/) component handles both systems from one snippet: it shows a GLB in the page and hands iPhones a USDZ for Quick Look.
 
@@ -43,7 +72,18 @@ AR Quick Look places the model at the size stored in the file. If that size was 
 
 ## How do you make a USDZ file?
 
-Apple's Reality Converter, a free Mac app, [converts files such as OBJ, glTF, FBX and USD](https://developer.apple.com/videos/play/wwdc2022/10141/) to USDZ and lets you check the materials before you export. Blender 3.5 and later export USDZ directly.
+There are four common ways, and they differ in where they run and what they are good at.
+
+| Tool                       | Runs on             | Good at                                                       | Watch for                                       |
+| -------------------------- | ------------------- | ------------------------------------------------------------- | ----------------------------------------------- |
+| Apple's Reality Converter  | Mac                 | Checking the materials before you export                      | Mac only                                        |
+| Blender 3.5 and later      | Mac, Windows, Linux | Editing the model before you export                           | Some Blender materials come out flatter in USD  |
+| The three.js USDZ exporter | Any browser         | No server, and the USDZ always matches its GLB                | Text geometry and PNG textures make large files |
+| Shopify                    | Your store admin    | Converting each uploaded model so a GLB and a USDZ both exist | It decides the result, not you                  |
+
+Reality Converter [converts files such as OBJ, glTF, FBX and USD](https://developer.apple.com/videos/play/wwdc2022/10141/) to USDZ. In Blender, use File, Export, Universal Scene Description and give the file a .usdz extension.
+
+Our verdict: if you edit models, export from Blender and check the result in Quick Look on a Mac. If you sell on Shopify, upload the GLB and let it make the USDZ. If you build your own site, an in-browser export keeps one source file, at the cost of size.
 
 If you start from a photo, some image-to-3D tools export USDZ next to the GLB, so you skip the conversion. The steps are in [how to turn a photo into a 3D model](/learn/how-to-make-a-3d-model-from-photos).
 
@@ -55,13 +95,27 @@ Send yourself the USDZ of an oak side table by Messages and tap it. Quick Look o
 
 Walk round it and look where the legs meet the floor. A model whose base sits slightly off will appear to float.
 
-![A round solid wood table as a 3D model in a viewer, that can be turned to check the legs from every side](/showcase/coffee-table.glb "A round solid wood table easyrender modelled from one photo, shown here from its GLB. easyrender makes the USDZ download from this same GLB, in your browser. Turn it and look where the legs meet the ground.")
+![A round solid wood table as a 3D model in a viewer, that can be turned to check the legs from every side](/showcase/coffee-table.glb "A round solid wood table easyrender modelled from one photo, shown here from its GLB: 16,228 triangles. Its USDZ is the 2,050,078-byte file unpacked above, made from this same GLB in the browser. Turn it and look where the legs meet the ground.")
 
 Then check the grain under your own lamp, which is warmer than the studio light in the original photo.
 
+## What goes wrong with a USDZ, and how do you fix it?
+
+Most USDZ problems are in how the file is served or what the converter wrote. This is the list to check, from what you see to what to change.
+
+| Symptom                                                   | Cause                                                                         | Fix                                                                      |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Tapping the link downloads the file instead of opening AR | The link has no `rel="ar"`, or the file is served with the wrong content type | Add `rel="ar"` and serve the file as `model/vnd.usdz+zip`                |
+| No AR badge on the preview image                          | The link holds more than one child, or the device runs an iOS older than 12   | Give the link one `img` or `picture` child, and test on a current iPhone |
+| The piece looks huge or tiny                              | Quick Look uses the size in the file, which was never measured                | Write the dimensions in the product text; shoppers can pinch to resize   |
+| The piece floats above the floor                          | The base of the model sits above its origin                                   | Move the origin to the base in Blender, then export again                |
+| Colours are flatter than in Blender                       | A material setup that does not translate to USD                               | Check in Quick Look on a Mac, and simplify the material                  |
+| Curves look faceted                                       | The source GLB had no normals                                                 | Add smooth normals to the GLB before you convert it                      |
+| The file is too big to send easily                        | Geometry written as text, textures as PNG                                     | Export with binary geometry and JPEG textures, then compare sizes        |
+
 ## GLB to USDZ: should you keep both?
 
-Both, if the model goes on a product page. GLB covers the web and Android, and USDZ covers AR on Apple devices. Shopify, for example, accepts both as product media.
+Both, if the model goes on a product page. GLB covers the web and Android, and USDZ covers AR on Apple devices. Shopify, for example, accepts both as product media and makes the missing one itself.
 
 The [guide to making a 3D model](/learn/how-to-make-a-3d-model) explains where both files come from, whichever method you use. For a store, [3D for ecommerce](/learn/3d-models-for-ecommerce) covers which products are worth it.
 
@@ -79,10 +133,10 @@ Yes. Import the USDZ into Blender 3.5 or later, then export it as glTF 2.0 in th
 
 AR Quick Look uses the size stored in the file. If the model was never made with real measurements, as with models generated from a photo or scans without a reference, it can appear larger or smaller than the real piece. Treat AR as a way to see the look of an object, not to check whether it fits.
 
+### Why is a USDZ bigger than the GLB it came from?
+
+Usually because of what the converter writes. Our coffee table went from a 322,876-byte GLB to a 2,050,078-byte USDZ, because the exporter wrote the geometry as text and turned a small WebP texture into a PNG almost 29 times larger. Binary geometry and JPEG textures bring the size back down.
+
 ### Is USDZ the same as USD?
 
 USDZ is a package of USD. A USD scene can be a text file (.usda), a binary file (.usdc) or several files that reference each other. USDZ zips those layers and their textures into a single uncompressed file, which is what makes it easy to send by message and open on an iPhone.
-
-### Can Blender export a USDZ file?
-
-Yes, since Blender 3.5. Use File, Export, Universal Scene Description and give the file a .usdz extension. Check the export in Quick Look on a Mac or an iPhone, because some Blender material setups do not translate to USD and can come out flatter or a different colour than in the viewport.
