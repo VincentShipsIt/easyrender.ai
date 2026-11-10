@@ -1,10 +1,8 @@
 import { CREDIT_PACKS, RENDER_CREDITS, rendersInPack } from '@easyrender/harness';
 import {
   Building2,
-  Camera,
   Check,
   Code2,
-  Grid3x3,
   Home,
   type LucideIcon,
   Rotate3d,
@@ -68,52 +66,6 @@ export function Section({
   );
 }
 
-const STEPS: { icon: LucideIcon; title: string; body: string }[] = [
-  {
-    icon: Camera,
-    title: 'Upload one photo',
-    body: 'A clear listing or catalogue photo of a piece of furniture, a decor object or a building exterior. Add a short description if you like.',
-  },
-  {
-    icon: Grid3x3,
-    title: 'Check every angle, free',
-    body: 'Our harness draws the object from every side first, so you can catch problems before you spend a credit.',
-  },
-  {
-    icon: Rotate3d,
-    title: 'Get a real 3D model',
-    body: 'One click turns it into a textured GLB and USDZ. Spin it on your listing, embed it anywhere and open it in AR on any phone.',
-  },
-];
-
-export function HowItWorks() {
-  return (
-    <Section
-      id="how-it-works"
-      eyebrow="How it works"
-      title="From photo to 3D in about three minutes"
-      description="No scanning rig, no 3D artist, no app to install."
-    >
-      <div className="grid gap-4 md:grid-cols-3">
-        {STEPS.map((step, index) => (
-          <Card key={step.title} className="relative">
-            <CardHeader>
-              <div className="mb-2 flex items-center justify-between">
-                <div className="flex size-10 items-center justify-center rounded-lg border bg-muted">
-                  <step.icon className="size-5" />
-                </div>
-                <span className="font-mono text-sm text-muted-foreground">0{index + 1}</span>
-              </div>
-              <CardTitle>{step.title}</CardTitle>
-              <CardDescription className="leading-relaxed">{step.body}</CardDescription>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
 const AUDIENCES: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Home,
@@ -140,7 +92,7 @@ const AUDIENCES: { icon: LucideIcon; title: string; body: string }[] = [
 const PERKS: { icon: LucideIcon; label: string }[] = [
   { icon: Rotate3d, label: 'Embeddable 3D viewer for any listing site' },
   { icon: Smartphone, label: 'AR on iPhone and Android, no app' },
-  { icon: Code2, label: 'REST API and MCP server for your pipeline' },
+  { icon: Code2, label: 'MCP server and REST API for your agents' },
 ];
 
 export function RealEstate() {
@@ -180,7 +132,7 @@ export function Pricing() {
       name: 'Free',
       price: '$0',
       note: 'to try it',
-      features: ['Free previews of every angle', 'Explore the public gallery', 'No credit card'],
+      features: ['Connect your agent over MCP', 'Free previews of every angle', 'No credit card'],
       cta: { href: '/sign-up', label: 'Start free' },
       featured: false,
     },
@@ -192,7 +144,7 @@ export function Pricing() {
         `About ${rendersInPack(pack)} 3D models`,
         'GLB and USDZ downloads',
         'AR viewer and embeds',
-        ...(index > 0 ? ['API and MCP access'] : []),
+        'MCP server and REST API',
       ],
       cta: { href: `/sign-up?next=${encodeURIComponent('/credits')}`, label: `Get ${pack.label}` },
       featured: index === CREDIT_PACKS.length - 1,
@@ -248,6 +200,14 @@ export function Pricing() {
 
 const FAQ = [
   {
+    q: 'What does "connect your agent" mean?',
+    a: 'easyrender is an MCP server. Add it to Claude Code, Claude Desktop, Cursor, VS Code or any MCP client with your API key, and your agent can turn photos into 3D models on its own. Everything it makes shows up in your web dashboard.',
+  },
+  {
+    q: 'Do I need an agent to use it?',
+    a: 'No. You can upload photos in the web app, one by one or in bulk from your library. The agent just lets you run it on autopilot.',
+  },
+  {
     q: 'Which photos work best?',
     a: 'One sharp, well lit photo where the whole object is visible, ideally on a plain background. Catalogue shots and listing photos of a single piece or a building front work great.',
   },
@@ -270,10 +230,6 @@ const FAQ = [
   {
     q: 'Is my render public?',
     a: 'Finished models appear in the public gallery by default. You can hide any of yours from its page at any time.',
-  },
-  {
-    q: 'Can I automate it?',
-    a: 'Yes. Create an API key in your account to use the REST API or plug the MCP server into Claude or any MCP client.',
   },
 ];
 
@@ -299,14 +255,24 @@ export function FinalCta() {
     <section className="px-4 pb-24 sm:px-6">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-2xl border bg-primary px-6 py-14 text-center text-primary-foreground">
         <h2 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          See your next listing in 3D in a few minutes
+          Hand your 3D renders to your agent
         </h2>
         <p className="max-w-xl text-primary-foreground/70">
-          Upload one photo. Check every angle for free. Pay only for the models you keep.
+          Connect once. Previews are free, and you only pay for the models you keep.
         </p>
-        <Button size="lg" variant="secondary" asChild>
-          <Link href="/#top">Generate your first model</Link>
-        </Button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button size="lg" variant="secondary" asChild>
+            <Link href="/#connect">Connect your agent</Link>
+          </Button>
+          <Button
+            size="lg"
+            variant="ghost"
+            className="text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            asChild
+          >
+            <Link href="/#try">Try it with a photo</Link>
+          </Button>
+        </div>
       </div>
     </section>
   );

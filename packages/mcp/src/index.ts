@@ -87,7 +87,7 @@ export function createMcpServer(actor: Actor & { userId: string }) {
               }
             : null;
         if (!image) throw new AppError('Pass image_url or image_base64', 400, 'no_image');
-        const render = await createDraft({ actor, prompt, ...image });
+        const render = await createDraft({ actor, prompt, source: 'mcp', ...image });
         return { ...toView(render), links: links(render.id) };
       }),
   );

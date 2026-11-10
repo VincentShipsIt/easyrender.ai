@@ -222,7 +222,7 @@ export function CatalogLibrary({
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: page-wide drop target; the Upload button is the accessible path
     <div
-      className="mx-auto max-w-[88rem] space-y-6 px-4 py-10 sm:px-6"
+      className="space-y-6"
       onDragOver={(event) => {
         event.preventDefault();
         setDragging(true);

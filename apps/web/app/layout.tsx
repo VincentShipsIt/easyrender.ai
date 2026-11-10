@@ -7,9 +7,9 @@ import { SiteHeader } from '@/components/site-header';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'easyrender: one photo to a 3D model',
+  title: 'easyrender: 3D renders on autopilot with your agent',
   description:
-    'Turn a listing photo of furniture, decor or a building exterior into a 3D model you can spin, embed and view in AR.',
+    'Connect easyrender to your AI agent over MCP and turn product and listing photos into 3D models you can spin, embed and view in AR.',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

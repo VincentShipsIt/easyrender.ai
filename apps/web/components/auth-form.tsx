@@ -8,8 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const router = useRouter();
   const params = useSearchParams();
-  const raw = params.get('next') ?? '/';
-  const next = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/';
+  const raw = params.get('next') ?? '/dashboard';
+  const next = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/dashboard';
   const other = mode === 'sign-up' ? 'sign-in' : 'sign-up';
 
   return (

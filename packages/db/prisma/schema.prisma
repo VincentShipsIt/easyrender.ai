@@ -108,6 +108,8 @@ model Render {
   error             String?
   // Finished renders show in the public gallery unless the owner hides them.
   isPublic          Boolean      @default(true)
+  // Where the render was started: "web" (the app), "mcp" (an agent) or "api" (REST with a key).
+  source            String       @default("web")
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 
