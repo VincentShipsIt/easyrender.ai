@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Fail on what CI would fail on, before the push. Bypass once with `git push --no-verify`.
+export PATH="$HOME/.bun/bin:$PATH"
+
+if ! command -v bun >/dev/null 2>&1; then
+  echo "Bun is required for the pre-push hook. Install Bun or add it to PATH." >&2
+  exit 127
+fi
+
+# A push that only deletes remote refs has nothing to check.
+zero="0000000000000000000000000000000000000000"
+has_commits=false
+while read -r _local_ref local_sha _remote_ref _remote_sha; do
+  [ "$local_sha" != "$zero" ] && has_commits=true
+done
+[ "$has_commits" = false ] && exit 0
+
+bun run preflight
