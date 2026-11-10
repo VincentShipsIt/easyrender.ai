@@ -3,5 +3,6 @@ export * from './billing';
 export * from './config';
 export * from './credits';
 export * from './errors';
+export * from './oauth';
 export * from './renders';
 export * from './storage';

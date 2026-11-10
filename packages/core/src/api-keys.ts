@@ -17,6 +17,21 @@ export async function createApiKey(userId: string, name: string) {
   return { id: key.id, name: key.name, prefix: key.prefix, createdAt: key.createdAt, key: raw };
 }
 
+// Stores a key whose secret the caller derived itself. Idempotent, so replaying the same OAuth code
+// yields the same key instead of minting a new one each time.
+export async function ensureApiKey(userId: string, name: string, raw: string) {
+  await db().apiKey.upsert({
+    where: { hash: hash(raw) },
+    update: {},
+    create: {
+      userId,
+      name: name.slice(0, 60) || 'API key',
+      prefix: raw.slice(0, 10),
+      hash: hash(raw),
+    },
+  });
+}
+
 export function listApiKeys(userId: string) {
   return db().apiKey.findMany({
     where: { userId },

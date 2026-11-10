@@ -56,7 +56,7 @@
       "steps": {
         "key": {
           "title": "Consigue tu clave",
-          "body": "Crea una cuenta gratis. Tu clave de API te espera en la página de Conectores."
+          "body": "Crea una cuenta gratis y añade easyrender a claude.ai con una sola URL, o consigue una clave de API para Claude Code y otros agentes."
         },
         "paste": {
           "title": "Pégala en tu agente",
@@ -244,7 +244,13 @@
     "terminal": "Ejecútalo en tu terminal",
     "addTo": "Añádelo a {file}",
     "copy": "Copiar",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "claudeAi": {
+      "one": "Abre claude.ai → Ajustes → Conectores → Añadir conector personalizado.",
+      "two": "Pega esta URL como URL del conector.",
+      "three": "Pulsa Conectar, inicia sesión en easyrender y permite el acceso. No hace falta ninguna clave.",
+      "note": "El mismo inicio de sesión sirve para cualquier cliente MCP compatible con OAuth. Cada conexión crea una clave que puedes revocar más abajo."
+    }
   },
   "Gallery": {
     "modelAlt": "Modelo 3D: {title}",
@@ -482,10 +488,6 @@
     "more": "Más conectores",
     "comingSoon": "Próximamente",
     "soon": {
-      "oneClick": {
-        "title": "Conexión en un clic",
-        "body": "Añade easyrender a Claude.ai o ChatGPT iniciando sesión, sin clave."
-      },
       "shopify": {
         "title": "Shopify",
         "body": "Sincroniza productos y publica visores 3D en las fichas de producto."
@@ -510,8 +512,8 @@
     "connect": {
       "title": "Conecta tu agente",
       "created": "Tu nueva clave ya está en el fragmento de abajo. Cópialo ahora: la clave no se volverá a mostrar.",
-      "noKeys": "Crea una clave y pega el fragmento en tu agente.",
-      "hasKeys": "Pega el fragmento en tu agente y sustituye {placeholder} por una de tus claves."
+      "noKeys": "Usa la pestaña de claude.ai para conectar con un inicio de sesión. Para otros agentes, crea una clave y pega el fragmento.",
+      "hasKeys": "Pega el fragmento en tu agente y sustituye {placeholder} por una de tus claves. La pestaña de claude.ai no necesita clave."
     },
     "createMyKey": "Crear mi clave",
     "keys": {
@@ -616,5 +618,19 @@
     "errors": {
       "generic": "No pudimos iniciar tu sesión. Vuelve a intentarlo."
     }
+  },
+  "OAuth": {
+    "title": "¿Conectar {client} con easyrender?",
+    "description": "{client} podrá usar easyrender en tu nombre. Después volverás a {host}.",
+    "can": {
+      "create": "Subir fotos e iniciar vistas previas",
+      "read": "Leer tus renders y su estado",
+      "spend": "Crear modelos 3D, lo que gasta tus créditos"
+    },
+    "revoke": "Puedes desconectarlo cuando quieras revocando su clave en la página de Conectores.",
+    "approve": "Permitir acceso",
+    "deny": "Cancelar",
+    "invalidTitle": "Esta solicitud de conexión no es válida",
+    "invalidBody": "Vuelve a la aplicación de origen e inténtalo de nuevo."
   }
 }
