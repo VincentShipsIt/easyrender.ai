@@ -1,0 +1,59 @@
+import { getBalance, getBillingStatus } from '@easyrender/core';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { getFormatter, getTranslations } from 'next-intl/server';
+import { BuyButton } from '@/components/buy-button';
+import { SignOutButton } from '@/components/sign-out-button';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { currentUser } from '@/lib/actor';
+
+export const dynamic = 'force-dynamic';
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Account');
+  return { title: t('metaTitle') };
+}
+
+export default async function AccountPage() {
+  const user = await currentUser();
+  if (!user) redirect('/sign-in?next=/account');
+  const [balance, billing, t, format] = await Promise.all([
+    getBalance(user.id),
+    getBillingStatus(user.id),
+    getTranslations('Account'),
+    getFormatter(),
+  ]);
+
+  return (
+    <div className="max-w-2xl space-y-8">
+      <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>{user.name || t('yourAccount')}</CardTitle>
+          <CardDescription>{user.email}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm">
+            {t.rich('balance', {
+              credits: format.number(balance),
+              strong: (chunks) => <span className="font-medium">{chunks}</span>,
+            })}
+            {billing.pro && ' · Pro'}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" asChild>
+              <Link href="/credits">{t('buyCredits')}</Link>
+            </Button>
+            {billing.canManage && (
+              <div>
+                <BuyButton label={t('billing')} endpoint="/api/billing/portal" variant="outline" />
+              </div>
+            )}
+            <SignOutButton />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

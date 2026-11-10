@@ -5,6 +5,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { awsCredentialsProvider } from '@vercel/oidc-aws-credentials-provider';
 
 const LOCAL_PREFIX = 'local:';
+const S3_PREFIX = 'renders';
 
 const localRoot = () =>
   resolve(
@@ -40,8 +41,9 @@ export async function putFile(
   bytes: Uint8Array,
   contentType: string,
 ): Promise<string> {
-  const key = withSuffix(pathname);
   const bucket = process.env.S3_BUCKET;
+  // Everything lives under renders/ in the bucket, so https://cdn.easyrender.ai/renders/... is the public URL.
+  const key = withSuffix(bucket ? `${S3_PREFIX}/${pathname}` : pathname);
   if (bucket) {
     const cdn = process.env.ASSETS_CDN_URL;
     if (!cdn) throw new Error('ASSETS_CDN_URL is not set: it must point at the bucket CDN');

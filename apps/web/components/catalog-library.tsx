@@ -1,11 +1,13 @@
 'use client';
 
 import type { RenderView } from '@easyrender/core';
-import { AlertCircle, Box, ImageUp, Loader2, Sparkles, Upload } from 'lucide-react';
+import { AlertCircle, Box, Grid3x3, ImageUp, Loader2, Sparkles, Upload } from 'lucide-react';
 import Link from 'next/link';
+import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { prepare } from '@/components/prompt-bar';
 import { Button } from '@/components/ui/button';
+import { takePending } from '@/lib/pending-upload';
 import { cn } from '@/lib/utils';
 
 const UPLOAD_CONCURRENCY = 2;
@@ -16,31 +18,18 @@ type QueuedUpload = { key: string; name: string; url: string; error: string | nu
 type View = 'photo' | '3d' | 'both';
 type Filter = 'all' | 'needs' | 'working' | 'done' | 'failed';
 
-const FILTERS: { id: Filter; label: string; match: (item: RenderView) => boolean }[] = [
-  { id: 'all', label: 'All', match: () => true },
-  { id: 'needs', label: 'Needs 3D', match: (item) => item.status === 'preview_ready' },
+const FILTERS: { id: Filter; match: (item: RenderView) => boolean }[] = [
+  { id: 'all', match: () => true },
+  { id: 'needs', match: (item) => item.status === 'preview_ready' },
   {
     id: 'working',
-    label: 'In progress',
     match: (item) => item.status === 'drafting' || item.status === 'rendering',
   },
-  { id: 'done', label: '3D ready', match: (item) => item.status === 'ready' },
-  { id: 'failed', label: 'Failed', match: (item) => item.status === 'failed' },
+  { id: 'done', match: (item) => item.status === 'ready' },
+  { id: 'failed', match: (item) => item.status === 'failed' },
 ];
 
-const VIEWS: { id: View; label: string }[] = [
-  { id: 'photo', label: 'Photo' },
-  { id: '3d', label: '3D' },
-  { id: 'both', label: 'Side by side' },
-];
-
-const STATUS_LABEL: Record<RenderView['status'], string> = {
-  drafting: 'Preparing preview',
-  preview_ready: 'Ready for 3D',
-  rendering: 'Building 3D',
-  ready: '3D ready',
-  failed: 'Failed',
-};
+const VIEWS: View[] = ['photo', '3d', 'both'];
 
 const baseName = (file: File) => file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
 
@@ -63,11 +52,15 @@ export function CatalogLibrary({
   initial,
   initialBalance,
   renderCredits,
+  sheetCredits,
 }: {
   initial: RenderView[];
   initialBalance: number;
   renderCredits: number;
+  sheetCredits: number;
 }) {
+  const t = useTranslations('Library');
+  const format = useFormatter();
   const [items, setItems] = useState(initial);
   const [balance, setBalance] = useState(initialBalance);
   const [uploads, setUploads] = useState<QueuedUpload[]>([]);
@@ -126,7 +119,7 @@ export function CatalogLibrary({
     });
   };
 
-  async function addFiles(list: FileList | File[] | null) {
+  async function addFiles(list: FileList | File[] | null, prompt?: string) {
     const files = Array.from(list ?? []).filter((file) => file.type.startsWith('image/'));
     if (files.length === 0) return;
     setNotice(null);
@@ -153,12 +146,13 @@ export function CatalogLibrary({
     const skipped = await pool(queued, UPLOAD_CONCURRENCY, async (upload) => {
       try {
         const body = new FormData();
-        body.append('image', await prepare(upload.file), 'source.jpg');
+        body.append('image', await prepare(upload.file, t('errors.unreadable')), 'source.jpg');
         body.append('name', upload.name);
+        if (prompt) body.append('prompt', prompt);
         const response = await fetch('/api/renders', { method: 'POST', body });
         const data = await response.json();
         if (!response.ok) {
-          failed(upload.key, data.error ?? 'Upload failed');
+          failed(upload.key, data.error ?? t('errors.upload'));
           if (data.code === 'preview_limit') {
             setNotice(data.error);
             return false;
@@ -168,15 +162,38 @@ export function CatalogLibrary({
         upsert(data as RenderView);
         done(upload.key);
       } catch {
-        failed(upload.key, 'Upload failed');
+        failed(upload.key, t('errors.upload'));
       }
       return true;
     });
-    for (const upload of skipped) failed(upload.key, 'Not uploaded: daily limit reached');
+    for (const upload of skipped) failed(upload.key, t('errors.dailyLimit'));
   }
 
+  // A photo attached on the home page before signing up is uploaded here, once, for this account.
+  const claimed = useRef(false);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once on mount
+  useEffect(() => {
+    if (claimed.current) return;
+    claimed.current = true;
+    void takePending().then(async (saved) => {
+      if (!saved) return;
+      await addFiles([saved.file], saved.prompt);
+      setNotice(t('fromHome'));
+    });
+  }, []);
+
   const pending = items.filter((item) => item.status === 'preview_ready');
-  const affordable = Math.min(pending.length, Math.floor(balance / renderCredits));
+  // An angle sheet bought earlier already counts toward an item's price.
+  const owed = (item: RenderView) => Math.max(0, renderCredits - item.credits);
+  let affordable = 0;
+  let spendable = balance;
+  let totalOwed = 0;
+  for (const item of pending) {
+    if (owed(item) > spendable) break;
+    spendable -= owed(item);
+    totalOwed += owed(item);
+    affordable += 1;
+  }
 
   async function build(targets: RenderView[]) {
     if (targets.length === 0) return;
@@ -190,25 +207,41 @@ export function CatalogLibrary({
           const data = await response.json().catch(() => ({}));
           if (response.ok) {
             upsert(data as RenderView);
-            setBalance((current) => Math.max(0, current - renderCredits));
+            setBalance((current) => Math.max(0, current - owed(item)));
             return true;
           }
           if (data.code === 'insufficient_credits') {
-            stoppedFor = 'Out of credits. Buy more to generate the rest.';
+            stoppedFor = t('errors.outOfCredits');
             return false;
           }
-          setNotice(data.error ?? 'Some items could not start');
+          setNotice(data.error ?? t('errors.someFailed'));
         } catch {
-          setNotice('Some items could not start. Check your connection and try again.');
+          setNotice(t('errors.connection'));
         }
         return true;
       });
-      if (left.length > 0) setNotice(stoppedFor ?? `${left.length} items are still waiting.`);
+      if (left.length > 0) setNotice(stoppedFor ?? t('stillWaiting', { count: left.length }));
       // Bump past the optimistic updates so the final read always lands.
       localVersion.current += 1;
       await refresh(true);
     } finally {
       setBuilding(false);
+    }
+  }
+
+  async function makeSheet(item: RenderView) {
+    setNotice(null);
+    try {
+      const response = await fetch(`/api/renders/${item.id}/sheet`, { method: 'POST' });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok) {
+        upsert(data as RenderView);
+        setBalance((current) => Math.max(0, current - sheetCredits));
+        return;
+      }
+      setNotice(data.code === 'insufficient_credits' ? t('errors.sheetOutOfCredits') : data.error);
+    } catch {
+      setNotice(t('errors.connection'));
     }
   }
 
@@ -222,7 +255,7 @@ export function CatalogLibrary({
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: page-wide drop target; the Upload button is the accessible path
     <div
-      className="mx-auto max-w-[88rem] space-y-6 px-4 py-10 sm:px-6"
+      className="space-y-6"
       onDragOver={(event) => {
         event.preventDefault();
         setDragging(true);
@@ -238,22 +271,21 @@ export function CatalogLibrary({
     >
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Library</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {total} {total === 1 ? 'item' : 'items'} · {counts.done} in 3D ·{' '}
-            {balance.toLocaleString('en-US')} credits
+            {t('summary', { total, done: counts.done, balance: format.number(balance) })}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" onClick={() => input.current?.click()}>
             <Upload className="size-4" />
-            Upload photos
+            {t('upload')}
           </Button>
           {pending.length > 0 && affordable === 0 ? (
             <Button asChild>
               <Link href="/credits">
                 <Sparkles className="size-4" />
-                Buy credits to generate {pending.length}
+                {t('buyToGenerate', { count: pending.length })}
               </Link>
             </Button>
           ) : (
@@ -266,9 +298,12 @@ export function CatalogLibrary({
               ) : (
                 <Sparkles className="size-4" />
               )}
-              Generate all
-              {affordable > 0 &&
-                ` (${affordable} · ${(affordable * renderCredits).toLocaleString('en-US')} credits)`}
+              {affordable > 0
+                ? t('generateAllCount', {
+                    count: affordable,
+                    credits: format.number(totalOwed),
+                  })
+                : t('generateAll')}
             </Button>
           )}
         </div>
@@ -291,7 +326,7 @@ export function CatalogLibrary({
           {notice}
           {pending.length > affordable && (
             <Link href="/credits" className="underline">
-              Buy credits
+              {t('buyCredits')}
             </Link>
           )}
         </p>
@@ -307,11 +342,8 @@ export function CatalogLibrary({
           )}
         >
           <ImageUp className="size-8" />
-          <span className="font-medium text-foreground">Drop your catalog photos here</span>
-          <span className="max-w-sm text-center text-sm">
-            One photo per product. Each one gets a free preview, then generate them all in 3D at
-            once.
-          </span>
+          <span className="font-medium text-foreground">{t('empty.title')}</span>
+          <span className="max-w-sm text-center text-sm">{t('empty.body')}</span>
         </button>
       ) : (
         <>
@@ -319,9 +351,16 @@ export function CatalogLibrary({
             <Segmented
               value={filter}
               onChange={setFilter}
-              options={FILTERS.map((f) => ({ id: f.id, label: `${f.label} ${counts[f.id]}` }))}
+              options={FILTERS.map((f) => ({
+                id: f.id,
+                label: `${t(`filters.${f.id}`)} ${counts[f.id]}`,
+              }))}
             />
-            <Segmented value={view} onChange={setView} options={VIEWS} />
+            <Segmented
+              value={view}
+              onChange={setView}
+              options={VIEWS.map((id) => ({ id, label: t(`views.${id}`) }))}
+            />
           </div>
 
           <div
@@ -340,12 +379,15 @@ export function CatalogLibrary({
                   view={view}
                   photo={upload.url}
                   title={upload.name}
-                  status={upload.error ? 'Upload failed' : 'Uploading'}
+                  status={upload.error ? t('errors.upload') : t('uploading')}
                   pane={
                     upload.error ? (
                       <Pane icon={<AlertCircle className="size-5" />} text={upload.error} />
                     ) : (
-                      <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Uploading" />
+                      <Pane
+                        icon={<Loader2 className="size-5 animate-spin" />}
+                        text={t('uploading')}
+                      />
                     )
                   }
                 />
@@ -356,22 +398,25 @@ export function CatalogLibrary({
                 view={view}
                 href={`/r/${item.id}`}
                 photo={`/api/renders/${item.id}/source`}
-                title={item.name || item.prompt || 'Untitled'}
-                status={STATUS_LABEL[item.status]}
+                title={item.name || item.prompt || t('untitled')}
+                status={t(`status.${item.status}`)}
                 pane={
                   <ModelPane
                     item={item}
                     viewerReady={viewerReady}
-                    canBuild={!building && balance >= renderCredits}
-                    renderCredits={renderCredits}
+                    canBuild={!building && balance >= owed(item)}
+                    canSheet={balance >= sheetCredits}
+                    renderCredits={owed(item)}
+                    sheetCredits={sheetCredits}
                     onBuild={() => build([item])}
+                    onSheet={() => makeSheet(item)}
                   />
                 }
               />
             ))}
           </div>
           {visible.length === 0 && uploads.length === 0 && (
-            <p className="py-12 text-center text-sm text-muted-foreground">Nothing in this view.</p>
+            <p className="py-12 text-center text-sm text-muted-foreground">{t('emptyView')}</p>
           )}
         </>
       )}
@@ -472,21 +517,28 @@ function ModelPane({
   item,
   viewerReady,
   canBuild,
+  canSheet,
   renderCredits,
+  sheetCredits,
   onBuild,
+  onSheet,
 }: {
   item: RenderView;
   viewerReady: boolean;
   canBuild: boolean;
+  canSheet: boolean;
   renderCredits: number;
+  sheetCredits: number;
   onBuild: () => void;
+  onSheet: () => void;
 }) {
+  const t = useTranslations('Library');
   if (item.hasModel) {
     return viewerReady ? (
       <div className="absolute inset-0 bg-muted">
         <model-viewer
           src={`/api/renders/${item.id}/model`}
-          alt={`3D model of ${item.name ?? 'item'}`}
+          alt={t('modelAlt', { name: item.name ?? t('untitled') })}
           loading="lazy"
           camera-controls
           auto-rotate
@@ -495,25 +547,55 @@ function ModelPane({
         />
       </div>
     ) : (
-      <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Loading 3D" />
+      <Pane icon={<Loader2 className="size-5 animate-spin" />} text={t('pane.loading')} />
     );
   }
   switch (item.status) {
     case 'drafting':
-      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Preparing preview" />;
+      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text={t('pane.drafting')} />;
     case 'rendering':
-      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text="Building 3D model" />;
+      return <Pane icon={<Loader2 className="size-5 animate-spin" />} text={t('pane.rendering')} />;
     case 'failed':
-      return (
-        <Pane icon={<AlertCircle className="size-5" />} text="Failed. Credits were refunded." />
+      return <Pane icon={<AlertCircle className="size-5" />} text={t('pane.failed')} />;
+    default: {
+      const buy = !canBuild && !(canSheet && !item.hasSheet);
+      const build = buy ? (
+        <Button size="sm" asChild>
+          <Link href="/credits">{t('buyCredits')}</Link>
+        </Button>
+      ) : (
+        <Button size="sm" variant="outline" disabled={!canBuild} onClick={onBuild}>
+          {t('generateOne', { credits: renderCredits })}
+        </Button>
       );
-    default:
+      // The angle sheet is the preview: show it here, with the 3D action on top.
+      if (item.hasSheet) {
+        return (
+          <>
+            {/* biome-ignore lint/performance/noImgElement: authenticated API image, not optimizable */}
+            <img
+              src={`/api/renders/${item.id}/preview`}
+              alt={t('sheetAlt', { name: item.name ?? t('untitled') })}
+              loading="lazy"
+              className="absolute inset-0 size-full bg-white object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black/50 to-transparent p-2 pt-8">
+              {build}
+            </div>
+          </>
+        );
+      }
       return (
-        <Pane icon={<Box className="size-5" />} text="Ready for 3D">
-          <Button size="sm" variant="outline" disabled={!canBuild} onClick={onBuild}>
-            Generate · {renderCredits}
-          </Button>
+        <Pane icon={<Box className="size-5" />} text={t('status.preview_ready')}>
+          {canSheet && (
+            <Button size="sm" variant="secondary" onClick={onSheet}>
+              <Grid3x3 className="size-4" />
+              {t('generateSheet', { credits: sheetCredits })}
+            </Button>
+          )}
+          {build}
         </Pane>
       );
+    }
   }
 }

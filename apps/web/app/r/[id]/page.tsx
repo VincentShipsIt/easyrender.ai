@@ -3,8 +3,9 @@ import { Globe, Sparkles } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getFormatter, getTranslations } from 'next-intl/server';
 import { ModelView } from '@/components/model-view';
-import { formatDate, RenderDetail } from '@/components/render-detail';
+import { DATE_FORMAT, RenderDetail } from '@/components/render-detail';
 import { RenderView } from '@/components/render-view';
 import { Button } from '@/components/ui/button';
 import { resolveActor } from '@/lib/actor';
@@ -15,18 +16,21 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: PageProps<'/r/[id]'>): Promise<Metadata> {
   const { id } = await params;
   const demo = findShowcase(id);
-  return { title: `${demo?.title ?? '3D render'} · easyrender` };
+  const t = await getTranslations();
+  const title = demo ? t(`Showcase.items.${demo.slug}.title`) : t('Render.metaTitle');
+  return { title: `${title} · easyrender` };
 }
 
 export default async function RenderPage({ params }: PageProps<'/r/[id]'>) {
   const { id } = await params;
   const demo = findShowcase(id);
   if (demo) {
+    const [t, format] = await Promise.all([getTranslations(), getFormatter()]);
     return (
       <RenderDetail
-        title={demo.title}
-        prompt={demo.prompt}
-        badges={[demo.category, 'Example']}
+        title={t(`Showcase.items.${demo.slug}.title`)}
+        prompt={t(`Showcase.items.${demo.slug}.prompt`)}
+        badges={[t(`Showcase.categories.${demo.category}`), t('Render.example')]}
         viewer={<ModelView src={demo.model} name={demo.id} downloadUrl={null} />}
         input={demo.photo}
         angles={
@@ -34,36 +38,39 @@ export default async function RenderPage({ params }: PageProps<'/r/[id]'>) {
             // biome-ignore lint/performance/noImgElement: static showcase image
             <img
               src={demo.angles}
-              alt="Every angle"
+              alt={t('Render.everyAngle')}
               className="w-full rounded-lg border bg-white"
             />
           ) : (
             <p className="flex aspect-[2/1] items-center justify-center rounded-lg border bg-muted/40 p-4 text-center text-sm text-muted-foreground">
-              Made from the photo alone, without an angle sheet.
+              {t('Render.noAngleSheet')}
             </p>
           )
         }
         meta={[
-          { label: 'Status', value: 'Ready' },
-          { label: 'Engine', value: demo.engine },
-          { label: 'Dimensions', value: demo.dimensions },
-          { label: 'Formats', value: 'GLB · USDZ' },
+          { label: t('Render.meta.status'), value: t('Render.status.ready') },
+          { label: t('Render.meta.engine'), value: demo.engine },
+          { label: t('Render.meta.dimensions'), value: demo.dimensions },
+          { label: t('Render.meta.formats'), value: 'GLB · USDZ' },
           {
-            label: 'Visibility',
+            label: t('Render.meta.visibility'),
             value: (
               <span className="inline-flex items-center gap-1.5">
                 <Globe className="size-3.5" />
-                Public
+                {t('Render.public')}
               </span>
             ),
           },
-          { label: 'Created', value: formatDate(demo.createdAt) },
+          {
+            label: t('Render.meta.created'),
+            value: format.dateTime(new Date(demo.createdAt), DATE_FORMAT),
+          },
         ]}
         actions={
           <Button className="w-full" asChild>
             <Link href="/#top">
               <Sparkles />
-              Make your own
+              {t('Render.makeYourOwn')}
             </Link>
           </Button>
         }

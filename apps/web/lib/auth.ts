@@ -9,6 +9,13 @@ function createAuth() {
   return betterAuth({
     database: prismaAdapter(db(), { provider: 'postgresql' }),
     emailAndPassword: { enabled: true, minPasswordLength: 8 },
+    // Sign-in posts from whichever domain the visitor is on; without this only BETTER_AUTH_URL's
+    // origin is accepted and every other one gets 403 INVALID_ORIGIN.
+    trustedOrigins: [
+      'https://easyrender.ai',
+      'https://www.easyrender.ai',
+      ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
+    ],
     // dash() reads BETTER_AUTH_API_KEY; it powers the hosted Better Auth dashboard.
     plugins: [dash(), nextCookies()],
   });

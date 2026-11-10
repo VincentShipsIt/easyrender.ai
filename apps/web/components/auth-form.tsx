@@ -2,43 +2,46 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { AuthFields, type AuthMode } from '@/components/auth-fields';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { hasPending } from '@/lib/pending-upload';
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
+  const t = useTranslations('Auth');
   const router = useRouter();
   const params = useSearchParams();
-  const raw = params.get('next') ?? '/';
-  const next = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/';
+  const raw = params.get('next');
+  const requested = raw?.startsWith('/') && !raw.startsWith('//') ? raw : null;
+  const next = requested ?? '/dashboard';
   const other = mode === 'sign-up' ? 'sign-in' : 'sign-up';
 
   return (
     <Card className="mx-auto w-full max-w-sm">
       <CardHeader>
         <CardTitle className="text-xl">
-          {mode === 'sign-up' ? 'Create your account' : 'Welcome back'}
+          {mode === 'sign-up' ? t('signUpTitle') : t('signInTitle')}
         </CardTitle>
         <CardDescription>
-          {mode === 'sign-up'
-            ? 'Free previews of every angle. Pay only for the 3D models you keep.'
-            : 'Sign in to render, download and share your 3D models.'}
+          {mode === 'sign-up' ? t('signUpDescription') : t('signInDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         <AuthFields
           mode={mode}
-          onDone={() => {
-            router.push(next);
+          onDone={async () => {
+            // A photo attached on the home page before signing up goes to the Library.
+            router.push(!requested && (await hasPending()) ? '/library' : next);
             router.refresh();
           }}
         />
         <p className="text-center text-sm text-muted-foreground">
-          {mode === 'sign-up' ? 'Already have an account? ' : 'New here? '}
+          {mode === 'sign-up' ? t('haveAccount') : t('newHere')}{' '}
           <Link
             href={`/${other}?next=${encodeURIComponent(next)}`}
             className="text-foreground underline underline-offset-4"
           >
-            {mode === 'sign-up' ? 'Sign in' : 'Create an account'}
+            {mode === 'sign-up' ? t('signIn') : t('createAnAccount')}
           </Link>
         </p>
       </CardContent>

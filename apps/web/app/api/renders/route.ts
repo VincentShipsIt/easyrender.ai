@@ -1,5 +1,6 @@
 import {
   AppError,
+  bearerToken,
   createDraft,
   getBalance,
   listLibrary,
@@ -29,6 +30,7 @@ export const POST = (request: Request) =>
       contentType: image.type,
       prompt: typeof prompt === 'string' ? prompt.slice(0, 500) : null,
       name: typeof name === 'string' ? name : null,
+      source: bearerToken(request.headers) ? 'api' : 'web',
     });
     return NextResponse.json(toView(render), { status: 201 });
   });

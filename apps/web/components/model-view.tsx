@@ -1,6 +1,7 @@
 'use client';
 
 import { Download, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { ModelViewer } from '@/components/model-viewer';
 import { Button } from '@/components/ui/button';
@@ -34,12 +35,13 @@ export function ModelView({
   name: string;
   downloadUrl?: string | null;
 }) {
+  const t = useTranslations('Render');
   const [exporting, setExporting] = useState(false);
 
   return (
     <div className="space-y-3">
       <div className="aspect-square w-full overflow-hidden rounded-xl border bg-gradient-to-b from-muted/30 to-muted sm:aspect-[4/3]">
-        <ModelViewer src={src} alt={`3D model: ${name}`} interactive ar lazy={false} />
+        <ModelViewer src={src} alt={t('modelAlt', { name })} interactive ar lazy={false} />
       </div>
       {downloadUrl && (
         <div className="flex flex-wrap gap-2">

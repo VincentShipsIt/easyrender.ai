@@ -1,31 +1,47 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-export function BuyButton({ pack, label }: { pack: string; label: string }) {
+// Posts to a billing endpoint that answers with a Stripe URL, then follows it.
+export function BuyButton({
+  label,
+  body,
+  endpoint = '/api/checkout',
+  variant = 'default',
+  disabled = false,
+}: {
+  label: string;
+  body?: Record<string, unknown>;
+  endpoint?: string;
+  variant?: 'default' | 'outline';
+  disabled?: boolean;
+}) {
+  const t = useTranslations('BuyButton');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   return (
-    <div className="space-y-2">
+    <div className="w-full space-y-2">
       <Button
         className="w-full"
-        disabled={busy}
+        variant={variant}
+        disabled={busy || disabled}
         onClick={async () => {
           setBusy(true);
           setError(null);
-          const response = await fetch('/api/checkout', {
+          const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ pack }),
+            body: JSON.stringify(body ?? {}),
           });
-          const data = await response.json();
-          if (response.ok) {
+          const data = await response.json().catch(() => ({}));
+          if (response.ok && data.url) {
             window.location.href = data.url;
             return;
           }
-          setError(data.error ?? 'Checkout failed');
+          setError(data.error ?? t('failed'));
           setBusy(false);
         }}
       >

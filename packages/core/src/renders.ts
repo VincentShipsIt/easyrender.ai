@@ -9,6 +9,7 @@ import {
   findGlbUrl,
   isSettled,
   RENDER_CREDITS,
+  SHEET_CREDITS,
   SHEET_MODEL,
   sheetOutputUrl,
   sheetRequest,
@@ -21,9 +22,13 @@ import { getFile, putFile } from './storage';
 // Who is asking: a signed-in user, an anonymous visitor (cookie), or both.
 export type Actor = { userId?: string | null; anonId?: string | null; ipHash?: string | null };
 
+export type RenderSource = 'web' | 'mcp' | 'api';
+
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const DAY_MS = 24 * 60 * 60 * 1000;
+// A sheet takes ~1 minute and a 3D build ~2: anything still running after this has been lost.
+const STALE_MS = 45 * 60 * 1000;
 
 const replicate = () => createReplicate(config.replicateToken());
 const extension = (contentType: string) =>
@@ -81,6 +86,7 @@ export async function createDraft(input: {
   contentType: string;
   prompt?: string | null;
   name?: string | null;
+  source?: RenderSource;
 }): Promise<Render> {
   if (!IMAGE_TYPES.has(input.contentType)) {
     throw new AppError('Upload a JPEG, PNG or WebP photo', 415, 'bad_type');
@@ -100,6 +106,7 @@ export async function createDraft(input: {
       ipHash: input.actor.ipHash ?? null,
       prompt,
       name: input.name?.trim().slice(0, 120) || null,
+      source: input.source ?? 'web',
       sourceKey,
       status: config.sheetEnabled() ? 'drafting' : 'preview_ready',
     },
@@ -149,10 +156,19 @@ export async function advance(id: string): Promise<Render | null> {
   const render = await db().render.findUnique({ where: { id } });
   if (!render) return null;
 
+  const stale = Date.now() - render.updatedAt.getTime() > STALE_MS;
+
   try {
+    // Never started (the request died between claiming the render and starting Replicate).
+    if (stale && !render.sheetPredictionId && !render.buildPredictionId) {
+      throw new Error('never started');
+    }
     if (render.status === 'drafting' && render.sheetPredictionId) {
       const prediction = await replicate().get(render.sheetPredictionId);
-      if (!isSettled(prediction.status)) return render;
+      if (!isSettled(prediction.status)) {
+        if (stale) throw new Error('angle sheet timed out');
+        return render;
+      }
       const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `sheet ${prediction.status}`);
       const sheetKey = await putFile('sheets/sheet.png', await download(url), 'image/png');
@@ -165,7 +181,10 @@ export async function advance(id: string): Promise<Render | null> {
 
     if (render.status === 'rendering' && render.buildPredictionId) {
       const prediction = await replicate().get(render.buildPredictionId);
-      if (!isSettled(prediction.status)) return render;
+      if (!isSettled(prediction.status)) {
+        if (stale) throw new Error('3D render timed out');
+        return render;
+      }
       const url = prediction.status === 'succeeded' ? findGlbUrl(prediction.output) : null;
       if (!url) throw new Error(prediction.error ?? `${BUILD_MODEL.name} ${prediction.status}`);
       const glbKey = await putFile('models/model.glb', await download(url), 'model/gltf-binary');
@@ -195,23 +214,30 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     throw new AppError('This render cannot be built', 409, 'bad_state');
   }
 
+  // An angle sheet bought earlier already counts toward the price.
+  const alreadyPaid = render.credits;
+  const owed = Math.max(0, RENDER_CREDITS - alreadyPaid);
+
   // Claim the render first so a double click cannot spend twice.
   const { count } = await db().render.updateMany({
     where: { id, status: 'preview_ready' },
-    data: { status: 'rendering', userId: actor.userId, credits: RENDER_CREDITS },
+    data: { status: 'rendering', userId: actor.userId, credits: alreadyPaid + owed },
   });
   if (count === 0) return (await db().render.findUnique({ where: { id } })) as Render;
 
   try {
     await spendCredits({
       userId: actor.userId,
-      amount: RENDER_CREDITS,
+      amount: owed,
       key: `render:${id}`,
       reason: 'render',
       renderId: id,
     });
   } catch (error) {
-    await db().render.update({ where: { id }, data: { status: 'preview_ready', credits: 0 } });
+    await db().render.update({
+      where: { id },
+      data: { status: 'preview_ready', credits: alreadyPaid },
+    });
     throw error;
   }
 
@@ -241,6 +267,70 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
   }
 }
 
+// The angle sheet on its own, for a render that has none yet. SHEET_ENABLED=false stops the free
+// sheet at upload; this is the paid, on-demand way to get one, and its price counts toward the
+// 3D render.
+export async function startSheet(id: string, actor: Actor): Promise<Render> {
+  if (!actor.userId) throw new AppError('Sign in to generate an angle sheet', 401, 'sign_in');
+  const render = await db().render.findUnique({ where: { id } });
+  if (!render || !canAccess(render, actor)) throw notFound();
+  if (render.sheetKey || render.sheetPredictionId) return render;
+  if (render.status !== 'preview_ready') {
+    throw new AppError('This render cannot get an angle sheet', 409, 'bad_state');
+  }
+
+  // Claim first so a double click cannot spend twice. `credits` marks what is paid so far.
+  const { count } = await db().render.updateMany({
+    where: { id, status: 'preview_ready', sheetKey: null, sheetPredictionId: null },
+    data: { status: 'drafting', userId: actor.userId, credits: SHEET_CREDITS },
+  });
+  if (count === 0) return (await db().render.findUnique({ where: { id } })) as Render;
+
+  try {
+    await spendCredits({
+      userId: actor.userId,
+      amount: SHEET_CREDITS,
+      key: `sheet:${id}`,
+      reason: 'angle_sheet',
+      renderId: id,
+    });
+  } catch (error) {
+    await db().render.update({
+      where: { id },
+      data: { status: 'preview_ready', credits: render.credits, userId: render.userId },
+    });
+    throw error;
+  }
+
+  try {
+    const client = replicate();
+    const bytes = await getFile(render.sourceKey);
+    const contentType = render.sourceKey.endsWith('.png')
+      ? 'image/png'
+      : render.sourceKey.endsWith('.webp')
+        ? 'image/webp'
+        : 'image/jpeg';
+    const sourceUrl = await client.upload(bytes, `source.${extension(contentType)}`, contentType);
+    const request = sheetRequest(sourceUrl, render.prompt);
+    const prediction = await client.start(
+      request.path,
+      request.body,
+      config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
+    );
+    return await db().render.update({
+      where: { id },
+      data: { sourceUrl, sheetPredictionId: prediction.id },
+    });
+  } catch (error) {
+    await fail(id, error);
+    throw new AppError(
+      'Could not start the angle sheet. Your credits were refunded.',
+      502,
+      'upstream',
+    );
+  }
+}
+
 export type RenderView = {
   id: string;
   status: Render['status'];
@@ -248,10 +338,14 @@ export type RenderView = {
   name: string | null;
   error: string | null;
   hasPreview: boolean;
+  // True once the 3x3 angle sheet exists. Without it the preview is the plain photo.
+  hasSheet: boolean;
   hasModel: boolean;
   credits: number;
   renderCredits: number;
+  sheetCredits: number;
   isPublic: boolean;
+  source: RenderSource;
   createdAt: string;
 };
 
@@ -263,10 +357,13 @@ export function toView(render: Render): RenderView {
     name: render.name,
     error: render.status === 'failed' ? 'Generation failed. Credits, if any, were refunded.' : null,
     hasPreview: render.status !== 'drafting' && render.status !== 'failed',
+    hasSheet: Boolean(render.sheetKey),
     hasModel: render.status === 'ready' && Boolean(render.glbKey),
     credits: render.credits,
     renderCredits: RENDER_CREDITS,
+    sheetCredits: SHEET_CREDITS,
     isPublic: render.isPublic,
+    source: render.source as RenderSource,
     createdAt: render.createdAt.toISOString(),
   };
 }
@@ -326,4 +423,29 @@ export function listPublicRenders(take = 12) {
 
 export function listRenders(userId: string, take = 24) {
   return db().render.findMany({ where: { userId }, orderBy: { createdAt: 'desc' }, take });
+}
+
+export type DashboardStats = {
+  total: number;
+  ready: number;
+  inFlight: number;
+  byAgent: number;
+};
+
+// Counts for the dashboard overview. "By agent" covers both MCP and API-key renders.
+export async function getDashboardStats(userId: string): Promise<DashboardStats> {
+  const groups = await db().render.groupBy({
+    by: ['status', 'source'],
+    where: { userId },
+    _count: { _all: true },
+  });
+  const stats: DashboardStats = { total: 0, ready: 0, inFlight: 0, byAgent: 0 };
+  for (const group of groups) {
+    const count = group._count._all;
+    stats.total += count;
+    if (group.status === 'ready') stats.ready += count;
+    if (IN_FLIGHT.includes(group.status)) stats.inFlight += count;
+    if (group.source !== 'web') stats.byAgent += count;
+  }
+  return stats;
 }

@@ -5,7 +5,7 @@ export const A100_USD_PER_SECOND = 0.0014;
 
 export const SHEET_MODEL = {
   path: '/models/google/nano-banana-pro/predictions',
-  costUsd: 0.15, // per 2K output image
+  costUsd: 0.15, // per 2K output image; keep in step with SHEET_COST_USD in pricing.ts
 } as const;
 
 export const BUILD_MODEL = {

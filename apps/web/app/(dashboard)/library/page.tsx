@@ -1,12 +1,16 @@
 import { getBalance, listLibrary, toView } from '@easyrender/core';
-import { RENDER_CREDITS } from '@easyrender/harness';
+import { RENDER_CREDITS, SHEET_CREDITS } from '@easyrender/harness';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { CatalogLibrary } from '@/components/catalog-library';
 import { currentUser } from '@/lib/actor';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = { title: 'Library · easyrender' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Library');
+  return { title: t('metaTitle') };
+}
 
 export default async function LibraryPage() {
   const user = await currentUser();
@@ -17,6 +21,7 @@ export default async function LibraryPage() {
       initial={renders.map(toView)}
       initialBalance={balance}
       renderCredits={RENDER_CREDITS}
+      sheetCredits={SHEET_CREDITS}
     />
   );
 }

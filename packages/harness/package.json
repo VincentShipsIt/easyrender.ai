@@ -6,6 +6,9 @@
   "exports": {
     ".": {
       "default": "./src/index.ts"
+    },
+    "./pricing": {
+      "default": "./src/pricing.ts"
     }
   },
   "scripts": {
