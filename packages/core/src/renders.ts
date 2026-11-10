@@ -24,6 +24,7 @@ import {
 import { config } from './config';
 import { grantCredits, spendCredits } from './credits';
 import { AppError, notFound } from './errors';
+import { reportError } from './report';
 import { getFile, putFile } from './storage';
 
 // Who is asking: a signed-in user, an anonymous visitor (cookie), or both.
@@ -159,7 +160,7 @@ export async function createDraft(input: {
 
 async function fail(id: string, error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
-  console.error(`render ${id} failed:`, message);
+  reportError(error, { renderId: id, stage: 'render' });
   const render = await db().render.update({
     where: { id },
     data: { status: 'failed', error: message.slice(0, 500) },

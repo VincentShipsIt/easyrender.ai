@@ -1,4 +1,4 @@
-import { advance } from '@easyrender/core';
+import { advance, reportError } from '@easyrender/core';
 import { NextResponse } from 'next/server';
 
 export const maxDuration = 60;
@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   try {
     await advance(id);
   } catch (error) {
-    console.error('replicate webhook failed', id, error);
+    reportError(error, { renderId: id, stage: 'replicate-webhook' });
     return NextResponse.json({ ok: false }, { status: 500 });
   }
   return NextResponse.json({ ok: true });
