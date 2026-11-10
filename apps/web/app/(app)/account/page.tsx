@@ -27,9 +27,14 @@ export default async function AccountPage() {
             {user.email} · {balance.toLocaleString('en-US')} credits
           </p>
         </div>
-        <Button variant="outline" asChild>
-          <Link href="/credits">Buy credits</Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" asChild>
+            <Link href="/library">Open library</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/credits">Buy credits</Link>
+          </Button>
+        </div>
       </div>
       <Card>
         <CardHeader>

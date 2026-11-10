@@ -42,10 +42,14 @@ export async function SiteHeader() {
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/credits">
                   <Coins />
-                  {balance.toLocaleString('en-US')} credits
+                  {balance.toLocaleString('en-US')}
+                  <span className="hidden sm:inline">credits</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild>
+                <Link href="/library">Library</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
                 <Link href="/account">Account</Link>
               </Button>
               <SignOutButton />

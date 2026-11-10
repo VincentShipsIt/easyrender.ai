@@ -35,7 +35,7 @@ const EXAMPLES = SHOWCASE.slice(0, 4);
 type Phase = 'idle' | 'simulating' | 'teaser' | 'uploading' | 'error';
 
 // Downscales on the client so uploads stay under the 4 MB request limit.
-async function prepare(file: File): Promise<Blob> {
+export async function prepare(file: File): Promise<Blob> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement('canvas');

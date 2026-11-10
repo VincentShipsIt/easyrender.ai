@@ -94,6 +94,8 @@ model Render {
   anonId            String?
   ipHash            String?
   prompt            String?
+  // Display name for catalog items, usually the uploaded file name.
+  name              String?
   status            RenderStatus @default(drafting)
   sourceKey         String
   sourceUrl         String?
