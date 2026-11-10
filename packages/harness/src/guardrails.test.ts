@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import { checkGlb, checkNote, checkPhoto, checkSheet } from './guardrails';
@@ -82,8 +83,14 @@ async function sheetWith(filled: number[], side = 900) {
   const cell = side / 3;
   const overlays = await Promise.all(
     filled.map(async (index) => ({
+      // A different size per cell so the nine views are not the same picture.
       input: await sharp({
-        create: { width: 120, height: 120, channels: 3, background: '#303030' },
+        create: {
+          width: 40 + index * 20,
+          height: 60 + index * 15,
+          channels: 3,
+          background: '#303030',
+        },
       })
         .png()
         .toBuffer(),
@@ -104,6 +111,22 @@ describe('sheet guardrail', () => {
   it('accepts a full sheet and one empty cell', async () => {
     expect((await checkSheet(await sheetWith([0, 1, 2, 3, 4, 5, 6, 7, 8]))).ok).toBe(true);
     expect((await checkSheet(await sheetWith([0, 1, 2, 3, 4, 5, 6, 7]))).ok).toBe(true);
+  });
+
+  // Real sheets from the showcase: the armchair rotates, the vase is one view pasted nine times.
+  const showcase = (name: string) =>
+    new Uint8Array(
+      readFileSync(new URL(`../../../apps/web/public/showcase/${name}`, import.meta.url)),
+    );
+
+  it('accepts a real sheet whose views all differ', async () => {
+    const check = await checkSheet(showcase('armchair-angles.jpg'));
+    expect(check).toEqual({ ok: true, warnings: [] });
+  });
+
+  it('rejects a real sheet that repeats one view', async () => {
+    const check = await checkSheet(showcase('vase-angles.jpg'));
+    expect(!check.ok && check.code).toBe('sheet_repeated_views');
   });
 
   it('rejects a mostly empty or tiny sheet', async () => {
