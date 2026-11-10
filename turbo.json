@@ -6,6 +6,7 @@
       "dependsOn": ["^build"],
       "env": [
         "REPLICATE_API_TOKEN",
+        "HARNESS_GITHUB_TOKEN",
         "BETTER_AUTH_*",
         "STRIPE_*",
         "S3_BUCKET",
