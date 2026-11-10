@@ -66,6 +66,7 @@ export async function initPipeline(panel: HTMLElement, { scope, fmt, prompts }: 
     readout: part(panel, 'readout'),
     cursor: part(panel, 'cursor'),
   };
+  ui.img.src = photoUrl(ITEMS[0]);
 
   const view = new View(getStage(), part(panel, 'view'), { fov: 24 });
   scope.add(() => view.dispose());

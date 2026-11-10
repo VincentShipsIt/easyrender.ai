@@ -126,8 +126,10 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
     if (!scope.alive) return;
     show(ORDER[0], first);
   } catch (error) {
-    // No WebGL: the cards still appear, with the input photo and the copy.
+    // No WebGL: the cards still appear, with the input photo and the copy. The markup ships
+    // without the photo (the stack is hidden until now), so it is set here or by show().
     console.warn('studio hero: 3D is not available', error);
+    ui.photo.src = photoUrl(ORDER[0]);
     stack.classList.add('is-in');
     return;
   }

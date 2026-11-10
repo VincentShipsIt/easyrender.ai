@@ -7,6 +7,7 @@ import { ease, makeBeauty, seg } from '../engine/studio';
 import type { Scope } from '../scope';
 
 const ID = 'swivel-chair';
+const BACKDROP = '/studio/room-ar.jpg';
 const T = { aim: 0.9, tap: 2.0, scan: 2.35, place: 4.1, settle: 5.0, hold: 11.2, total: 12.2 };
 
 type Phase = 'shop' | 'aim' | 'tap' | 'scan' | 'place' | 'hold';
@@ -20,6 +21,7 @@ export async function initAr(panel: HTMLElement, { scope, labels }: ArContext) {
     pill: part(panel, 'pill'),
     cursor: part(panel, 'cursor'),
   };
+  part<HTMLImageElement>(panel, 'backdrop').src = BACKDROP;
 
   // A phone camera at chest height looking down at the floor, to match the background photo.
   const view = new View(getStage(), part(panel, 'view'), { fov: 62, envIntensity: 0.45 });

@@ -348,7 +348,8 @@
     "stillWaiting": "{count, plural, one {# item is} other {# items are}} still waiting.",
     "empty": {
       "title": "Drop your catalog photos here",
-      "body": "One photo per product. Each one gets a free preview, then generate them all in 3D at once."
+      "body": "One photo per product. Each one gets a free preview, then generate them all in 3D at once.",
+      "cost": "Previews are free. 3D costs {credits} credits per item."
     },
     "filters": {
       "all": "All",
@@ -391,7 +392,23 @@
     },
     "fromHome": "Your photo from the home page is here. Generate its angle sheet or 3D model below.",
     "generateSheet": "Angles · {credits}",
-    "sheetAlt": "Every angle of {name}"
+    "sheetAlt": "Every angle of {name}",
+    "dropOverlay": {
+      "title": "Drop photos to add them",
+      "body": "Each one gets a free preview. You choose which to build in 3D."
+    },
+    "addMore": {
+      "title": "Add more photos",
+      "body": "Click, or drop them anywhere on this page"
+    },
+    "retry": "Try again",
+    "dismiss": "Dismiss",
+    "estimate": {
+      "prices": "Previews are free. 3D costs {credits} credits per item.",
+      "previewing": "{count, plural, one {# preview} other {# previews}} in progress.",
+      "all": "Build {count, plural, one {# item} other {# items}} in 3D: {credits} of your {balance} credits.",
+      "short": "Short by {credits} credits. Buy more"
+    }
   },
   "DashboardNav": {
     "overview": "Overview",

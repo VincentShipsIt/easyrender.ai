@@ -1,3 +1,4 @@
+import { deflateSync } from 'node:zlib';
 import { db } from '@easyrender/db';
 import { RENDER_CREDITS, SHEET_CREDITS } from '@easyrender/harness';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -306,6 +307,66 @@ run('credits and generation billing (real database)', () => {
     it('rejects a bad signature', async () => {
       const { handleStripeWebhook } = await import('./billing');
       await expect(handleStripeWebhook('{}', 't=1,v1=bad')).rejects.toThrow();
+    });
+  });
+
+  describe('free preview allowance', () => {
+    // A small noisy RGB PNG that passes the photo guardrails, built without an image library.
+    const photo = () => {
+      const side = 420;
+      const rows = Buffer.alloc((side * 3 + 1) * side);
+      for (let y = 0; y < side; y++) {
+        const offset = y * (side * 3 + 1);
+        for (let x = 1; x <= side * 3; x++) rows[offset + x] = Math.floor(Math.random() * 256);
+      }
+      const crc = (buffer: Buffer) => {
+        let c = ~0;
+        for (const byte of buffer) {
+          c ^= byte;
+          for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1));
+        }
+        return ~c >>> 0;
+      };
+      const chunk = (type: string, data: Buffer) => {
+        const body = Buffer.concat([Buffer.from(type), data]);
+        const out = Buffer.alloc(body.length + 8);
+        out.writeUInt32BE(data.length, 0);
+        body.copy(out, 4);
+        out.writeUInt32BE(crc(body), body.length + 4);
+        return out;
+      };
+      const header = Buffer.alloc(13);
+      header.writeUInt32BE(side, 0);
+      header.writeUInt32BE(side, 4);
+      header.set([8, 2, 0, 0, 0], 8);
+      return new Uint8Array(
+        Buffer.concat([
+          Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+          chunk('IHDR', header),
+          chunk('IDAT', deflateSync(rows)),
+          chunk('IEND', Buffer.alloc(0)),
+        ]),
+      );
+    };
+
+    it('does not count failed previews, but counts the ones that worked', async () => {
+      const { renders } = await load();
+      process.env.FREE_PREVIEWS_PER_DAY = '1';
+      const userId = await newUser(0);
+      const bytes = photo();
+      const upload = () =>
+        renders.createDraft({ actor: { userId }, bytes, contentType: 'image/png', source: 'web' });
+
+      // Replicate is down (out of credit): the preview fails and must not burn the allowance.
+      replicate.fail = true;
+      await expect(upload()).rejects.toMatchObject({ status: 502 });
+      await expect(upload()).rejects.toMatchObject({ status: 502 });
+
+      // Replicate is back: the one allowed preview works, the next one is refused.
+      replicate.fail = false;
+      await expect(upload()).resolves.toMatchObject({ status: 'drafting' });
+      await expect(upload()).rejects.toMatchObject({ status: 429, code: 'preview_limit' });
+      delete process.env.FREE_PREVIEWS_PER_DAY;
     });
   });
 });

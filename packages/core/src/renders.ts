@@ -80,8 +80,14 @@ async function assertPreviewAllowance(actor: Actor) {
   const limit = paying
     ? Math.max(config.paidPreviewsPerDay(), Math.floor(credits / RENDER_CREDITS))
     : config.freePreviewsPerDay();
+  // Previews that failed produced nothing, so they do not use up the allowance: an upstream outage
+  // must not lock visitors out for the day.
   const used = await db().render.count({
-    where: { createdAt: { gte: since }, OR: paying ? [{ userId: actor.userId as string }] : or },
+    where: {
+      createdAt: { gte: since },
+      status: { not: 'failed' },
+      OR: paying ? [{ userId: actor.userId as string }] : or,
+    },
   });
   if (used >= limit) {
     throw new AppError(

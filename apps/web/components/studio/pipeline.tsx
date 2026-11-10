@@ -3,7 +3,6 @@
 import { ArrowRight, Box, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { photoUrl } from '@/lib/studio/catalog';
 import { createFormat } from '@/lib/studio/format';
 import { DemoCursor } from './icons';
 import { useCatalogText } from './use-catalog-text';
@@ -35,16 +34,10 @@ export function StudioPipeline() {
           <div className="view" data-er="view" />
 
           <div className="pipe-photo" data-er="photo">
+            {/* No src in the markup: the photo stays hidden until the 3D loop shows it, and the
+                loop sets the src of each object it builds. */}
             {/* biome-ignore lint/performance/noImgElement: swapped by the 3D code on every loop */}
-            <img
-              data-er="photo-img"
-              src={photoUrl('armchair')}
-              alt=""
-              width={720}
-              height={720}
-              loading="lazy"
-              decoding="async"
-            />
+            <img data-er="photo-img" alt="" width={720} height={720} decoding="async" />
             <span className="tag tag--ink">{t('photo')}</span>
           </div>
 
