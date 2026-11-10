@@ -4,11 +4,12 @@ import { Hub } from '@/components/studio/hub';
 import { StudioClosing } from '@/components/studio/proof';
 import { StudioShell } from '@/components/studio/shell';
 import { currentUser } from '@/lib/actor';
+import { noindexMetadata } from '@/lib/seo/metadata';
 import { CATEGORIES, type CategoryKey } from '@/lib/studio/catalog';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Hub');
-  return { title: t('metaTitle'), description: t('metaDescription') };
+  return noindexMetadata(t('metaTitle'), t('metaDescription'));
 }
 
 const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);

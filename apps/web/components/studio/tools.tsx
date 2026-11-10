@@ -11,7 +11,7 @@ import { useSection } from './use-section';
 
 const SOFA = itemOf('sofa');
 const VASE = itemOf('clay-vase');
-const FORMATS = ['glb', 'usdz', 'fbx', 'obj'] as const;
+const FORMATS = ['glb', 'usdz'] as const;
 const VIEW_TOOLS: ToolName[] = [
   'topology',
   'material',
@@ -138,10 +138,6 @@ export function StudioTools() {
           <div className="view" data-er="view" />
           <span className="tag">{t('physics')}</span>
           <dl className="ctl ctl--list">
-            <div>
-              <dt>{t('mass')}</dt>
-              <dd data-er="mass">{fmt.kg(VASE.mass)}</dd>
-            </div>
             <div>
               <dt>{t('friction')}</dt>
               <dd data-er="friction">{fmt.fixed(VASE.friction)}</dd>

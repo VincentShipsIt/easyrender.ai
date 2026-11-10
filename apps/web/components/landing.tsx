@@ -1,23 +1,19 @@
 import {
+  CREDIT_USD,
   ENTERPRISE_BOOKING_URL,
   PAYG,
   PRO_PLAN,
   RENDER_CREDITS,
   rendersFor,
 } from '@easyrender/harness';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { FAQ_KEYS } from '@/lib/faq';
 import { cn } from '@/lib/utils';
 
 // A home page section in the studio layout: a two-tone statement (title, then description in
@@ -164,31 +160,42 @@ export async function Pricing() {
   );
 }
 
-const FAQ_KEYS = [
-  'connect',
-  'needAgent',
-  'photos',
-  'scope',
-  'output',
-  'freePreview',
-  'failed',
-  'public',
-] as const;
+export type FaqItem = { question: string; answer: string };
 
+/**
+ * The home FAQ as plain strings, so the accordion and the FAQPage structured data are built from
+ * one list and cannot drift apart.
+ */
+export async function faqItems(): Promise<FaqItem[]> {
+  const [t, format] = await Promise.all([getTranslations('Landing.faq'), getFormatter()]);
+  const usd = (value: number) => format.number(value, { style: 'currency', currency: 'USD' });
+  const price = usd(RENDER_CREDITS * CREDIT_USD);
+  const unit = usd(CREDIT_USD);
+  return FAQ_KEYS.map((key) => ({
+    question: t(`items.${key}.q`),
+    answer: t(`items.${key}.a`, { credits: RENDER_CREDITS, price, unit }),
+  }));
+}
+
+// Native <details>, not the Radix accordion: Radix does not render a closed panel's content at
+// all, so the answers were missing from the server HTML that search engines and AI crawlers read,
+// and the FAQPage structured data described text the page did not show. <details> keeps every
+// answer in the HTML, opens without JavaScript, and is still one click per question.
 export async function Faq() {
-  const t = await getTranslations('Landing.faq');
+  const [t, items] = await Promise.all([getTranslations('Landing.faq'), faqItems()]);
   return (
     <Section id="faq" title={t('title')} narrow>
-      <Accordion type="single" collapsible className="sec__column">
-        {FAQ_KEYS.map((key) => (
-          <AccordionItem key={key} value={key}>
-            <AccordionTrigger className="text-base">{t(`items.${key}.q`)}</AccordionTrigger>
-            <AccordionContent className="text-muted-foreground leading-relaxed">
-              {t(`items.${key}.a`)}
-            </AccordionContent>
-          </AccordionItem>
+      <div className="sec__column">
+        {items.map((item) => (
+          <details key={item.question} className="group border-b last:border-b-0">
+            <summary className="flex cursor-pointer list-none items-start justify-between gap-4 rounded-md py-4 text-left font-medium outline-none hover:underline focus-visible:ring-[3px] focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
+              <h3 className="text-base font-medium">{item.question}</h3>
+              <ChevronDownIcon className="pointer-events-none size-4 shrink-0 translate-y-0.5 text-muted-foreground transition-transform duration-200 group-open:rotate-180" />
+            </summary>
+            <p className="pb-4 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+          </details>
         ))}
-      </Accordion>
+      </div>
     </Section>
   );
 }

@@ -31,7 +31,7 @@
         "kb": 76
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "armchair",
@@ -65,7 +65,7 @@
         "kb": 66
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "coffee-table",
@@ -99,7 +99,7 @@
         "kb": 21
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "bedside-table",
@@ -133,7 +133,7 @@
         "kb": 102
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "vase",
@@ -167,7 +167,7 @@
         "kb": 19
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "clay-vase",
@@ -201,7 +201,7 @@
         "kb": 21
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "sofa",
@@ -235,7 +235,7 @@
         "kb": 42
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "lamp",
@@ -269,7 +269,7 @@
         "kb": 38
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "cactus",
@@ -303,7 +303,7 @@
         "kb": 92
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "sneaker",
@@ -337,7 +337,7 @@
         "kb": 55
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "espresso",
@@ -371,7 +371,7 @@
         "kb": 62
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "crate",
@@ -405,7 +405,7 @@
         "kb": 56
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "barrel",
@@ -439,6 +439,6 @@
         "kb": 31
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   }
 ]

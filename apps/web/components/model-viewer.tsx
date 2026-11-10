@@ -5,6 +5,7 @@ import {
   type DetailedHTMLProps,
   type HTMLAttributes,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { cn } from '@/lib/utils';
@@ -55,7 +56,9 @@ type Props = {
   rotationSpeed?: string;
 };
 
-// Google's <model-viewer>, loaded on the client only.
+// Google's <model-viewer>, loaded on the client only, and only once its box comes near the
+// viewport: the library bundles its own three.js (~370 KB), so a viewer far down a page must not
+// download it during the first paint. The box keeps its size while empty, so nothing shifts.
 export function ModelViewer({
   src,
   alt,
@@ -67,17 +70,29 @@ export function ModelViewer({
   lazy = true,
   rotationSpeed = '24deg',
 }: Props) {
+  const box = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
+    const element = box.current;
+    if (!element) return;
     let alive = true;
-    loadModelViewer().then(() => alive && setReady(true));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        loadModelViewer().then(() => alive && setReady(true));
+      },
+      { rootMargin: '300px 0px' },
+    );
+    observer.observe(element);
     return () => {
       alive = false;
+      observer.disconnect();
     };
   }, []);
 
   return (
-    <div className={cn('relative size-full', className)} style={style}>
+    <div ref={box} className={cn('relative size-full', className)} style={style}>
       {ready && (
         <model-viewer
           src={src}

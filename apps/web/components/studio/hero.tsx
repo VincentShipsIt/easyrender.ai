@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { itemOf, photoUrl } from '@/lib/studio/catalog';
+import { itemOf } from '@/lib/studio/catalog';
 import { createFormat } from '@/lib/studio/format';
 import { TriMark } from './icons';
 import { useCatalogText } from './use-catalog-text';
@@ -25,25 +25,23 @@ export function StudioHero({ ctaHref }: { ctaHref: string }) {
     },
     locale,
     '0px',
+    { idle: true },
   );
 
   return (
     <section ref={ref} className="hero" aria-labelledby="studio-hero-title">
       <div className="hero__copy">
         <h1 id="studio-hero-title">{t('title')}</h1>
+        <p className="hero__lead">{t('subtitle')}</p>
       </div>
 
       <div className="stack" data-er="stack" role="img" aria-label={t('stackLabel')}>
         <figure className="card card--photo">
+          {/* No src in the markup: the card is invisible until the 3D code fades the stack in, and
+              that code sets the photo when it does (or when WebGL is missing), so the first paint
+              does not download it. */}
           {/* biome-ignore lint/performance/noImgElement: swapped by the 3D code as the object changes */}
-          <img
-            data-er="photo"
-            src={photoUrl(FIRST.id)}
-            alt=""
-            width={720}
-            height={720}
-            decoding="async"
-          />
+          <img data-er="photo" alt="" width={720} height={720} decoding="async" />
           <figcaption className="tag tag--ink">{t('photo')}</figcaption>
         </figure>
         <div className="card card--wire" data-er="wire">
@@ -64,14 +62,6 @@ export function StudioHero({ ctaHref }: { ctaHref: string }) {
             <div>
               <dt>{t('element')}</dt>
               <dd data-er="name">{names[FIRST.id]}</dd>
-            </div>
-            <div>
-              <dt>{t('size')}</dt>
-              <dd data-er="dims">{fmt.dims(FIRST)}</dd>
-            </div>
-            <div>
-              <dt>{t('mass')}</dt>
-              <dd data-er="mass">{fmt.kg(FIRST.mass)}</dd>
             </div>
           </dl>
         </div>
