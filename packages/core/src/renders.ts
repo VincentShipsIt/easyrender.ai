@@ -34,6 +34,13 @@ export function canAccess(render: Pick<Render, 'userId' | 'anonId'>, actor: Acto
   return Boolean(render.anonId && render.anonId === actor.anonId);
 }
 
+// Finished renders are in the public gallery unless their owner hid them.
+export const isListed = (render: Pick<Render, 'isPublic' | 'status' | 'glbKey'>) =>
+  render.isPublic && render.status === 'ready' && Boolean(render.glbKey);
+
+export const canView = (render: Render, actor: Actor) =>
+  canAccess(render, actor) || isListed(render);
+
 // Each preview costs a real sheet generation, so visitors get a small daily allowance.
 async function assertPreviewAllowance(actor: Actor) {
   const since = new Date(Date.now() - DAY_MS);
@@ -236,6 +243,7 @@ export type RenderView = {
   hasModel: boolean;
   credits: number;
   renderCredits: number;
+  isPublic: boolean;
   createdAt: string;
 };
 
@@ -249,18 +257,38 @@ export function toView(render: Render): RenderView {
     hasModel: render.status === 'ready' && Boolean(render.glbKey),
     credits: render.credits,
     renderCredits: RENDER_CREDITS,
+    isPublic: render.isPublic,
     createdAt: render.createdAt.toISOString(),
   };
 }
 
-// Reads a render the actor may see, nudging its pipeline forward when it is still running.
+// Reads a render the actor may see (their own, or a public one), nudging its pipeline forward
+// when it is still running.
 export async function getRender(id: string, actor: Actor): Promise<Render> {
   const render = await db().render.findUnique({ where: { id } });
-  if (!render || !canAccess(render, actor)) throw notFound();
+  if (!render || !canView(render, actor)) throw notFound();
   if (render.status === 'drafting' || render.status === 'rendering') {
     return (await advance(id)) ?? render;
   }
   return render;
+}
+
+// Shows or hides a render in the public gallery. Only its owner can.
+export async function setVisibility(id: string, actor: Actor, isPublic: boolean): Promise<Render> {
+  const render = await db().render.findUnique({ where: { id } });
+  if (!render || !canAccess(render, actor)) throw notFound();
+  if (!actor.userId || render.userId !== actor.userId) {
+    throw new AppError('Sign in to change who can see this render', 401, 'sign_in');
+  }
+  return db().render.update({ where: { id }, data: { isPublic } });
+}
+
+export function listPublicRenders(take = 12) {
+  return db().render.findMany({
+    where: { isPublic: true, status: 'ready', glbKey: { not: null } },
+    orderBy: { createdAt: 'desc' },
+    take,
+  });
 }
 
 export function listRenders(userId: string, take = 24) {
