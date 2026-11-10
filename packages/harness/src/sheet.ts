@@ -1,5 +1,7 @@
 import sharp from 'sharp';
 import { SHEET_MODEL } from './models';
+import { cleanNote } from './note';
+import { DEFAULT_SKILL, type RenderSkill } from './skills';
 
 // Reading order of the cells, left to right, top to bottom.
 export const VIEWS = [
@@ -21,20 +23,28 @@ Row 2: back-right three-quarter view, straight-on back view, back-left three-qua
 Row 3: left side view, front-left three-quarter view, top-down view.
 Plain pure white background, even soft studio light, no cast shadows. Nine equal square cells with no text, labels, grid lines or borders.`;
 
-const MAX_USER_PROMPT = 500;
-
-// The user's note is appended as guidance; it never replaces the turnaround instructions.
-export function sheetPrompt(userPrompt?: string | null): string {
-  const note = userPrompt?.trim().slice(0, MAX_USER_PROMPT);
-  return note ? `${SHEET_PROMPT}\nAdditional notes about the object: ${note}` : SHEET_PROMPT;
+// The skill adds category rules and the user's note is appended as guidance; neither replaces
+// the turnaround instructions.
+export function sheetPrompt(
+  userPrompt?: string | null,
+  skill: RenderSkill = DEFAULT_SKILL,
+): string {
+  const note = cleanNote(userPrompt);
+  const parts = [SHEET_PROMPT, `Product guidance: ${skill.guidance}`];
+  if (note) parts.push(`Additional notes about the object: ${note}`);
+  return parts.join('\n');
 }
 
-export function sheetRequest(sourceUrl: string, userPrompt?: string | null) {
+export function sheetRequest(
+  sourceUrl: string,
+  userPrompt?: string | null,
+  skill: RenderSkill = DEFAULT_SKILL,
+) {
   return {
     path: SHEET_MODEL.path,
     body: {
       input: {
-        prompt: sheetPrompt(userPrompt),
+        prompt: sheetPrompt(userPrompt, skill),
         image_input: [sourceUrl],
         aspect_ratio: '1:1',
         resolution: '2K',
