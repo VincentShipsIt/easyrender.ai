@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@better-auth/infra": "^0.4.28",
+    "@dimforge/rapier3d-compat": "0.12.0",
     "@easyrender/core": "workspace:*",
     "@easyrender/db": "workspace:*",
     "@easyrender/harness": "workspace:*",

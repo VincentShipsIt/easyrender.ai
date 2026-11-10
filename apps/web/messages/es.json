@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "easyrender: renders 3D en piloto automático con tu agente",
-    "description": "Conecta easyrender a tu agente de IA por MCP y convierte fotos de productos e inmuebles en modelos 3D que puedes girar, insertar y ver en RA."
+    "title": "easyrender: el motor 3D para vender, proyectar y jugar",
+    "description": "Convierte una foto de producto en un modelo 3D con escala real, materiales y física. Úsalo en tu tienda con RA, en renders de arquitectura y en motores de juego, o deja que tu agente de IA lo haga por MCP."
   },
   "LocaleSwitcher": {
     "switchTo": "Cambiar a {language}"
@@ -9,9 +9,9 @@
   "Header": {
     "nav": {
       "howItWorks": "Cómo funciona",
+      "hub": "Hub",
       "connect": "Conectar",
       "try": "Pruébalo",
-      "gallery": "Galería",
       "pricing": "Precios"
     },
     "credits": "créditos",
@@ -28,6 +28,7 @@
     "links": {
       "howItWorks": "Cómo funciona",
       "try": "Pruébalo",
+      "hub": "Hub",
       "gallery": "Galería",
       "pricing": "Precios",
       "faq": "Preguntas frecuentes",
@@ -41,17 +42,8 @@
     "pricesNote": "Precios en USD. Los créditos no caducan."
   },
   "Home": {
-    "hero": {
-      "badge": "Servidor MCP de foto a 3D",
-      "title": "Tus renders 3D en piloto automático con tu agente",
-      "description": "Conecta easyrender a tu agente de IA una sola vez. Convierte fotos de productos e inmuebles en modelos 3D reales mientras trabajas, y cada modelo queda guardado en tu biblioteca.",
-      "connect": "Conecta tu agente",
-      "try": "Pruébalo con una foto",
-      "worksWith": "Funciona con {clients} y cualquier cliente MCP."
-    },
     "connect": {
-      "eyebrow": "Conectar",
-      "title": "Conéctalo a tu agente en 30 segundos",
+      "title": "O deja que lo haga tu agente",
       "description": "easyrender habla MCP, así que cualquier agente compatible puede crear renders, revisarlos y generar modelos 3D con tus créditos.",
       "steps": {
         "key": {
@@ -68,51 +60,16 @@
         }
       },
       "openConnectors": "Abrir tus conectores",
-      "getKey": "Consigue tu clave de API gratis"
+      "getKey": "Consigue tu clave de API gratis",
+      "worksWith": "Funciona con {clients} y cualquier cliente MCP."
     },
     "try": {
-      "eyebrow": "Pruébalo",
-      "title": "O prueba con una foto aquí mismo",
-      "description": "Sube una foto de un mueble, un objeto decorativo o la fachada de un edificio. La vista previa es gratis; crea una cuenta para verla."
-    },
-    "gallery": {
-      "eyebrow": "Galería",
-      "title": "Hecho con easyrender",
-      "description": "Modelos reales generados a partir de una sola foto. Abre uno para ver el prompt, la foto original y todos los ángulos.",
-      "exploreAll": "Ver todo"
+      "title": "Pruébalo con una foto aquí mismo",
+      "description": "Sube una foto de un mueble, un objeto decorativo o un producto. La vista previa es gratis; crea una cuenta para verla."
     }
   },
   "Landing": {
-    "realEstate": {
-      "eyebrow": "Pensado para inmobiliarias",
-      "title": "3D para tus anuncios, sin un equipo de 3D",
-      "description": "Hoy funciona mejor con muebles, decoración y fachadas. Las estancias completas llegarán pronto.",
-      "audiences": {
-        "agents": {
-          "title": "Agentes inmobiliarios",
-          "body": "Haz que tu anuncio destaque con fachadas y piezas clave que los compradores pueden girar y recorrer."
-        },
-        "stagers": {
-          "title": "Home stagers",
-          "body": "Convierte tu inventario de muebles a 3D una vez y úsalo en cada proyecto de home staging virtual."
-        },
-        "builders": {
-          "title": "Promotores y constructoras",
-          "body": "Muestra fachadas sobre plano y el mobiliario del piso piloto antes de que existan las fotos."
-        },
-        "stores": {
-          "title": "Tiendas de muebles y decoración",
-          "body": "Dale a cada ficha de producto un visor 3D y un botón de “ver en tu casa”."
-        }
-      },
-      "perks": {
-        "embed": "Visor 3D insertable en cualquier portal inmobiliario",
-        "ar": "RA en iPhone y Android, sin app",
-        "api": "Servidor MCP y API REST para tus agentes"
-      }
-    },
     "pricing": {
-      "eyebrow": "Precios",
       "title": "Paga por modelo. Los créditos no caducan.",
       "description": "Las vistas previas son gratis. Un modelo 3D terminado cuesta {credits} créditos ({price}).",
       "seeAll": "Ver todos los precios",
@@ -162,7 +119,6 @@
       }
     },
     "faq": {
-      "eyebrow": "Preguntas frecuentes",
       "title": "Tus preguntas, respondidas",
       "items": {
         "connect": {
@@ -198,12 +154,6 @@
           "a": "Los modelos terminados aparecen por defecto en la galería pública. Puedes ocultar cualquiera de los tuyos desde su página cuando quieras."
         }
       }
-    },
-    "finalCta": {
-      "title": "Deja tus renders 3D en manos de tu agente",
-      "description": "Conéctalo una vez. Las vistas previas son gratis y solo pagas por los modelos que te quedas.",
-      "connect": "Conecta tu agente",
-      "try": "Pruébalo con una foto"
     }
   },
   "AgentDemo": {
@@ -216,29 +166,6 @@
     },
     "done": "Hecho. Tienes 24 modelos en tu biblioteca de easyrender, con GLB y USDZ para RA. Aquí va el primero:",
     "modelAlt": "Modelo 3D: {title}"
-  },
-  "FlatTo3D": {
-    "eyebrow": "Cómo funciona",
-    "title": "De una foto plana a un modelo 3D",
-    "steps": {
-      "photo": {
-        "title": "Una foto plana",
-        "body": "Tu agente toma la foto de un producto de tu catálogo, de un anuncio o del email de un proveedor. Sin escáner, sin estudio."
-      },
-      "shape": {
-        "title": "Leer la forma",
-        "body": "easyrender interpreta la profundidad, las proporciones y los materiales a partir de esa única imagen."
-      },
-      "sides": {
-        "title": "Construir cada lado",
-        "body": "Se reconstruye una malla limpia por completo, incluso los lados que la cámara nunca vio."
-      },
-      "model": {
-        "title": "Un modelo 3D de verdad",
-        "body": "GLB y USDZ texturizados, guardados en tu biblioteca. Gíralo en un anuncio o ábrelo en RA."
-      }
-    },
-    "animationLabel": "Animación: la foto plana de un objeto ({title}) se convierte en un modelo 3D al hacer scroll."
   },
   "McpSetup": {
     "terminal": "Ejecútalo en tu terminal",
@@ -632,5 +559,289 @@
     "deny": "Cancelar",
     "invalidTitle": "Esta solicitud de conexión no es válida",
     "invalidBody": "Vuelve a la aplicación de origen e inténtalo de nuevo."
+  },
+  "Studio": {
+    "hero": {
+      "title": "El motor 3D para vender, proyectar y jugar",
+      "cta": "Empezar",
+      "note": "Vista previa gratis · sin tarjeta",
+      "stackLabel": "Un mismo objeto visto en cinco pases del motor. Arrastra para girarlo.",
+      "photo": "Foto de entrada",
+      "mesh": "Malla",
+      "normals": "Normales",
+      "depth": "Profundidad",
+      "render": "Render PBR",
+      "element": "Elemento",
+      "size": "Medidas",
+      "mass": "Masa",
+      "hint": "Arrastra para girar"
+    },
+    "pipeline": {
+      "lead": "Sube una foto. El motor hace el resto.",
+      "body": "Reconstruye la geometría, los materiales y la escala real de tu producto, y te muestra cada ángulo antes de que pagues.",
+      "photo": "Foto de entrada",
+      "placeholder": "Describe tu producto",
+      "generate": "Generar",
+      "steps": {
+        "angles": "Ángulos",
+        "mesh": "Malla",
+        "texture": "Textura",
+        "ready": "Listo"
+      },
+      "noteTitle": "Vista previa gratis",
+      "noteBody": "El motor dibuja el objeto desde todos los lados antes de construir la malla. Si algo no cierra, lo ves antes de gastar un crédito.",
+      "noteLink": "Pruébalo con una foto"
+    },
+    "industries": {
+      "lead": "Un modelo. Tres industrias.",
+      "body": "La misma pieza se prueba en el salón de un cliente, entra en el render de un estudio y cae con su peso real dentro de un juego.",
+      "store": {
+        "eyebrow": "E-commerce",
+        "title": "Un botón en tu ficha de producto",
+        "body": "«Ver en tu espacio» abre la cámara del cliente y coloca el producto a escala real. Sin app, en iPhone y Android.",
+        "link": "Hablemos de RA para tiendas",
+        "domain": "tutienda.com",
+        "meta": "Tapizado gris · {dims}",
+        "button": "Ver en tu espacio",
+        "searching": "Buscando el suelo…",
+        "placed": "Colocado · escala 1:1"
+      },
+      "interior": {
+        "eyebrow": "Arquitectura e interiorismo",
+        "title": "Piezas reales para tus renders",
+        "body": "Arquitectos, decoradores e iluminadores llevan al proyecto muebles y luminarias que existen y que el cliente puede comprar.",
+        "link": "Explora el hub para estudios",
+        "kelvin": "Temperatura de color"
+      },
+      "games": {
+        "eyebrow": "Videojuegos",
+        "title": "Props con la física lista",
+        "body": "Cada elemento llega a Unity o Unreal con colisionador, masa y fricción. Lo sueltas en la escena y se comporta.",
+        "link": "Conéctalo por API o MCP",
+        "rigidbody": "Rigidbody",
+        "dynamic": "Dinámico",
+        "mass": "Masa",
+        "collider": "Colisionador",
+        "friction": "Fricción",
+        "live": "Simulación en vivo"
+      }
+    },
+    "tools": {
+      "lead": "Se ve real. Se comporta real.",
+      "body": "Cada elemento sale con lo que un motor necesita para usarlo, no solo con su apariencia.",
+      "link": "Explora la ficha técnica",
+      "topology": "Topología",
+      "triangles": "Triángulos",
+      "material": "Material PBR",
+      "roughness": "Rugosidad",
+      "metalness": "Metalizado",
+      "scale": "Escala real",
+      "collider": "Colisionador",
+      "box": "Caja",
+      "hull": "Envolvente",
+      "mesh": "Malla",
+      "vertexCount": "{count} vértices",
+      "triangleCount": "{count} triángulos",
+      "physics": "Masa y contacto",
+      "mass": "Masa",
+      "friction": "Fricción",
+      "restitution": "Rebote",
+      "light": "Luz de proyecto",
+      "temperature": "Temperatura",
+      "uv": "UV y texturas",
+      "export": "Exportación",
+      "formats": {
+        "glb": "Web · Android",
+        "usdz": "iPhone · Vision Pro",
+        "fbx": "Unity · Unreal",
+        "obj": "Render · CAD"
+      }
+    },
+    "wheel": {
+      "lead": "Entra una vez al hub. Sirve en todas partes.",
+      "body": "La tienda sube su catálogo, el estudio lo usa en sus proyectos y el cliente final termina comprando la pieza que vio en el render.",
+      "link": "Explora el hub",
+      "photo": "Foto de entrada",
+      "chip": "Disponible en la tienda",
+      "stops": {
+        "store": {
+          "title": "La tienda sube una foto",
+          "body": "de cada producto de su catálogo"
+        },
+        "hub": {
+          "title": "El hub guarda el modelo",
+          "body": "con medidas, materiales y física"
+        },
+        "studio": {
+          "title": "Un estudio lo usa",
+          "body": "en un render, un plano o un nivel"
+        },
+        "client": {
+          "title": "El cliente compra la pieza",
+          "body": "y más tiendas quieren estar dentro"
+        }
+      }
+    },
+    "proof": {
+      "title": "El catálogo 3D que faltaba",
+      "quote": "Faltan objetos 3D con física real. Los catálogos que existen son pequeños y cada formato vive en su isla.",
+      "by": "Por qué construimos easyrender",
+      "byline": "Un universo de elementos, compatible con todo",
+      "stat": "≈ 3 min",
+      "statBody": "De una foto de catálogo a un modelo con textura, listo para girar, insertar y abrir en RA.",
+      "marquee": "Formatos y herramientas compatibles"
+    },
+    "cta": {
+      "title": "Tu catálogo ya no tiene que esperar a un equipo 3D",
+      "button": "Empezar"
+    },
+    "shelf": {
+      "lead": "Explora el hub.",
+      "body": "Muebles, luminarias, decoración y props listos para usar.",
+      "link": "Ver todos los elementos",
+      "count": "{current} de {total}",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "elements": "{count, plural, one {# elemento} other {# elementos}}"
+    }
+  },
+  "Catalog": {
+    "items": {
+      "swivel-chair": {
+        "name": "Sillón giratorio",
+        "prompt": "Sillón giratorio tapizado en gris"
+      },
+      "armchair": {
+        "name": "Butaca de bouclé",
+        "prompt": "Butaca de bouclé con estructura de acero cepillado"
+      },
+      "coffee-table": {
+        "name": "Mesa de centro redonda",
+        "prompt": "Mesa de centro redonda de madera maciza"
+      },
+      "bedside-table": {
+        "name": "Mesita de noche",
+        "prompt": "Mesita de noche de madera maciza con cajón"
+      },
+      "vase": {
+        "name": "Jarrón de gres",
+        "prompt": "Jarrón de gres mate"
+      },
+      "clay-vase": {
+        "name": "Jarrón de barro",
+        "prompt": "Jarrón de barro envejecido"
+      },
+      "sofa": {
+        "name": "Sofá de tres plazas",
+        "prompt": "Sofá bajo de tres plazas en bouclé gris carbón"
+      },
+      "lamp": {
+        "name": "Lámpara de mesa de latón",
+        "prompt": "Lámpara de mesa tipo hongo en latón cepillado"
+      },
+      "cactus": {
+        "name": "Maceta con cactus",
+        "prompt": "Maceta redonda de hormigón con cactus columnar"
+      },
+      "sneaker": {
+        "name": "Zapatilla de cuero",
+        "prompt": "Zapatilla baja de cuero blanco con suela de goma"
+      },
+      "espresso": {
+        "name": "Cafetera espresso",
+        "prompt": "Cafetera espresso doméstica en acero inoxidable"
+      },
+      "crate": {
+        "name": "Cajón de madera",
+        "prompt": "Cajón de embalaje de pino con refuerzos de acero"
+      },
+      "barrel": {
+        "name": "Barril de acero de 200 L",
+        "prompt": "Barril de acero de 200 litros pintado en rojo óxido"
+      }
+    },
+    "categories": {
+      "furniture": "Muebles",
+      "decor": "Decoración",
+      "lighting": "Iluminación",
+      "product": "Producto",
+      "props": "Props",
+      "outdoor": "Exterior"
+    },
+    "materials": {
+      "upholstery": "Tapizado",
+      "wood": "Madera maciza",
+      "ceramic": "Cerámica",
+      "metal": "Metal",
+      "steel": "Acero",
+      "concrete": "Hormigón",
+      "leather": "Cuero",
+      "polymer": "Polímero"
+    },
+    "colliders": {
+      "box": "Caja",
+      "cylinder": "Cilindro",
+      "hull": "Envolvente convexa"
+    },
+    "engines": {
+      "trellis": "TRELLIS",
+      "trellisSheet": "TRELLIS + hoja de ángulos",
+      "tripo": "Tripo H3.1"
+    }
+  },
+  "Hub": {
+    "metaTitle": "Hub · easyrender",
+    "metaDescription": "Muebles, luminarias, decoración y props en 3D con medidas reales, materiales, colisionador y masa. Listos para tu tienda, tu render y tu motor.",
+    "eyebrow": "Hub · {count, plural, one {# elemento} other {# elementos}}",
+    "title": "Todos los elementos, listos para usar",
+    "description": "Cada pieza llega con medidas reales, materiales, colisionador y masa. Llévala a tu tienda, a tu render o a tu motor.",
+    "all": "Todo",
+    "categoryLabel": "Categoría",
+    "search": "Buscar elemento",
+    "viewLabel": "Vista de las miniaturas",
+    "render": "Render",
+    "mesh": "Malla",
+    "openSheet": "Ver la ficha de {name}",
+    "viewSheet": "Ver ficha",
+    "emptyQuery": "Ningún elemento coincide con «{query}». Prueba con otra palabra o quita el filtro.",
+    "emptyCategory": "Todavía no hay elementos en {category}.",
+    "cta": {
+      "title": "¿Tienes un catálogo? Súmalo al hub",
+      "button": "Empezar"
+    },
+    "sheet": {
+      "passLabel": "Pase del motor",
+      "passes": {
+        "beauty": "Render",
+        "wire": "Malla",
+        "normal": "Normales",
+        "depth": "Profundidad",
+        "collider": "Colisionador"
+      },
+      "hint": "Arrastra para girar · rueda para acercar",
+      "viewer": "Visor 3D. Las flechas lo giran; más y menos acercan.",
+      "close": "Cerrar ficha",
+      "size": "Medidas",
+      "sizeNote": "Ancho × alto × fondo",
+      "triangles": "Triángulos",
+      "lods": "LOD 1: {lod1} · LOD 2: {lod2}",
+      "file": "Archivo",
+      "fileNote": "GLB con textura comprimida",
+      "material": "Material",
+      "mass": "Masa estimada",
+      "contact": "Contacto",
+      "friction": "Fricción {value}",
+      "restitution": "Rebote {value}",
+      "collider": "Colisionador",
+      "hullNote": "{count} vértices",
+      "primitive": "Primitiva",
+      "formats": "Formatos",
+      "photo": "Foto de entrada",
+      "engine": "Generado con {engine}",
+      "download": "Descargar GLB",
+      "embed": "Copiar código de inserción",
+      "copied": "Código copiado",
+      "copyFailed": "No se pudo copiar. Inténtalo de nuevo"
+    }
   }
 }

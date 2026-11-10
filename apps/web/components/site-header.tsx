@@ -9,9 +9,9 @@ import { currentUser } from '@/lib/actor';
 
 const NAV = [
   { href: '/#how-it-works', key: 'howItWorks' },
+  { href: '/hub', key: 'hub' },
   { href: '/#connect', key: 'connect' },
   { href: '/#try', key: 'try' },
-  { href: '/#gallery', key: 'gallery' },
   { href: '/#pricing', key: 'pricing' },
 ] as const;
 

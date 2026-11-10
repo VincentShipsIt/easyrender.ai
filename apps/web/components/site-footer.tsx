@@ -9,7 +9,8 @@ const COLUMNS = [
     links: [
       { href: '/#how-it-works', key: 'howItWorks' },
       { href: '/#try', key: 'try' },
-      { href: '/#gallery', key: 'gallery' },
+      { href: '/hub', key: 'hub' },
+      { href: '/explore', key: 'gallery' },
       { href: '/credits', key: 'pricing' },
       { href: '/#faq', key: 'faq' },
     ],
