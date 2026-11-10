@@ -1,7 +1,17 @@
 'use client';
 
 import type { RenderView } from '@easyrender/core';
-import { AlertCircle, Box, Grid3x3, ImageUp, Loader2, Sparkles, Upload } from 'lucide-react';
+import {
+  AlertCircle,
+  Box,
+  Grid3x3,
+  ImageUp,
+  Loader2,
+  RotateCcw,
+  Sparkles,
+  Upload,
+  X,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -14,7 +24,14 @@ const UPLOAD_CONCURRENCY = 2;
 const BUILD_CONCURRENCY = 3;
 const POLL_MS = 4000;
 
-type QueuedUpload = { key: string; name: string; url: string; error: string | null };
+type QueuedUpload = {
+  key: string;
+  name: string;
+  url: string;
+  file: File;
+  prompt?: string;
+  error: string | null;
+};
 type View = 'photo' | '3d' | 'both';
 type Filter = 'all' | 'needs' | 'working' | 'done' | 'failed';
 
@@ -69,6 +86,7 @@ export function CatalogLibrary({
   const [building, setBuilding] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
+  const dragDepth = useRef(0);
   const [viewerReady, setViewerReady] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
@@ -119,55 +137,108 @@ export function CatalogLibrary({
     });
   };
 
+  const markFailed = (key: string, error: string) =>
+    setUploads((current) => current.map((item) => (item.key === key ? { ...item, error } : item)));
+
+  const dismiss = (key: string) =>
+    setUploads((current) => {
+      const upload = current.find((item) => item.key === key);
+      if (upload) URL.revokeObjectURL(upload.url);
+      return current.filter((item) => item.key !== key);
+    });
+
+  // Returns false when uploading should stop for now (daily preview limit reached).
+  async function uploadOne(upload: QueuedUpload) {
+    try {
+      const body = new FormData();
+      body.append('image', await prepare(upload.file, t('errors.unreadable')), 'source.jpg');
+      body.append('name', upload.name);
+      if (upload.prompt) body.append('prompt', upload.prompt);
+      const response = await fetch('/api/renders', { method: 'POST', body });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        markFailed(upload.key, data.error ?? t('errors.upload'));
+        if (data.code === 'preview_limit') {
+          setNotice(data.error);
+          return false;
+        }
+        return true;
+      }
+      upsert(data as RenderView);
+      dismiss(upload.key);
+    } catch (error) {
+      markFailed(upload.key, error instanceof Error ? error.message : t('errors.upload'));
+    }
+    return true;
+  }
+
+  async function sendUploads(queued: QueuedUpload[]) {
+    const skipped = await pool(queued, UPLOAD_CONCURRENCY, uploadOne);
+    for (const upload of skipped) markFailed(upload.key, t('errors.dailyLimit'));
+  }
+
   async function addFiles(list: FileList | File[] | null, prompt?: string) {
     const files = Array.from(list ?? []).filter((file) => file.type.startsWith('image/'));
     if (files.length === 0) return;
     setNotice(null);
-    const queued: (QueuedUpload & { file: File })[] = files.map((file) => ({
+    const queued: QueuedUpload[] = files.map((file) => ({
       key: crypto.randomUUID(),
       name: baseName(file),
       url: URL.createObjectURL(file),
-      error: null,
       file,
+      prompt,
+      error: null,
     }));
     setUploads((current) => [...queued, ...current]);
-    const done = (key: string) => {
-      setUploads((current) => {
-        const upload = current.find((item) => item.key === key);
-        if (upload) URL.revokeObjectURL(upload.url);
-        return current.filter((item) => item.key !== key);
-      });
-    };
-    const failed = (key: string, error: string) =>
-      setUploads((current) =>
-        current.map((item) => (item.key === key ? { ...item, error } : item)),
-      );
-
-    const skipped = await pool(queued, UPLOAD_CONCURRENCY, async (upload) => {
-      try {
-        const body = new FormData();
-        body.append('image', await prepare(upload.file, t('errors.unreadable')), 'source.jpg');
-        body.append('name', upload.name);
-        if (prompt) body.append('prompt', prompt);
-        const response = await fetch('/api/renders', { method: 'POST', body });
-        const data = await response.json();
-        if (!response.ok) {
-          failed(upload.key, data.error ?? t('errors.upload'));
-          if (data.code === 'preview_limit') {
-            setNotice(data.error);
-            return false;
-          }
-          return true;
-        }
-        upsert(data as RenderView);
-        done(upload.key);
-      } catch {
-        failed(upload.key, t('errors.upload'));
-      }
-      return true;
-    });
-    for (const upload of skipped) failed(upload.key, t('errors.dailyLimit'));
+    await sendUploads(queued);
   }
+
+  async function retry(upload: QueuedUpload) {
+    setNotice(null);
+    const fresh = { ...upload, error: null };
+    setUploads((current) => current.map((item) => (item.key === upload.key ? fresh : item)));
+    await sendUploads([fresh]);
+  }
+
+  // The whole page takes drops, not just the empty box: the browser would otherwise open a
+  // photo dropped anywhere else and leave the app. Kept in a ref so the window listeners
+  // below always call the latest closure.
+  const addFilesRef = useRef(addFiles);
+  addFilesRef.current = addFiles;
+  useEffect(() => {
+    const hasFiles = (event: DragEvent) => event.dataTransfer?.types.includes('Files') ?? false;
+    const enter = (event: DragEvent) => {
+      if (!hasFiles(event)) return;
+      event.preventDefault();
+      dragDepth.current += 1;
+      setDragging(true);
+    };
+    const over = (event: DragEvent) => {
+      if (hasFiles(event)) event.preventDefault();
+    };
+    const leave = (event: DragEvent) => {
+      if (!hasFiles(event)) return;
+      dragDepth.current = Math.max(0, dragDepth.current - 1);
+      if (dragDepth.current === 0) setDragging(false);
+    };
+    const drop = (event: DragEvent) => {
+      if (!hasFiles(event)) return;
+      event.preventDefault();
+      dragDepth.current = 0;
+      setDragging(false);
+      void addFilesRef.current(event.dataTransfer?.files ?? null);
+    };
+    window.addEventListener('dragenter', enter);
+    window.addEventListener('dragover', over);
+    window.addEventListener('dragleave', leave);
+    window.addEventListener('drop', drop);
+    return () => {
+      window.removeEventListener('dragenter', enter);
+      window.removeEventListener('dragover', over);
+      window.removeEventListener('dragleave', leave);
+      window.removeEventListener('drop', drop);
+    };
+  }, []);
 
   // A photo attached on the home page before signing up is uploaded here, once, for this account.
   const claimed = useRef(false);
@@ -194,6 +265,13 @@ export function CatalogLibrary({
     totalOwed += owed(item);
     affordable += 1;
   }
+
+  // What building everything that is waiting would cost, against the balance.
+  const buildAllCredits = pending.reduce((sum, item) => sum + owed(item), 0);
+  const shortBy = Math.max(0, buildAllCredits - balance);
+  const previewing =
+    items.filter((item) => item.status === 'drafting').length +
+    uploads.filter((upload) => !upload.error).length;
 
   async function build(targets: RenderView[]) {
     if (targets.length === 0) return;
@@ -253,22 +331,16 @@ export function CatalogLibrary({
   const total = items.length + uploads.length;
 
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: page-wide drop target; the Upload button is the accessible path
-    <div
-      className="space-y-6"
-      onDragOver={(event) => {
-        event.preventDefault();
-        setDragging(true);
-      }}
-      onDragLeave={(event) => {
-        if (event.currentTarget === event.target) setDragging(false);
-      }}
-      onDrop={(event) => {
-        event.preventDefault();
-        setDragging(false);
-        addFiles(event.dataTransfer.files);
-      }}
-    >
+    <div className="space-y-6">
+      {dragging && (
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-6 backdrop-blur-sm">
+          <div className="flex size-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-foreground/40 text-center">
+            <ImageUp className="size-10" />
+            <p className="text-lg font-medium">{t('dropOverlay.title')}</p>
+            <p className="text-sm text-muted-foreground">{t('dropOverlay.body')}</p>
+          </div>
+        </div>
+      )}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
@@ -333,20 +405,43 @@ export function CatalogLibrary({
       )}
 
       {total === 0 ? (
-        <button
+        <Button
           type="button"
+          variant="outline"
           onClick={() => input.current?.click()}
-          className={cn(
-            'flex min-h-80 w-full flex-col items-center justify-center gap-3 rounded-lg border border-dashed bg-muted/40 text-muted-foreground transition-colors hover:bg-muted',
-            dragging && 'bg-muted',
-          )}
+          className="h-auto min-h-80 w-full flex-col gap-3 border-dashed bg-muted/40 whitespace-normal text-muted-foreground hover:bg-muted"
         >
           <ImageUp className="size-8" />
           <span className="font-medium text-foreground">{t('empty.title')}</span>
-          <span className="max-w-sm text-center text-sm">{t('empty.body')}</span>
-        </button>
+          <span className="max-w-sm text-center text-sm font-normal">{t('empty.body')}</span>
+          <span className="max-w-sm text-center text-xs font-normal">
+            {t('empty.cost', { credits: format.number(renderCredits) })}
+          </span>
+        </Button>
       ) : (
         <>
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border bg-muted/40 px-3 py-2 text-sm tabular-nums">
+            <Sparkles className="size-4 shrink-0" />
+            <span>
+              {t('estimate.prices', { credits: format.number(renderCredits) })}
+              {previewing > 0 && ` ${t('estimate.previewing', { count: previewing })}`}
+            </span>
+            {pending.length > 0 && (
+              <span className="font-medium">
+                {t('estimate.all', {
+                  count: pending.length,
+                  credits: format.number(buildAllCredits),
+                  balance: format.number(balance),
+                })}
+              </span>
+            )}
+            {shortBy > 0 && (
+              <Link href="/credits" className="underline">
+                {t('estimate.short', { credits: format.number(shortBy) })}
+              </Link>
+            )}
+          </p>
+
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Segmented
               value={filter}
@@ -369,9 +464,18 @@ export function CatalogLibrary({
               view === 'both'
                 ? 'columns-1 md:columns-2 xl:columns-3'
                 : 'columns-2 md:columns-3 xl:columns-4',
-              dragging && 'opacity-60',
             )}
           >
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => input.current?.click()}
+              className="mb-4 h-auto w-full break-inside-avoid flex-col gap-2 border-dashed bg-muted/40 py-10 whitespace-normal text-muted-foreground hover:bg-muted"
+            >
+              <ImageUp className="size-6" />
+              <span className="font-medium text-foreground">{t('addMore.title')}</span>
+              <span className="text-xs font-normal">{t('addMore.body')}</span>
+            </Button>
             {filter === 'all' &&
               uploads.map((upload) => (
                 <Tile
@@ -380,9 +484,21 @@ export function CatalogLibrary({
                   photo={upload.url}
                   title={upload.name}
                   status={upload.error ? t('errors.upload') : t('uploading')}
+                  alwaysPane={Boolean(upload.error)}
                   pane={
                     upload.error ? (
-                      <Pane icon={<AlertCircle className="size-5" />} text={upload.error} />
+                      <Pane icon={<AlertCircle className="size-5" />} text={upload.error}>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline" onClick={() => retry(upload)}>
+                            <RotateCcw className="size-4" />
+                            {t('retry')}
+                          </Button>
+                          <Button size="sm" variant="ghost" onClick={() => dismiss(upload.key)}>
+                            <X className="size-4" />
+                            {t('dismiss')}
+                          </Button>
+                        </div>
+                      </Pane>
                     ) : (
                       <Pane
                         icon={<Loader2 className="size-5 animate-spin" />}
@@ -436,17 +552,20 @@ function Segmented<T extends string>({
   return (
     <div className="flex flex-wrap gap-1 rounded-lg bg-muted p-1">
       {options.map((option) => (
-        <button
+        <Button
           key={option.id}
           type="button"
+          size="sm"
+          variant="ghost"
+          aria-pressed={value === option.id}
           onClick={() => onChange(option.id)}
           className={cn(
-            'rounded-md px-3 py-1 text-xs font-medium text-muted-foreground transition-colors',
-            value === option.id && 'bg-background text-foreground shadow-xs',
+            'h-7 px-3 text-xs text-muted-foreground',
+            value === option.id && 'bg-background text-foreground shadow-xs hover:bg-background',
           )}
         >
           {option.label}
-        </button>
+        </Button>
       ))}
     </div>
   );
@@ -461,6 +580,7 @@ function Tile({
   status,
   pane,
   href,
+  alwaysPane = false,
 }: {
   view: View;
   photo: string;
@@ -468,6 +588,7 @@ function Tile({
   status: string;
   pane: ReactNode;
   href?: string;
+  alwaysPane?: boolean;
 }) {
   const image = (
     // biome-ignore lint/performance/noImgElement: authenticated API image, not optimizable
@@ -475,7 +596,7 @@ function Tile({
   );
   return (
     <figure className="mb-4 break-inside-avoid overflow-hidden rounded-lg border bg-card shadow-xs">
-      {view === 'both' ? (
+      {view === 'both' || alwaysPane ? (
         <div className="grid grid-cols-2 gap-px bg-border">
           <div className="bg-muted/40">{image}</div>
           <div className="relative bg-muted/40">{pane}</div>

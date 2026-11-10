@@ -15,7 +15,7 @@ const ALLOWLIST: Record<string, number> = {
   'apps/web/components/studio/shelf.tsx': 2,
   'apps/web/components/studio/hub.tsx': 10,
   // Existing raw controls still to move onto components/ui.
-  'apps/web/components/catalog-library.tsx': 3,
+  'apps/web/components/catalog-library.tsx': 1,
   'apps/web/components/prompt-bar.tsx': 1,
   'apps/web/components/payg-picker.tsx': 1,
   // Hidden field carrying the OAuth query string.
