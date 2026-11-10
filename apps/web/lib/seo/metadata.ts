@@ -17,6 +17,8 @@ export type PageMetadataOptions = {
   alternates?: Partial<Record<Locale, string>>;
   type?: 'website' | 'article';
   image?: string;
+  /** The real size of `image`, when it is not the default Open Graph image. */
+  imageSize?: { width: number; height: number };
   publishedTime?: string;
   modifiedTime?: string;
 };
@@ -29,6 +31,7 @@ export function pageMetadata({
   alternates,
   type = 'website',
   image = OG_IMAGE,
+  imageSize,
   publishedTime,
   modifiedTime,
 }: PageMetadataOptions): Metadata {
@@ -49,7 +52,7 @@ export function pageMetadata({
         {
           url: absoluteUrl(image),
           alt: title,
-          ...(image === OG_IMAGE ? OG_IMAGE_SIZE : {}),
+          ...(image === OG_IMAGE ? OG_IMAGE_SIZE : (imageSize ?? {})),
         },
       ],
       ...(type === 'article' ? { publishedTime, modifiedTime } : {}),

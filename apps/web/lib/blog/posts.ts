@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { CREDIT_USD, PAYG, PRO_PLAN, RENDER_CREDITS } from '@easyrender/harness';
 import { LOCALES, type Locale, ROUTABLE_LOCALES } from '@/i18n/config';
 import { ROUTES } from '@/lib/seo/routes';
+import { isFaqHeading } from './faq';
 import { parseFrontMatter } from './frontmatter';
 
 // Posts are content files: content/blog/{locale}/{slug}.md, one file per language per post.
@@ -96,17 +97,6 @@ const stripComments = (text: string): string =>
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 
-// The FAQ heading in each language. The section runs until the next `## ` heading.
-const FAQ_HEADINGS = new Set([
-  'faq',
-  'faqs',
-  'preguntas frecuentes',
-  'häufige fragen',
-  'questions fréquentes',
-  'domande frequenti',
-  'perguntas frequentes',
-]);
-
 const plainText = (markdown: string): string =>
   markdown
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
@@ -134,7 +124,7 @@ export function faqFromBody(body: string): FaqItem[] {
     const h2 = /^##\s+(.*)$/.exec(line);
     if (h2) {
       flush();
-      isInFaq = FAQ_HEADINGS.has((h2[1] as string).trim().toLowerCase());
+      isInFaq = isFaqHeading(h2[1] as string);
       continue;
     }
     if (!isInFaq) continue;

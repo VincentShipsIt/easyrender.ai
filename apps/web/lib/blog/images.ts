@@ -1,7 +1,7 @@
 // The images a guide may show, with their real pixel size. next/image needs width and height to
-// reserve the space before the file loads, and a guide must never show a picture that is not real
-// easyrender output or a real screenshot (decisiones/claims.md). So the list is closed: a path
-// that is not here is rendered as plain text, which makes it obvious in review, and a test fails.
+// reserve the space before the file loads, and a guide must never pass off a picture as easyrender
+// output when it is not (decisiones/claims.md). So the list is closed: a path that is not here is
+// rendered as plain text, which makes it obvious in review, and a test fails.
 //
 // They come from public/showcase (see lib/showcase.ts): the input photos of the demo renders and
 // the free angle sheets the easyrender harness drew from them, unretouched. The files under
@@ -35,7 +35,30 @@ export const BLOG_IMAGES: Record<string, BlogImage> = {
   },
   // The base colour texture inside /showcase/clay-vase.glb, copied out of the file unchanged.
   '/blog/figures/glb-file/clay-vase-texture.webp': { width: 1024, height: 1024 },
+
+  // Drawn illustrations, see ILLUSTRATION_DIR below.
+  '/blog/illustrations/how-to-make-a-3d-model-from-photos/hero.webp': { width: 1600, height: 1080 },
+  '/blog/illustrations/product-photography-for-ecommerce/hero.webp': { width: 1600, height: 1080 },
+  '/blog/illustrations/3d-models-for-ecommerce/hero.webp': { width: 1536, height: 1032 },
+  '/blog/illustrations/sell-vintage-furniture-online/hero.webp': { width: 1600, height: 1080 },
+  '/blog/illustrations/sell-vintage-furniture-online/courier-prep.webp': {
+    width: 1500,
+    height: 1008,
+  },
+  '/blog/illustrations/glb-file/hero.webp': { width: 1600, height: 1080 },
+  '/blog/illustrations/how-to-make-a-3d-model/hero.webp': { width: 1344, height: 752 },
+  '/blog/illustrations/usdz-file/hero.webp': { width: 1600, height: 1080 },
 };
+
+// Editorial flat illustrations, drawn with an image model on request (prompt in the post's brief,
+// docs/blog/PIPELINE.md) and never a product result: no text, no logos, no measurements. Every
+// guide opens with one directly under its first paragraph, at least 1200 pixels wide, and it is
+// also the guide's BlogPosting and Open Graph image (schemaImage below). Its caption says it is
+// an illustration, so it cannot be mistaken for easyrender output. content.test.ts checks all of
+// it, and that no illustration appears in two guides.
+export const ILLUSTRATION_DIR = '/blog/illustrations/';
+
+export const isIllustration = (src: string): boolean => src.startsWith(ILLUSTRATION_DIR);
 
 // Diagrams drawn for the guides, as React components (components/blog/diagrams). They are
 // rendered on the server as inline HTML and SVG on the site's colour tokens, so they read
@@ -149,9 +172,12 @@ export function parseImage(line: string): {
 }
 
 // Google asks for article images at least 1200 pixels wide, so smaller ones stay in the body only.
-const MIN_SCHEMA_WIDTH = 1200;
+export const MIN_SCHEMA_WIDTH = 1200;
 
-/** The first known image of a post body wide enough for the BlogPosting image, or null. */
+/**
+ * The first known image of a post body wide enough for the BlogPosting and Open Graph image, or
+ * null. Every guide opens with its illustration, so that is the one it finds.
+ */
 export function schemaImage(body: string): { src: string; width: number; height: number } | null {
   for (const line of body.split('\n')) {
     const image = parseImage(line);

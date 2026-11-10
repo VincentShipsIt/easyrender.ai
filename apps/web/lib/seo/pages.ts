@@ -87,7 +87,9 @@ const TITLE_SUFFIX = ' · easyrender';
 export const postTitle = (title: string): string =>
   title.length + TITLE_SUFFIX.length <= MAX_TITLE_LENGTH ? `${title}${TITLE_SUFFIX}` : title;
 
+/** A guide's head. Its Open Graph image is the same picture as its BlogPosting image. */
 export function postMetadata(post: BlogPost): Metadata {
+  const image = schemaImage(post.body);
   return {
     ...pageMetadata({
       locale: post.locale,
@@ -98,6 +100,9 @@ export function postMetadata(post: BlogPost): Metadata {
       type: 'article',
       publishedTime: post.date,
       modifiedTime: modifiedDate(post),
+      ...(image
+        ? { image: image.src, imageSize: { width: image.width, height: image.height } }
+        : {}),
     }),
     authors: [{ name: post.author.name, ...(post.author.url ? { url: post.author.url } : {}) }],
   };
