@@ -9,6 +9,18 @@ function createAuth() {
   return betterAuth({
     database: prismaAdapter(db(), { provider: 'postgresql' }),
     emailAndPassword: { enabled: true, minPasswordLength: 8 },
+    // Callback: ${BETTER_AUTH_URL}/api/auth/callback/google. Set GOOGLE_CLIENT_ID and
+    // GOOGLE_CLIENT_SECRET in Vercel; without them Google sign in is simply not registered.
+    socialProviders:
+      process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+        ? {
+            google: {
+              clientId: process.env.GOOGLE_CLIENT_ID,
+              clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+              prompt: 'select_account',
+            },
+          }
+        : {},
     // Sign-in posts from whichever domain the visitor is on; without this only BETTER_AUTH_URL's
     // origin is accepted and every other one gets 403 INVALID_ORIGIN.
     trustedOrigins: [
