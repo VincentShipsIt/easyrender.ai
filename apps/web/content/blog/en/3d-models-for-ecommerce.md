@@ -26,6 +26,8 @@ AR shows how a piece looks in a room. It only shows the real size if the file wa
 
 GLB for the web and Android, USDZ for AR on Apple devices. Most platforms that support 3D take one or both.
 
+![One product model split into two files: the GLB opens on a product page in any browser and in AR on Android through Scene Viewer, the USDZ opens in AR Quick Look on iPhone and iPad](diagram:store-files "One model, two files, three places a shopper meets it. A site you build yourself can serve both through model-viewer.")
+
 ### Shopify 3D models
 
 [Shopify accepts 3D models as product media](https://help.shopify.com/en/manual/products/product-media/product-media-types), in GLB or USDZ, in the same place you add photos. The help page lists the current file size limit.
@@ -71,6 +73,8 @@ For a large catalogue, look at bulk options and pricing per model. easyrender le
 ## An example: a walnut sideboard
 
 Say a shop has three supplier photos of a walnut sideboard: front, three-quarter and a close-up of the brass handles. The three-quarter shot is the one to use for image-to-3D, because it shows depth and one end panel.
+
+![Three supplier photos of a sideboard drawn as frames: a straight front view with no depth, a three-quarter view showing the front and one end panel, marked as the one to use, and a close-up of a bar handle](diagram:sideboard-photo-pick "Of the three supplier shots, only the three-quarter one shows the end panel, so the tool has less depth to guess. A drawing for this example, not a real listing.")
 
 Expect the doors, legs and wood grain to read well. Expect the brass handles to come out softer than in the photo, and look closely at the back, which the tool has never seen.
 

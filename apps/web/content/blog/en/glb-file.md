@@ -15,7 +15,11 @@ A GLB file is a 3D model saved in the binary version of glTF 2.0, an open format
 
 A glTF model can come as a .gltf text file plus separate texture images and a .bin file for the geometry. A GLB packs all of that into one binary file, which is easier to upload, email and host. The [glTF 2.0 specification](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) defines both.
 
+![The clay vase GLB on this page drawn in proportion to its bytes: a 1.4 KB JSON chunk, then a binary chunk of 85 KB of triangle indices, 164 KB of vertex positions and texture coordinates and a 50 KB WebP texture, with the same model as three separate glTF files below](diagram:glb-anatomy "Inside the clay vase GLB further down this page, read from the file itself: 301 KB in all. Its texture is already WebP, so here the uncompressed geometry is the heavy part.")
+
 Materials follow the PBR metallic-roughness model. PBR, physically based rendering, describes a surface by its base colour, how metallic it is and how rough it is. That is why the same GLB looks much the same in every viewer that follows the standard.
+
+![The single texture image inside the clay vase GLB: the surface of the vase cut into patches and laid flat, rings of whitewashed clay, the rim and the base](/blog/figures/glb-file/clay-vase-texture.webp "The base colour texture inside that GLB, copied out of the file unchanged, 1024 by 1024 pixels. The texture coordinates tell the viewer which patch wraps onto which part of the vase.")
 
 ## How do you open a GLB file?
 

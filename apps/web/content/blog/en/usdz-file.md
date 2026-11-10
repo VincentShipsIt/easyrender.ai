@@ -15,6 +15,8 @@ A USDZ file is a 3D model packed in Pixar's Universal Scene Description format, 
 
 USD is the scene format Pixar built for film production. The [USDZ specification](https://openusd.org/release/spec_usdz.html) describes a zip archive with zero compression that holds USD layers and the images they use, laid out so a device can read them in place.
 
+![A USDZ file drawn as a zip archive stored with zero compression, holding a USD layer with the mesh and materials and the texture images it points to](diagram:usdz-anatomy "What the USDZ specification describes. Because nothing is compressed, an iPhone reads each part straight out of the archive.")
+
 Apple [introduced USDZ with ARKit 2](https://www.apple.com/newsroom/2018/06/apple-unveils-arkit-2/) at WWDC in June 2018, for iOS 12, alongside AR Quick Look. Since then it has been the format Apple devices expect for AR from a web page or a message.
 
 ## USDZ viewer: how do you open a USDZ file?
@@ -34,6 +36,8 @@ If you need the same model on Android or in a browser, use its GLB version inste
 A page links to the USDZ with `rel="ar"` around a preview image, and Safari adds a small AR badge to that image. [WebKit's guide](https://webkit.org/blog/8421/viewing-augmented-reality-assets-in-safari-for-ios/) shows the markup. Tapping the image opens the model in the room, with no app to install.
 
 Google's open-source [model-viewer](https://modelviewer.dev/) component handles both systems from one snippet: it shows a GLB in the page and hands iPhones a USDZ for Quick Look.
+
+![Two ways into AR Quick Look on an iPhone, a Safari page with an AR-badged preview image or a USDZ file tapped in Messages, Mail or Files, both opening the Object view and the AR view](diagram:quick-look-path "Both routes end in the same two views. The model appears at the size stored in its file, which for a model made from a photo is not a measured size.")
 
 AR Quick Look places the model at the size stored in the file. If that size was never measured, the object can appear bigger or smaller than the real one, and the shopper can pinch to resize it anyway.
 

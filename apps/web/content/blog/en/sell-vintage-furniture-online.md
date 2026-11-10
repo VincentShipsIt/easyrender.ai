@@ -38,6 +38,8 @@ Shoot in daylight, against a plain wall, with the camera at the middle height of
 
 Then photograph every flaw close up: a water ring on the top, a chip in the veneer, a joint that moves. Vintage buyers expect wear. What they object to is wear they were not shown.
 
+![Eight shots for a one-off piece drawn as tiles: front, three-quarter, side, back, inside every drawer, the maker's label, joints and repairs, and each flaw close up, which is highlighted](diagram:vintage-shot-list "The full set, in the order to shoot it. Drawn for this guide.")
+
 <!-- IMAGE PENDING: a real close-up of a flaw on a real vintage piece (a water ring or a veneer chip), shot by the team in daylight. Do not use a stock photo. -->
 
 The light and the setup are covered in [product photography for ecommerce](/learn/product-photography-for-ecommerce).
@@ -45,6 +47,8 @@ The light and the setup are covered in [product photography for ecommerce](/lear
 ## What should the listing say?
 
 Lead with the words buyers type: maker, style, material and object. "Ercol elm Windsor dining chair, 1960s" finds more buyers than "Lovely old chair".
+
+![The title Ercol elm Windsor dining chair, 1960s split into labelled parts, maker, material, style, object and era, above the title Lovely old chair, which has none of them](diagram:listing-title "Each word in the first title is something a buyer types into search. The second has nothing to match.")
 
 Give dimensions you have measured with a tape: width, depth and height, plus seat height for chairs and inside depth for shelves. Buyers measure their alcove before they message you.
 
@@ -55,6 +59,8 @@ Describe condition plainly, with the same flaws you photographed. "Light surface
 Decide before you list. Collection only keeps things simple but limits you to local buyers. Offering delivery widens the market and means getting a quote before the sale.
 
 For a courier, wrap the piece in moving blankets, take off legs and glass where you can, and tape the screws in a labelled bag inside a drawer. Photograph it just before it leaves, in case of a damage claim.
+
+<!-- ILLUSTRATION PENDING: apps/web/public/blog/illustrations/sell-vintage-furniture-online/courier-prep.webp, 3:2. A drawn illustration of a chest of drawers wrapped for a courier: moving blankets, legs removed, a labelled bag of screws in the top drawer. Prompt, alt and caption in NECESITA-IA-W1.md. The caption must say it is an illustration, not an easyrender result. -->
 
 ## How to sell antique furniture: what changes?
 
@@ -72,6 +78,9 @@ A 3D model made from one good photo lets that buyer turn the piece round on scre
 
 ![A solid wood bedside table with two drawers, photographed straight from the front on a white background](/showcase/bedside-table.jpg "The photo of a solid wood bedside table.")
 ![The 3D model built from that photo, a wooden bedside table shown from three-quarters in a viewer](/showcase/bedside-table.glb "The model easyrender built from it. Shape and wood colour carry over, the drawer fronts do not match the photo line for line, and wear never shows. Close-ups and your own description stay in the listing.")
+
+![Close-up of the lower drawer in the photo of the bedside table: figured grain and a dark knot in the wood](/blog/figures/sell-vintage-furniture-online/bedside-photo-detail.jpg "Up close in the photo: the grain and a knot.")
+![The same corner of the 3D model: smooth brown streaks instead of grain, and a dark line along the bottom edge that the photo does not have](/blog/figures/sell-vintage-furniture-online/bedside-model-detail.webp "The same corner of the model, cropped from a still of it in the viewer, unretouched. The grain goes soft and a dark streak appears that the photo never had.")
 
 Marketplaces set their own rules for 3D files, so in practice you send a link when someone asks for more angles, or add the GLB to your own Shopify store as product media.
 

@@ -17,6 +17,8 @@ A tripod matters more than the camera. It keeps every product at the same height
 
 A current phone is enough for listing photos. Use the 2x or 3x lens and step back. The wide 1x lens, used close, stretches whatever is nearest to it, so the front legs of a side table look longer than the back ones.
 
+![The same side table drawn twice: through a 1x lens used close, its front legs look much longer than the back ones and the top narrows sharply; through a 2x or 3x lens from further back, the legs look even](diagram:lens-distance "Why to step back and zoom in. The closer the lens, the more the nearest parts grow. Drawn for this guide.")
+
 The rest of the kit is cheap:
 
 - A tripod with a phone clamp.
@@ -29,6 +31,8 @@ The rest of the kit is cheap:
 Use one big, soft source. A window with no direct sun on it, on a bright overcast day, is the cheapest softbox you will find.
 
 Put the window at about 45 degrees to the front of the product and the white board on the opposite side. Then switch off the ceiling lights. Mixing warm bulbs with daylight gives you a white sofa that is blue on one side and yellow on the other.
+
+![Plan from above of a one-window setup: the window at about 45 degrees to the front of the product, a white foam board on the far side bouncing light back into the shadow, the phone on a tripod in front, and the ceiling light switched off](diagram:window-light-setup "The setup from above, drawn for this guide. The board fills the shadow side, and with the ceiling lights off every surface gets the same daylight.")
 
 <!-- IMAGE PENDING: a real photo of this setup in the easyrender team's space (window at 45 degrees, white foam board opposite, phone on a tripod). Do not use a stock photo. -->
 
@@ -53,8 +57,8 @@ Keep one order for every product. Buyers learn where to look, and you stop forge
 
 The three-quarter main image does the most work. It shows the front and one side at once, so the shopper reads the shape from a thumbnail.
 
-![A mustard bouclé lounge armchair with a steel frame, shot from three-quarters on a white background, showing the front, one side and the depth of the seat](/showcase/armchair.jpg "Three-quarter: front, side and depth in one frame. This is the main image.")
-![A wooden bedside table with two drawers, shot straight from the front on a white background, so its depth cannot be seen](/showcase/bedside-table.jpg "Straight front: the drawers read well, the depth does not. Keep it as image 2.")
+![A mustard bouclé lounge armchair with a steel frame seen straight from the front: the cushions read, but not how deep the seat is](/blog/figures/product-photography-for-ecommerce/armchair-front.jpg "Straight front: the cushions read, the depth does not. Keep it as image 2.")
+![The same armchair from three-quarters, showing the front, one side of the steel frame and the depth of the seat](/blog/figures/product-photography-for-ecommerce/armchair-three-quarter.jpg "Three-quarter: front, side and depth in one frame. This is the main image. Both views are cells of the angle sheet easyrender drew from one catalogue photo, not photos, which is how one chair shows both ways.")
 
 ## What do Amazon and Shopify ask for?
 
@@ -67,6 +71,8 @@ The three-quarter main image does the most work. It shows the front and one side
 A sofa does not fit on a paper roll. Shoot it against a plain wall with clear floor in front, and leave space on every side so you can crop to any ratio later.
 
 Put the camera at roughly the middle height of the piece, around seat height for a chair. Shooting down from standing height makes a sideboard look short and squat.
+
+![Side view of a sideboard and two camera positions: one at the middle height of the piece looking level, one at standing eye height looking down at its top](diagram:camera-height "Level with the middle of the piece, the proportions hold. From eye height the camera sees the top and the front shrinks. Drawn for this guide.")
 
 On used or vintage furniture, photograph every flaw close up and in good light. A clear photo of a scratch now saves an argument after delivery. [How to sell vintage furniture online](/learn/sell-vintage-furniture-online) covers the rest of the listing.
 

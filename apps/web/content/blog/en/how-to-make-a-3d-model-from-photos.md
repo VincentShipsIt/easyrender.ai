@@ -19,9 +19,13 @@ LiDAR scanning, on an iPhone Pro or iPad Pro, measures depth as you walk round t
 
 AI image-to-3D works from a single picture. When all you have is a supplier's catalogue shot, it is the only route that works. If the piece is in your stockroom and you have an afternoon, photogrammetry captures real surface detail better.
 
+![Two routes side by side: photogrammetry takes 20 to 100 or more overlapping photos of an object you have in front of you and sees every surface; image-to-3D takes one photo and predicts the sides it cannot see](diagram:photo-vs-photogrammetry "Photogrammetry measures what the camera saw. Image-to-3D predicts what one photo could not show, so its back is an estimate. Photo counts from Polycam's object-mode guide.")
+
 ## How does image to 3D work?
 
 The tool reads the visible side of the object and predicts the rest: the back of a sideboard, the far legs of a chair. Some tools first draw the object from several angles, then build a textured model from those views.
+
+![Five steps of image-to-3D in two stages: one photo, an angle sheet, your check of the back and sides, then the model build and the GLB and USDZ files, with a wrong preview sending you back to a new photo](diagram:image-to-3d-pipeline "The two-stage route the steps below follow. On easyrender the angle sheet is a free preview, and credits are only spent at step 4, if you decide to build.")
 
 The prediction is good at overall shape and colour and weak at things one photo cannot show, like what sits behind an open weave. The other routes are compared in [how to make a 3D model](/learn/how-to-make-a-3d-model).
 

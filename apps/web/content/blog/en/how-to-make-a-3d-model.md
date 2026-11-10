@@ -15,6 +15,8 @@ You can make a 3D model in five ways: build it in software like Blender, scan th
 
 If the object does not exist yet, model it in software or hire an artist. If it exists and is in front of you, scan it. If all you have is a photo of it, use image-to-3D.
 
+![Decision tree: if the object does not exist yet, model it in software or hire an artist; if it exists but you only have a photo, use AI image-to-3D; if it is in front of you, use LiDAR for large simple shapes and photogrammetry for detailed surfaces](diagram:method-decision-tree "The three questions behind the table below. A 3D artist is also the answer whenever the model has to be exact.")
+
 Accuracy roughly follows effort. An artist working from measurements gives the most exact model. A model generated from one photo is the quickest to get, and its back is an estimate.
 
 | Method               | What you need                                     | Best for                                     | Watch for                                      |
@@ -41,9 +43,13 @@ For a simple piece like a side table, the workflow looks like this:
 4. Add materials: a wood texture on the top, a metal finish on any handles.
 5. Check it from every side, underneath included, then export it as GLB.
 
+![A side table modelled in three stages: rough boxes and cylinders for the top and legs, the same shapes with bevelled edges, then with a wood texture before export](diagram:blockout-side-table "Steps 2 to 5 on one simple table. Drawn for this guide.")
+
 ## Method 2: Photogrammetry
 
 Photogrammetry builds a model from many overlapping photos. [Polycam's guide](https://learn.poly.cam/hc/en-us/articles/27425185907348-How-to-Use-Object-Mode) asks for at least 20, with about 70% overlap between shots, taken in rings at different heights in soft, even light. Detailed objects need 100 or more.
+
+![A floor lamp ringed by camera positions at three heights, low, middle and high looking down, with two neighbouring shots whose views overlap](diagram:photogrammetry-rings "How a photogrammetry capture is shot: rings at several heights, each photo sharing about 70% of its view with the next, as Polycam's guide asks.")
 
 RealityScan and Polycam run it on a phone, and the open-source [Meshroom](https://alicevision.org/) runs it on a computer. It captures real surface detail well. It struggles with plain white surfaces, glass and polished metal, because it needs visible texture to match one photo to the next.
 
@@ -59,7 +65,8 @@ AI tools make a model from a photo, called image-to-3D, or from a written descri
 
 The method is the same in every tool: one sharp photo of the whole object on a plain background, then a check of the hidden sides before you keep the result. Each step is in [how to turn a photo into a 3D model](/learn/how-to-make-a-3d-model-from-photos).
 
-![Nine views of a bouclé lounge armchair with a steel frame, front, sides, back and top](/showcase/armchair-angles.jpg "A free angle sheet easyrender drew from one catalogue photo of this armchair, unretouched. Check the back and the top before you build.")
+![A matte stoneware vase in its catalogue photo, straight on against a white background](/showcase/vase.jpg "The one photo.")
+![The 3D model easyrender built from that photo, a pale stoneware vase in a viewer that can be turned](/showcase/vase.glb "The model easyrender built from it, by way of a free angle sheet, textures compressed for this page. Turn it and check the back, which the photo never showed.")
 
 easyrender is one of these tools. It shows a free preview of every angle, and a finished model costs {{renderCredits}} credits ({{renderPrice}}). It models single objects, such as furniture, decor and building exteriors, not whole rooms, and small logos come out soft. [Upload a photo](/)
 
