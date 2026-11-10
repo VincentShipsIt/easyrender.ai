@@ -4,15 +4,13 @@ import type { RenderView } from '@easyrender/core';
 import { AlertCircle, Box, ImageUp, Loader2, Sparkles, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Button, buttonClass } from '@/components/ui/button';
-import { prepare } from '@/components/upload-form';
+import { prepare } from '@/components/prompt-bar';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const UPLOAD_CONCURRENCY = 2;
 const BUILD_CONCURRENCY = 3;
 const POLL_MS = 4000;
-// Not in the `model-viewer` JSX types from model-view.tsx; spread so it passes through.
-const LAZY = { loading: 'lazy' };
 
 type QueuedUpload = { key: string; name: string; url: string; error: string | null };
 type View = 'photo' | '3d' | 'both';
@@ -222,10 +220,9 @@ export function CatalogLibrary({
   const total = items.length + uploads.length;
 
   return (
-    // Breaks out of the layout's narrow column so the grid can use the full screen.
     // biome-ignore lint/a11y/noStaticElementInteractions: page-wide drop target; the Upload button is the accessible path
     <div
-      className="relative left-1/2 w-[min(88rem,calc(100vw-2rem))] -translate-x-1/2 space-y-6"
+      className="mx-auto max-w-[88rem] space-y-6 px-4 py-10 sm:px-6"
       onDragOver={(event) => {
         event.preventDefault();
         setDragging(true);
@@ -253,10 +250,12 @@ export function CatalogLibrary({
             Upload photos
           </Button>
           {pending.length > 0 && affordable === 0 ? (
-            <Link href="/credits" className={buttonClass()}>
-              <Sparkles className="size-4" />
-              Buy credits to generate {pending.length}
-            </Link>
+            <Button asChild>
+              <Link href="/credits">
+                <Sparkles className="size-4" />
+                Buy credits to generate {pending.length}
+              </Link>
+            </Button>
           ) : (
             <Button
               disabled={building || affordable === 0}
@@ -488,7 +487,7 @@ function ModelPane({
         <model-viewer
           src={`/api/renders/${item.id}/model`}
           alt={`3D model of ${item.name ?? 'item'}`}
-          {...LAZY}
+          loading="lazy"
           camera-controls
           auto-rotate
           shadow-intensity="1"
