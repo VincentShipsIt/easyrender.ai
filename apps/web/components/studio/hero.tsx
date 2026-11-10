@@ -31,6 +31,7 @@ export function StudioHero({ ctaHref }: { ctaHref: string }) {
     <section ref={ref} className="hero" aria-labelledby="studio-hero-title">
       <div className="hero__copy">
         <h1 id="studio-hero-title">{t('title')}</h1>
+        <p className="hero__lead">{t('subtitle')}</p>
       </div>
 
       <div className="stack" data-er="stack" role="img" aria-label={t('stackLabel')}>

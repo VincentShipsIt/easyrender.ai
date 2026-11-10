@@ -11,7 +11,7 @@ import { useSection } from './use-section';
 
 const SOFA = itemOf('sofa');
 const VASE = itemOf('clay-vase');
-const FORMATS = ['glb', 'usdz', 'fbx', 'obj'] as const;
+const FORMATS = ['glb', 'usdz'] as const;
 const VIEW_TOOLS: ToolName[] = [
   'topology',
   'material',

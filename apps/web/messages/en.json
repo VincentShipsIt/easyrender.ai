@@ -1,10 +1,11 @@
 {
   "Metadata": {
-    "title": "easyrender: the 3D engine to sell, design and play",
-    "description": "Turn one product photo into a 3D model with real scale, materials and physics. Use it in your store with AR, in architectural renders and in game engines, or let your AI agent do it over MCP."
+    "title": "easyrender: image to 3D models from one photo",
+    "description": "easyrender turns one photo of furniture, decor or a building exterior into a 3D model you can check from every angle for free and download as GLB and USDZ."
   },
   "LocaleSwitcher": {
-    "switchTo": "Switch to {language}"
+    "switchTo": "Switch to {language}",
+    "label": "Language"
   },
   "Header": {
     "nav": {
@@ -21,7 +22,7 @@
     "connectSuffix": "your agent"
   },
   "Footer": {
-    "tagline": "Your agent turns product and listing photos into 3D models you can spin, embed and open in AR.",
+    "tagline": "One photo becomes a 3D model you can see from every angle and download as GLB and USDZ.",
     "product": "Product",
     "developers": "Developers",
     "account": "Account",
@@ -36,7 +37,8 @@
       "apiKeys": "API keys",
       "dashboard": "Dashboard",
       "signUp": "Sign up",
-      "signIn": "Sign in"
+      "signIn": "Sign in",
+      "guides": "Guides"
     },
     "copyright": "© 2026 easyrender. Powered by Genfeed.",
     "pricesNote": "Prices in USD. Credits never expire."
@@ -66,6 +68,17 @@
     "try": {
       "title": "Try it with one photo, right here",
       "description": "Drop a photo of furniture, decor or a product. The preview is free; create an account to see it."
+    },
+    "meta": {
+      "title": "3D model from a photo · easyrender",
+      "description": "Turn one photo of furniture, decor or a building exterior into a 3D model. See every angle for free. Spend credits only when it looks right. Downloads: GLB and USDZ."
+    },
+    "intro": {
+      "eyebrow": "Photo to 3D",
+      "body": "Upload one photo of a piece of furniture, a decor object or a building exterior. easyrender draws the object from every side so you can check the shape before you spend anything. If the preview looks right, one click turns it into a 3D model you can spin and download as GLB and USDZ.",
+      "scope": "It does not model whole rooms. It does not invent measurements. You get the file; you decide if it is good enough to keep.",
+      "primaryCta": "Upload a photo",
+      "secondaryCta": "See models made from a photo"
     }
   },
   "Landing": {
@@ -90,7 +103,7 @@
         "features": {
           "min": "From {credits} credits",
           "downloads": "GLB and USDZ downloads",
-          "ar": "AR viewer and embeds",
+          "ar": "See it in your room from your phone",
           "api": "MCP server and REST API"
         },
         "cta": "Buy credits"
@@ -131,27 +144,31 @@
         },
         "photos": {
           "q": "Which photos work best?",
-          "a": "One sharp, well lit photo where the whole object is visible, ideally on a plain background. Catalogue shots and listing photos of a single piece or a building front work great."
+          "a": "One sharp, well lit photo where the whole object is visible, ideally on a plain background. Catalogue shots and listing photos of a single piece, or a clear photo of a building front, work well. Busy backgrounds, cropped objects, heavy blur or very fine detail give a weaker preview."
         },
         "scope": {
           "q": "What can it model today?",
-          "a": "Furniture, decor objects and building exteriors. Whole interior rooms are not supported yet. Fine logos and small text come out soft."
+          "a": "Furniture, decor objects and building exteriors, from a single photo. Whole interior rooms are not supported. It is not a virtual staging tool, a 3D floor-plan tool or a virtual tour. Fine logos and small text often come out soft."
         },
         "output": {
           "q": "What do I get?",
-          "a": "A textured GLB for the web and a USDZ for iPhone Quick Look, plus a hosted 3D viewer you can share or embed on a listing."
+          "a": "A free preview that shows the object from every angle, then — if you spend credits — a 3D model you can spin on its page and download as a textured GLB for the web and a USDZ file."
         },
         "freePreview": {
           "q": "Why is the preview free?",
-          "a": "Before building the model we draw the object from every angle. You check that preview for free and only spend credits when it looks right."
+          "a": "Before the 3D model is built we draw the object from every angle. You check that preview at no cost and only spend credits when the shape and the details look right."
         },
         "failed": {
           "q": "What if a render fails?",
-          "a": "Failed renders are refunded to your balance automatically."
+          "a": "If the 3D model fails to build, the credits for that render go back to your balance automatically."
         },
         "public": {
           "q": "Is my render public?",
-          "a": "Finished models appear in the public gallery by default. You can hide any of yours from its page at any time."
+          "a": "Finished models appear in the public gallery by default. You can switch off “Show in public gallery” on the model’s page. Today, hiding a model may also stop its link from opening for other people; a link-only option is in the product queue."
+        },
+        "cost": {
+          "q": "How much does a 3D model cost?",
+          "a": "Previews are free. A finished 3D model costs {credits} credits, and credits cost $0.01 each, so a model is {price}. Credits never expire. The pricing page lists every pack."
         }
       }
     }
@@ -484,7 +501,7 @@
       "note": "per credit",
       "features": {
         "downloads": "GLB and USDZ downloads",
-        "ar": "AR viewer and embeds",
+        "ar": "See it in your room from your phone",
         "api": "API and MCP access"
       }
     },
@@ -509,7 +526,9 @@
         "onboarding": "Onboarding call"
       },
       "cta": "Book a call"
-    }
+    },
+    "metaTitle": "Pricing: pay per 3D model · easyrender",
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for 5,000 credits a month."
   },
   "PaygPicker": {
     "custom": "Or enter an amount",
@@ -562,7 +581,7 @@
   },
   "Studio": {
     "hero": {
-      "title": "The 3D engine to sell, design and play",
+      "title": "3D model from a photo.",
       "cta": "Get started",
       "note": "Free preview · no card",
       "stackLabel": "One object seen through five passes of the engine. Drag to turn it.",
@@ -574,11 +593,12 @@
       "element": "Element",
       "size": "Size",
       "mass": "Mass",
-      "hint": "Drag to turn"
+      "hint": "Drag to turn",
+      "subtitle": "See it from every angle for free. You only spend credits when it looks right."
     },
     "pipeline": {
       "lead": "Upload one photo. The engine does the rest.",
-      "body": "It rebuilds your product's geometry, materials and real scale, and shows you every angle before you pay.",
+      "body": "It rebuilds your product from every side and shows you the shape before you pay.",
       "photo": "Input photo",
       "placeholder": "Describe your product",
       "generate": "Generate",
@@ -594,17 +614,17 @@
     },
     "industries": {
       "lead": "One model. Three industries.",
-      "body": "The same piece is tried in a shopper's living room, dropped into a studio's render and falls with its real weight inside a game.",
+      "body": "The same piece is tried in a shopper’s room, dropped into a studio’s render and used as a prop in a game.",
       "store": {
         "eyebrow": "E-commerce",
         "title": "One button on your product page",
-        "body": "“View in your space” opens the shopper's camera and places the product at real scale. No app, on iPhone and Android.",
+        "body": "“See it in your room” opens the shopper’s camera and places the product in the scene. No app, on iPhone and Android.",
         "link": "Talk to us about AR for stores",
         "domain": "yourstore.com",
-        "meta": "Grey upholstery · {dims}",
+        "meta": "Grey upholstery · GLB and USDZ",
         "button": "View in your space",
         "searching": "Finding the floor…",
-        "placed": "Placed · 1:1 scale"
+        "placed": "Placed"
       },
       "interior": {
         "eyebrow": "Architecture and interiors",
@@ -616,7 +636,7 @@
       "games": {
         "eyebrow": "Games",
         "title": "Props with physics built in",
-        "body": "Every element reaches Unity or Unreal with its collider, mass and friction. Drop it in the scene and it behaves.",
+        "body": "Download the GLB and bring it into your scene. The demo below runs the piece through a physics engine in your browser.",
         "link": "Connect it over the API or MCP",
         "rigidbody": "Rigidbody",
         "dynamic": "Dynamic",
@@ -627,15 +647,15 @@
       }
     },
     "tools": {
-      "lead": "It looks real. It behaves real.",
-      "body": "Every element ships with what an engine needs to use it, not only with how it looks.",
+      "lead": "See the shape before you spend a credit.",
+      "body": "Every element is shown the way the engine built it: mesh, materials and textures.",
       "link": "Explore the spec sheet",
       "topology": "Topology",
       "triangles": "Triangles",
       "material": "PBR material",
       "roughness": "Roughness",
       "metalness": "Metalness",
-      "scale": "Real scale",
+      "scale": "Proportions",
       "collider": "Collider",
       "box": "Box",
       "hull": "Hull",
@@ -652,9 +672,7 @@
       "export": "Export",
       "formats": {
         "glb": "Web · Android",
-        "usdz": "iPhone · Vision Pro",
-        "fbx": "Unity · Unreal",
-        "obj": "Render · CAD"
+        "usdz": "iPhone · Vision Pro"
       }
     },
     "wheel": {
@@ -687,8 +705,8 @@
       "quote": "There are not enough 3D objects with real physics. The catalogues that exist are small, and every format lives on its own island.",
       "by": "Why we are building easyrender",
       "byline": "A universe of elements that works with everything",
-      "stat": "≈ 3 min",
-      "statBody": "From one catalogue photo to a textured model, ready to spin, embed and open in AR.",
+      "stat": "1 photo",
+      "statBody": "From one catalogue photo to a textured model you can spin and download as GLB and USDZ.",
       "marquee": "Formats and tools it works with"
     },
     "cta": {
@@ -791,10 +809,10 @@
   },
   "Hub": {
     "metaTitle": "Hub · easyrender",
-    "metaDescription": "Furniture, lighting, decor and props in 3D with real measurements, materials, a collider and mass. Ready for your store, your render and your engine.",
+    "metaDescription": "Furniture, lighting, decor and props in 3D, each with the mesh and the materials the engine built. Take one to your store, your render or your engine.",
     "eyebrow": "Hub · {count, plural, one {# element} other {# elements}}",
     "title": "Every element, ready to use",
-    "description": "Each piece comes with real measurements, materials, a collider and mass. Take it to your store, your render or your engine.",
+    "description": "Each piece comes with its mesh, its materials and a collider. Take it to your store, your render or your engine.",
     "all": "All",
     "categoryLabel": "Category",
     "search": "Search elements",
@@ -842,6 +860,28 @@
       "embed": "Copy embed code",
       "copied": "Code copied",
       "copyFailed": "Could not copy. Try again"
+    }
+  },
+  "Blog": {
+    "index": {
+      "metaTitle": "Guides: turning photos into 3D models · easyrender",
+      "metaDescription": "How to turn a photo into a 3D model, which files you get, and what easyrender can and cannot model. Written by the people building it.",
+      "title": "Guides",
+      "description": "How to turn a photo into a 3D model, which files you get, and what easyrender can and cannot model.",
+      "empty": "The first guides are being written. Nothing is published yet.",
+      "readMore": "Read the guide"
+    },
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "post": {
+      "published": "Published {date}",
+      "updated": "Updated {date}",
+      "backToIndex": "All guides",
+      "cta": {
+        "title": "Try it with one photo",
+        "button": "Upload a photo"
+      }
     }
   }
 }
