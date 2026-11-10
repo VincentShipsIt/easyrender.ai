@@ -67,9 +67,9 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // robots.txt, the sitemaps and llms.txt are served by route handlers that need neither the
+  // robots.txt, the sitemaps, llms.txt and llms-full.txt are served by route handlers that need neither the
   // anonymous cookie nor a locale, so they stay out of the proxy entirely.
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap.*\\.xml|llms\\.txt|api/webhooks|api/mcp|api/oauth|\\.well-known).*)',
+    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap.*\\.xml|llms.*\\.txt|api/webhooks|api/mcp|api/oauth|\\.well-known).*)',
   ],
 };

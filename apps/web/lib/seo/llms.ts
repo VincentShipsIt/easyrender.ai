@@ -1,0 +1,158 @@
+import { CREDIT_USD, PAYG, PRO_PLAN, RENDER_CREDITS } from '@easyrender/harness';
+import type { Locale } from '@/i18n/config';
+import { type BlogPost, listPosts } from '@/lib/blog/posts';
+import { FAQ_KEYS } from '@/lib/faq';
+import en from '@/messages/en.json';
+import es from '@/messages/es.json';
+import { ROUTES } from './routes';
+import { absoluteUrl, SITE_NAME } from './site';
+import { localeEntries, sitemapLocales } from './sitemap';
+
+// /llms.txt and /llms-full.txt (https://llmstxt.org): the site described for AI assistants, in
+// plain markdown. Both are built from the same sources as the sitemaps, so they list exactly the
+// indexable URLs: never the gallery, model pages, hub, ad landings, auth or the app, and a guide
+// appears on the day it is published, with no deploy.
+//
+// Every product statement here follows decisiones/claims.md: one photo, a free angle sheet, a 3D
+// model as GLB and USDZ, AR coming soon. No real-world size or scale, no other formats, no
+// timings, no own figures. Prices come from the harness, like the pricing page.
+
+const MESSAGES: Partial<Record<Locale, typeof en>> = { en, es };
+
+const usd = (value: number) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+
+const PAGE_LABELS: Record<string, { title: string; note: string }> = {
+  '/': {
+    title: 'easyrender home (English)',
+    note: 'What the product does, how the free preview works, pricing summary and FAQ.',
+  },
+  [ROUTES.home.paths.es]: {
+    title: 'easyrender en español',
+    note: 'La misma página en español: de una imagen a 3D con una sola foto.',
+  },
+  [ROUTES.pricing.paths.en]: {
+    title: 'Pricing',
+    note: 'Credit packs and the Pro plan, as currently charged.',
+  },
+  [ROUTES.blog.paths.en]: { title: 'Guides', note: 'Guides on photos, 3D files and formats.' },
+  [ROUTES.blog.paths.es]: { title: 'Guías', note: 'Guías en español.' },
+};
+
+function summary(): string[] {
+  const modelPrice = usd(RENDER_CREDITS * CREDIT_USD);
+  return [
+    `# ${SITE_NAME}`,
+    '',
+    '> easyrender turns one photo of an object into a 3D model. You upload a photo of a piece of furniture, a decor object or a building exterior, check a free angle sheet that shows the object from every side, and spend credits only if you want the finished 3D model, which downloads as GLB and USDZ.',
+    '',
+    'Key facts:',
+    '',
+    '- Input: one photo of a single object (furniture, decor, building exterior).',
+    '- Free step: an angle sheet that draws the object from every side, so you can check the shape before paying.',
+    `- Paid step: a finished, textured 3D model for ${RENDER_CREDITS} credits (${modelPrice}). Credits cost ${usd(CREDIT_USD)} each, from ${PAYG.min.toLocaleString('en-US')} credits; the ${PRO_PLAN.label} plan is ${usd(PRO_PLAN.priceCents / 100)} a month for ${PRO_PLAN.monthlyCredits.toLocaleString('en-US')} credits. Credits never expire. If a 3D build fails, its credits are refunded.`,
+    '- Downloads: GLB and USDZ.',
+    '- Augmented reality (see the model in your room from a phone) is coming soon.',
+    '- Limits: one object at a time, not whole interior rooms. The model keeps shape and materials, not real-world measurements or scale.',
+    '- Finished models appear in a public gallery by default.',
+    '- For agents: easyrender is also an MCP server, so Claude, Cursor, VS Code and other MCP clients can create models with an API key.',
+    '',
+  ];
+}
+
+type Link = { url: string; title: string; note: string };
+
+function indexableLinks(now: Date): { pages: Link[]; guides: Link[] } {
+  const pages: Link[] = [];
+  const guides: Link[] = [];
+  for (const locale of sitemapLocales(now)) {
+    const posts = new Map<string, BlogPost>(
+      listPosts(locale, now).map((post) => [post.path, post]),
+    );
+    for (const entry of localeEntries(locale, now)) {
+      const post = posts.get(entry.path);
+      if (post) {
+        guides.push({ url: absoluteUrl(post.path), title: post.title, note: post.description });
+        continue;
+      }
+      const label = PAGE_LABELS[entry.path];
+      // A registry page without a label is still listed, so a new page can never go missing.
+      pages.push({
+        url: absoluteUrl(entry.path),
+        title: label?.title ?? entry.path,
+        note: label?.note ?? '',
+      });
+    }
+  }
+  return { pages, guides };
+}
+
+const linkLine = ({ url, title, note }: Link) => `- [${title}](${url})${note ? `: ${note}` : ''}`;
+
+/** /llms.txt: the summary and the indexable pages, nothing else. */
+export function llmsTxt(now: Date = new Date()): string {
+  const { pages, guides } = indexableLinks(now);
+  return [
+    ...summary(),
+    '## Pages',
+    '',
+    ...pages.map(linkLine),
+    '',
+    ...(guides.length ? ['## Guides', '', ...guides.map(linkLine), ''] : []),
+    '## Optional',
+    '',
+    `- [Full text for assistants](${absoluteUrl('/llms-full.txt')}): the FAQ in English and Spanish, and every published guide in full.`,
+    '',
+  ].join('\n');
+}
+
+/** The home FAQ of a locale as plain question and answer pairs, with prices from the harness. */
+export function faqText(locale: Locale): { question: string; answer: string }[] {
+  const messages = MESSAGES[locale];
+  if (!messages) return [];
+  const items = messages.Landing.faq.items as Record<string, { q: string; a: string }>;
+  const format = (value: number) =>
+    new Intl.NumberFormat(locale === 'es' ? 'es-ES' : 'en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(value);
+  const vars: Record<string, string> = {
+    credits: String(RENDER_CREDITS),
+    price: format(RENDER_CREDITS * CREDIT_USD),
+    unit: format(CREDIT_USD),
+  };
+  return FAQ_KEYS.map((key) => ({
+    question: items[key].q,
+    answer: items[key].a.replace(/\{(\w+)\}/g, (match, name) => vars[name] ?? match),
+  }));
+}
+
+/** /llms-full.txt: llms.txt plus the FAQ of each live home and the full text of every guide. */
+export function llmsFullTxt(now: Date = new Date()): string {
+  const lines = [...summary()];
+  const faqTitles: Partial<Record<Locale, string>> = {
+    en: 'FAQ (English)',
+    es: 'Preguntas frecuentes (español)',
+  };
+  for (const locale of sitemapLocales(now)) {
+    const faq = faqText(locale);
+    if (!faq.length) continue;
+    lines.push(`## ${faqTitles[locale] ?? `FAQ (${locale})`}`, '');
+    lines.push(`Source: ${absoluteUrl(ROUTES.home.paths[locale])}`, '');
+    for (const item of faq) lines.push(`### ${item.question}`, '', item.answer, '');
+  }
+  for (const locale of sitemapLocales(now)) {
+    for (const post of listPosts(locale, now)) {
+      lines.push(`## ${post.title}`, '', `Source: ${absoluteUrl(post.path)}`, '', post.body, '');
+    }
+  }
+  return lines.join('\n');
+}
+
+const HEADERS = {
+  'content-type': 'text/plain; charset=utf-8',
+  // Same cadence as the sitemaps: a guide scheduled for today appears without a deploy.
+  'cache-control': 'public, max-age=0, s-maxage=600, stale-while-revalidate=3600',
+};
+
+export const textResponse = (body: string): Response => new Response(body, { headers: HEADERS });
