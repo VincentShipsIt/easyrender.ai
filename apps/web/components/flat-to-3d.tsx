@@ -1,6 +1,7 @@
 'use client';
 
 import { Check, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import type * as THREE from 'three';
 import { Badge } from '@/components/ui/badge';
@@ -8,27 +9,11 @@ import type { ShowcaseItem } from '@/lib/showcase';
 import { cn } from '@/lib/utils';
 
 const STEPS = [
-  {
-    title: 'One flat photo',
-    body: 'Your agent grabs a product photo from your catalogue, a listing or a supplier email. No scan, no studio.',
-    call: 'create_render({ image_url })',
-  },
-  {
-    title: 'Read the shape',
-    body: 'easyrender reads depth, proportions and materials from that single image.',
-    call: 'get_render → preview_ready',
-  },
-  {
-    title: 'Build every side',
-    body: 'A clean mesh is rebuilt all the way round, even the sides the camera never saw.',
-    call: 'render_3d({ id })',
-  },
-  {
-    title: 'A real 3D model',
-    body: 'Textured GLB and USDZ, saved to your library. Spin it on a listing or open it in AR.',
-    call: 'status: ready · model.glb',
-  },
-];
+  { key: 'photo', call: 'create_render({ image_url })' },
+  { key: 'shape', call: 'get_render → preview_ready' },
+  { key: 'sides', call: 'render_3d({ id })' },
+  { key: 'model', call: 'status: ready · model.glb' },
+] as const;
 
 // 0 → 1 between a and b, eased.
 const smooth = (a: number, b: number, x: number) => {
@@ -41,6 +26,8 @@ const smooth = (a: number, b: number, x: number) => {
 // into a point cloud, then a wireframe, then the textured model as it turns.
 // `photoAngle` is the turn (radians) at which the model matches the photo's camera angle.
 export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAngle?: number }) {
+  const t = useTranslations('FlatTo3D');
+  const showcase = useTranslations('Showcase');
   const section = useRef<HTMLElement>(null);
   const mount = useRef<HTMLDivElement>(null);
   const target = useRef(0);
@@ -250,16 +237,16 @@ export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAn
           <div className="order-2 space-y-5 lg:order-1">
             <div className="space-y-3">
               <Badge variant="outline" className="bg-background/60">
-                How it works
+                {t('eyebrow')}
               </Badge>
               <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                From a flat photo to a 3D model
+                {t('title')}
               </h2>
             </div>
             <ol className="space-y-1">
               {STEPS.map((step, index) => (
                 <li
-                  key={step.title}
+                  key={step.key}
                   className={cn(
                     'rounded-xl border border-transparent p-3 transition-all duration-300 sm:p-4',
                     index === active
@@ -276,11 +263,13 @@ export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAn
                     >
                       {index < active ? <Check className="size-3.5" /> : index + 1}
                     </span>
-                    <p className="font-medium">{step.title}</p>
+                    <p className="font-medium">{t(`steps.${step.key}.title`)}</p>
                   </div>
                   {index === active && (
                     <div className="mt-2 space-y-3 pl-9">
-                      <p className="text-sm leading-relaxed text-muted-foreground">{step.body}</p>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        {t(`steps.${step.key}.body`)}
+                      </p>
                       <code className="inline-block rounded-md border bg-muted/60 px-2 py-1 font-mono text-xs">
                         {step.call}
                       </code>
@@ -307,8 +296,7 @@ export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAn
               </div>
             )}
             <span className="sr-only">
-              Animation: a flat photo of a {item.title.toLowerCase()} turning into a 3D model as you
-              scroll.
+              {t('animationLabel', { title: showcase(`items.${item.slug}.title`) })}
             </span>
           </div>
         </div>

@@ -1,7 +1,17 @@
 // Demo renders made with the easyrender harness (TRELLIS) during testing. They seed the public
 // gallery until real users publish their own, and power the floating model in the hero.
+// Titles and prompts are the English source; translations live under `Showcase` in messages/.
+export type ShowcaseSlug =
+  | 'swivel-chair'
+  | 'coffee-table'
+  | 'vase'
+  | 'armchair'
+  | 'clay-vase'
+  | 'bedside-table';
+
 export type ShowcaseItem = {
   id: string;
+  slug: ShowcaseSlug;
   title: string;
   prompt: string;
   photo: string;
@@ -14,7 +24,7 @@ export type ShowcaseItem = {
 };
 
 const item = (
-  slug: string,
+  slug: ShowcaseSlug,
   title: string,
   prompt: string,
   category: ShowcaseItem['category'],
@@ -22,6 +32,7 @@ const item = (
   angles = false,
 ): ShowcaseItem => ({
   id: `demo-${slug}`,
+  slug,
   title,
   prompt,
   photo: `/showcase/${slug}.jpg`,

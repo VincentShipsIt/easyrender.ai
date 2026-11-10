@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { AuthFields, type AuthMode } from '@/components/auth-fields';
 import {
@@ -28,6 +29,7 @@ export function AuthDialog({
   children?: ReactNode;
   defaultMode?: AuthMode;
 }) {
+  const t = useTranslations('Auth');
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -38,19 +40,17 @@ export function AuthDialog({
         {children}
         <Tabs defaultValue={defaultMode} className="gap-4">
           <TabsList className="w-full">
-            <TabsTrigger value="sign-up">Sign up</TabsTrigger>
-            <TabsTrigger value="sign-in">Sign in</TabsTrigger>
+            <TabsTrigger value="sign-up">{t('signUp')}</TabsTrigger>
+            <TabsTrigger value="sign-in">{t('signIn')}</TabsTrigger>
           </TabsList>
           <TabsContent value="sign-up">
-            <AuthFields mode="sign-up" onDone={onDone} submitLabel="Create account and continue" />
+            <AuthFields mode="sign-up" onDone={onDone} submitLabel={t('signUpContinue')} />
           </TabsContent>
           <TabsContent value="sign-in">
-            <AuthFields mode="sign-in" onDone={onDone} submitLabel="Sign in and continue" />
+            <AuthFields mode="sign-in" onDone={onDone} submitLabel={t('signInContinue')} />
           </TabsContent>
         </Tabs>
-        <p className="text-center text-xs text-muted-foreground">
-          Free previews every day. No credit card needed.
-        </p>
+        <p className="text-center text-xs text-muted-foreground">{t('dialogNote')}</p>
       </DialogContent>
     </Dialog>
   );

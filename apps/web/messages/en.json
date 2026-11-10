@@ -1,0 +1,614 @@
+{
+  "Metadata": {
+    "title": "easyrender: 3D renders on autopilot with your agent",
+    "description": "Connect easyrender to your AI agent over MCP and turn product and listing photos into 3D models you can spin, embed and view in AR."
+  },
+  "LocaleSwitcher": {
+    "switchTo": "Switch to {language}"
+  },
+  "Header": {
+    "nav": {
+      "howItWorks": "How it works",
+      "connect": "Connect",
+      "try": "Try it",
+      "gallery": "Gallery",
+      "pricing": "Pricing"
+    },
+    "credits": "credits",
+    "dashboard": "Dashboard",
+    "signIn": "Sign in",
+    "connect": "Connect",
+    "connectSuffix": "your agent"
+  },
+  "Footer": {
+    "tagline": "Your agent turns product and listing photos into 3D models you can spin, embed and open in AR.",
+    "product": "Product",
+    "developers": "Developers",
+    "account": "Account",
+    "links": {
+      "howItWorks": "How it works",
+      "try": "Try it",
+      "gallery": "Gallery",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "mcp": "MCP server",
+      "apiKeys": "API keys",
+      "dashboard": "Dashboard",
+      "signUp": "Sign up",
+      "signIn": "Sign in"
+    },
+    "copyright": "© 2026 easyrender. Powered by Genfeed.",
+    "pricesNote": "Prices in USD. Credits never expire."
+  },
+  "Home": {
+    "hero": {
+      "badge": "MCP server for photo to 3D",
+      "title": "Run your 3D renders on autopilot with your agent",
+      "description": "Connect easyrender to your AI agent once. It turns product and listing photos into real 3D models while you work, and every model lands in your library.",
+      "connect": "Connect your agent",
+      "try": "Try it with a photo",
+      "worksWith": "Works with {clients} and any MCP client."
+    },
+    "connect": {
+      "eyebrow": "Connect",
+      "title": "Plug it into your agent in 30 seconds",
+      "description": "easyrender speaks MCP, so any agent that supports it can create renders, check them and build 3D models on your credits.",
+      "steps": {
+        "key": {
+          "title": "Get your key",
+          "body": "Create a free account. Your API key is ready on the Connectors page."
+        },
+        "paste": {
+          "title": "Paste it in your agent",
+          "body": "One command for Claude Code, one JSON block for Cursor, VS Code or Claude Desktop."
+        },
+        "watch": {
+          "title": "Ask for 3D, watch it land",
+          "body": "Every model your agent makes shows up in your web dashboard and library."
+        }
+      },
+      "openConnectors": "Open your connectors",
+      "getKey": "Get your free API key"
+    },
+    "try": {
+      "eyebrow": "Try it",
+      "title": "Or try one photo right here",
+      "description": "Drop a photo of furniture, decor or a building exterior. The preview is free; create an account to see it."
+    },
+    "gallery": {
+      "eyebrow": "Gallery",
+      "title": "Made with easyrender",
+      "description": "Real models generated from a single photo. Open one to see the prompt, the input and every angle.",
+      "exploreAll": "Explore all"
+    }
+  },
+  "Landing": {
+    "realEstate": {
+      "eyebrow": "Built for real estate",
+      "title": "3D for listings, without the 3D team",
+      "description": "Works best today on furniture, decor and building exteriors. Full rooms are on the way.",
+      "audiences": {
+        "agents": {
+          "title": "Agents and brokers",
+          "body": "Make a listing stand out with exteriors and key pieces buyers can spin and walk around."
+        },
+        "stagers": {
+          "title": "Home stagers",
+          "body": "Turn your furniture inventory into 3D once, then drop it into every virtual staging job."
+        },
+        "builders": {
+          "title": "Developers and builders",
+          "body": "Show off-plan facades and show-home furniture before the photos exist."
+        },
+        "stores": {
+          "title": "Furniture and decor stores",
+          "body": "Give every product page a 3D viewer and a “view in your room” button."
+        }
+      },
+      "perks": {
+        "embed": "Embeddable 3D viewer for any listing site",
+        "ar": "AR on iPhone and Android, no app",
+        "api": "MCP server and REST API for your agents"
+      }
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "Pay per model. Credits never expire.",
+      "description": "Previews are free. A finished 3D model costs {credits} credits ({price}).",
+      "seeAll": "See all pricing",
+      "bestValue": "Best value",
+      "free": {
+        "name": "Free",
+        "note": "to try it",
+        "features": {
+          "mcp": "Connect your agent over MCP",
+          "previews": "Free previews of every angle",
+          "noCard": "No credit card"
+        },
+        "cta": "Start free"
+      },
+      "payg": {
+        "name": "Pay as you go",
+        "note": "per credit",
+        "features": {
+          "min": "From {credits} credits",
+          "downloads": "GLB and USDZ downloads",
+          "ar": "AR viewer and embeds",
+          "api": "MCP server and REST API"
+        },
+        "cta": "Buy credits"
+      },
+      "pro": {
+        "note": "per month",
+        "features": {
+          "credits": "{credits} credits every month",
+          "models": "About {count} 3D models",
+          "rollover": "Unused credits roll over",
+          "cancel": "Cancel anytime"
+        },
+        "cta": "Go Pro"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "note": "volume pricing",
+        "features": {
+          "volume": "Volume credit pricing",
+          "invoice": "Invoice billing",
+          "support": "Priority support",
+          "onboarding": "Onboarding call"
+        },
+        "cta": "Book a call"
+      }
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Questions, answered",
+      "items": {
+        "connect": {
+          "q": "What does \"connect your agent\" mean?",
+          "a": "easyrender is an MCP server. Add it to Claude Code, Claude Desktop, Cursor, VS Code or any MCP client with your API key, and your agent can turn photos into 3D models on its own. Everything it makes shows up in your web dashboard."
+        },
+        "needAgent": {
+          "q": "Do I need an agent to use it?",
+          "a": "No. You can upload photos in the web app, one by one or in bulk from your library. The agent just lets you run it on autopilot."
+        },
+        "photos": {
+          "q": "Which photos work best?",
+          "a": "One sharp, well lit photo where the whole object is visible, ideally on a plain background. Catalogue shots and listing photos of a single piece or a building front work great."
+        },
+        "scope": {
+          "q": "What can it model today?",
+          "a": "Furniture, decor objects and building exteriors. Whole interior rooms are not supported yet. Fine logos and small text come out soft."
+        },
+        "output": {
+          "q": "What do I get?",
+          "a": "A textured GLB for the web and a USDZ for iPhone Quick Look, plus a hosted 3D viewer you can share or embed on a listing."
+        },
+        "freePreview": {
+          "q": "Why is the preview free?",
+          "a": "Before building the model we draw the object from every angle. You check that preview for free and only spend credits when it looks right."
+        },
+        "failed": {
+          "q": "What if a render fails?",
+          "a": "Failed renders are refunded to your balance automatically."
+        },
+        "public": {
+          "q": "Is my render public?",
+          "a": "Finished models appear in the public gallery by default. You can hide any of yours from its page at any time."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Hand your 3D renders to your agent",
+      "description": "Connect once. Previews are free, and you only pay for the models you keep.",
+      "connect": "Connect your agent",
+      "try": "Try it with a photo"
+    }
+  },
+  "AgentDemo": {
+    "window": "Your agent · easyrender MCP",
+    "ask": "Here is the spring catalogue. Make a 3D model of every product and add them to the listings.",
+    "calls": {
+      "create_render": "24 photos · previews free",
+      "get_render": "24 previews ready",
+      "render_3d": "24 models · 480 credits"
+    },
+    "done": "Done. 24 models are in your easyrender library, with GLB and USDZ for AR. Here is the first one:",
+    "modelAlt": "3D model: {title}"
+  },
+  "FlatTo3D": {
+    "eyebrow": "How it works",
+    "title": "From a flat photo to a 3D model",
+    "steps": {
+      "photo": {
+        "title": "One flat photo",
+        "body": "Your agent grabs a product photo from your catalogue, a listing or a supplier email. No scan, no studio."
+      },
+      "shape": {
+        "title": "Read the shape",
+        "body": "easyrender reads depth, proportions and materials from that single image."
+      },
+      "sides": {
+        "title": "Build every side",
+        "body": "A clean mesh is rebuilt all the way round, even the sides the camera never saw."
+      },
+      "model": {
+        "title": "A real 3D model",
+        "body": "Textured GLB and USDZ, saved to your library. Spin it on a listing or open it in AR."
+      }
+    },
+    "animationLabel": "Animation: a flat photo ({title}) turning into a 3D model as you scroll."
+  },
+  "McpSetup": {
+    "terminal": "Run in your terminal",
+    "addTo": "Add to {file}",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "Gallery": {
+    "modelAlt": "3D model: {title}",
+    "sourceAlt": "Source of {title}"
+  },
+  "Explore": {
+    "metaTitle": "Gallery · easyrender",
+    "eyebrow": "Gallery",
+    "title": "Made with easyrender",
+    "description": "Every model here started as a single photo."
+  },
+  "Showcase": {
+    "untitled": "Untitled render",
+    "model3d": "3D model",
+    "categories": {
+      "Furniture": "Furniture",
+      "Decor": "Decor",
+      "Exterior": "Exterior"
+    },
+    "items": {
+      "swivel-chair": {
+        "title": "Swivel armchair",
+        "prompt": "Grey upholstered swivel armchair"
+      },
+      "coffee-table": {
+        "title": "Round coffee table",
+        "prompt": "Round solid wood coffee table"
+      },
+      "vase": {
+        "title": "Stoneware vase",
+        "prompt": "Matte stoneware vase"
+      },
+      "armchair": {
+        "title": "Bouclé lounge armchair",
+        "prompt": "Bouclé lounge armchair with a brushed steel frame"
+      },
+      "clay-vase": {
+        "title": "Clay vase",
+        "prompt": "Aged clay vase"
+      },
+      "bedside-table": {
+        "title": "Bedside table",
+        "prompt": "Solid wood bedside table with a drawer"
+      }
+    }
+  },
+  "Render": {
+    "metaTitle": "3D render",
+    "gallery": "Gallery",
+    "inputPhoto": "Input photo",
+    "sourceAlt": "Source of {title}",
+    "everyAngle": "Every angle",
+    "prompt": "Prompt",
+    "noPrompt": "No prompt, photo only",
+    "example": "Example",
+    "noAngleSheet": "Made from the photo alone, without an angle sheet.",
+    "makeYourOwn": "Make your own",
+    "public": "Public",
+    "private": "Private",
+    "untitled": "Untitled render",
+    "modelAlt": "3D model: {name}",
+    "meta": {
+      "status": "Status",
+      "engine": "Engine",
+      "dimensions": "Dimensions",
+      "formats": "Formats",
+      "visibility": "Visibility",
+      "created": "Created",
+      "creditsUsed": "Credits used"
+    },
+    "status": {
+      "drafting": "Drawing every angle",
+      "preview_ready": "Preview ready",
+      "rendering": "Building 3D model",
+      "ready": "Ready",
+      "failed": "Failed"
+    },
+    "drafting": "Drawing every angle of your object. This takes about a minute.",
+    "rendering": "Building the 3D model. This takes about two minutes.",
+    "previewReady": "Your preview is ready below. Check every angle, then render the 3D model.",
+    "previewAlt": "Preview of every angle",
+    "noPreview": "No preview",
+    "signUpToRender": "Sign up to render in 3D",
+    "buyToRender": "Buy credits to render in 3D",
+    "render3d": "Render 3D ({credits} credits)",
+    "tryAnother": "Try another photo",
+    "showInGallery": "Show in public gallery",
+    "finishedOnly": "Finished models only",
+    "errors": {
+      "start": "Could not start the render"
+    }
+  },
+  "PromptBar": {
+    "steps": {
+      "upload": "Uploading your photo",
+      "read": "Reading shape and materials",
+      "draw": "Drawing every angle",
+      "prepare": "Preparing your 3D preview"
+    },
+    "errors": {
+      "type": "Attach a JPEG, PNG or WebP photo.",
+      "noPhoto": "Attach a photo of the object or building first.",
+      "upload": "Upload failed",
+      "unreadable": "Could not read this photo",
+      "title": "Could not start this render"
+    },
+    "photoSize": "Photo · {size}",
+    "removePhoto": "Remove photo",
+    "placeholder": {
+      "withPhoto": "Describe it (optional), e.g. walnut sideboard with brass handles",
+      "empty": "Attach a photo of furniture, decor or a building, then describe it…"
+    },
+    "replacePhoto": "Replace photo",
+    "attachPhoto": "Attach photo",
+    "dropOrPaste": "or drop, or paste",
+    "generate": "Generate",
+    "dropToAttach": "Drop your photo to attach it",
+    "tryOne": "Try one:",
+    "previewReady": "Your preview is ready",
+    "photoTo3d": "Photo to 3D model",
+    "auth": {
+      "title": "Your 3D preview is ready",
+      "description": "Create a free account to see every angle of your photo and turn it into a 3D model."
+    },
+    "reveal": "Sign up free to see every angle"
+  },
+  "Library": {
+    "metaTitle": "Library · easyrender",
+    "title": "Library",
+    "summary": "{total, plural, one {# item} other {# items}} · {done} in 3D · {balance} credits",
+    "upload": "Upload photos",
+    "buyToGenerate": "Buy credits to generate {count}",
+    "generateAll": "Generate all",
+    "generateAllCount": "Generate all ({count} · {credits} credits)",
+    "buyCredits": "Buy credits",
+    "stillWaiting": "{count, plural, one {# item is} other {# items are}} still waiting.",
+    "empty": {
+      "title": "Drop your catalog photos here",
+      "body": "One photo per product. Each one gets a free preview, then generate them all in 3D at once."
+    },
+    "filters": {
+      "all": "All",
+      "needs": "Needs 3D",
+      "working": "In progress",
+      "done": "3D ready",
+      "failed": "Failed"
+    },
+    "views": {
+      "photo": "Photo",
+      "3d": "3D",
+      "both": "Side by side"
+    },
+    "status": {
+      "drafting": "Preparing preview",
+      "preview_ready": "Ready for 3D",
+      "rendering": "Building 3D",
+      "ready": "3D ready",
+      "failed": "Failed"
+    },
+    "uploading": "Uploading",
+    "untitled": "Untitled",
+    "emptyView": "Nothing in this view.",
+    "modelAlt": "3D model of {name}",
+    "pane": {
+      "loading": "Loading 3D",
+      "drafting": "Preparing preview",
+      "rendering": "Building 3D model",
+      "failed": "Failed. Credits were refunded."
+    },
+    "generateOne": "Generate · {credits}",
+    "errors": {
+      "upload": "Upload failed",
+      "unreadable": "Could not read this photo",
+      "dailyLimit": "Not uploaded: daily limit reached",
+      "outOfCredits": "Out of credits. Buy more to generate the rest.",
+      "someFailed": "Some items could not start",
+      "connection": "Some items could not start. Check your connection and try again."
+    }
+  },
+  "DashboardNav": {
+    "overview": "Overview",
+    "library": "Library",
+    "connectors": "Connectors",
+    "credits": "Credits",
+    "account": "Account"
+  },
+  "Dashboard": {
+    "metaTitle": "Dashboard · easyrender",
+    "title": "Dashboard",
+    "description": "Everything your agents and you have generated, in one place.",
+    "openLibrary": "Open library",
+    "justNow": "just now",
+    "tiles": {
+      "credits": "Credits",
+      "models": "3D models",
+      "inProgress": "In progress",
+      "byAgent": "Made by your agents"
+    },
+    "connect": {
+      "title": "Connect your agent",
+      "noKey": "Create a key on the Connectors page, paste the snippet into your agent, then ask it for 3D models. They will show up here.",
+      "unused": "You have a key but no agent has used it yet. Paste the snippet into your agent with your key.",
+      "createKey": "Create my key",
+      "manageKeys": "Manage keys"
+    },
+    "recent": {
+      "title": "Recent generations",
+      "description": "From your agents, the API and the web app.",
+      "empty": "Nothing yet. Ask your agent for a 3D model, or <link>upload photos to your library</link>."
+    },
+    "untitled": "Untitled render",
+    "source": {
+      "mcp": "Agent",
+      "api": "API",
+      "web": "Web"
+    },
+    "status": {
+      "drafting": "Drawing angles",
+      "preview_ready": "Preview ready",
+      "rendering": "Building 3D",
+      "ready": "3D ready",
+      "failed": "Failed"
+    }
+  },
+  "Connectors": {
+    "metaTitle": "Connectors · easyrender",
+    "title": "Connectors",
+    "description": "Hook easyrender into your agents and tools. Everything they make lands in your library.",
+    "more": "More connectors",
+    "comingSoon": "Coming soon",
+    "soon": {
+      "oneClick": {
+        "title": "One-click connect",
+        "body": "Add easyrender to Claude.ai or ChatGPT with a sign-in instead of a key."
+      },
+      "shopify": {
+        "title": "Shopify",
+        "body": "Sync products and publish 3D viewers to product pages."
+      },
+      "woo": {
+        "title": "WooCommerce and PrestaShop",
+        "body": "Import your catalogue and embed models with a snippet."
+      },
+      "listings": {
+        "title": "Listing sites",
+        "body": "Push models to your real estate listings and portals."
+      }
+    }
+  },
+  "ConnectorsPanel": {
+    "defaultName": "My agent",
+    "errors": {
+      "expired": "Your session expired. Sign in again to create a key.",
+      "create": "Could not create the key. Try again.",
+      "revoke": "Could not revoke the key. It is still active; try again."
+    },
+    "connect": {
+      "title": "Connect your agent",
+      "created": "Your new key is filled in below. Copy the snippet now: the key will not be shown again.",
+      "noKeys": "Create a key, then paste the snippet into your agent.",
+      "hasKeys": "Paste the snippet into your agent and replace {placeholder} with one of your keys."
+    },
+    "createMyKey": "Create my key",
+    "keys": {
+      "title": "API keys",
+      "description": "One key per agent or tool, so you can see which one is in use and revoke it alone. Renders made with a key spend your credits.",
+      "namePlaceholder": "Key name, e.g. Claude Code",
+      "create": "Create",
+      "none": "No keys yet.",
+      "connected": "Connected",
+      "idle": "Idle",
+      "neverUsed": "Never used",
+      "created": "created {date}",
+      "lastUsed": "last used {date}",
+      "revoke": "Revoke {name}"
+    }
+  },
+  "Account": {
+    "metaTitle": "Account · easyrender",
+    "title": "Account",
+    "yourAccount": "Your account",
+    "balance": "<strong>{credits}</strong> credits",
+    "buyCredits": "Buy credits",
+    "billing": "Billing"
+  },
+  "Credits": {
+    "eyebrow": "Pricing",
+    "title": "Credits",
+    "description": "Previews are free. A full 3D render costs {credits} credits ({price}). Credits never expire.",
+    "balance": "You have {credits} credits.",
+    "balancePro": "You have {credits} credits and you are on Pro.",
+    "success": "Payment received. Your credits are ready.",
+    "back": "Back to your render",
+    "signUpToBuy": "Sign up to buy",
+    "manageSubscription": "Manage subscription",
+    "onPro": "You are on Pro",
+    "subscribe": "Subscribe to {plan}",
+    "bestValue": "Best value",
+    "payg": {
+      "title": "Pay as you go",
+      "description": "Buy exactly what you need, one cent per credit.",
+      "note": "per credit",
+      "features": {
+        "downloads": "GLB and USDZ downloads",
+        "ar": "AR viewer and embeds",
+        "api": "API and MCP access"
+      }
+    },
+    "pro": {
+      "description": "{credits} credits every month, about {count} renders.",
+      "note": "per month",
+      "features": {
+        "credits": "{credits} credits added each month",
+        "rollover": "Unused credits roll over",
+        "topUp": "Top up with pay as you go anytime",
+        "cancel": "Cancel anytime"
+      }
+    },
+    "enterprise": {
+      "title": "Enterprise",
+      "description": "Volume pricing, invoicing and a direct line to the team.",
+      "price": "Custom",
+      "features": {
+        "volume": "Volume credit pricing",
+        "invoice": "Invoice billing",
+        "support": "Priority support",
+        "onboarding": "Onboarding call"
+      },
+      "cta": "Book a call"
+    }
+  },
+  "PaygPicker": {
+    "custom": "Or enter an amount",
+    "estimate": "{price} for about {count} renders",
+    "range": "Choose between {min} and {max} credits",
+    "buyAmount": "Buy {credits} credits",
+    "buy": "Buy credits"
+  },
+  "BuyButton": {
+    "failed": "Checkout failed"
+  },
+  "Auth": {
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signUpContinue": "Create account and continue",
+    "signInContinue": "Sign in and continue",
+    "dialogNote": "Free previews every day. No credit card needed.",
+    "name": "Name",
+    "namePlaceholder": "Jane Agent",
+    "email": "Email",
+    "emailPlaceholder": "you@agency.com",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "createAccount": "Create account",
+    "signUpTitle": "Create your account",
+    "signInTitle": "Welcome back",
+    "signUpDescription": "Free previews of every angle. Pay only for the 3D models you keep.",
+    "signInDescription": "Sign in to render, download and share your 3D models.",
+    "haveAccount": "Already have an account?",
+    "newHere": "New here?",
+    "createAnAccount": "Create an account",
+    "errors": {
+      "generic": "Could not sign you in. Try again."
+    }
+  }
+}

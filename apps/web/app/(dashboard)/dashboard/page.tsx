@@ -3,6 +3,7 @@ import { ArrowRight, Bot, Box, Coins, Loader2, Plug } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { getFormatter, getTranslations } from 'next-intl/server';
 import { McpSetup } from '@/components/mcp-setup';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,25 +11,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { currentUser } from '@/lib/actor';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = { title: 'Dashboard · easyrender' };
 
-const SOURCE: Record<string, string> = { mcp: 'Agent', api: 'API', web: 'Web' };
-const STATUS: Record<string, string> = {
-  drafting: 'Drawing angles',
-  preview_ready: 'Preview ready',
-  rendering: 'Building 3D',
-  ready: '3D ready',
-  failed: 'Failed',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Dashboard');
+  return { title: t('metaTitle') };
+}
 
-const ago = (date: Date) => {
-  const minutes = Math.round((Date.now() - date.getTime()) / 60000);
-  if (minutes < 1) return 'just now';
-  if (minutes < 60) return `${minutes} min ago`;
-  const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours} h ago`;
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-};
+const SOURCES = ['mcp', 'api', 'web'] as const;
+const STATUSES = ['drafting', 'preview_ready', 'rendering', 'ready', 'failed'] as const;
+const isOneOf = <T extends string>(list: readonly T[], value: string): value is T =>
+  (list as readonly string[]).includes(value);
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -40,26 +32,45 @@ export default async function DashboardPage() {
     listApiKeys(user.id),
   ]);
   const connected = keys.filter((key) => key.lastUsedAt).length;
+  const [t, format] = await Promise.all([getTranslations('Dashboard'), getFormatter()]);
+
+  const ago = (date: Date) => {
+    const now = new Date();
+    const minutes = Math.round((now.getTime() - date.getTime()) / 60000);
+    if (minutes < 1) return t('justNow');
+    if (minutes < 60 * 24) {
+      return format.relativeTime(date, { now, unit: minutes < 60 ? 'minute' : 'hour' });
+    }
+    return format.dateTime(date, { month: 'short', day: 'numeric' });
+  };
 
   const tiles = [
-    { label: 'Credits', value: balance.toLocaleString('en-US'), icon: Coins, href: '/credits' },
-    { label: '3D models', value: stats.ready, icon: Box, href: '/library' },
-    { label: 'In progress', value: stats.inFlight, icon: Loader2, href: '/library' },
-    { label: 'Made by your agents', value: stats.byAgent, icon: Bot, href: '/connectors' },
+    { label: t('tiles.credits'), value: format.number(balance), icon: Coins, href: '/credits' },
+    { label: t('tiles.models'), value: format.number(stats.ready), icon: Box, href: '/library' },
+    {
+      label: t('tiles.inProgress'),
+      value: format.number(stats.inFlight),
+      icon: Loader2,
+      href: '/library',
+    },
+    {
+      label: t('tiles.byAgent'),
+      value: format.number(stats.byAgent),
+      icon: Bot,
+      href: '/connectors',
+    },
   ];
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div className="space-y-1">
-          <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Everything your agents and you have generated, in one place.
-          </p>
+          <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
         <Button variant="outline" asChild>
           <Link href="/library">
-            Open library
+            {t('openLibrary')}
             <ArrowRight />
           </Link>
         </Button>
@@ -88,19 +99,17 @@ export default async function DashboardPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Plug className="size-4" />
-              Connect your agent
+              {t('connect.title')}
             </CardTitle>
             <CardDescription>
-              {keys.length === 0
-                ? 'Create a key on the Connectors page, paste the snippet into your agent, then ask it for 3D models. They will show up here.'
-                : 'You have a key but no agent has used it yet. Paste the snippet into your agent with your key.'}
+              {keys.length === 0 ? t('connect.noKey') : t('connect.unused')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <McpSetup url={`${config.appUrl()}/api/mcp`} />
             <Button asChild>
               <Link href="/connectors">
-                {keys.length === 0 ? 'Create my key' : 'Manage keys'}
+                {keys.length === 0 ? t('connect.createKey') : t('connect.manageKeys')}
                 <ArrowRight />
               </Link>
             </Button>
@@ -110,17 +119,19 @@ export default async function DashboardPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent generations</CardTitle>
-          <CardDescription>From your agents, the API and the web app.</CardDescription>
+          <CardTitle>{t('recent.title')}</CardTitle>
+          <CardDescription>{t('recent.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           {renders.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              Nothing yet. Ask your agent for a 3D model, or{' '}
-              <Link href="/library" className="text-foreground underline underline-offset-4">
-                upload photos to your library
-              </Link>
-              .
+              {t.rich('recent.empty', {
+                link: (chunks) => (
+                  <Link href="/library" className="text-foreground underline underline-offset-4">
+                    {chunks}
+                  </Link>
+                ),
+              })}
             </p>
           ) : (
             <ul className="divide-y">
@@ -143,16 +154,20 @@ export default async function DashboardPage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium">
-                        {render.name || render.prompt || 'Untitled render'}
+                        {render.name || render.prompt || t('untitled')}
                       </p>
                       <p className="text-xs text-muted-foreground">{ago(render.createdAt)}</p>
                     </div>
                     <Badge variant="outline" className="hidden sm:inline-flex">
                       {render.source !== 'web' && <Bot />}
-                      {SOURCE[render.source] ?? render.source}
+                      {isOneOf(SOURCES, render.source)
+                        ? t(`source.${render.source}`)
+                        : render.source}
                     </Badge>
                     <Badge variant={render.status === 'ready' ? 'default' : 'secondary'}>
-                      {STATUS[render.status] ?? render.status}
+                      {isOneOf(STATUSES, render.status)
+                        ? t(`status.${render.status}`)
+                        : render.status}
                     </Badge>
                   </Link>
                 </li>

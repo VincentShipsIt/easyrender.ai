@@ -3,18 +3,20 @@
 import { Coins, LayoutDashboard, Library, Plug, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 const ITEMS = [
-  { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-  { href: '/library', label: 'Library', icon: Library },
-  { href: '/connectors', label: 'Connectors', icon: Plug },
-  { href: '/credits', label: 'Credits', icon: Coins },
-  { href: '/account', label: 'Account', icon: UserRound },
-];
+  { href: '/dashboard', key: 'overview', icon: LayoutDashboard },
+  { href: '/library', key: 'library', icon: Library },
+  { href: '/connectors', key: 'connectors', icon: Plug },
+  { href: '/credits', key: 'credits', icon: Coins },
+  { href: '/account', key: 'account', icon: UserRound },
+] as const;
 
 // Sidebar on desktop, a scrollable tab row on mobile.
 export function DashboardNav() {
+  const t = useTranslations('DashboardNav');
   const pathname = usePathname();
   return (
     <nav className="-mx-4 flex gap-1 overflow-x-auto px-4 lg:mx-0 lg:flex-col lg:px-0">
@@ -32,7 +34,7 @@ export function DashboardNav() {
             )}
           >
             <item.icon className="size-4" />
-            {item.label}
+            {t(item.key)}
           </Link>
         );
       })}

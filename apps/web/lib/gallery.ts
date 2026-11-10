@@ -1,5 +1,6 @@
 import 'server-only';
 import { listPublicRenders } from '@easyrender/core';
+import { getTranslations } from 'next-intl/server';
 import { SHOWCASE } from './showcase';
 
 export type GalleryItem = {
@@ -17,23 +18,24 @@ export async function getGallery(size = 8): Promise<GalleryItem[]> {
     console.error('gallery: could not list public renders', error);
     return [];
   });
+  const t = await getTranslations('Showcase');
   const items: GalleryItem[] = renders.map((render) => ({
     id: render.id,
     href: `/r/${render.id}`,
-    title: render.prompt || 'Untitled render',
+    title: render.prompt || t('untitled'),
     photo: `/api/renders/${render.id}/source`,
     model: `/api/renders/${render.id}/model`,
-    label: '3D model',
+    label: t('model3d'),
   }));
   for (const demo of SHOWCASE) {
     if (items.length >= size) break;
     items.push({
       id: demo.id,
       href: `/r/${demo.id}`,
-      title: demo.title,
+      title: t(`items.${demo.slug}.title`),
       photo: demo.photo,
       model: demo.model,
-      label: demo.category,
+      label: t(`categories.${demo.category}`),
     });
   }
   return items;

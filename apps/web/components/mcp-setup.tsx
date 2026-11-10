@@ -1,6 +1,7 @@
 'use client';
 
 import { Check, Copy } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 type Client = {
   id: string;
   label: string;
-  where: string;
+  where: { key: 'terminal' } | { key: 'file'; file: string };
   code: (url: string, key: string) => string;
 };
 
@@ -18,21 +19,21 @@ export const MCP_CLIENTS: Client[] = [
   {
     id: 'claude-code',
     label: 'Claude Code',
-    where: 'Run in your terminal',
+    where: { key: 'terminal' },
     code: (url, key) =>
       `claude mcp add --transport http easyrender ${url} \\\n  --header "Authorization: Bearer ${key}"`,
   },
   {
     id: 'cursor',
     label: 'Cursor',
-    where: 'Add to ~/.cursor/mcp.json',
+    where: { key: 'file', file: '~/.cursor/mcp.json' },
     code: (url, key) =>
       json({ mcpServers: { easyrender: { url, headers: { Authorization: `Bearer ${key}` } } } }),
   },
   {
     id: 'vscode',
     label: 'VS Code',
-    where: 'Add to .vscode/mcp.json',
+    where: { key: 'file', file: '.vscode/mcp.json' },
     code: (url, key) =>
       json({
         servers: {
@@ -43,7 +44,7 @@ export const MCP_CLIENTS: Client[] = [
   {
     id: 'claude-desktop',
     label: 'Claude Desktop',
-    where: 'Add to claude_desktop_config.json',
+    where: { key: 'file', file: 'claude_desktop_config.json' },
     code: (url, key) =>
       json({
         mcpServers: {
@@ -61,6 +62,7 @@ export const MCP_CLIENTS: Client[] = [
 export const KEY_PLACEHOLDER = 'er_your_key';
 
 function CopyButton({ text }: { text: string }) {
+  const t = useTranslations('McpSetup');
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -70,7 +72,7 @@ function CopyButton({ text }: { text: string }) {
       size="icon-sm"
       variant="ghost"
       className="absolute top-2 right-2"
-      aria-label={copied ? 'Copied' : 'Copy'}
+      aria-label={copied ? t('copied') : t('copy')}
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(text);
@@ -89,6 +91,7 @@ function CopyButton({ text }: { text: string }) {
 
 // The config snippet for each MCP client, filled with the user's key when we have one.
 export function McpSetup({ url, apiKey }: { url: string; apiKey?: string | null }) {
+  const t = useTranslations('McpSetup');
   const key = apiKey ?? KEY_PLACEHOLDER;
   return (
     <Tabs defaultValue={MCP_CLIENTS[0].id} className="w-full gap-3">
@@ -103,7 +106,11 @@ export function McpSetup({ url, apiKey }: { url: string; apiKey?: string | null 
         const code = client.code(url, key);
         return (
           <TabsContent key={client.id} value={client.id} className="space-y-2">
-            <p className="text-xs text-muted-foreground">{client.where}</p>
+            <p className="text-xs text-muted-foreground">
+              {client.where.key === 'file'
+                ? t('addTo', { file: client.where.file })
+                : t('terminal')}
+            </p>
             <div className="relative">
               <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-3 pr-12 font-mono text-xs leading-relaxed">
                 {code}
