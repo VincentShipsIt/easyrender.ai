@@ -26,19 +26,28 @@ export function ConnectorsPanel({ initial, mcpUrl }: { initial: KeyRow[]; mcpUrl
   const [keys, setKeys] = useState(initial);
   const [created, setCreated] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function create(event?: FormEvent<HTMLFormElement>) {
     event?.preventDefault();
     const form = event?.currentTarget;
     const name = String((form && new FormData(form).get('name')) || 'My agent');
     setBusy(true);
+    setError(null);
     try {
       const response = await fetch('/api/keys', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ name }),
-      });
-      if (!response.ok) return;
+      }).catch(() => null);
+      if (!response?.ok) {
+        setError(
+          response?.status === 401
+            ? 'Your session expired. Sign in again to create a key.'
+            : 'Could not create the key. Try again.',
+        );
+        return;
+      }
       const { key, ...rest } = await response.json();
       setCreated(key);
       setKeys((current) => [{ ...rest, lastUsedAt: null }, ...current]);
@@ -49,7 +58,14 @@ export function ConnectorsPanel({ initial, mcpUrl }: { initial: KeyRow[]; mcpUrl
   }
 
   async function revoke(id: string) {
-    await fetch(`/api/keys?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+    setError(null);
+    const response = await fetch(`/api/keys?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+    }).catch(() => null);
+    if (!response?.ok) {
+      setError('Could not revoke the key. It is still active; try again.');
+      return;
+    }
     setKeys((current) => current.filter((key) => key.id !== id));
   }
 
@@ -92,6 +108,11 @@ export function ConnectorsPanel({ initial, mcpUrl }: { initial: KeyRow[]; mcpUrl
               Create
             </Button>
           </form>
+          {error && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
           <ul className="divide-y rounded-md border">
             {keys.length === 0 && (
               <li className="p-3 text-sm text-muted-foreground">No keys yet.</li>

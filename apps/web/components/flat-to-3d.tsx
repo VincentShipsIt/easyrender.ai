@@ -56,7 +56,8 @@ export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAn
       const total = rect.height - window.innerHeight;
       const value = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
       target.current = value;
-      setProgress(value);
+      // The canvas reads the ref every frame; React only needs coarse steps for the step list.
+      setProgress((prev) => (Math.abs(prev - value) < 0.005 ? prev : value));
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -88,9 +89,18 @@ export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAn
       host.appendChild(renderer.domElement);
       renderer.domElement.style.width = '100%';
       renderer.domElement.style.height = '100%';
+      // Registered now so an unmount during the async loads below still frees the WebGL context.
+      const teardown: (() => void)[] = [
+        () => renderer.dispose(),
+        () => renderer.domElement.remove(),
+      ];
+      cleanup = () => {
+        for (const fn of teardown) fn();
+      };
 
       const scene = new three.Scene();
       const pmrem = new three.PMREMGenerator(renderer);
+      teardown.push(() => pmrem.dispose());
       scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
       const camera = new three.PerspectiveCamera(30, 1, 0.1, 100);
@@ -103,6 +113,7 @@ export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAn
 
       // The flat photo, as a card facing the camera.
       const photoTexture = await new three.TextureLoader().loadAsync(item.photo);
+      if (disposed) return;
       photoTexture.colorSpace = three.SRGBColorSpace;
       const photoMaterial = new three.MeshBasicMaterial({ map: photoTexture, transparent: true });
       const photo = new three.Mesh(new three.PlaneGeometry(2.3, 2.3), photoMaterial);
@@ -214,17 +225,13 @@ export function FlatTo3D({ item, photoAngle = 0 }: { item: ShowcaseItem; photoAn
 
         renderer.render(scene, camera);
       };
+      teardown.push(
+        () => cancelAnimationFrame(frame),
+        () => observer.disconnect(),
+        () => io.disconnect(),
+      );
       tick();
       setLoaded(true);
-
-      cleanup = () => {
-        cancelAnimationFrame(frame);
-        observer.disconnect();
-        io.disconnect();
-        renderer.dispose();
-        pmrem.dispose();
-        renderer.domElement.remove();
-      };
     })().catch((error) => console.error('flat-to-3d failed to load', error));
 
     return () => {

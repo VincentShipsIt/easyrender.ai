@@ -1,7 +1,7 @@
 'use client';
 
 import { Check, Copy } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -62,17 +62,24 @@ export const KEY_PLACEHOLDER = 'er_your_key';
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
   return (
     <Button
       type="button"
       size="icon-sm"
       variant="ghost"
       className="absolute top-2 right-2"
-      aria-label="Copy"
+      aria-label={copied ? 'Copied' : 'Copy'}
       onClick={async () => {
-        await navigator.clipboard.writeText(text).catch(() => {});
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          return; // Clipboard unavailable (insecure context or denied): keep the copy icon.
+        }
         setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
+        clearTimeout(timer.current);
+        timer.current = setTimeout(() => setCopied(false), 1500);
       }}
     >
       {copied ? <Check /> : <Copy />}
