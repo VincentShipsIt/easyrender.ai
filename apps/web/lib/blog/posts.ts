@@ -68,8 +68,13 @@ export const DEFAULT_AUTHOR: BlogAuthor = { name: 'easyrender team', type: 'Orga
 export const modifiedDate = (post: Pick<BlogPost, 'date' | 'updated'>): string =>
   post.updated && post.updated > post.date ? post.updated : post.date;
 
+// Whole dollars without cents ($49, $5), anything else to the cent ($0.80, $0.01).
 const usd = (value: number) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+  new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    ...(Number.isInteger(value) ? { maximumFractionDigits: 0 } : {}),
+  }).format(value);
 
 const PRICE_TOKENS: Record<string, string> = {
   renderCredits: String(RENDER_CREDITS),

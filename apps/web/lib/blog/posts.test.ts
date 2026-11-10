@@ -98,7 +98,7 @@ describe('what a post carries besides its text', () => {
       'A model costs {{renderCredits}} credits ({{renderPrice}}). Pro is {{proPrice}} for {{proCredits}}.',
     );
     const price = (RENDER_CREDITS * CREDIT_USD).toFixed(2);
-    const pro = (PRO_PLAN.priceCents / 100).toFixed(2);
+    const pro = String(PRO_PLAN.priceCents / 100);
     const proCredits = PRO_PLAN.monthlyCredits.toLocaleString('en-US');
     expect(body).toBe(
       `A model costs ${RENDER_CREDITS} credits ($${price}). Pro is $${pro} for ${proCredits}.`,
