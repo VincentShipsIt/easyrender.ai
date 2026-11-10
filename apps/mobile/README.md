@@ -31,7 +31,7 @@ For local API development set `EXPO_PUBLIC_API_URL` to your machine's LAN addres
 Two GitHub Actions workflows live in `.github/workflows/`:
 
 - **Mobile CI** runs on pull requests that touch `apps/mobile`: typecheck, lint, Android bundle.
-- **Mobile release** runs on every merge to `main` that touches `apps/mobile` (docs excluded), or by hand (Actions, Mobile release, Run workflow). It starts a production build on [EAS](https://expo.dev/eas) for iOS and Android and has EAS submit each finished build: **iOS to TestFlight, Android to Google Play's internal track**. Build numbers are managed by EAS. Promoting a build to the public App Store or the Google Play production track stays manual, so nothing goes live without a review step.
+- **Mobile release** runs by hand only (Actions, Mobile release, Run workflow; pick the platform and the Google Play track). It starts a production build on [EAS](https://expo.dev/eas) for iOS and Android and has EAS submit each finished build: **iOS to TestFlight, Android to Google Play's internal track**. Build numbers are managed by EAS. Promoting a build to the public App Store or the Google Play production track stays manual, so nothing goes live without a review step.
 
 The job only starts the builds (`--no-wait`); progress and logs are on the EAS dashboard. If the store credentials below are missing, the job still builds and skips the submit, with a warning.
 
