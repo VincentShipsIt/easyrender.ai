@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { AuthFields, type AuthMode } from '@/components/auth-fields';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { hasPending } from '@/lib/pending-upload';
 
@@ -27,8 +28,14 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
+        {params.get('error') === 'oauth' && (
+          <Alert variant="destructive">
+            <AlertDescription>{t('errors.oauth')}</AlertDescription>
+          </Alert>
+        )}
         <AuthFields
           mode={mode}
+          callbackURL={async () => (!requested && (await hasPending()) ? '/library' : next)}
           onDone={async () => {
             // A photo attached on the home page before signing up goes to the Library.
             router.push(!requested && (await hasPending()) ? '/library' : next);

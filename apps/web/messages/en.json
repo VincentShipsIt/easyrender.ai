@@ -614,7 +614,10 @@
     "newHere": "New here?",
     "createAnAccount": "Create an account",
     "errors": {
-      "generic": "Could not sign you in. Try again."
-    }
+      "generic": "Could not sign you in. Try again.",
+      "oauth": "Google sign in did not finish. Try again or use your email."
+    },
+    "google": "Continue with Google",
+    "or": "or"
   }
 }

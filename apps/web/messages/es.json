@@ -614,7 +614,10 @@
     "newHere": "¿Eres nuevo?",
     "createAnAccount": "Crea una cuenta",
     "errors": {
-      "generic": "No pudimos iniciar tu sesión. Vuelve a intentarlo."
-    }
+      "generic": "No pudimos iniciar tu sesión. Vuelve a intentarlo.",
+      "oauth": "No se pudo completar el acceso con Google. Vuelve a intentarlo o usa tu email."
+    },
+    "google": "Continuar con Google",
+    "or": "o"
   }
 }
