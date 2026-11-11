@@ -235,8 +235,13 @@ export function readPosts(locale: Locale, root: string = CONTENT_ROOT): BlogPost
 
 const isRoutable = (locale: Locale) => (ROUTABLE_LOCALES as readonly Locale[]).includes(locale);
 
+// A post is live only where the guides section itself is published: a routable locale (its home
+// is open) does not open its blog. Without this gate a German post merged before /de/ratgeber is
+// published would be listed in sitemap-de.xml and in hreflang while its URL answers 404.
 export const isPublishedPost = (post: BlogPost, now: Date): boolean =>
-  isRoutable(post.locale) && Date.parse(post.date) <= now.getTime();
+  isRoutable(post.locale) &&
+  isPublishedIndex(post.locale) &&
+  Date.parse(post.date) <= now.getTime();
 
 /** The posts a locale shows today, newest first. */
 export function listPosts(locale: Locale, now: Date = new Date()): BlogPost[] {

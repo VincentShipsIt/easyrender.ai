@@ -2,8 +2,12 @@ import { CREDIT_USD, PAYG, PRO_PLAN, RENDER_CREDITS } from '@easyrender/harness'
 import type { Locale } from '@/i18n/config';
 import { type BlogPost, isLiveBlogLink, listPosts } from '@/lib/blog/posts';
 import { FAQ_KEYS } from '@/lib/faq';
+import de from '@/messages/de.json';
 import en from '@/messages/en.json';
 import es from '@/messages/es.json';
+import fr from '@/messages/fr.json';
+import it from '@/messages/it.json';
+import pt from '@/messages/pt.json';
 import { ROUTES } from './routes';
 import { absoluteUrl, SITE_NAME } from './site';
 import { localeEntries, sitemapLocales } from './sitemap';
@@ -17,7 +21,9 @@ import { localeEntries, sitemapLocales } from './sitemap';
 // model as GLB and USDZ, AR coming soon. No real-world size or scale, no other formats, no
 // timings, no own figures. Prices come from the harness, like the pricing page.
 
-const MESSAGES: Partial<Record<Locale, typeof en>> = { en, es };
+type FaqMessages = { Landing: { faq: { items: Record<string, { q: string; a: string }> } } };
+
+const MESSAGES: Record<Locale, FaqMessages> = { en, es, de, fr, it, pt };
 
 const usd = (value: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
@@ -30,6 +36,22 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
   [ROUTES.home.paths.es]: {
     title: 'easyrender en español',
     note: 'La misma página en español: de una imagen a 3D con una sola foto.',
+  },
+  [ROUTES.home.paths.de]: {
+    title: 'easyrender auf Deutsch',
+    note: 'Dieselbe Seite auf Deutsch: aus einem Bild ein 3D-Modell.',
+  },
+  [ROUTES.home.paths.fr]: {
+    title: 'easyrender en français',
+    note: 'La même page en français : une image en 3D à partir d’une seule photo.',
+  },
+  [ROUTES.home.paths.it]: {
+    title: 'easyrender in italiano',
+    note: 'La stessa pagina in italiano: da immagine a 3D con una sola foto.',
+  },
+  [ROUTES.home.paths.pt]: {
+    title: 'easyrender em português (Portugal)',
+    note: 'A mesma página em português de Portugal: de uma imagem para 3D com uma só fotografia.',
   },
   [ROUTES.pricing.paths.en]: {
     title: 'Pricing',
@@ -101,18 +123,17 @@ export function llmsTxt(now: Date = new Date()): string {
     ...(guides.length ? ['## Guides', '', ...guides.map(linkLine), ''] : []),
     '## Optional',
     '',
-    `- [Full text for assistants](${absoluteUrl('/llms-full.txt')}): the FAQ in English and Spanish, and every published guide in full.`,
+    `- [Full text for assistants](${absoluteUrl('/llms-full.txt')}): the home FAQ in every published language, and every published guide in full.`,
     '',
   ].join('\n');
 }
 
 /** The home FAQ of a locale as plain question and answer pairs, with prices from the harness. */
 export function faqText(locale: Locale): { question: string; answer: string }[] {
-  const messages = MESSAGES[locale];
-  if (!messages) return [];
-  const items = messages.Landing.faq.items as Record<string, { q: string; a: string }>;
+  const items = MESSAGES[locale].Landing.faq.items;
+  // The same format the page prints: next-intl formats with the bare locale of the URL.
   const format = (value: number) =>
-    new Intl.NumberFormat(locale === 'es' ? 'es-ES' : 'en-US', {
+    new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: 'USD',
     }).format(value);
@@ -130,14 +151,18 @@ export function faqText(locale: Locale): { question: string; answer: string }[] 
 /** /llms-full.txt: llms.txt plus the FAQ of each live home and the full text of every guide. */
 export function llmsFullTxt(now: Date = new Date()): string {
   const lines = [...summary()];
-  const faqTitles: Partial<Record<Locale, string>> = {
+  const faqTitles: Record<Locale, string> = {
     en: 'FAQ (English)',
     es: 'Preguntas frecuentes (español)',
+    de: 'Häufige Fragen (Deutsch)',
+    fr: 'Questions fréquentes (français)',
+    it: 'Domande frequenti (italiano)',
+    pt: 'Perguntas frequentes (português de Portugal)',
   };
   for (const locale of sitemapLocales(now)) {
     const faq = faqText(locale);
     if (!faq.length) continue;
-    lines.push(`## ${faqTitles[locale] ?? `FAQ (${locale})`}`, '');
+    lines.push(`## ${faqTitles[locale]}`, '');
     lines.push(`Source: ${absoluteUrl(ROUTES.home.paths[locale])}`, '');
     for (const item of faq) lines.push(`### ${item.question}`, '', item.answer, '');
   }

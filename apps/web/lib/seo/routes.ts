@@ -24,7 +24,9 @@ export type RouteEntry = {
 export const ROUTES = {
   home: {
     paths: { en: '/', es: '/es', de: '/de', fr: '/fr', it: '/it', pt: '/pt' },
-    published: ['en', 'es'],
+    // de, fr, it and pt open with the home only (Jorge, 10-nov-2026). Their guides, pricing,
+    // comparisons, services and legal pages wait for reviewed copy.
+    published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 1,
     changeFrequency: 'weekly',
   },

@@ -1,14 +1,15 @@
 import { Languages } from 'lucide-react';
 import { headers } from 'next/headers';
-import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { LocaleLink } from '@/components/locale-link';
 import { HTML_LANG, LOCALE_NAMES, PATH_HEADER } from '@/i18n/config';
 import { equivalentPaths } from '@/lib/seo/equivalents';
 import { cn } from '@/lib/utils';
 
 /**
  * Links to the same page in the other languages, which is what hreflang promises. Server
- * rendered and crawlable: no cookie, no redirect by Accept-Language, no client JavaScript.
+ * rendered and crawlable: every option is a plain <a href> in the HTML, with no redirect by
+ * Accept-Language. A click also stores the choice for the marketing root (components/locale-link).
  */
 export async function LocaleSwitcher() {
   const [locale, t, headerList] = await Promise.all([
@@ -23,8 +24,9 @@ export async function LocaleSwitcher() {
     <nav aria-label={t('label')} className="flex items-center gap-1 text-sm">
       <Languages className="size-4 shrink-0 text-muted-foreground" aria-hidden />
       {options.map(({ locale: option, path }) => (
-        <Link
+        <LocaleLink
           key={option}
+          locale={option}
           href={path}
           hrefLang={HTML_LANG[option]}
           title={LOCALE_NAMES[option]}
@@ -35,7 +37,7 @@ export async function LocaleSwitcher() {
           )}
         >
           {option.toUpperCase()}
-        </Link>
+        </LocaleLink>
       ))}
     </nav>
   );

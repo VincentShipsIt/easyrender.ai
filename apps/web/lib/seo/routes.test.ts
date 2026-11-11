@@ -39,9 +39,26 @@ describe('the route registry', () => {
     }
   });
 
+  it('opens the six homes and nothing else in de, fr, it and pt', () => {
+    expect(livePaths('home')).toEqual({
+      en: '/',
+      es: '/es',
+      de: '/de',
+      fr: '/fr',
+      it: '/it',
+      pt: '/pt',
+    });
+    // Routable for the home only: every other page in these languages is still a 404.
+    for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
+      for (const key of ROUTE_KEYS) {
+        if (key === 'home') continue;
+        expect(isPublished(key, locale), `${key}/${locale}`).toBe(false);
+      }
+    }
+  });
+
   it('hides the path of an unpublished language', () => {
-    expect(livePaths('home')).toEqual({ en: '/', es: '/es' });
-    expect(isPublished('home', 'de')).toBe(false);
+    expect(livePaths('blog')).toEqual({ en: '/learn', es: '/es/guias' });
     // Declared in the registry, published nowhere yet, so it is not a URL in any language.
     expect(isPublished('compare', 'en')).toBe(false);
     expect(livePaths('compare')).toEqual({});
@@ -57,8 +74,20 @@ describe('hreflang', () => {
       en: SITE_URL,
       es: `${SITE_URL}/es`,
       'es-ES': `${SITE_URL}/es`,
+      de: `${SITE_URL}/de`,
+      'de-DE': `${SITE_URL}/de`,
+      'de-AT': `${SITE_URL}/de`,
+      'de-CH': `${SITE_URL}/de`,
+      fr: `${SITE_URL}/fr`,
+      'fr-FR': `${SITE_URL}/fr`,
+      it: `${SITE_URL}/it`,
+      'it-IT': `${SITE_URL}/it`,
+      pt: `${SITE_URL}/pt`,
+      'pt-PT': `${SITE_URL}/pt`,
       'x-default': SITE_URL,
     });
+    // Never an /en URL: English lives at the root.
+    expect(Object.values(alternates ?? {}).some((href) => href.includes('/en'))).toBe(false);
   });
 
   it('points x-default at the English page', () => {
