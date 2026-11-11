@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability (private)
+    url: https://github.com/easyrenderai/easyrender.ai/security/advisories/new
+    about: Never file a vulnerability as a public issue. Use private reporting.
+  - name: Account or billing question
+    url: https://easyrender.ai
+    about: Account, credits and billing questions are handled in the product, outside this repository.

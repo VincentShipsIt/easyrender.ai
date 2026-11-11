@@ -7,6 +7,10 @@ Title = squash commit subject, Conventional Commits: `type(scope): summary`
 
 <!-- What changed, and what outcome does it produce for a user or a developer? -->
 
+## Related issue
+
+<!-- `Closes #123` when this PR fully resolves the work, `Refs #123` while acceptance is still outstanding. No issue: write `No-Issue` and one sentence why. -->
+
 ## Scope
 
 <!-- Public contracts touched (API paths, MCP tools, webhooks), schema changes, new env vars
