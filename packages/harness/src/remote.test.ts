@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { LIMITS } from './guardrails';
 import { MATERIALS } from './materials';
-import { DEFAULT_BUILD_SETTINGS } from './models';
+import { DEFAULT_BUILD_SETTINGS, DEFAULT_SHEET_SETTINGS } from './models';
 import {
   clearHarnessCache,
   DEFAULT_HARNESS,
@@ -62,6 +62,14 @@ describe('parseHarness', () => {
       MATERIALS,
     );
     expect(parseHarness({})?.materials).toBe(MATERIALS);
+  });
+
+  it('keeps the sheet model and its settings in code', () => {
+    const parsed = parseHarness({
+      sheet: { path: '/models/google/nano-banana-pro/predictions', input: { resolution: '2K' } },
+    });
+    expect(parsed?.sheet).toEqual(DEFAULT_SHEET_SETTINGS);
+    expect(parsed?.sheet.path).toContain('nano-banana-2-lite');
   });
 
   it('applies valid overrides and refuses a prompt that is not a 3x3 sheet', () => {

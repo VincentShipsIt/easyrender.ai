@@ -1,11 +1,13 @@
-// The two Replicate steps of the harness. Both were picked by an A/B run on real listings:
-// the sheet + TRELLIS pair produced usable models on every test object.
+// The two Replicate steps of the harness. The sheet + TRELLIS pair was picked by an A/B run on real
+// listings (sheet drawn by Nano Banana Pro). The sheet model is now Nano Banana 2 Lite, which is
+// cheaper but only draws 1K images; it has not been A/B tested yet.
 
 export const A100_USD_PER_SECOND = 0.0014;
 
 export const SHEET_MODEL = {
-  path: '/models/google/nano-banana-pro/predictions',
-  costUsd: 0.15, // per 2K output image; keep in step with SHEET_COST_USD in pricing.ts
+  name: 'Nano Banana 2 Lite',
+  path: '/models/google/nano-banana-2-lite/predictions',
+  costUsd: 0.034, // per 1K output image; keep in step with SHEET_COST_USD in pricing.ts
 } as const;
 
 export const BUILD_MODEL = {
@@ -30,7 +32,8 @@ export type BuildSettings = { version: string; input: Record<string, unknown> };
 
 export const DEFAULT_SHEET_SETTINGS: SheetSettings = {
   path: SHEET_MODEL.path,
-  input: { aspect_ratio: '1:1', resolution: '2K', output_format: 'png' },
+  // Lite has no resolution setting: it always draws 1K (about 1 megapixel).
+  input: { aspect_ratio: '1:1', output_format: 'png' },
 };
 
 export const DEFAULT_BUILD_SETTINGS: BuildSettings = {

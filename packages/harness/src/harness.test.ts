@@ -8,6 +8,7 @@ import {
   PLAN_IDS,
   PRO_PLAN,
   paygPriceCents,
+  RENDER_COST_USD,
   RENDER_CREDITS,
   rendersFor,
   SHEET_COST_USD,
@@ -22,14 +23,14 @@ describe('pricing', () => {
   it('keeps a 70% margin over cost', () => {
     expect(creditsFor(0.3)).toBe(100);
     expect(creditsFor(0.24)).toBe(80);
-    expect(RENDER_CREDITS).toBe(80);
+    expect(RENDER_CREDITS).toBe(42);
     // revenue per render covers cost / (1 - margin)
-    expect(RENDER_CREDITS * 0.01 * 0.3).toBeGreaterThanOrEqual(0.24 - 1e-9);
+    expect(RENDER_CREDITS * 0.01 * 0.3).toBeGreaterThanOrEqual(RENDER_COST_USD - 1e-9);
   });
 
   it('prices the angle sheet alone below the full render', () => {
     expect(SHEET_COST_USD).toBe(SHEET_MODEL.costUsd);
-    expect(SHEET_CREDITS).toBe(50);
+    expect(SHEET_CREDITS).toBe(12);
     expect(SHEET_CREDITS).toBeLessThan(RENDER_CREDITS);
   });
 
@@ -44,8 +45,8 @@ describe('pricing', () => {
   });
 
   it('counts whole renders per credit amount', () => {
-    expect(rendersFor(1000)).toBe(12);
-    expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(62);
+    expect(rendersFor(1000)).toBe(23);
+    expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(119);
   });
 
   it('prices the monthly plans so a bigger plan never has a dearer credit', () => {
@@ -54,8 +55,8 @@ describe('pricing', () => {
       (id) => SUBSCRIPTION_PLANS[id].priceCents / SUBSCRIPTION_PLANS[id].monthlyCredits,
     );
     expect(perCredit).toEqual([...perCredit].sort((a, b) => b - a));
-    expect(rendersFor(SUBSCRIPTION_PLANS.creator.monthlyCredits)).toBe(20);
-    expect(rendersFor(SUBSCRIPTION_PLANS.scale.monthlyCredits)).toBe(200);
+    expect(rendersFor(SUBSCRIPTION_PLANS.creator.monthlyCredits)).toBe(38);
+    expect(rendersFor(SUBSCRIPTION_PLANS.scale.monthlyCredits)).toBe(380);
   });
 
   it('only accepts known plan ids', () => {

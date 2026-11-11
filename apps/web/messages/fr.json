@@ -972,9 +972,9 @@
     "settingsTitle": "Settings",
     "sheet": {
       "title": "Angle sheet",
-      "role": "Draws the object from eight sides plus a top view on one 2K sheet, from your photo and a short prompt. You see it before any 3D is built.",
+      "role": "Draws the object from eight sides plus a top view on one 1K sheet, from your photo and a short prompt. You see it before any 3D is built.",
       "settings": {
-        "output": "Output: one 2K image (PNG)",
+        "output": "Output: one 1K image (PNG)",
         "prompt": "Prompt: a fixed turnaround brief, plus guidance for the product category and its material"
       }
     },
