@@ -11,7 +11,7 @@ cta: If all you have is a catalogue photo of the piece, see it from every angle 
 
 Photogrammetry software builds a 3D model from many overlapping photos of an object you have in front of you. RealityScan, Agisoft Metashape, Meshroom, Polycam and 3DF Zephyr are the common choices. If you only have one photo, such as a supplier's catalogue shot, photogrammetry cannot start, and an image-to-3D tool is the route instead.
 
-<!-- ILLUSTRATION PENDING: public/compare/illustrations/photogrammetry-software/hero.webp, 16:9 1280x720 WebP, Style A2 (dark technical 3D render, one object split: half real material, half matte grey clay with fine white wireframe; white rim light; charcoal-to-black radial gradient; dark glossy floor, contact shadow; one accent colour from the material; no text/UI/numbers/logos/rulers/people). Object: a vintage film camera with a black leather-wrapped body and a chrome lens barrel. Concept: one object reconstructed two ways, the real half standing for what many photos record and the clay-and-wireframe half for the mesh the software builds from them. -->
+![Illustration of a cracked marble bust, one half in its real stone and the other half in matte grey clay covered by a white wireframe mesh, with thin white camera frustums around it on a dark background](/compare/illustrations/photogrammetry-software/hero.webp "Illustration, not an easyrender result: a marble bust drawn half as carved stone, half as a clay-and-wireframe mesh, with camera frustums around it.")
 
 ## Do you need photogrammetry software at all?
 

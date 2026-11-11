@@ -11,7 +11,7 @@ cta: Before you write the brief, put one sharp photo of the piece through the fr
 
 Hire a 3D modeler when the model must match CAD drawings, move, or run in a game engine. A freelancer or studio builds it by hand from your references, for a quoted price and agreed revisions. If the product exists and you have a good photo, AI from a photo gives you a model to check before you pay.
 
-<!-- ILLUSTRATION PENDING: public/compare/illustrations/3d-modeler-vs-ai/hero.webp, 16:9 1280x720 WebP, Style A2 (dark technical 3D render, one object split: half real material, half matte grey clay with fine white wireframe; white rim light; charcoal-to-black radial gradient; dark glossy floor, contact shadow; one accent colour from the material; no text/UI/numbers/logos/rulers/people). Object: a vintage oscillating desk fan with a brass cage and blades and a dark green enamel base; the left half in real brass and enamel, the right half in clay and wireframe, the cage wires carried over as clean wireframe lines. Concept: the same product reached two ways, built by hand line by line or drawn from one photo; the clay half is the model either route has to deliver. -->
+![Illustration of a cobalt glazed vase, one half in its real glossy blue glaze and the other half in matte grey clay covered by a white wireframe mesh, on a dark background](/compare/illustrations/3d-modeler-vs-ai/hero.webp "Illustration, not an easyrender result: a vase drawn half as cobalt glaze, half as a clay-and-wireframe mesh.")
 
 ## How does hiring a 3D modeler work?
 
