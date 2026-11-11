@@ -24,6 +24,109 @@ export const methodDecisionTree = defineDiagram(
         photogrammetry: { title: 'Photogrammetry', note: '20 to 100+ photos' },
       },
     },
+    de: {
+      questions: [
+        'Existiert das Objekt schon?',
+        'Steht es vor dir?',
+        'Groß und einfach oder detailreich?',
+      ],
+      no: 'Nein',
+      yes: 'Ja',
+      onlyPhoto: 'Nein, nur ein Foto',
+      large: 'Groß, einfach',
+      detailed: 'Detailreiche Oberfläche',
+      methods: {
+        software: { title: 'Selbst modellieren', note: 'Oder einen 3D-Profi beauftragen' },
+        ai: {
+          title: 'KI aus einem Foto',
+          note: 'Prüfe die im Foto fehlende Rückseite. Exakt: Profi',
+        },
+        lidar: { title: 'LiDAR am Handy', note: 'Sofa, Schrank' },
+        photogrammetry: { title: 'Fotogrammetrie', note: '20 bis 100+ Fotos' },
+      },
+    },
+    fr: {
+      questions: [
+        'L’objet existe-t-il déjà ?',
+        'Est-il devant toi ?',
+        'Grand et simple, ou détaillé ?',
+      ],
+      no: 'Non',
+      yes: 'Oui',
+      onlyPhoto: 'Non, juste une photo',
+      large: 'Grand, simple',
+      detailed: 'Surface détaillée',
+      methods: {
+        software: {
+          title: 'Modélise-le dans un logiciel',
+          note: 'Ou fais appel à un artiste 3D',
+        },
+        ai: {
+          title: 'IA à partir d’une photo',
+          note: 'Dos absent de la photo : vérifie-le. Modèle exact : artiste 3D.',
+        },
+        lidar: {
+          title: 'LiDAR sur téléphone',
+          note: 'Un canapé, une armoire',
+        },
+        photogrammetry: {
+          title: 'Photogrammétrie',
+          note: '20 à 100+ photos',
+        },
+      },
+    },
+    it: {
+      questions: ['L’oggetto esiste già?', 'È davanti a te?', 'Grande e semplice, o dettagliato?'],
+      no: 'No',
+      yes: 'Sì',
+      onlyPhoto: 'No, solo una foto',
+      large: 'Grande, semplice',
+      detailed: 'Superficie dettagliata',
+      methods: {
+        software: {
+          title: 'Modellalo con un programma',
+          note: 'Oppure incarica un artista 3D',
+        },
+        ai: {
+          title: 'IA da una foto',
+          note: 'Retro fuori foto: controllalo. Esatto: professionista.',
+        },
+        lidar: {
+          title: 'LiDAR sul telefono',
+          note: 'Un divano, un armadio',
+        },
+        photogrammetry: {
+          title: 'Fotogrammetria',
+          note: 'Da 20 a oltre 100 foto',
+        },
+      },
+    },
+    pt: {
+      questions: ['O objeto já existe?', 'Está à tua frente?', 'Grande e simples, ou detalhado?'],
+      no: 'Não',
+      yes: 'Sim',
+      onlyPhoto: 'Não, só uma foto',
+      large: 'Grande, simples',
+      detailed: 'Superfície detalhada',
+      methods: {
+        software: {
+          title: 'Modela-o num programa',
+          note: 'Ou contrata um artista 3D',
+        },
+        ai: {
+          title: 'IA a partir de uma foto',
+          note: 'Costas fora da foto: verifica. Exato: profissional.',
+        },
+        lidar: {
+          title: 'LiDAR no telemóvel',
+          note: 'Um sofá, um armário',
+        },
+        photogrammetry: {
+          title: 'Fotogrametria',
+          note: '20 a mais de 100 fotos',
+        },
+      },
+    },
   },
   function MethodDecisionTree({ t }) {
     // A ladder: each question has one answer that ends at a method (left) and one that leads on
@@ -74,6 +177,22 @@ export const photogrammetryRings = defineDiagram(
     en: {
       rings: ['High', 'Middle', 'Low'],
       overlap: ['Next photo: about 70%', 'of the view is shared'],
+    },
+    de: {
+      rings: ['Oben', 'Mitte', 'Unten'],
+      overlap: ['Nächstes Foto: etwa 70%', 'Überlappung der Ansicht'],
+    },
+    fr: {
+      rings: ['Haut', 'Milieu', 'Bas'],
+      overlap: ['Photo suivante : environ 70 %', 'de la vue en commun'],
+    },
+    it: {
+      rings: ['Alto', 'Centro', 'Basso'],
+      overlap: ['Foto successiva: circa il 70%', 'della vista in comune'],
+    },
+    pt: {
+      rings: ['Alto', 'Meio', 'Baixo'],
+      overlap: ['Foto seguinte: cerca de 70%', 'da vista em comum'],
     },
   },
   function PhotogrammetryRings({ t }) {
@@ -148,6 +267,34 @@ export const blockoutSideTable = defineDiagram(
         ['Block out', 'boxes, cylinders'],
         ['Bevel', 'the edges'],
         ['Materials,', 'export GLB'],
+      ],
+    },
+    de: {
+      stages: [
+        ['Grundformen', 'Quader, Zylinder'],
+        ['Kanten', 'abschrägen'],
+        ['Materialien,', 'GLB exportieren'],
+      ],
+    },
+    fr: {
+      stages: [
+        ['Formes de base', 'cubes, cylindres'],
+        ['Biseaute', 'les arêtes'],
+        ['Matériaux,', 'export GLB'],
+      ],
+    },
+    it: {
+      stages: [
+        ['Forme di base', 'cubi, cilindri'],
+        ['Smussa', 'gli spigoli'],
+        ['Materiali,', 'esporta GLB'],
+      ],
+    },
+    pt: {
+      stages: [
+        ['Formas de base', 'caixas, cilindros'],
+        ['Chanfra', 'as arestas'],
+        ['Materiais,', 'exporta GLB'],
       ],
     },
   },

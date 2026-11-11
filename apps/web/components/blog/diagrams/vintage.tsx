@@ -104,6 +104,133 @@ export const vintageShotList = defineDiagram(
       ],
       note: 'Shot 8 is the one that heads off a dispute after delivery.',
     },
+    de: {
+      shots: [
+        { picto: 'front', title: 'Vorne' },
+        { picto: 'threeQuarter', title: 'Dreiviertel' },
+        { picto: 'side', title: 'Seite' },
+        { picto: 'back', title: 'Hinten' },
+        { picto: 'drawer', title: 'Jede Schublade innen' },
+        { picto: 'label', title: 'Etikett oder Stempel' },
+        { picto: 'joint', title: 'Verbindungen, Reparaturen' },
+        { picto: 'flaw', title: 'Jeder Mangel aus der Nähe', isKey: true },
+      ],
+      note: 'Foto 8 verhindert Streit nach der Lieferung.',
+    },
+    fr: {
+      shots: [
+        {
+          picto: 'front',
+          title: 'Face',
+        },
+        {
+          picto: 'threeQuarter',
+          title: 'Trois quarts',
+        },
+        {
+          picto: 'side',
+          title: 'Côté',
+        },
+        {
+          picto: 'back',
+          title: 'Dos',
+        },
+        {
+          picto: 'drawer',
+          title: 'Intérieur de chaque tiroir',
+        },
+        {
+          picto: 'label',
+          title: 'Étiquette ou estampille',
+        },
+        {
+          picto: 'joint',
+          title: 'Assemblages et réparations',
+        },
+        {
+          picto: 'flaw',
+          title: 'Chaque défaut en gros plan',
+          isKey: true,
+        },
+      ],
+      note: 'La photo 8 évite une contestation après la livraison.',
+    },
+    it: {
+      shots: [
+        {
+          picto: 'front',
+          title: 'Fronte',
+        },
+        {
+          picto: 'threeQuarter',
+          title: 'Tre quarti',
+        },
+        {
+          picto: 'side',
+          title: 'Lato',
+        },
+        {
+          picto: 'back',
+          title: 'Retro',
+        },
+        {
+          picto: 'drawer',
+          title: 'Interno di ogni cassetto',
+        },
+        {
+          picto: 'label',
+          title: 'Etichetta o marchio',
+        },
+        {
+          picto: 'joint',
+          title: 'Giunti e riparazioni',
+        },
+        {
+          picto: 'flaw',
+          title: 'Ogni difetto da vicino',
+          isKey: true,
+        },
+      ],
+      note: 'La foto 8 evita contestazioni dopo la consegna.',
+    },
+    pt: {
+      shots: [
+        {
+          picto: 'front',
+          title: 'Frente',
+        },
+        {
+          picto: 'threeQuarter',
+          title: 'Três quartos',
+        },
+        {
+          picto: 'side',
+          title: 'Lado',
+        },
+        {
+          picto: 'back',
+          title: 'Costas',
+        },
+        {
+          picto: 'drawer',
+          title: 'Interior de cada gaveta',
+        },
+        {
+          picto: 'label',
+          title: 'Etiqueta ou marca',
+        },
+        {
+          picto: 'joint',
+          title: 'Encaixes e reparações',
+        },
+        {
+          picto: 'flaw',
+          title: 'Cada defeito em pormenor',
+          isKey: true,
+        },
+      ],
+      note: 'A foto 8 evita reclamações após a entrega.',
+    },
   },
   function VintageShotList({ t }) {
     return (
@@ -148,6 +275,73 @@ export const listingTitle = defineDiagram(
       weakNote: 'No maker, material, style or era: nothing a buyer searches for.',
       goodLabel: 'Found',
       weakLabel: 'Missed',
+    },
+    de: {
+      good: [
+        { word: 'Ercol', part: 'Hersteller' },
+        { word: 'Ulme', part: 'Material' },
+        { word: 'Windsor', part: 'Stil' },
+        { word: 'Esszimmerstuhl,', part: 'Gegenstand' },
+        { word: '1960er', part: 'Epoche' },
+      ],
+      weak: 'Schöner alter Stuhl',
+      weakNote: 'Ohne Hersteller, Material, Stil oder Epoche fehlen Suchbegriffe.',
+      goodLabel: 'Gefunden',
+      weakLabel: 'Übersehen',
+    },
+    fr: {
+      good: [
+        {
+          word: 'Ercol',
+          part: 'Fabricant',
+        },
+        {
+          word: 'orme',
+          part: 'Matériau',
+        },
+        {
+          word: 'Windsor',
+          part: 'Style',
+        },
+        {
+          word: 'chaise de salle à manger,',
+          part: 'Objet',
+        },
+        {
+          word: 'années 1960',
+          part: 'Époque',
+        },
+      ],
+      weak: 'Jolie chaise ancienne',
+      weakNote: 'Sans fabricant, matériau, style ni époque : aucun terme recherché.',
+      goodLabel: 'Trouvée',
+      weakLabel: 'Introuvable',
+    },
+    it: {
+      good: [
+        { word: 'Sedia da pranzo', part: 'Oggetto' },
+        { word: 'Ercol', part: 'Produttore' },
+        { word: 'Windsor', part: 'Stile' },
+        { word: 'in olmo,', part: 'Materiale' },
+        { word: 'anni 1960', part: 'Epoca' },
+      ],
+      weak: 'Bella sedia vecchia',
+      weakNote: 'Niente produttore, materiale, stile o epoca: nessun termine cercato.',
+      goodLabel: 'Trovata',
+      weakLabel: 'Non trovata',
+    },
+    pt: {
+      good: [
+        { word: 'Cadeira de jantar', part: 'Objeto' },
+        { word: 'Ercol', part: 'Fabricante' },
+        { word: 'Windsor', part: 'Estilo' },
+        { word: 'em olmo,', part: 'Material' },
+        { word: 'anos 1960', part: 'Época' },
+      ],
+      weak: 'Cadeira antiga bonita',
+      weakNote: 'Sem fabricante, material, estilo ou época: faltam termos de pesquisa.',
+      goodLabel: 'Encontrada',
+      weakLabel: 'Não encontrada',
     },
   },
   function ListingTitle({ t }) {
