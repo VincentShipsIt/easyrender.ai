@@ -21,13 +21,13 @@ If the object does not exist yet, model it in software or hire an artist. If it 
 
 Accuracy roughly follows effort. An artist working from measurements gives the most exact model. A model generated from one photo is the quickest to get, and the sides the photo did not show come from that picture.
 
-| Method               | What you need                                     | Your own time                                          | Best for                                     | Watch for                                      |
-| -------------------- | ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------- |
-| Model it in software | Weeks of practice, reference photos, measurements | A day or more per piece, once you can use the software | Objects that do not exist yet                | Proportions, textures and UV mapping           |
-| Photogrammetry       | The object in hand, 20 to 100 or more photos      | An hour or two of shooting, plus processing            | Real surface detail                          | Plain white surfaces, glass, polished metal    |
-| LiDAR on a phone     | An iPhone Pro or iPad Pro, the object in hand     | A few minutes of walking round it                      | Large, simple shapes like a sofa             | Less detail: turned legs, woven seats          |
+| Method               | What you need                                     | Your own time                                          | Best for                                     | Watch for                                                        |
+| -------------------- | ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------- |
+| Model it in software | Weeks of practice, reference photos, measurements | A day or more per piece, once you can use the software | Objects that do not exist yet                | Proportions, textures and UV mapping                             |
+| Photogrammetry       | The object in hand, 20 to 100 or more photos      | An hour or two of shooting, plus processing            | Real surface detail                          | Plain white surfaces, glass, polished metal                      |
+| LiDAR on a phone     | An iPhone Pro or iPad Pro, the object in hand     | A few minutes of walking round it                      | Large, simple shapes like a sofa             | Less detail: turned legs, woven seats                            |
 | AI from a photo      | One sharp photo                                   | Checking the preview and the model                     | A supplier photo of a piece you cannot touch | The photo only shows one side, and the file has no measured size |
-| Hire a 3D artist     | Photos, measurements and a budget                 | Writing the brief and reviewing drafts                 | Exact models, or one model in several sizes  | Time to brief and commission                   |
+| Hire a 3D artist     | Photos, measurements and a budget                 | Writing the brief and reviewing drafts                 | Exact models, or one model in several sizes  | Time to brief and commission                                     |
 
 One thing none of this covers is 3D printing. This guide is about models for screens, product pages and AR. A part you want to print needs a CAD model built from real measurements, which is a different job.
 

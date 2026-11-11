@@ -82,7 +82,11 @@ export const imageTo3dPipeline = defineDiagram(
       steps: [
         { tag: '1', title: 'One photo', note: 'The whole object, three-quarter angle' },
         { tag: '2', title: 'Angle sheet', note: 'The object drawn from several sides' },
-        { tag: '3', title: 'You check it', note: 'Back, sides and top, which the photo did not show' },
+        {
+          tag: '3',
+          title: 'You check it',
+          note: 'Back, sides and top, which the photo did not show',
+        },
         { tag: '4', title: 'Build the model', note: 'Textured mesh from those views' },
         { tag: '5', title: 'GLB and USDZ', note: 'Web and Android, iPhone and iPad' },
       ],
