@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "easyrender: da immagine a 3D con una sola foto",
+    "title": "easyrender: da un'immagine a un modello 3D",
     "description": "easyrender trasforma un'immagine in un modello 3D: dalla foto di un mobile o di una facciata ottieni un file GLB e USDZ. Anteprima gratis da ogni lato."
   },
   "LocaleSwitcher": {
@@ -19,7 +19,10 @@
     "dashboard": "Dashboard",
     "signIn": "Accedi",
     "connect": "Collega",
-    "connectSuffix": "il tuo agente"
+    "connectSuffix": "il tuo agente",
+    "sections": "Sezioni",
+    "menuOpen": "Apri il menu",
+    "menuClose": "Chiudi il menu"
   },
   "Footer": {
     "tagline": "Una foto diventa un modello 3D da vedere da ogni angolazione e da scaricare in GLB e USDZ.",
@@ -70,7 +73,7 @@
       "description": "Carica la foto di un mobile, di un complemento d'arredo o di un prodotto. L'anteprima è gratis: per vederla ti basta un account."
     },
     "meta": {
-      "title": "Da immagine a 3D con una sola foto · easyrender",
+      "title": "Da un'immagine a un modello 3D, prova gratis · easyrender",
       "description": "Trasforma un'immagine in 3D: carica la foto di un mobile o di una facciata. Anteprima gratis da ogni lato, usi i crediti solo se ti convince. GLB e USDZ."
     },
     "intro": {

@@ -19,7 +19,10 @@
     "dashboard": "Tableau de bord",
     "signIn": "Se connecter",
     "connect": "Connecter",
-    "connectSuffix": "ton agent"
+    "connectSuffix": "ton agent",
+    "sections": "Rubriques",
+    "menuOpen": "Ouvrir le menu",
+    "menuClose": "Fermer le menu"
   },
   "Footer": {
     "tagline": "Une photo devient un modèle 3D à regarder sous tous les angles et à télécharger en GLB et USDZ.",

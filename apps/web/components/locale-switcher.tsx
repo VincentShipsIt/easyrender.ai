@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
  * rendered and crawlable: every option is a plain <a href> in the HTML, with no redirect by
  * Accept-Language. A click also stores the choice for the marketing root (components/locale-link).
  */
-export async function LocaleSwitcher() {
+export async function LocaleSwitcher({ className }: { className?: string } = {}) {
   const [locale, t, headerList] = await Promise.all([
     getLocale(),
     getTranslations('LocaleSwitcher'),
@@ -21,7 +21,7 @@ export async function LocaleSwitcher() {
   if (options.length < 2) return null;
 
   return (
-    <nav aria-label={t('label')} className="flex items-center gap-1 text-sm">
+    <nav aria-label={t('label')} className={cn('flex items-center gap-1 text-sm', className)}>
       <Languages className="size-4 shrink-0 text-muted-foreground" aria-hidden />
       {options.map(({ locale: option, path }) => (
         <LocaleLink
@@ -32,7 +32,7 @@ export async function LocaleSwitcher() {
           title={LOCALE_NAMES[option]}
           aria-current={option === locale ? 'true' : undefined}
           className={cn(
-            'rounded px-1.5 py-1 font-medium transition-colors hover:text-foreground',
+            'rounded px-2 py-1.5 font-medium transition-colors hover:text-foreground md:px-1 md:py-1',
             option === locale ? 'text-foreground' : 'text-muted-foreground',
           )}
         >

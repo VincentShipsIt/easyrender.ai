@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "easyrender: Bild zu 3D-Modell aus einem einzigen Foto",
+    "title": "easyrender: vom Bild zum 3D-Modell",
     "description": "easyrender macht aus dem Foto eines Möbelstücks oder Deko-Objekts ein 3D-Modell. Du prüfst alle Ansichten kostenlos und lädst es als GLB und USDZ herunter."
   },
   "LocaleSwitcher": {
@@ -18,8 +18,11 @@
     "credits": "Credits",
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
-    "connect": "Verbinden",
-    "connectSuffix": ""
+    "connect": "Agent verbinden",
+    "connectSuffix": "",
+    "sections": "Bereiche",
+    "menuOpen": "Menü öffnen",
+    "menuClose": "Menü schließen"
   },
   "Footer": {
     "tagline": "Aus einem Foto wird ein 3D-Modell. Du drehst es in alle Richtungen und lädst es als GLB und USDZ herunter.",
@@ -70,7 +73,7 @@
       "description": "Lade ein Foto von einem Möbelstück, einem Deko-Objekt oder einem Produkt hoch. Die Vorschau kostet nichts. Um sie zu sehen, brauchst du ein kostenloses Konto."
     },
     "meta": {
-      "title": "Bild zu 3D-Modell aus einem Foto · easyrender",
+      "title": "Vom Bild zum 3D-Modell, Vorschau kostenlos · easyrender",
       "description": "Mach aus einem Möbel- oder Dekofoto ein 3D-Modell: Prüf alle Ansichten kostenlos und zahl erst, wenn die Form stimmt. Download als GLB und USDZ."
     },
     "intro": {

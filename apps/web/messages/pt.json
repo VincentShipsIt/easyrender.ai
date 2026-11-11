@@ -11,7 +11,7 @@
     "nav": {
       "howItWorks": "Como funciona",
       "hub": "Hub",
-      "connect": "Ligar",
+      "connect": "Ligar agente",
       "try": "Experimentar",
       "pricing": "Preços"
     },
@@ -19,7 +19,10 @@
     "dashboard": "Painel",
     "signIn": "Iniciar sessão",
     "connect": "Ligar",
-    "connectSuffix": "o teu agente"
+    "connectSuffix": "o teu agente",
+    "sections": "Secções",
+    "menuOpen": "Abrir menu",
+    "menuClose": "Fechar menu"
   },
   "Footer": {
     "tagline": "De uma fotografia a um modelo 3D que podes ver de todos os ângulos e descarregar em GLB e USDZ.",
