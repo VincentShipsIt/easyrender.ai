@@ -980,7 +980,7 @@
     },
     "build": {
       "title": "Construcción 3D",
-      "role": "Reconstruye un modelo 3D con textura a partir de tu foto y las ocho vistas de la hoja. El resultado se descarga en GLB y USDZ.",
+      "role": "Reconstruye un modelo 3D con textura a partir de tu foto y las nueve vistas de la hoja. El resultado se descarga en GLB y USDZ.",
       "settings": {
         "texture": "Tamaño de textura: {texture} px",
         "simplify": "Simplificación de malla: {simplify}",

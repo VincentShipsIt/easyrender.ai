@@ -980,7 +980,7 @@
     },
     "build": {
       "title": "3D build",
-      "role": "Rebuilds a textured 3D model from your photo and the eight sheet views. The result downloads as GLB and USDZ.",
+      "role": "Rebuilds a textured 3D model from your photo and the nine sheet views. The result downloads as GLB and USDZ.",
       "settings": {
         "texture": "Texture size: {texture} px",
         "simplify": "Mesh simplification: {simplify}",
