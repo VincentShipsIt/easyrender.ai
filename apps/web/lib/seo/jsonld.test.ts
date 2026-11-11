@@ -107,7 +107,7 @@ describe('guide structured data', () => {
     ]);
   });
 
-  it('gives an Article its headline, dates, image and publisher', () => {
+  it('gives a BlogPosting its headline, dates, image and publisher', () => {
     const node = article({
       locale: 'en',
       title: 'GLB or USDZ?',
@@ -116,12 +116,53 @@ describe('guide structured data', () => {
       path: '/learn/glb-vs-usdz',
     });
     expect(node).toMatchObject({
-      '@type': 'Article',
+      '@type': 'BlogPosting',
+      '@id': `${SITE_URL}/learn/glb-vs-usdz#article`,
       headline: 'GLB or USDZ?',
       datePublished: '2026-11-23T00:00:00.000Z',
       dateModified: '2026-11-23T00:00:00.000Z',
-      image: expect.stringMatching(/^https:\/\/easyrender\.ai\//),
+      image: { '@type': 'ImageObject', url: `${SITE_URL}/og.jpg`, width: 1200, height: 630 },
       publisher: { '@id': `${SITE_URL}/#organization` },
     });
+  });
+
+  it('signs a guide with no agreed author as the easyrender team, an Organization', () => {
+    const node = article({
+      locale: 'en',
+      title: 'GLB or USDZ?',
+      description: 'Which one to use.',
+      date: '2026-11-23T00:00:00.000Z',
+      path: '/learn/glb-vs-usdz',
+    });
+    expect(node.author).toEqual({
+      '@type': 'Organization',
+      name: 'easyrender team',
+      url: SITE_URL,
+      parentOrganization: { '@id': `${SITE_URL}/#organization` },
+    });
+  });
+
+  it('signs a guide as a Person only when the post names one', () => {
+    const node = article({
+      locale: 'en',
+      title: 'GLB or USDZ?',
+      description: 'Which one to use.',
+      date: '2026-11-23T00:00:00.000Z',
+      path: '/learn/glb-vs-usdz',
+      author: { name: 'A Writer', type: 'Person', url: '/about' },
+    });
+    expect(node.author).toEqual({ '@type': 'Person', name: 'A Writer', url: `${SITE_URL}/about` });
+  });
+
+  it('never dates a change before the publication, for a post edited ahead of its day', () => {
+    const node = article({
+      locale: 'en',
+      title: 'GLB or USDZ?',
+      description: 'Which one to use.',
+      date: '2026-11-23T00:00:00.000Z',
+      updated: '2026-11-10T00:00:00.000Z',
+      path: '/learn/glb-vs-usdz',
+    });
+    expect(node.dateModified).toBe('2026-11-23T00:00:00.000Z');
   });
 });

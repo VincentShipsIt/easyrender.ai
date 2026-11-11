@@ -3,6 +3,7 @@ import {
   indexableBlogIndexPaths,
   isBlogIndexIndexable,
   listPosts,
+  modifiedDate,
   postLivePaths,
 } from '@/lib/blog/posts';
 import {
@@ -45,14 +46,14 @@ export function localeEntries(locale: Locale, now: Date = new Date()): SitemapEn
       // The hub's alternates are the other indexable hubs only: never a noindex page.
       alternates: key === 'blog' ? indexableBlogIndexPaths(now) : livePaths(key),
       // The guides index changes when its newest guide does.
-      ...(posts[0] ? { lastModified: posts[0].updated ?? posts[0].date } : {}),
+      ...(posts[0] ? { lastModified: modifiedDate(posts[0]) } : {}),
     });
   }
 
   for (const post of listPosts(locale, now)) {
     entries.push({
       path: post.path,
-      lastModified: post.updated ?? post.date,
+      lastModified: modifiedDate(post),
       changeFrequency: 'monthly',
       priority: 0.6,
       alternates: postLivePaths(post.group, now),

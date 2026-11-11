@@ -54,6 +54,11 @@ type Props = {
   ar?: boolean;
   lazy?: boolean;
   rotationSpeed?: string;
+  /** Starting camera, in model-viewer's `camera-orbit` syntax. */
+  cameraOrbit?: string;
+  autoRotate?: boolean;
+  /** Called once the model has loaded and is drawn. */
+  onLoad?: () => void;
 };
 
 // Google's <model-viewer>, loaded on the client only, and only once its box comes near the
@@ -69,9 +74,16 @@ export function ModelViewer({
   ar = false,
   lazy = true,
   rotationSpeed = '24deg',
+  cameraOrbit,
+  autoRotate = true,
+  onLoad,
 }: Props) {
   const box = useRef<HTMLDivElement>(null);
+  const viewer = useRef<HTMLElement>(null);
   const [ready, setReady] = useState(false);
+  // Read through a ref so a new callback on every render does not re-attach the listener.
+  const onLoadRef = useRef(onLoad);
+  onLoadRef.current = onLoad;
   useEffect(() => {
     const element = box.current;
     if (!element) return;
@@ -90,16 +102,25 @@ export function ModelViewer({
       observer.disconnect();
     };
   }, []);
+  useEffect(() => {
+    const element = viewer.current;
+    if (!ready || !element) return;
+    const handle = () => onLoadRef.current?.();
+    element.addEventListener('load', handle);
+    return () => element.removeEventListener('load', handle);
+  }, [ready]);
 
   return (
     <div ref={box} className={cn('relative size-full', className)} style={style}>
       {ready && (
         <model-viewer
+          ref={viewer}
           src={src}
           alt={alt}
           loading={lazy ? 'lazy' : 'eager'}
-          auto-rotate
+          auto-rotate={autoRotate || undefined}
           auto-rotate-delay="0"
+          camera-orbit={cameraOrbit}
           rotation-per-second={rotationSpeed}
           interaction-prompt="none"
           camera-controls={interactive || undefined}

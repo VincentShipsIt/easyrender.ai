@@ -118,6 +118,15 @@ describe('llms-full.txt', () => {
   });
 });
 
+describe('llms-full.txt once every week 1 guide is out', () => {
+  const text = llmsFullTxt(new Date('2026-12-01T00:00:00Z'));
+
+  it('turns drawn diagrams into their alt text and caption, never a diagram: path', () => {
+    expect(text).not.toContain('](diagram:');
+    expect(text).toMatch(/\[Diagram: [^\]]{10,}\] \S/);
+  });
+});
+
 describe('the home FAQ copy', () => {
   it('has every FAQ key in every language', () => {
     for (const messages of Object.values(MESSAGES)) {
