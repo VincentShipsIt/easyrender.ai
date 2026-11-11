@@ -56,6 +56,36 @@ export const ROUTES = {
     priority: 0.8,
     changeFrequency: 'monthly',
   },
+  // What runs under the product, and how it is checked. Open in English and Spanish like the
+  // pricing and guides; the other four wait for reviewed copy. /evals stays out of the sitemap
+  // until a run is published (see lib/evals.ts), so a page with nothing to measure is never
+  // offered to a crawler.
+  models: {
+    paths: {
+      en: '/models',
+      es: '/es/modelos',
+      de: '/de/modelle',
+      fr: '/fr/modeles',
+      it: '/it/modelli',
+      pt: '/pt/modelos',
+    },
+    published: ['en', 'es'],
+    priority: 0.7,
+    changeFrequency: 'monthly',
+  },
+  evals: {
+    paths: {
+      en: '/evals',
+      es: '/es/evaluaciones',
+      de: '/de/evaluierungen',
+      fr: '/fr/evaluations',
+      it: '/it/valutazioni',
+      pt: '/pt/avaliacoes',
+    },
+    published: ['en', 'es'],
+    priority: 0.6,
+    changeFrequency: 'monthly',
+  },
   // Declared so the slugs are agreed and reserved, unpublished until the copy exists. Adding a
   // locale here without a page under app/ would 404, so each one lands with its route.
   compare: {

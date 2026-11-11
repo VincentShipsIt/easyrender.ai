@@ -10,6 +10,7 @@ import {
   modifiedDate,
   postLivePaths,
 } from '@/lib/blog/posts';
+import { hasPublishedRuns } from '@/lib/evals';
 import {
   article,
   breadcrumbList,
@@ -75,6 +76,58 @@ export async function blogIndexGraph(locale: Locale) {
     breadcrumbList([
       { name: t('breadcrumb.home'), path: ROUTES.home.paths[locale] },
       { name: t('index.title'), path: ROUTES.blog.paths[locale] },
+    ]),
+  ];
+}
+
+/** The models page. Same head and structured data in every language it is open in. */
+export async function modelsMetadata(locale: Locale): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Models' });
+  return pageMetadata({
+    locale,
+    path: ROUTES.models.paths[locale],
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    alternates: livePaths('models'),
+  });
+}
+
+export async function modelsGraph(locale: Locale) {
+  const t = await getTranslations({ locale, namespace: 'Models' });
+  return [
+    organization(),
+    webPage(locale, ROUTES.models.paths[locale], t('metaTitle'), t('metaDescription')),
+    breadcrumbList([
+      { name: t('home'), path: ROUTES.home.paths[locale] },
+      { name: t('breadcrumb'), path: ROUTES.models.paths[locale] },
+    ]),
+  ];
+}
+
+/**
+ * The evals page. noindex until a run is published, like the guides hub while it is thin: a page
+ * whose results section is empty is not offered to a crawler, and the sitemap leaves it out too.
+ */
+export async function evalsMetadata(locale: Locale): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'Evals' });
+  const metadata = pageMetadata({
+    locale,
+    path: ROUTES.evals.paths[locale],
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    alternates: livePaths('evals'),
+  });
+  return hasPublishedRuns() ? metadata : { ...metadata, robots: { index: false, follow: true } };
+}
+
+export async function evalsGraph(locale: Locale) {
+  const t = await getTranslations({ locale, namespace: 'Evals' });
+  return [
+    organization(),
+    webPage(locale, ROUTES.evals.paths[locale], t('metaTitle'), t('metaDescription')),
+    breadcrumbList([
+      { name: t('home'), path: ROUTES.home.paths[locale] },
+      { name: t('breadcrumb'), path: ROUTES.evals.paths[locale] },
     ]),
   ];
 }

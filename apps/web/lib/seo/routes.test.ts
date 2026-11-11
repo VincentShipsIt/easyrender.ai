@@ -39,6 +39,17 @@ describe('the route registry', () => {
     }
   });
 
+  it('opens the models and evals pages in English and Spanish only', () => {
+    for (const key of ['models', 'evals'] as const) {
+      expect(livePaths(key), key).toEqual({
+        en: ROUTES[key].paths.en,
+        es: ROUTES[key].paths.es,
+      });
+    }
+    expect(livePaths('models')).toEqual({ en: '/models', es: '/es/modelos' });
+    expect(livePaths('evals')).toEqual({ en: '/evals', es: '/es/evaluaciones' });
+  });
+
   it('opens the six homes and nothing else in de, fr, it and pt', () => {
     expect(livePaths('home')).toEqual({
       en: '/',

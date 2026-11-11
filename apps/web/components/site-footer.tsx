@@ -25,6 +25,8 @@ const COLUMNS = [
     links: [
       { hash: '#connect', key: 'mcp' },
       { href: '/connectors', key: 'apiKeys' },
+      { route: 'models', key: 'models' },
+      { route: 'evals', key: 'evals' },
     ],
   },
   {

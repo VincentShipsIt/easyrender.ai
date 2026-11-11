@@ -38,7 +38,9 @@
       "dashboard": "Panel",
       "signUp": "Crear cuenta",
       "signIn": "Iniciar sesión",
-      "guides": "Guías"
+      "guides": "Guías",
+      "models": "Modelos",
+      "evals": "Evaluaciones"
     },
     "copyright": "© 2026 easyrender. Con la tecnología de Genfeed.",
     "pricesNote": "Precios en USD. Los créditos no caducan."
@@ -925,5 +927,104 @@
         "button": "Subir una foto"
       }
     }
+  },
+  "Models": {
+    "metaTitle": "Modelos: con qué trabaja easyrender · easyrender",
+    "metaDescription": "Los dos modelos detrás de cada render de easyrender, con qué ajustes funcionan y cuánto cuesta cada paso en créditos. Si un paso falla, se reembolsa.",
+    "breadcrumb": "Modelos",
+    "home": "Inicio",
+    "eyebrow": "Modelos",
+    "title": "Los modelos detrás de cada render",
+    "description": "Dos modelos, uno detrás de otro: el primero dibuja tu foto desde todos los lados y el segundo construye el archivo 3D a partir de esos dibujos. Aquí ves cuáles son, con qué ajustes y cuánto cuesta cada paso.",
+    "provider": "Los dos modelos funcionan en Replicate.",
+    "stepLabel": "Paso {number}",
+    "settingsTitle": "Ajustes",
+    "sheet": {
+      "title": "Hoja de ángulos",
+      "role": "Dibuja el objeto desde ocho lados más una vista cenital en una sola hoja 2K, a partir de tu foto y una instrucción corta. La ves antes de construir nada en 3D.",
+      "settings": {
+        "output": "Salida: una imagen 2K (PNG)",
+        "prompt": "Instrucción: una guía fija de vista giratoria, más pautas según la categoría del producto y su material"
+      }
+    },
+    "build": {
+      "title": "Construcción 3D",
+      "role": "Reconstruye un modelo 3D con textura a partir de tu foto y las ocho vistas de la hoja. El resultado se descarga en GLB y USDZ.",
+      "settings": {
+        "texture": "Tamaño de textura: {texture} px",
+        "simplify": "Simplificación de malla: {simplify}",
+        "seed": "Semilla aleatoria fija"
+      }
+    },
+    "pricing": {
+      "title": "Cuánto cuesta cada paso",
+      "step": "Paso",
+      "credits": "Créditos",
+      "price": "Precio",
+      "sheet": "Hoja de ángulos",
+      "build": "Construcción 3D, con la hoja ya hecha",
+      "total": "Render 3D completo, hoja incluida",
+      "note": "La hoja es gratis como vista previa diaria. Un crédito cuesta {unit} y no caduca. Si un paso falla, se devuelven sus créditos."
+    },
+    "change": {
+      "title": "Qué puede cambiar",
+      "body": "Las instrucciones y los ajustes de los modelos se pueden afinar sin publicar una versión nueva. Los modelos y sus precios están fijados en la aplicación, así que los créditos del botón son lo que pagas."
+    },
+    "cta": "Ver cómo se revisan los renders"
+  },
+  "Evals": {
+    "metaTitle": "Evaluaciones: cómo se revisan los renders · easyrender",
+    "metaDescription": "Cómo puntúa easyrender sus propios renders: los cinco criterios, las comprobaciones de cada render y los resultados de cada ejecución publicada.",
+    "breadcrumb": "Evaluaciones",
+    "home": "Inicio",
+    "eyebrow": "Evaluaciones",
+    "title": "Cómo revisamos los renders",
+    "description": "Cada render pasa comprobaciones automáticas antes de guardarse. Aparte, una ejecución renderiza un conjunto de referencia de fotos de producto y lo puntúa con cinco criterios, de modo que un cambio de instrucción o de modelo se vea como un número.",
+    "checks": {
+      "title": "Se comprueba en cada render",
+      "description": "Estas comprobaciones ya funcionan en producción. Un render que falla alguna no se entrega y se le devuelven los créditos.",
+      "photo": "Foto: al menos {min} px en el lado corto, menos de {max} px en el largo, no más de {aspect}:1 de proporción y no un color liso. Se rechaza antes de ejecutar ningún modelo, así que no cuesta nada.",
+      "sheet": "Hoja: al menos {side} px, con el objeto visible en al menos {cells} de las 9 celdas y no más de {repeats} de las 8 vistas giratorias repetidas.",
+      "file": "Archivo 3D: un GLB (glTF binario, versión 2) completo, de más de {kb} KB."
+    },
+    "criteria": {
+      "title": "Qué puntúa una ejecución",
+      "description": "Cada foto del conjunto de referencia se renderiza con el proceso real y se puntúa en cinco criterios, de aprobado o suspenso.",
+      "shape": {
+        "title": "Forma y proporciones",
+        "description": "El modelo conserva la forma, las proporciones y las piezas del objeto fotografiado, sin añadir ni quitar nada."
+      },
+      "views": {
+        "title": "Ocho vistas distintas",
+        "description": "Las ocho vistas giratorias de la hoja son imágenes distintas y el objeto aparece en todas las celdas."
+      },
+      "material": {
+        "title": "Realismo del material",
+        "description": "El objeto parece fabricable en su material: la piedra se corta o se talla y nunca se dobla, la madera tiene la veta a lo largo de cada pieza y el tubo metálico se curva en arcos suaves."
+      },
+      "finish": {
+        "title": "Color y acabado",
+        "description": "El color, la textura y el acabado (pulido, cepillado, mate) coinciden con la foto."
+      },
+      "file": {
+        "title": "Un archivo válido",
+        "description": "El GLB se abre, está completo y supera la comprobación de archivo."
+      },
+      "methods": {
+        "checks": "Comprobación automática",
+        "review": "Revisión frente a la foto"
+      }
+    },
+    "results": {
+      "title": "Resultados",
+      "emptyTitle": "Todavía no hay ninguna ejecución publicada",
+      "emptyBody": "La primera ejecución se publicará aquí. Hasta entonces esta página no muestra ninguna puntuación, y no inventamos ninguna.",
+      "photos": "{photos} fotos",
+      "overall": "Tasa de aprobados global",
+      "models": "{sheet}, luego {build}",
+      "passed": "{passed} de {total}",
+      "report": "Informe completo"
+    },
+    "cta": "Ver los modelos detrás de un render"
   }
 }
