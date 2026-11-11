@@ -114,7 +114,7 @@ Most problems on either route trace back to something left out at the start.
 | The fabric colour is off                                   | The modeler matched a warm-lit phone photo                                    | Send colour-correct photos and close-ups of each material                                                   |
 | You cannot change the model a year later                   | No source file or rights in the contract                                      | Ask for the source file, such as the .blend, and the usage rights                                           |
 | A catalogue on hourly billing keeps creeping up            | Repetitive SKUs paid by the hour                                              | Pay a fixed price per piece after a one- or two-piece pilot                                                 |
-| The AI preview shows an odd back                           | The photo was straight-on, so the sides were barely visible                   | Use a three-quarter photo of the whole piece on a plain background                                          |
+| The photo is straight-on                                   | The sides and the back are barely in frame                                    | Use a three-quarter photo of the whole piece on a plain background                                          |
 
 ## FAQ
 

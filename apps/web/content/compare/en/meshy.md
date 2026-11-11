@@ -67,7 +67,7 @@ These failures show up in every image-to-3D tool, because they come from the pho
 
 | Symptom                                    | Cause                                                    | Fix                                                                                                                |
 | ------------------------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| The back is a copy of the front            | Hidden sides are inferred from the visible one           | Use a three-quarter photo; in Meshy add a back view as a second image, in easyrender write "open back" in the note |
+| The photo only shows the front             | The camera did not see the back or the sides             | Use a three-quarter photo; in Meshy add a back view as a second image, in easyrender write "open back" in the note |
 | Two chair legs merge into one              | From the front, the back legs hide behind the front ones | Shoot from three-quarters so all four legs stand apart                                                             |
 | Part of the rug becomes part of the table  | A busy background                                        | Crop tight, or shoot against a plain wall                                                                          |
 | A pale outline round the edges             | A cut-out with a halo from the background remover        | Check the edge at full size before you upload                                                                      |

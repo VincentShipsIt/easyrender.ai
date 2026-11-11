@@ -66,15 +66,15 @@ The goal picks the tool more than any feature list. Each one below has a check t
 
 Most failures come from the input or a setting, not from the tool. This is the list to work through.
 
-| Symptom                                | Cause                                          | Fix                                                                                             |
-| -------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Uneven colour across a multiview model | The views were shot in different light         | Reshoot all views in the same light, as Tripo's docs ask                                        |
-| A multiview request is rejected        | The front view is missing                      | Always include the front; left, back and right are optional                                     |
-| You wanted a GLB and got an FBX        | Quad meshes were turned on                     | Turn quad off, or convert the FBX afterwards                                                    |
-| The model is too heavy for a web page  | No face limit was set                          | Set a face limit or use smart low-poly for web use                                              |
-| The back is a copy of the front        | Hidden sides are inferred from the visible one | Use a three-quarter photo; add a back view in Tripo, or write "plain back" in easyrender's note |
-| Edges look soft and smeared            | A small or blurred source image                | Use the original camera file, sharp at full size                                                |
-| A text-generated sofa is not your sofa | Text invents a product                         | Use image input for anything you sell                                                           |
+| Symptom                                | Cause                                        | Fix                                                                                             |
+| -------------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Uneven colour across a multiview model | The views were shot in different light       | Reshoot all views in the same light, as Tripo's docs ask                                        |
+| A multiview request is rejected        | The front view is missing                    | Always include the front; left, back and right are optional                                     |
+| You wanted a GLB and got an FBX        | Quad meshes were turned on                   | Turn quad off, or convert the FBX afterwards                                                    |
+| The model is too heavy for a web page  | No face limit was set                        | Set a face limit or use smart low-poly for web use                                              |
+| The photo only shows the front         | The camera did not see the back or the sides | Use a three-quarter photo; add a back view in Tripo, or write "plain back" in easyrender's note |
+| Edges look soft and smeared            | A small or blurred source image              | Use the original camera file, sharp at full size                                                |
+| A text-generated sofa is not your sofa | Text invents a product                       | Use image input for anything you sell                                                           |
 
 ## Who should pick Tripo, and who should pick easyrender?
 
