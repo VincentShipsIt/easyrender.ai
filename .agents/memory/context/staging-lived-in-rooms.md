@@ -1,4 +1,5 @@
 ---
+
 name: staging-lived-in-rooms
 description: Rules for staged room scenes (table and chairs in a living room) that look lived in and not repeated
 type: reference
