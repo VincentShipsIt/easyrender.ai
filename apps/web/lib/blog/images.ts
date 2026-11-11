@@ -41,8 +41,13 @@ export const BLOG_IMAGES: Record<string, BlogImage> = {
   '/blog/illustrations/usdz-file/hero.webp': { width: 1280, height: 720 },
 };
 
-// Editorial flat illustrations, drawn with an image model on request (prompt in the post's brief,
-// docs/blog/PIPELINE.md) and never a product result: no text, no logos, no measurements. Every
+// Illustrations in the house style, Style A2: a dark, technical 3D render of one object, half in
+// its real material and half in matte grey clay with a fine white wireframe mesh, white rim light,
+// charcoal-to-black radial gradient background, dark glossy floor with a contact shadow, and a
+// single accent colour from the real material. 16:9, 1280x720 WebP. A different object in every
+// guide, never the home demo objects (the armchair). Generated with an image model on request
+// (prompt in the post's brief, docs/blog/PIPELINE.md) and never a product result: no text, no UI,
+// no logos, no numbers or measurements. Every
 // guide opens with one directly under its first paragraph, at least 1200 pixels wide, and it is
 // also the guide's BlogPosting and Open Graph image (schemaImage below). Its caption says it is
 // an illustration, so it cannot be mistaken for easyrender output. content.test.ts checks all of

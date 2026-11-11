@@ -49,10 +49,16 @@ Body in markdown. Supported: `##`/`###`/`####` headings, paragraphs, `-` and `1.
   greyscale and never carry measurements, scale bars or "will it fit" marks (claims.md).
 - **The hero illustration**: every guide opens with its own illustration, on the line right after
   the first paragraph: `![What is drawn](/blog/illustrations/{group}/hero.webp "Illustration, not an easyrender result: …")`.
-  It is a flat editorial drawing made for that guide (no text, logos or measurements), at least
-  1200 pixels wide, registered in `BLOG_IMAGES`, and it is also the guide's BlogPosting and Open
-  Graph image. Other drawn illustrations live in the same folder, and every one says in its
-  caption that it is an illustration, never an easyrender result.
+  It is made for that guide in the house style, Style A2: a dark, technical 3D render of one
+  object split in two, half in its real material and half in matte grey clay with a fine white
+  wireframe mesh, under a white rim light, on a charcoal-to-black radial gradient background and
+  a dark glossy floor with a contact shadow. The only accent colour comes from the real material.
+  16:9, 1280×720 WebP; no text, UI, logos, numbers or measurements. Each guide shows a different
+  object, never one of the home demo objects (the armchair), and no image is reused across guides.
+  It is at least 1200 pixels wide, registered in `BLOG_IMAGES`, and it is also the guide's
+  BlogPosting and Open Graph image. Other illustrations live in the same folder, and every one
+  says in its caption that it is an illustration, never an easyrender result; an illustration is
+  never presented as product output.
 - **Crops**: a second picture of an object already shown in another guide is its own file under
   `public/blog/figures/{slug}/`, cropped from the real asset and registered in `BLOG_IMAGES`, with
   a caption that says what it is cropped from. Never re-colour or reshape it.
