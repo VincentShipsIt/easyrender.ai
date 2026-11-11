@@ -34,7 +34,9 @@ This is how we would choose, case by case:
 
 Tools work in one of two ways. Some go straight from the photo to a model. Others first draw the object from several angles and then build the model from those views, which gives the build more to go on for the hidden sides.
 
-easyrender uses the second route. We chose it after an A/B run on real listings, where the two-stage pair gave a usable model on every test object. The first stage is the angle sheet: one square image, drawn at 1K and split into a 3 by 3 grid.
+easyrender uses the second route. We chose it after an A/B run on real listings, where the two-stage pair gave a usable model on every test object. That run used a larger image model for the sheet; the sheet is now drawn by a cheaper one that we have not yet tested the same way.
+
+The first stage is the angle sheet: one square image, drawn at 1K and split into a 3 by 3 grid.
 
 Eight cells circle the object in 45-degree steps, from the front round to front-left, and the ninth looks straight down. Every cell is on plain white, in soft light, with the whole object centred. The second stage reads those nine views and builds one textured mesh.
 
@@ -91,7 +93,7 @@ That last check came from testing. On small greyscale copies, two truly differen
 
 Counting is the check that needs a person. Count the doors, drawers and legs in every cell against the real piece before you build. If the preview is wrong, change the photo or add a note to it rather than trying again with the same input.
 
-easyrender takes a short note with each photo, for facts the photo hides: "four doors", "open back", "brass handles". The sheet above is real easyrender output from the photo in step 1, the preview is free, and you only spend credits if you build the model. [Upload a photo](/)
+easyrender takes a short note with each photo, for facts the photo hides: "four doors", "open back", "brass handles". The sheet above is real easyrender output from the photo in step 1, the preview is free, within a small daily allowance, and you only spend credits if you build the model. [Upload a photo](/)
 
 ## Step 4: Build the model and download the files
 
@@ -160,7 +162,7 @@ No, photogrammetry measures the object from many real photos, so every surface i
 
 ### Is it free to turn a photo into a 3D model?
 
-Trying usually is; the final file usually is not. Most tools offer a free tier or a free preview, then charge per model or by subscription. On easyrender the angle preview is free and a finished model costs {{renderCredits}} credits, which is {{renderPrice}} at {{creditPrice}} per credit, as the pricing page lists.
+Trying usually is; the final file usually is not. Most tools offer a free tier or a free preview, then charge per model or by subscription. On easyrender the angle preview is free, up to a small daily allowance, and a finished model costs {{renderCredits}} credits, which is {{renderPrice}} at {{creditPrice}} per credit, as the pricing page lists.
 
 ### Can you 3D print a model made from a photo?
 
