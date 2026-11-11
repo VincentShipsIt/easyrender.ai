@@ -1,9 +1,17 @@
 import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { CREDIT_USD, PRO_PLAN, RENDER_CREDITS } from '@easyrender/harness';
 import { describe, expect, it } from 'vitest';
 import { parseFrontMatter } from './frontmatter';
-import { isPublishedPost, parsePost, postPath, readPosts } from './posts';
+import {
+  faqFromBody,
+  isPublishedPost,
+  modifiedDate,
+  parsePost,
+  postPath,
+  readPosts,
+} from './posts';
 
 const post = (fields: Record<string, string>, body = 'A paragraph.') =>
   [
@@ -60,6 +68,75 @@ describe('parsing a post', () => {
     expect(postPath('en', 'glb-vs-usdz')).toBe('/learn/glb-vs-usdz');
     expect(postPath('es', 'glb-vs-usdz')).toBe('/es/guias/glb-vs-usdz');
     expect(postPath('de', 'glb-vs-usdz')).toBe('/de/ratgeber/glb-vs-usdz');
+  });
+});
+
+describe('what a post carries besides its text', () => {
+  const parsed = (fields: Record<string, string>, body?: string) => {
+    const result = parsePost('en', 'glb-vs-usdz', post({ ...VALID, ...fields }, body));
+    if ('error' in result) throw new Error(result.error);
+    return result.post;
+  };
+
+  it('is signed by the easyrender team, as an Organization, unless it names an author', () => {
+    expect(parsed({}).author).toEqual({ name: 'easyrender team', type: 'Organization' });
+    expect(
+      parsed({ author: 'A Writer', authorType: 'person', authorUrl: '/about' }).author,
+    ).toEqual({
+      name: 'A Writer',
+      type: 'Person',
+      url: '/about',
+    });
+    expect(parsePost('en', 'x', post({ ...VALID, authorType: 'robot' }))).toEqual({
+      error: 'invalid authorType "robot"',
+    });
+  });
+
+  it('fills prices from the harness, so a guide cannot drift from the pricing page', () => {
+    const { body } = parsed(
+      {},
+      'A model costs {{renderCredits}} credits ({{renderPrice}}). Pro is {{proPrice}} for {{proCredits}}.',
+    );
+    const price = (RENDER_CREDITS * CREDIT_USD).toFixed(2);
+    const pro = String(PRO_PLAN.priceCents / 100);
+    const proCredits = PRO_PLAN.monthlyCredits.toLocaleString('en-US');
+    expect(body).toBe(
+      `A model costs ${RENDER_CREDITS} credits ($${price}). Pro is $${pro} for ${proCredits}.`,
+    );
+    expect(parsed({}, 'Left alone: {{unknownToken}}.').body).toBe('Left alone: {{unknownToken}}.');
+  });
+
+  it('drops editor notes before anything reads the body', () => {
+    const { body } = parsed({}, 'Before.\n\n<!-- IMAGE PENDING: a real screenshot -->\n\nAfter.');
+    expect(body).toBe('Before.\n\nAfter.');
+  });
+
+  it('reads the FAQ section as plain question and answer pairs', () => {
+    const faq = faqFromBody(
+      [
+        '## Something else',
+        '### Not a question',
+        'Ignored.',
+        '## FAQ',
+        '### Is GLB the same as [glTF](/learn/glb-file)?',
+        'The **binary** version.',
+        'Same standard.',
+        '### Empty?',
+        '## After',
+        'Ignored too.',
+      ].join('\n'),
+    );
+    expect(faq).toEqual([
+      { question: 'Is GLB the same as glTF?', answer: 'The binary version. Same standard.' },
+    ]);
+  });
+
+  it('never dates the last change before the publication', () => {
+    const date = '2026-11-11T00:00:00.000Z';
+    expect(modifiedDate({ date, updated: '2026-11-10T00:00:00.000Z' })).toBe(date);
+    expect(modifiedDate({ date, updated: '2026-11-20T00:00:00.000Z' })).toBe(
+      '2026-11-20T00:00:00.000Z',
+    );
   });
 });
 
