@@ -59,15 +59,28 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
 
+  plugins:
+    name: Store plugins
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: PHP syntax (WooCommerce plugin)
+        run: find plugins/woocommerce -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: WooCommerce plugin tests
+        run: php plugins/woocommerce/easyrender-3d/tests/run.php
+
   gate:
     name: CI Gate
     if: ${{ always() }}
-    needs: [checks, mobile]
+    needs: [checks, mobile, plugins]
     runs-on: ubuntu-latest
     steps:
       - name: Require every job to pass
         run: |
-          if [ "${{ needs.checks.result }}" != "success" ] || [ "${{ needs.mobile.result }}" != "success" ]; then
-            echo "checks: ${{ needs.checks.result }}, mobile: ${{ needs.mobile.result }}"
+          if [ "${{ needs.checks.result }}" != "success" ] || [ "${{ needs.mobile.result }}" != "success" ] || [ "${{ needs.plugins.result }}" != "success" ]; then
+            echo "checks: ${{ needs.checks.result }}, mobile: ${{ needs.mobile.result }}, plugins: ${{ needs.plugins.result }}"
             exit 1
           fi
