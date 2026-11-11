@@ -304,6 +304,27 @@ run('credits and generation billing (real database)', () => {
       expect(await balance(userId)).toBe(10_000);
     });
 
+    it('credits each monthly plan its own amount on a paid invoice', async () => {
+      const creator = await newUser(0);
+      const scale = await newUser(0);
+      const invoice = (id: string, userId: string, plan: string) => ({
+        id: `evt_${id}`,
+        object: 'event',
+        type: 'invoice.paid',
+        data: {
+          object: {
+            id,
+            object: 'invoice',
+            parent: { subscription_details: { metadata: { userId, plan } } },
+          },
+        },
+      });
+      await send(invoice(`in_c_${creator}`, creator, 'creator'));
+      await send(invoice(`in_s_${scale}`, scale, 'scale'));
+      expect(await balance(creator)).toBe(1600);
+      expect(await balance(scale)).toBe(16_000);
+    });
+
     it('rejects a bad signature', async () => {
       const { handleStripeWebhook } = await import('./billing');
       await expect(handleStripeWebhook('{}', 't=1,v1=bad')).rejects.toThrow();

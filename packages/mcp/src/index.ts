@@ -14,8 +14,9 @@ import {
   CREDIT_USD,
   ENTERPRISE_BOOKING_URL,
   PAYG,
-  PRO_PLAN,
+  PLAN_IDS,
   RENDER_CREDITS,
+  SUBSCRIPTION_PLANS,
 } from '@easyrender/harness';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
@@ -144,10 +145,15 @@ export function createMcpServer(actor: Actor & { userId: string }) {
             min_credits: PAYG.min,
             max_credits: PAYG.max,
           },
-          pro: {
-            usd_per_month: PRO_PLAN.priceCents / 100,
-            credits_per_month: PRO_PLAN.monthlyCredits,
-          },
+          ...Object.fromEntries(
+            PLAN_IDS.map((id) => [
+              id,
+              {
+                usd_per_month: SUBSCRIPTION_PLANS[id].priceCents / 100,
+                credits_per_month: SUBSCRIPTION_PLANS[id].monthlyCredits,
+              },
+            ]),
+          ),
           enterprise: { book_a_call: ENTERPRISE_BOOKING_URL },
         },
         buy: `${config.appUrl()}/credits`,

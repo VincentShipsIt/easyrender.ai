@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { isActiveSubscription, parseCheckout } from './billing';
 
 describe('parseCheckout', () => {
-  it('accepts Pro', () => {
-    expect(parseCheckout({ plan: 'pro' })).toEqual({ plan: 'pro' });
+  it('accepts every monthly plan', () => {
+    for (const plan of ['creator', 'pro', 'scale']) {
+      expect(parseCheckout({ plan })).toEqual({ plan });
+    }
   });
 
   it('accepts pay as you go within bounds, including numeric strings', () => {

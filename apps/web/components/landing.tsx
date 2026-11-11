@@ -2,9 +2,10 @@ import {
   CREDIT_USD,
   ENTERPRISE_BOOKING_URL,
   PAYG,
-  PRO_PLAN,
+  PLAN_IDS,
   RENDER_CREDITS,
   rendersFor,
+  SUBSCRIPTION_PLANS,
 } from '@easyrender/harness';
 import { ArrowRight, Check, ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -77,19 +78,24 @@ export async function Pricing() {
       cta: { href: `/sign-up?next=${encodeURIComponent('/credits')}`, label: t('payg.cta') },
       featured: false,
     },
-    {
-      name: PRO_PLAN.label,
-      price: usd(PRO_PLAN.priceCents),
+    ...PLAN_IDS.map((id) => ({
+      name: SUBSCRIPTION_PLANS[id].label,
+      price: usd(SUBSCRIPTION_PLANS[id].priceCents),
       note: t('pro.note'),
       features: [
-        t('pro.features.credits', { credits: formatCount(locale, PRO_PLAN.monthlyCredits) }),
-        t('pro.features.models', { count: rendersFor(PRO_PLAN.monthlyCredits) }),
+        t('pro.features.credits', {
+          credits: formatCount(locale, SUBSCRIPTION_PLANS[id].monthlyCredits),
+        }),
+        t('pro.features.models', { count: rendersFor(SUBSCRIPTION_PLANS[id].monthlyCredits) }),
         t('pro.features.rollover'),
         t('pro.features.cancel'),
       ],
-      cta: { href: `/sign-up?next=${encodeURIComponent('/credits')}`, label: t('pro.cta') },
-      featured: true,
-    },
+      cta: {
+        href: `/sign-up?next=${encodeURIComponent('/credits')}`,
+        label: t('pro.cta', { plan: SUBSCRIPTION_PLANS[id].label }),
+      },
+      featured: id === 'pro',
+    })),
     {
       name: t('enterprise.name'),
       price: t('enterprise.price'),
@@ -116,7 +122,7 @@ export async function Pricing() {
         </Link>
       }
     >
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {plans.map((plan) => (
           <Card key={plan.name} className={cn(plan.featured && 'border-primary shadow-md')}>
             <CardHeader>

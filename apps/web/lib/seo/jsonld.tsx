@@ -1,4 +1,4 @@
-import { CREDIT_USD, PAYG, PRO_PLAN } from '@easyrender/harness';
+import { CREDIT_USD, PAYG, PLAN_IDS, SUBSCRIPTION_PLANS } from '@easyrender/harness';
 import { HTML_LANG, type Locale } from '@/i18n/config';
 import { absoluteUrl, OG_IMAGE, OG_IMAGE_SIZE, SITE_NAME, SITE_URL } from './site';
 
@@ -58,14 +58,14 @@ export function softwareApplication(locale: Locale, description: string): Thing 
         description: `From ${PAYG.min} credits at $${CREDIT_USD.toFixed(2)} each. Credits never expire.`,
         url: absoluteUrl('/credits'),
       },
-      {
+      ...PLAN_IDS.map((id) => ({
         '@type': 'Offer',
-        name: PRO_PLAN.label,
-        price: (PRO_PLAN.priceCents / 100).toFixed(2),
+        name: SUBSCRIPTION_PLANS[id].label,
+        price: (SUBSCRIPTION_PLANS[id].priceCents / 100).toFixed(2),
         priceCurrency: 'USD',
-        description: `${PRO_PLAN.monthlyCredits} credits every month.`,
+        description: `${SUBSCRIPTION_PLANS[id].monthlyCredits} credits every month.`,
         url: absoluteUrl('/credits'),
-      },
+      })),
     ],
   };
 }

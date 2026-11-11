@@ -20,8 +20,21 @@ export const SHEET_CREDITS = creditsFor(SHEET_COST_USD);
 // Pay as you go: buy any number of credits at CREDIT_USD each, through one Stripe price of $0.01.
 export const PAYG = { min: 500, max: 100_000, presets: [1000, 2500, 5000, 10_000] };
 
-// Pro: a monthly subscription that adds credits on every paid invoice. Credits never expire.
-export const PRO_PLAN = { label: 'Pro', priceCents: 4900, monthlyCredits: 5000 };
+// Monthly plans: each adds its credits on every paid invoice. Credits never expire. Per credit:
+// Creator $0.0119, Pro $0.0098, Scale $0.0093 (pay as you go is $0.01). The two bigger plans trade
+// a few points of the 70% margin for volume: about 69% on Pro and 68% on Scale.
+export const SUBSCRIPTION_PLANS = {
+  creator: { label: 'Creator', priceCents: 1900, monthlyCredits: 1600 },
+  pro: { label: 'Pro', priceCents: 4900, monthlyCredits: 5000 },
+  scale: { label: 'Scale', priceCents: 14900, monthlyCredits: 16_000 },
+} as const;
+
+export type PlanId = keyof typeof SUBSCRIPTION_PLANS;
+export const PLAN_IDS = Object.keys(SUBSCRIPTION_PLANS) as PlanId[];
+export const isPlanId = (value: unknown): value is PlanId =>
+  typeof value === 'string' && Object.hasOwn(SUBSCRIPTION_PLANS, value);
+
+export const PRO_PLAN = SUBSCRIPTION_PLANS.pro;
 
 // Enterprise has no Stripe product: it books a call.
 export const ENTERPRISE_BOOKING_URL = 'https://calendar.app.google/nXsPoPWMDeNfKte29';

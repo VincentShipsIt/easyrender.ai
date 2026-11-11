@@ -119,7 +119,7 @@
           "rollover": "Unused credits roll over",
           "cancel": "Cancel anytime"
         },
-        "cta": "Go Pro"
+        "cta": "Go {plan}"
       },
       "enterprise": {
         "name": "Enterprise",
@@ -519,12 +519,13 @@
     "title": "Credits",
     "description": "Previews are free. A full 3D render costs {credits} credits ({price}). Credits never expire.",
     "balance": "You have {credits} credits.",
-    "balancePro": "You have {credits} credits and you are on Pro.",
+    "balancePro": "You have {credits} credits and you are on {plan}.",
     "success": "Payment received. Your credits are ready.",
     "back": "Back to your render",
     "signUpToBuy": "Sign up to buy",
     "manageSubscription": "Manage subscription",
-    "onPro": "You are on Pro",
+    "changePlan": "Change plan",
+    "onPro": "You are on {plan}",
     "subscribe": "Subscribe to {plan}",
     "bestValue": "Best value",
     "payg": {

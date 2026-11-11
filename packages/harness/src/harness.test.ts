@@ -3,13 +3,16 @@ import { describe, expect, it } from 'vitest';
 import { buildCostUsd, buildRequest, SHEET_MODEL } from './models';
 import {
   creditsFor,
+  isPlanId,
   isValidPaygCredits,
+  PLAN_IDS,
   PRO_PLAN,
   paygPriceCents,
   RENDER_CREDITS,
   rendersFor,
   SHEET_COST_USD,
   SHEET_CREDITS,
+  SUBSCRIPTION_PLANS,
 } from './pricing';
 import { findGlbUrl } from './replicate';
 import { cutCells, sheetOutputUrl, sheetPrompt, VIEWS } from './sheet';
@@ -43,6 +46,21 @@ describe('pricing', () => {
   it('counts whole renders per credit amount', () => {
     expect(rendersFor(1000)).toBe(12);
     expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(62);
+  });
+
+  it('prices the monthly plans so a bigger plan never has a dearer credit', () => {
+    expect(PLAN_IDS).toEqual(['creator', 'pro', 'scale']);
+    const perCredit = PLAN_IDS.map(
+      (id) => SUBSCRIPTION_PLANS[id].priceCents / SUBSCRIPTION_PLANS[id].monthlyCredits,
+    );
+    expect(perCredit).toEqual([...perCredit].sort((a, b) => b - a));
+    expect(rendersFor(SUBSCRIPTION_PLANS.creator.monthlyCredits)).toBe(20);
+    expect(rendersFor(SUBSCRIPTION_PLANS.scale.monthlyCredits)).toBe(200);
+  });
+
+  it('only accepts known plan ids', () => {
+    expect(['creator', 'pro', 'scale'].every(isPlanId)).toBe(true);
+    expect(['enterprise', 'toString', '', null, 3].some(isPlanId)).toBe(false);
   });
 });
 
