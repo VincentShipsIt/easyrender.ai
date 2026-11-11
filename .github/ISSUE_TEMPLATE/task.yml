@@ -1,0 +1,58 @@
+name: Agent-ready task
+description: Define a focused chore, refactor, documentation change, or implementation slice
+type: Task
+labels: ["needs:triage"]
+body:
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Execution mode
+      description: Choose AFK only when an agent can complete the task without another decision. HITL needs a human decision or manual check.
+      options:
+        - AFK
+        - HITL
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior or context
+      description: Describe the relevant state today.
+    validations:
+      required: true
+  - type: textarea
+    id: desired
+    attributes:
+      label: Desired behavior
+      description: Describe what must be true when the task is complete.
+    validations:
+      required: true
+  - type: textarea
+    id: contracts
+    attributes:
+      label: Key contracts
+      description: Interfaces, commands, APIs, MCP tools, env vars, data shapes or compatibility constraints that must be preserved or changed.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Use testable outcomes. Prefer WHEN, WHILE, WHERE, or IF ... THE SYSTEM SHALL ... Imperfect syntax is fine, triage rewrites it and never closes for phrasing.
+      placeholder: |
+        - [ ] WHEN ... THE SYSTEM SHALL ...
+        - [ ] IF ... THEN THE SYSTEM SHALL ...
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      description: Focused commands, checks, or review steps that prove completion.
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: Adjacent work that must not be included.
+    validations:
+      required: true
