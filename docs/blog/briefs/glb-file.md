@@ -88,7 +88,7 @@ Read on 11-nov-2026 (Europe/Madrid) with WebSearch. No Ahrefs units were used. T
 
 ### What currently surfaces
 
-"What is a GLB file" / "how to open a GLB file" still returns format explainers and viewer/converter pages: docs.poly.app, Vectreal, CGHEVEN, 3D Cloud, and similar "open in the browser / Blender / Windows / Mac" posts. Sketchfab tag pages and online viewers (Meshy and others) remain typical neighbours, as on 10-nov. The guide should still answer what it is *and* how to open, check, convert and keep it small, citing the Khronos glTF 2.0 spec.
+"What is a GLB file" / "how to open a GLB file" still returns format explainers and viewer/converter pages: docs.poly.app, Vectreal, CGHEVEN, 3D Cloud, and similar "open in the browser / Blender / Windows / Mac" posts. Sketchfab tag pages and online viewers (Meshy and others) remain typical neighbours, as on 10-nov. The guide should still answer what it is _and_ how to open, check, convert and keep it small, citing the Khronos glTF 2.0 spec.
 
 ### Facts to refresh or confirm
 

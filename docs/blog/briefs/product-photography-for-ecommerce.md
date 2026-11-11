@@ -80,7 +80,7 @@ The query still mixes classic how-tos and platform rules: Shopify's DIY product-
 
 - Amazon main image (unchanged in the guides opened today): pure white RGB 255,255,255 background, product filling about 85% of the frame, longest side at least 500 px (1,000+ px enables zoom). No props, mannequins, text, logos or watermarks on the main image.
 - Shopify: help centre still documents uploads up to 5,000×5,000 px / 25 MP and 20 MB, and recommends a 2,048×2,048 square for display. Featured images should share one aspect ratio. 360 and 3D remain interactive media types, not a replacement for stills.
-- Google Merchant Center, checked against Google's own help on 11-nov-2026: from 31 January 2027 the minimum product image is 500×500 px. Google *recommends* 1,500×1,500 px or larger for listing formats. Do not write 1,500 as a hard minimum. Images must show the product accurately, without promotional text, watermarks or borders, and must be publicly crawlable.
+- Google Merchant Center, checked against Google's own help on 11-nov-2026: from 31 January 2027 the minimum product image is 500×500 px. Google _recommends_ 1,500×1,500 px or larger for listing formats. Do not write 1,500 as a hard minimum. Images must show the product accurately, without promotional text, watermarks or borders, and must be publicly crawlable.
 - Some 2026 round-ups also mention AI-imagery provenance (IPTC) on Google. Only repeat that if the official Merchant Center page still says it when the guide is next edited.
 
 ### Do not copy from the SERP
