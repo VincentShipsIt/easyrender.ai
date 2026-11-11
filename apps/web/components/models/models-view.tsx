@@ -1,6 +1,7 @@
 import {
   BUILD_MODEL,
   CREDIT_USD,
+  FINAL_SHEET_MODEL,
   RENDER_CREDITS,
   SHEET_CREDITS,
   SHEET_MODEL,
@@ -24,8 +25,8 @@ import { formatCount, formatUsd } from '@/lib/price-format';
 import { ROUTES } from '@/lib/seo/routes';
 
 // The model ids come from the harness, so this page cannot name a model the pipeline does not run.
-// The sheet model id is the path segment of SHEET_MODEL; TRELLIS is the Replicate model name.
-const SHEET_MODEL_ID = SHEET_MODEL.path.replace('/models/', '').replace('/predictions', '');
+// A sheet model id is the path segment of its model; TRELLIS is the Replicate model name.
+const modelId = (path: string) => path.replace('/models/', '').replace('/predictions', '');
 
 /** The models page of one language: the two steps, their settings and what each costs. */
 export async function ModelsView({ locale }: { locale: Locale }) {
@@ -42,8 +43,14 @@ export async function ModelsView({ locale }: { locale: Locale }) {
     {
       key: 'sheet',
       name: SHEET_MODEL.name,
-      id: SHEET_MODEL_ID,
+      id: modelId(SHEET_MODEL.path),
       settings: [t('sheet.settings.output'), t('sheet.settings.prompt')],
+    },
+    {
+      key: 'final',
+      name: FINAL_SHEET_MODEL.name,
+      id: modelId(FINAL_SHEET_MODEL.path),
+      settings: [t('final.settings.output'), t('final.settings.prompt')],
     },
     {
       key: 'build',
@@ -66,7 +73,7 @@ export async function ModelsView({ locale }: { locale: Locale }) {
         <p className="text-sm text-muted-foreground">{t('provider')}</p>
       </header>
 
-      <div className="mt-10 grid gap-4 md:grid-cols-2">
+      <div className="mt-10 grid gap-4 md:grid-cols-3">
         {steps.map((step, index) => (
           <Card key={step.key}>
             <CardHeader>

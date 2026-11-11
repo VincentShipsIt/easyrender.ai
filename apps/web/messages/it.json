@@ -961,21 +961,29 @@
   },
   "Models": {
     "metaTitle": "Models: what easyrender runs on · easyrender",
-    "metaDescription": "The two models behind every easyrender render, the settings they run with and what each step costs in credits. A failed step is refunded.",
+    "metaDescription": "The three models behind every easyrender render, the settings they run with and what each step costs in credits. A failed step is refunded.",
     "breadcrumb": "Models",
     "home": "Home",
     "eyebrow": "Models",
     "title": "The models behind every render",
-    "description": "Two models, one after the other: the first draws your photo from every side, the second builds the 3D file from those drawings. Here is which, with what settings, and what each step costs.",
-    "provider": "Both models run on Replicate.",
+    "description": "Three models, one after the other: the first draws a quick draft of your photo from every side for free, the second redraws it at full size when you build, and the third builds the 3D file from those drawings. Here is which, with what settings, and what each step costs.",
+    "provider": "All three models run on Replicate.",
     "stepLabel": "Step {number}",
     "settingsTitle": "Settings",
     "sheet": {
-      "title": "Angle sheet",
-      "role": "Draws the object from eight sides plus a top view on one 1K sheet, from your photo and a short prompt. You see it before any 3D is built.",
+      "title": "Draft sheet",
+      "role": "Draws the object from eight sides plus a top view on one 1K sheet, from your photo and a short prompt. It is your free preview: you see it before anything is built.",
       "settings": {
         "output": "Output: one 1K image (PNG)",
         "prompt": "Prompt: a fixed turnaround brief, plus guidance for the product category and its material"
+      }
+    },
+    "final": {
+      "title": "Final sheet",
+      "role": "When you build the 3D model, the sheet is drawn again at full size with the same brief, so the 3D build starts from sharper views.",
+      "settings": {
+        "output": "Output: one 2K image (PNG)",
+        "prompt": "Prompt: the same turnaround brief as the draft"
       }
     },
     "build": {
@@ -992,10 +1000,10 @@
       "step": "Step",
       "credits": "Credits",
       "price": "Price",
-      "sheet": "Angle sheet",
-      "build": "3D build, once the sheet exists",
-      "total": "Full 3D render, sheet included",
-      "note": "The sheet is free as a daily preview. A credit costs {unit} and never expires. If a step fails, its credits are refunded."
+      "sheet": "Draft sheet",
+      "build": "Final sheet and 3D build, once the draft exists",
+      "total": "Full 3D render, draft included",
+      "note": "The draft is free as a daily preview. A credit costs {unit} and never expires. If a step fails, its credits are refunded."
     },
     "change": {
       "title": "What can change",

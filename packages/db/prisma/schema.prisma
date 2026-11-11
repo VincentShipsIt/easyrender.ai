@@ -110,6 +110,10 @@ model Render {
   materialEdits     Json?
   sheetPredictionId String?      @unique
   buildPredictionId String?      @unique
+  // A paid build redraws the sheet with the final model before the 3D build; this is that prediction.
+  finalSheetPredictionId String? @unique
+  // Set by whichever call starts the 3D build, so webhook and polling cannot start it twice.
+  buildClaimedAt    DateTime?
   costUsd           Float        @default(0)
   credits           Int          @default(0)
   error             String?

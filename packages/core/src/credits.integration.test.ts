@@ -13,10 +13,15 @@ const replicate = vi.hoisted(() => ({
   start: vi.fn(),
   upload: vi.fn(),
   get: vi.fn(),
+  download: vi.fn(),
+  checkSheet: vi.fn(),
 }));
 
 vi.mock('@easyrender/harness', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@easyrender/harness')>()),
+  download: async (...args: unknown[]) => replicate.download(...args),
+  checkSheet: async (...args: unknown[]) => replicate.checkSheet(...args),
+  cutCells: async () => Array.from({ length: 9 }, () => new Uint8Array([1])),
   createReplicate: () => ({
     upload: async (...args: unknown[]) => {
       if (replicate.fail) throw new Error('replicate down');
@@ -57,6 +62,9 @@ run('credits and generation billing (real database)', () => {
     replicate.fail = false;
     replicate.upload.mockReset().mockResolvedValue('https://replicate.test/file');
     replicate.start.mockReset().mockResolvedValue({ id: `pred_${Math.random()}` });
+    replicate.get.mockReset();
+    replicate.download.mockReset().mockResolvedValue(new Uint8Array([9, 9, 9]));
+    replicate.checkSheet.mockReset().mockResolvedValue({ ok: true, warnings: [] });
     process.env.REPLICATE_API_TOKEN = 'test';
   });
 
@@ -201,6 +209,93 @@ run('credits and generation billing (real database)', () => {
     const after = await renders.advance(render.id);
     expect(after?.status).toBe('failed');
     expect(await balance(userId)).toBe(RENDER_CREDITS);
+  });
+
+  describe('final sheet before the 3D build', () => {
+    const draft = (userId: string) => newRender(userId, { sheetKey: 'fake:sheets/draft.png' });
+    const stale = (id: string) =>
+      db().render.update({
+        where: { id },
+        data: { updatedAt: new Date(Date.now() - 3 * 60 * 60 * 1000) },
+      });
+
+    it('redraws the sheet with the final model, then starts the 3D build once', async () => {
+      const { renders } = await load();
+      const userId = await newUser(RENDER_CREDITS);
+      const render = await draft(userId);
+      replicate.start
+        .mockResolvedValueOnce({ id: `final_${userId}` })
+        .mockResolvedValueOnce({ id: `build_${userId}` });
+
+      await renders.startBuild(render.id, { userId });
+      expect(replicate.start).toHaveBeenCalledTimes(1);
+      const [path, body] = replicate.start.mock.calls[0] as [
+        string,
+        { input: { resolution: string } },
+      ];
+      expect(path).toBe('/models/google/nano-banana-2/predictions');
+      expect(body.input.resolution).toBe('2K');
+      let after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+      expect(after.status).toBe('rendering');
+      expect(after.finalSheetPredictionId).toBe(`final_${userId}`);
+      expect(after.buildPredictionId).toBeNull();
+
+      // Webhook and polling arrive together: only one of them starts the 3D build.
+      replicate.get.mockResolvedValue({ status: 'succeeded', output: 'https://x.test/final.png' });
+      await Promise.all([renders.advance(render.id), renders.advance(render.id)]);
+      expect(replicate.start).toHaveBeenCalledTimes(2);
+      expect(replicate.start.mock.calls[1]?.[0]).toBe('/predictions');
+      after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+      expect(after.buildPredictionId).toBe(`build_${userId}`);
+      expect(after.sheetKey).toBe('fake:sheets/sheet.png');
+      expect(after.costUsd).toBeCloseTo(0.101, 5);
+      expect(await balance(userId)).toBe(0);
+    });
+
+    it('builds from the draft when the final model cannot be started', async () => {
+      const { renders } = await load();
+      const userId = await newUser(RENDER_CREDITS);
+      const render = await draft(userId);
+      replicate.start
+        .mockRejectedValueOnce(new Error('422 bad input'))
+        .mockResolvedValueOnce({ id: `build_${userId}` });
+      await renders.startBuild(render.id, { userId });
+      const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+      expect(after.status).toBe('rendering');
+      expect(after.buildPredictionId).toBe(`build_${userId}`);
+      expect(after.sheetKey).toBe('fake:sheets/draft.png');
+      expect(await balance(userId)).toBe(0);
+    });
+
+    it('builds from the draft when the final sheet fails the guardrails', async () => {
+      const { renders } = await load();
+      const userId = await newUser(RENDER_CREDITS);
+      const render = await draft(userId);
+      replicate.start
+        .mockResolvedValueOnce({ id: `final_${userId}` })
+        .mockResolvedValueOnce({ id: `build_${userId}` });
+      await renders.startBuild(render.id, { userId });
+      replicate.get.mockResolvedValue({ status: 'succeeded', output: 'https://x.test/final.png' });
+      replicate.checkSheet.mockResolvedValue({ ok: false, code: 'sheet_empty', message: 'empty' });
+      await renders.advance(render.id);
+      const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+      expect(after.status).toBe('rendering');
+      expect(after.buildPredictionId).toBe(`build_${userId}`);
+      expect(after.sheetKey).toBe('fake:sheets/draft.png');
+      expect(await balance(userId)).toBe(0);
+    });
+
+    it('refunds a build whose final sheet never finishes', async () => {
+      const { renders } = await load();
+      const userId = await newUser(RENDER_CREDITS);
+      const render = await draft(userId);
+      await renders.startBuild(render.id, { userId });
+      await stale(render.id);
+      replicate.get.mockResolvedValue({ status: 'processing' });
+      const after = await renders.advance(render.id);
+      expect(after?.status).toBe('failed');
+      expect(await balance(userId)).toBe(RENDER_CREDITS);
+    });
   });
 
   describe('Stripe webhook grants', () => {

@@ -961,21 +961,29 @@
   },
   "Models": {
     "metaTitle": "Modelos: con qué trabaja easyrender · easyrender",
-    "metaDescription": "Los dos modelos detrás de cada render de easyrender, con qué ajustes funcionan y cuánto cuesta cada paso en créditos. Si un paso falla, se reembolsa.",
+    "metaDescription": "Los tres modelos detrás de cada render de easyrender, con qué ajustes funcionan y cuánto cuesta cada paso en créditos. Si un paso falla, se reembolsa.",
     "breadcrumb": "Modelos",
     "home": "Inicio",
     "eyebrow": "Modelos",
     "title": "Los modelos detrás de cada render",
-    "description": "Dos modelos, uno detrás de otro: el primero dibuja tu foto desde todos los lados y el segundo construye el archivo 3D a partir de esos dibujos. Aquí ves cuáles son, con qué ajustes y cuánto cuesta cada paso.",
-    "provider": "Los dos modelos funcionan en Replicate.",
+    "description": "Tres modelos, uno detrás de otro: el primero dibuja gratis un borrador de tu foto desde todos los lados, el segundo lo vuelve a dibujar a tamaño completo cuando construyes y el tercero crea el archivo 3D a partir de esos dibujos. Aquí ves cuáles son, con qué ajustes y cuánto cuesta cada paso.",
+    "provider": "Los tres modelos funcionan en Replicate.",
     "stepLabel": "Paso {number}",
     "settingsTitle": "Ajustes",
     "sheet": {
-      "title": "Hoja de ángulos",
-      "role": "Dibuja el objeto desde ocho lados más una vista cenital en una sola hoja 1K, a partir de tu foto y una instrucción corta. La ves antes de construir nada en 3D.",
+      "title": "Hoja borrador",
+      "role": "Dibuja el objeto desde ocho lados más una vista cenital en una sola hoja 1K, a partir de tu foto y una instrucción corta. Es tu vista previa gratis: la ves antes de construir nada.",
       "settings": {
         "output": "Salida: una imagen 1K (PNG)",
         "prompt": "Instrucción: una guía fija de vista giratoria, más pautas según la categoría del producto y su material"
+      }
+    },
+    "final": {
+      "title": "Hoja final",
+      "role": "Cuando construyes el modelo 3D, la hoja se dibuja de nuevo a tamaño completo con la misma guía, y la construcción 3D parte de vistas más nítidas.",
+      "settings": {
+        "output": "Salida: una imagen 2K (PNG)",
+        "prompt": "Instrucción: la misma guía de vista giratoria que el borrador"
       }
     },
     "build": {
@@ -992,10 +1000,10 @@
       "step": "Paso",
       "credits": "Créditos",
       "price": "Precio",
-      "sheet": "Hoja de ángulos",
-      "build": "Construcción 3D, con la hoja ya hecha",
-      "total": "Render 3D completo, hoja incluida",
-      "note": "La hoja es gratis como vista previa diaria. Un crédito cuesta {unit} y no caduca. Si un paso falla, se devuelven sus créditos."
+      "sheet": "Hoja borrador",
+      "build": "Hoja final y construcción 3D, con el borrador ya hecho",
+      "total": "Render 3D completo, borrador incluido",
+      "note": "El borrador es gratis como vista previa diaria. Un crédito cuesta {unit} y no caduca. Si un paso falla, se devuelven sus créditos."
     },
     "change": {
       "title": "Qué puede cambiar",

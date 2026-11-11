@@ -34,7 +34,7 @@ This is how we would choose, case by case:
 
 Tools work in one of two ways. Some go straight from the photo to a model. Others first draw the object from several angles and then build the model from those views, which gives the build more to go on for the hidden sides.
 
-easyrender uses the second route. We chose it after an A/B run on real listings, where the two-stage pair gave a usable model on every test object. The first stage is the angle sheet: one square image, drawn at 1K and split into a 3 by 3 grid.
+easyrender uses the second route. We chose it after an A/B run on real listings, where the two-stage pair gave a usable model on every test object. The first stage is the angle sheet: one square image, split into a 3 by 3 grid.
 
 Eight cells circle the object in 45-degree steps, from the front round to front-left, and the ninth looks straight down. Every cell is on plain white, in soft light, with the whole object centred. The second stage reads those nine views and builds one textured mesh.
 
