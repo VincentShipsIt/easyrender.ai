@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "easyrender : ta photo produit en 3D",
+    "title": "easyrender : ta photo produit en 3D",
     "description": "easyrender transforme la photo d'un meuble, d'un objet déco ou d'une façade en modèle 3D. Aperçu gratuit sous tous les angles, puis fichiers GLB et USDZ."
   },
   "LocaleSwitcher": {
@@ -18,7 +18,7 @@
     "credits": "crédits",
     "dashboard": "Tableau de bord",
     "signIn": "Se connecter",
-    "connect": "Connecte",
+    "connect": "Connecter",
     "connectSuffix": "ton agent"
   },
   "Footer": {
@@ -46,7 +46,7 @@
   "Home": {
     "connect": {
       "title": "Ou confie le travail à ton agent",
-      "description": "easyrender parle MCP : n'importe quel agent compatible peut créer des rendus, les vérifier et générer des modèles 3D avec tes crédits.",
+      "description": "easyrender parle MCP : n'importe quel agent compatible peut créer des rendus, les vérifier et générer des modèles 3D avec tes crédits.",
       "steps": {
         "key": {
           "title": "Récupère ta clé",
@@ -57,7 +57,7 @@
           "body": "Une commande pour Claude Code, un bloc JSON pour Cursor, VS Code ou Claude Desktop."
         },
         "watch": {
-          "title": "Demande la 3D, tu la reçois",
+          "title": "Demande la 3D, elle arrive toute seule",
           "body": "Chaque modèle créé par ton agent arrive dans ton tableau de bord web et dans ta bibliothèque."
         }
       },
@@ -67,18 +67,18 @@
     },
     "try": {
       "title": "Transforme une photo en 3D, ici même",
-      "description": "Dépose la photo d'un meuble, d'un objet déco ou d'un produit. L'aperçu est gratuit ; il suffit de créer un compte pour le voir."
+      "description": "Dépose la photo d'un meuble, d'un objet déco ou d'un produit. L'aperçu est gratuit ; il suffit de créer un compte pour le voir."
     },
     "meta": {
-      "title": "Image en 3D à partir d'une photo · easyrender",
-      "description": "Passe une image en 3D : la photo d'un meuble ou d'une façade devient un modèle 3D. Aperçu gratuit, crédits dépensés seulement s'il te convient. GLB et USDZ."
+      "title": "Image en 3D : ta photo devient un modèle 3D · easyrender",
+      "description": "Passe une image en 3D : la photo d'un meuble ou d'une façade devient un modèle 3D. Aperçu gratuit, tu ne paies que si le résultat te plaît. GLB et USDZ."
     },
     "intro": {
       "eyebrow": "Image vers 3D",
       "title": "Qu'est-ce qu'easyrender ?",
-      "body": "easyrender sert à passer une image en 3D : la photo d'un meuble, d'un objet de décoration ou de la façade d'un bâtiment devient un modèle 3D. L'outil dessine d'abord l'objet sous tous ses angles, sur une planche gratuite que tu vérifies avant de dépenser quoi que ce soit. Si l'aperçu te convient, un clic suffit pour obtenir le modèle 3D, à faire pivoter et à télécharger en GLB et USDZ.",
-      "scope": "Il ne modélise pas des pièces entières, seulement un objet à la fois. Il n'invente pas de dimensions. Tu reçois le fichier, et c'est toi qui décides s'il vaut la peine d'être gardé.",
-      "primaryCta": "Envoyer une photo",
+      "body": "easyrender sert à passer une image en 3D : la photo d'un meuble, d'un objet de décoration ou de la façade d'un bâtiment devient un modèle 3D. L'outil dessine d'abord l'objet sous tous ses angles, sur une planche gratuite que tu vérifies avant de dépenser quoi que ce soit. Si l'aperçu te convient, un clic suffit pour obtenir le modèle 3D, à faire pivoter et à télécharger en GLB et USDZ.",
+      "scope": "Il ne modélise pas une pièce entière, seulement un objet à la fois. Il n'invente pas de dimensions. Tu reçois le fichier, et c'est toi qui décides s'il mérite d'être gardé.",
+      "primaryCta": "Importer une photo",
       "secondaryCta": "Voir la galerie"
     }
   },
@@ -104,7 +104,7 @@
         "features": {
           "min": "À partir de {credits} crédits",
           "downloads": "Téléchargements GLB et USDZ",
-          "ar": "Bientôt : l'objet chez toi, en réalité augmentée",
+          "ar": "Bientôt : l'objet chez toi, en réalité augmentée",
           "api": "Serveur MCP et API REST"
         },
         "cta": "Acheter des crédits"
@@ -136,12 +136,12 @@
       "title": "Tes questions, nos réponses",
       "items": {
         "connect": {
-          "q": "Que veut dire « connecter ton agent » ?",
+          "q": "Que veut dire « connecter ton agent » ?",
           "a": "easyrender est un serveur MCP. Ajoute-le à Claude Code, Claude Desktop, Cursor, VS Code ou à n'importe quel client MCP avec ta clé API, et ton agent pourra transformer des photos en modèles 3D tout seul. Tout ce qu'il crée apparaît dans ton tableau de bord web."
         },
         "needAgent": {
-          "q": "Faut-il un agent pour s'en servir ?",
-          "a": "Non. Tu peux envoyer tes photos dans l'application web, une par une ou par lots depuis ta bibliothèque. L'agent sert seulement à automatiser le travail."
+          "q": "Faut-il un agent pour s'en servir ?",
+          "a": "Non. Tu peux importer tes photos dans l'application web, une par une ou par lots depuis ta bibliothèque. L'agent sert seulement à automatiser le travail."
         },
         "photos": {
           "q": "Quelles photos donnent les meilleurs résultats ?",
@@ -149,7 +149,7 @@
         },
         "scope": {
           "q": "Que peut-il modéliser aujourd'hui ?",
-          "a": "Des meubles, des objets de décoration et des façades de bâtiments, à partir d'une seule photo. Il modélise un objet à la fois, pas des pièces entières. Les petits logos et les textes fins ressortent souvent flous."
+          "a": "Des meubles, des objets de décoration et des façades de bâtiments, à partir d'une seule photo. Il modélise un objet à la fois, pas une pièce entière. Les petits logos et les textes fins ressortent souvent flous."
         },
         "output": {
           "q": "Qu'est-ce que j'obtiens ?",
@@ -165,7 +165,7 @@
         },
         "public": {
           "q": "Mon rendu est-il public ?",
-          "a": "Les modèles terminés apparaissent par défaut dans la galerie publique. Sur la page du modèle, tu peux désactiver « Show in public gallery ». Pour l'instant, masquer un modèle peut aussi empêcher son lien de s'ouvrir chez les autres. Laisse-le dans la galerie si tu veux partager le lien."
+          "a": "Les modèles terminés apparaissent par défaut dans la galerie publique. Sur la page du modèle, tu peux désactiver « Show in public gallery ». Pour l'instant, masquer un modèle peut aussi empêcher son lien de s'ouvrir chez les autres. Laisse-le dans la galerie si tu veux partager le lien."
         },
         "cost": {
           "q": "Combien coûte un modèle 3D ?",
@@ -173,7 +173,7 @@
         },
         "what": {
           "q": "Qu'est-ce qu'easyrender ?",
-          "a": "easyrender est une application web pour convertir une image en 3D : la photo d'un objet devient un modèle 3D. Tu envoies la photo, tu vérifies gratuitement une planche qui montre l'objet sous tous les angles, et tu ne dépenses des crédits que si tu veux le modèle terminé, à télécharger en GLB et USDZ."
+          "a": "easyrender est une application web pour convertir une image en 3D : la photo d'un objet devient un modèle 3D. Tu importes la photo, tu vérifies gratuitement une planche qui montre l'objet sous tous les angles, et tu ne dépenses des crédits que si tu veux le modèle terminé, à télécharger en GLB et USDZ."
         },
         "formats": {
           "q": "Quels formats puis-je télécharger ?",
@@ -181,7 +181,7 @@
         },
         "ar": {
           "q": "Puis-je voir le modèle chez moi ?",
-          "a": "La réalité augmentée arrive bientôt : tu pourras ouvrir le modèle sur ton téléphone et le poser dans ta pièce. Elle montrera la forme et les matières de l'objet, pas sa taille réelle."
+          "a": "La réalité augmentée arrive bientôt : tu pourras ouvrir le modèle sur ton téléphone et le poser dans ta pièce. Elle montrera la forme et les matières de l'objet, pas sa taille réelle."
         }
       }
     }
@@ -194,7 +194,7 @@
       "get_render": "24 aperçus prêts",
       "render_3d": "24 modèles · GLB et USDZ"
     },
-    "done": "C'est fait. Tes 24 modèles sont dans ta bibliothèque easyrender, en GLB et USDZ. Voici le premier :",
+    "done": "C'est fait. Tes 24 modèles sont dans ta bibliothèque easyrender, en GLB et USDZ. Voici le premier :",
     "modelAlt": "Modèle 3D : {title}"
   },
   "McpSetup": {
@@ -304,7 +304,7 @@
   },
   "PromptBar": {
     "steps": {
-      "upload": "Envoi de ta photo",
+      "upload": "Import de ta photo",
       "read": "Lecture de la forme et des matières",
       "draw": "Dessin de tous les angles",
       "prepare": "Préparation de ton aperçu 3D"
@@ -312,7 +312,7 @@
     "errors": {
       "type": "Ajoute une photo JPEG, PNG ou WebP.",
       "noPhoto": "Ajoute d'abord une photo de l'objet ou du bâtiment.",
-      "upload": "Échec de l'envoi",
+      "upload": "Échec de l'import",
       "unreadable": "Impossible de lire cette photo",
       "title": "Impossible de lancer ce rendu"
     },
@@ -323,11 +323,11 @@
       "empty": "Ajoute la photo d'un meuble, d'un objet déco ou d'un bâtiment, puis décris-le…"
     },
     "replacePhoto": "Remplacer la photo",
-    "attachPhoto": "Joindre une photo",
+    "attachPhoto": "Ajouter une photo",
     "dropOrPaste": "ou glisse-la ici, ou colle-la",
     "generate": "Générer",
     "dropToAttach": "Dépose ta photo ici",
-    "tryOne": "Essaie :",
+    "tryOne": "Essaie :",
     "previewReady": "Ton aperçu est prêt",
     "photoTo3d": "De la photo au modèle 3D",
     "auth": {
@@ -614,7 +614,7 @@
   },
   "Studio": {
     "hero": {
-      "title": "La photo du produit devient un modèle 3D.",
+      "title": "Ta photo produit devient un modèle 3D.",
       "cta": "Commencer",
       "note": "Aperçu gratuit · sans carte",
       "stackLabel": "Un même objet vu à travers cinq passes du moteur. Fais-le glisser pour le tourner.",
@@ -628,7 +628,7 @@
       "subtitle": "Regarde-le sous tous les angles, gratuitement. Tu ne dépenses des crédits que si le résultat te plaît."
     },
     "pipeline": {
-      "lead": "Envoie une photo. Le moteur s'occupe du reste.",
+      "lead": "Importe une photo. Le moteur s'occupe du reste.",
       "body": "Il reconstruit ton produit sous toutes ses faces et te montre la forme avant que tu paies.",
       "photo": "Photo d'origine",
       "placeholder": "Décris ton produit",
@@ -658,7 +658,7 @@
         "placed": "Placé"
       },
       "interior": {
-        "eyebrow": "Architecture et intérieur",
+        "eyebrow": "Architecture et design d'intérieur",
         "title": "De vrais meubles dans tes rendus",
         "body": "Architectes, architectes d'intérieur et concepteurs lumière intègrent des meubles et des luminaires qui existent et que le client peut acheter.",
         "link": "Voir le hub pour les studios",
@@ -671,7 +671,7 @@
         "link": "Branche-le via l'API ou MCP",
         "rigidbody": "Rigidbody",
         "dynamic": "Dynamique",
-        "collider": "Collisionneur",
+        "collider": "Collider",
         "friction": "Frottement",
         "live": "Simulation en direct"
       }
@@ -686,7 +686,7 @@
       "roughness": "Rugosité",
       "metalness": "Métallicité",
       "scale": "Proportions",
-      "collider": "Collisionneur",
+      "collider": "Collider",
       "box": "Boîte",
       "hull": "Enveloppe",
       "mesh": "Maillage",
@@ -705,7 +705,7 @@
       }
     },
     "wheel": {
-      "lead": "Il entre une fois dans le hub. Il sert partout.",
+      "lead": "Ajouté une fois au hub, il sert partout.",
       "body": "La boutique envoie son catalogue, le studio l'utilise dans ses projets et le client finit par acheter l'objet qu'il a vu dans le rendu.",
       "link": "Voir le hub",
       "photo": "Photo d'origine",
@@ -752,7 +752,7 @@
       "elements": "{count, plural, one {# élément} other {# éléments}}"
     },
     "lens": {
-      "label": "{name} affiché en quatre lectures à la fois : maillage, collisionneur, normales de surface et rendu texturé. Le rendu final suit ton pointeur.",
+      "label": "{name} affiché en quatre lectures à la fois : maillage, collider, normales de surface et rendu texturé. Le rendu final suit ton pointeur.",
       "layers": {
         "mesh": "Maillage",
         "physics": "Physique",
@@ -843,7 +843,7 @@
     },
     "engines": {
       "trellis": "TRELLIS",
-      "trellisSheet": "TRELLIS + planche d'angles",
+      "trellisSheet": "TRELLIS + planche de vues",
       "tripo": "Tripo H3.1"
     }
   },

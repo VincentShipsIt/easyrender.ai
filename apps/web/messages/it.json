@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "easyrender: da immagine a 3D con una sola foto",
-    "description": "easyrender trasforma un'immagine in 3D: dalla foto di un mobile o di una facciata, un modello da vedere gratis da ogni lato e scaricare in GLB e USDZ."
+    "description": "easyrender trasforma un'immagine in 3D: dalla foto di un mobile o di una facciata, un modello 3D da scaricare in GLB e USDZ. Anteprima gratis da ogni lato."
   },
   "LocaleSwitcher": {
     "switchTo": "Passa a {language}",
@@ -17,7 +17,7 @@
     },
     "credits": "crediti",
     "dashboard": "Dashboard",
-    "signIn": "Accesso",
+    "signIn": "Accedi",
     "connect": "Collega",
     "connectSuffix": "il tuo agente"
   },
@@ -36,8 +36,8 @@
       "mcp": "Server MCP",
       "apiKeys": "Chiavi API",
       "dashboard": "Dashboard",
-      "signUp": "Registrazione",
-      "signIn": "Accesso",
+      "signUp": "Registrati",
+      "signIn": "Accedi",
       "guides": "Guide"
     },
     "copyright": "© 2026 easyrender. Tecnologia Genfeed.",
@@ -46,7 +46,7 @@
   "Home": {
     "connect": {
       "title": "Oppure lascia fare al tuo agente",
-      "description": "easyrender parla MCP: qualsiasi agente compatibile può creare render, controllarli e generare modelli 3D con i tuoi crediti.",
+      "description": "easyrender è un server MCP: qualsiasi agente compatibile può creare render, controllarli e generare modelli 3D con i tuoi crediti.",
       "steps": {
         "key": {
           "title": "Prendi la chiave",
@@ -57,7 +57,7 @@
           "body": "Un comando per Claude Code, un blocco JSON per Cursor, VS Code o Claude Desktop."
         },
         "watch": {
-          "title": "Chiedi il 3D e guardalo arrivare",
+          "title": "Chiedi il 3D e segui ogni passaggio",
           "body": "Ogni modello creato dal tuo agente compare nella dashboard web e nella libreria."
         }
       },
@@ -66,25 +66,25 @@
       "worksWith": "Funziona con {clients} e con qualsiasi client MCP."
     },
     "try": {
-      "title": "Provalo qui, con una foto",
-      "description": "Carica la foto di un mobile, di un complemento d'arredo o di un prodotto. L'anteprima è gratis; per vederla ti serve un account."
+      "title": "Prova qui con una foto",
+      "description": "Carica la foto di un mobile, di un complemento d'arredo o di un prodotto. L'anteprima è gratis: per vederla ti basta un account."
     },
     "meta": {
       "title": "Da immagine a 3D con una sola foto · easyrender",
-      "description": "Da immagine a 3D: carica la foto di un mobile o di una facciata. Anteprima gratis da ogni lato, paghi in crediti solo se ti convince. GLB e USDZ."
+      "description": "Da immagine a 3D: dalla foto di un mobile o di una facciata ottieni un modello 3D. Anteprima gratis da ogni lato, usi i crediti solo se ti convince. GLB e USDZ."
     },
     "intro": {
       "eyebrow": "Da foto a 3D",
       "title": "Che cos'è easyrender?",
-      "body": "easyrender serve a passare da immagine a 3D: trasforma la foto di un mobile, di un complemento d'arredo o della facciata di un edificio in un modello 3D. Prima disegna l'oggetto da ogni lato, in una tavola delle angolazioni gratuita che controlli prima di spendere qualcosa. Se l'anteprima ti convince, con un clic diventa un modello 3D da ruotare e scaricare in GLB e USDZ.",
-      "scope": "Non modella stanze intere e non inventa misure. Tu ricevi il file e decidi se vale la pena tenerlo.",
+      "body": "Con easyrender passi da immagine a 3D: carichi la foto di un mobile, di un complemento d'arredo o della facciata di un edificio e ne ricavi un modello 3D. Per prima cosa easyrender disegna l'oggetto da ogni lato in una tavola delle angolazioni gratuita, che controlli prima di spendere un credito. Se ti convince, con un clic ottieni il modello 3D da ruotare e scaricare in GLB e USDZ.",
+      "scope": "Non modella stanze intere e non inventa misure. Ricevi il file e decidi tu se tenerlo.",
       "primaryCta": "Carica una foto",
       "secondaryCta": "Guarda la galleria"
     }
   },
   "Landing": {
     "pricing": {
-      "title": "Si paga a modello. I crediti non scadono.",
+      "title": "Paghi a modello. I crediti non scadono.",
       "description": "Le anteprime sono gratis. Un modello 3D finito costa {credits} crediti ({price}).",
       "seeAll": "Vedi tutti i prezzi",
       "bestValue": "Più conveniente",
@@ -102,7 +102,7 @@
         "name": "A consumo",
         "note": "per credito",
         "features": {
-          "min": "Da {credits} crediti",
+          "min": "A partire da {credits} crediti",
           "downloads": "Download in GLB e USDZ",
           "ar": "Realtà aumentata dal telefono, in arrivo",
           "api": "Server MCP e API REST"
@@ -115,7 +115,7 @@
           "credits": "{credits} crediti ogni mese",
           "models": "Circa {count} modelli 3D",
           "rollover": "I crediti non usati restano disponibili",
-          "cancel": "Disdetta in qualsiasi momento"
+          "cancel": "Disdici quando vuoi"
         },
         "cta": "Passa a Pro"
       },
@@ -124,10 +124,10 @@
         "price": "Su misura",
         "note": "prezzi per volume",
         "features": {
-          "volume": "Crediti a prezzo di volume",
+          "volume": "Sconti sui volumi",
           "invoice": "Pagamento con fattura",
           "support": "Assistenza prioritaria",
-          "onboarding": "Chiamata di avvio"
+          "onboarding": "Chiamata di onboarding"
         },
         "cta": "Prenota una chiamata"
       }
@@ -145,7 +145,7 @@
         },
         "photos": {
           "q": "Quali foto funzionano meglio?",
-          "a": "Una foto nitida e ben illuminata, con l'oggetto intero e, se possibile, su uno sfondo semplice. Vanno bene le foto di catalogo, le foto prodotto di un solo pezzo o una facciata ben visibile. Sfondi pieni, oggetti tagliati, foto mosse o dettagli molto fini danno un'anteprima più debole."
+          "a": "Una foto nitida e ben illuminata, con l'oggetto intero e, se possibile, su uno sfondo semplice. Vanno bene le foto di catalogo, le foto prodotto di un solo pezzo o una facciata ben visibile. Sfondi affollati, oggetti tagliati, foto mosse o dettagli molto fini rendono l'anteprima meno precisa."
         },
         "scope": {
           "q": "Cosa può modellare oggi?",
@@ -160,8 +160,8 @@
           "a": "Prima di costruire il modello 3D disegniamo l'oggetto da ogni angolazione. Tu controlli l'anteprima senza costi e usi i crediti solo quando forma e dettagli ti convincono."
         },
         "failed": {
-          "q": "E se un render non riesce?",
-          "a": "Se il modello 3D non viene generato, i crediti di quel render tornano da soli nel tuo saldo."
+          "q": "E se il render non va a buon fine?",
+          "a": "Se il modello 3D non viene generato, i crediti di quel render ti vengono riaccreditati in automatico."
         },
         "public": {
           "q": "Il mio render è pubblico?",
@@ -180,7 +180,7 @@
           "a": "Due: GLB con texture, per il web e la maggior parte dei programmi 3D, e USDZ, per i dispositivi Apple. Il modello conserva forma e materiali, non le misure reali né la scala."
         },
         "ar": {
-          "q": "Posso vedere il modello nella mia stanza?",
+          "q": "Posso vedere il modello a casa mia?",
           "a": "La realtà aumentata è in arrivo: potrai aprire il modello sul telefono e posizionarlo nella stanza. Mostrerà forma e materiali dell'oggetto, non le sue dimensioni reali."
         }
       }
@@ -188,7 +188,7 @@
   },
   "AgentDemo": {
     "window": "Il tuo agente · easyrender MCP",
-    "ask": "Ecco il catalogo primavera. Mi serve un modello 3D di ogni prodotto.",
+    "ask": "Ecco il catalogo di primavera. Mi serve un modello 3D di ogni prodotto.",
     "calls": {
       "create_render": "24 foto · anteprime gratis",
       "get_render": "24 anteprime pronte",
@@ -205,13 +205,13 @@
     "claudeAi": {
       "one": "Apri claude.ai → Settings → Connectors → Add custom connector.",
       "two": "Incolla questo URL come URL del connettore.",
-      "three": "Clicca Connect, entra in easyrender con il tuo account e autorizza l'accesso. Non serve nessuna chiave.",
-      "note": "Lo stesso accesso funziona con qualsiasi client MCP che supporta OAuth. Ogni connessione crea una chiave che puoi revocare qui sotto."
+      "three": "Clicca Connect, accedi a easyrender con il tuo account e autorizza l'accesso. Non serve nessuna chiave.",
+      "note": "Lo stesso accesso funziona con qualsiasi client MCP che supporti OAuth. Ogni connessione crea una chiave che puoi revocare qui sotto."
     }
   },
   "Gallery": {
-    "modelAlt": "3D model: {title}",
-    "sourceAlt": "Source of {title}"
+    "modelAlt": "Modello 3D: {title}",
+    "sourceAlt": "Foto di partenza di {title}"
   },
   "Explore": {
     "metaTitle": "Gallery · easyrender",
@@ -645,10 +645,10 @@
     },
     "industries": {
       "lead": "Un modello. Tre settori.",
-      "body": "Lo stesso pezzo entra nel render di uno studio, diventa un oggetto di scena in un gioco e, a breve, si potrà provare a casa del cliente.",
+      "body": "Lo stesso pezzo entra nel render di uno studio, diventa un oggetto di scena in un gioco e, a breve, si potrà vedere a casa del cliente.",
       "store": {
         "eyebrow": "E-commerce",
-        "title": "Presto a casa tua",
+        "title": "Presto a casa dei tuoi clienti",
         "body": "Realtà aumentata in arrivo: il cliente aprirà la fotocamera dell'iPhone o di un telefono Android e metterà il prodotto nella stanza.",
         "link": "Parlaci della realtà aumentata",
         "domain": "iltuonegozio.it",
@@ -705,7 +705,7 @@
       }
     },
     "wheel": {
-      "lead": "Entra una volta nell'hub. Funziona ovunque.",
+      "lead": "Un solo caricamento nell'hub. Funziona ovunque.",
       "body": "Il negozio carica il catalogo, lo studio lo usa nei suoi progetti e il cliente finisce per comprare il pezzo che ha visto nel render.",
       "link": "Esplora l'hub",
       "photo": "Foto di partenza",
@@ -731,7 +731,7 @@
     },
     "proof": {
       "title": "Il catalogo 3D che mancava",
-      "quote": "Mancano oggetti 3D con una fisica reale. I cataloghi che esistono sono piccoli e ogni formato vive sulla sua isola.",
+      "quote": "Mancano oggetti 3D con una fisica reale. I cataloghi che esistono sono piccoli e ogni formato fa storia a sé.",
       "by": "Perché costruiamo easyrender",
       "byline": "Un universo di elementi che funziona con tutto",
       "stat": "1 foto",

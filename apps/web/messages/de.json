@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "easyrender: Bild zu 3D-Modell aus einem einzigen Foto",
-    "description": "easyrender macht aus einem Foto von Möbeln, Deko oder einer Fassade ein 3D-Modell. Du prüfst alle Ansichten kostenlos und lädst GLB und USDZ herunter."
+    "description": "easyrender macht aus dem Foto eines Möbelstücks oder Deko-Objekts ein 3D-Modell. Du prüfst alle Ansichten kostenlos und lädst es als GLB und USDZ herunter."
   },
   "LocaleSwitcher": {
     "switchTo": "Zu {language} wechseln",
@@ -18,8 +18,8 @@
     "credits": "Credits",
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
-    "connect": "Verbinde",
-    "connectSuffix": "deinen Agenten"
+    "connect": "Verbinden",
+    "connectSuffix": "mit deinem Agenten"
   },
   "Footer": {
     "tagline": "Aus einem Foto wird ein 3D-Modell. Du drehst es in alle Richtungen und lädst es als GLB und USDZ herunter.",
@@ -46,7 +46,7 @@
   "Home": {
     "connect": {
       "title": "Oder dein Agent erledigt das für dich",
-      "description": "easyrender spricht MCP. Jeder Agent, der MCP unterstützt, kann also Renderings anlegen, prüfen und mit deinen Credits 3D-Modelle bauen.",
+      "description": "easyrender unterstützt MCP. Jeder Agent mit MCP-Unterstützung kann also Renderings anlegen, prüfen und mit deinen Credits 3D-Modelle erstellen.",
       "steps": {
         "key": {
           "title": "Schlüssel holen",
@@ -57,7 +57,7 @@
           "body": "Ein Befehl für Claude Code, ein JSON-Block für Cursor, VS Code oder Claude Desktop."
         },
         "watch": {
-          "title": "3D anfragen, Ergebnis abholen",
+          "title": "3D anfordern, Ergebnis ansehen",
           "body": "Jedes Modell, das dein Agent erstellt, landet in deinem Web-Dashboard und in deiner Bibliothek."
         }
       },
@@ -71,7 +71,7 @@
     },
     "meta": {
       "title": "Bild zu 3D-Modell aus einem Foto · easyrender",
-      "description": "Bild zu 3D-Modell: Lade ein Foto von Möbeln, Deko oder einer Fassade hoch und prüfe alle Ansichten gratis. Credits nur, wenn die Form passt. GLB und USDZ."
+      "description": "Bild zu 3D-Modell: Lade ein Möbel- oder Dekofoto hoch, prüfe alle Ansichten kostenlos und zahle erst, wenn die Form stimmt. Download als GLB und USDZ."
     },
     "intro": {
       "eyebrow": "Foto zu 3D",
@@ -141,7 +141,7 @@
         },
         "needAgent": {
           "q": "Brauche ich dafür einen Agenten?",
-          "a": "Nein. Du kannst Fotos auch in der Web-App hochladen, einzeln oder gesammelt aus deiner Bibliothek. Mit einem Agenten läuft das Ganze nur automatisch."
+          "a": "Nein. Du kannst Fotos auch in der Web-App hochladen, einzeln oder gesammelt aus deiner Bibliothek. Ein Agent erledigt dasselbe automatisch."
         },
         "photos": {
           "q": "Welche Fotos eignen sich am besten?",
@@ -177,11 +177,11 @@
         },
         "formats": {
           "q": "In welchen Dateiformaten kann ich herunterladen?",
-          "a": "In zwei: als texturierte GLB-Datei für das Web und die meisten 3D-Programme und als USDZ-Datei für Apple-Geräte. Das Modell übernimmt Form und Materialien, aber keine echten Maße und keinen Maßstab."
+          "a": "In zwei Formaten: als texturierte GLB-Datei für das Web und die meisten 3D-Programme und als USDZ-Datei für Apple-Geräte. Das Modell übernimmt Form und Materialien, aber keine echten Maße und keinen Maßstab."
         },
         "ar": {
-          "q": "Kann ich das Modell in meinem Raum ansehen?",
-          "a": "Augmented Reality kommt bald. Dann öffnest du das Modell auf dem Smartphone und stellst es in deinen Raum. Du siehst Form und Materialien des Objekts, nicht seine tatsächliche Größe."
+          "q": "Kann ich mir das Modell bei mir zu Hause ansehen?",
+          "a": "Augmented Reality kommt bald. Dann öffnest du das Modell auf dem Smartphone und stellst es virtuell in dein Zimmer. Du siehst Form und Materialien des Objekts, nicht seine tatsächliche Größe."
         }
       }
     }
@@ -194,7 +194,7 @@
       "get_render": "24 Vorschauen fertig",
       "render_3d": "24 Modelle · GLB und USDZ"
     },
-    "done": "Erledigt. 24 Modelle liegen in deiner easyrender-Bibliothek, jeweils als GLB und USDZ und bereit für AR, sobald es da ist. Hier das erste:",
+    "done": "Erledigt. 24 Modelle liegen in deiner easyrender-Bibliothek, jeweils als GLB und USDZ und bereit für AR, sobald die Funktion verfügbar ist. Hier das erste:",
     "modelAlt": "3D-Modell: {title}"
   },
   "McpSetup": {
@@ -314,7 +314,7 @@
       "noPhoto": "Häng zuerst ein Foto des Objekts oder Gebäudes an.",
       "upload": "Upload fehlgeschlagen",
       "unreadable": "Dieses Foto lässt sich nicht lesen",
-      "title": "Dieses Rendering konnte nicht starten"
+      "title": "Dieses Rendering konnte nicht gestartet werden"
     },
     "photoSize": "Foto · {size}",
     "removePhoto": "Foto entfernen",
@@ -625,7 +625,7 @@
       "render": "PBR-Rendering",
       "element": "Element",
       "hint": "Zum Drehen ziehen",
-      "subtitle": "Prüfe das Objekt kostenlos von allen Seiten. Credits zahlst du erst, wenn die Form stimmt."
+      "subtitle": "Prüfe das Objekt kostenlos von allen Seiten. Credits gibst du erst aus, wenn die Form stimmt."
     },
     "pipeline": {
       "lead": "Lade ein Foto hoch. Den Rest übernimmt die Engine.",
@@ -649,7 +649,7 @@
       "store": {
         "eyebrow": "E-Commerce",
         "title": "Bald im eigenen Raum ansehen",
-        "body": "Augmented Reality, demnächst verfügbar: Deine Kundschaft öffnet die Kamera am iPhone oder Android-Smartphone und stellt das Produkt in den eigenen Raum.",
+        "body": "Augmented Reality, demnächst verfügbar: Deine Kundschaft öffnet die Kamera am iPhone oder Android-Smartphone und stellt das Produkt virtuell in die eigenen vier Wände.",
         "link": "Mit uns über AR für Shops sprechen",
         "domain": "deinshop.de",
         "meta": "Grauer Bezug · GLB und USDZ",
@@ -666,7 +666,7 @@
       },
       "games": {
         "eyebrow": "Games",
-        "title": "Requisiten mit fertiger Physik",
+        "title": "Requisiten mit eingebauter Physik",
         "body": "Lade die GLB-Datei herunter und hol sie in deine Szene. Die Demo unten schickt das Stück direkt in deinem Browser durch eine Physik-Engine.",
         "link": "Per API oder MCP anbinden",
         "rigidbody": "Rigidbody",
@@ -807,7 +807,7 @@
       },
       "espresso": {
         "name": "Espressomaschine",
-        "prompt": "Espressomaschine für zu Hause aus Edelstahl"
+        "prompt": "Edelstahl-Espressomaschine für zu Hause"
       },
       "crate": {
         "name": "Holzkiste",

@@ -18,7 +18,7 @@
     "credits": "créditos",
     "dashboard": "Painel",
     "signIn": "Iniciar sessão",
-    "connect": "Liga",
+    "connect": "Ligar",
     "connectSuffix": "o teu agente"
   },
   "Footer": {
@@ -46,7 +46,7 @@
   "Home": {
     "connect": {
       "title": "Ou deixa o teu agente tratar disso",
-      "description": "O easyrender fala MCP. Qualquer agente compatível pode criar renders, revê-los e gerar modelos 3D com os teus créditos.",
+      "description": "O easyrender funciona por MCP: qualquer agente compatível pode criar renders, revê-los e gerar modelos 3D com os teus créditos.",
       "steps": {
         "key": {
           "title": "Obtém a tua chave",
@@ -57,7 +57,7 @@
           "body": "Um comando para o Claude Code, um bloco JSON para o Cursor, o VS Code ou o Claude Desktop."
         },
         "watch": {
-          "title": "Pede o 3D e vê-o chegar",
+          "title": "Pede o modelo 3D e recebe-o",
           "body": "Cada modelo que o teu agente criar aparece no teu painel web e na tua biblioteca."
         }
       },
@@ -76,8 +76,8 @@
     "intro": {
       "eyebrow": "Foto em 3D",
       "title": "O que é o easyrender?",
-      "body": "O easyrender é uma ferramenta de imagem para 3D: transforma a fotografia de um móvel, de uma peça de decoração ou da fachada de um edifício num modelo 3D. Primeiro desenha o objeto de todos os lados, numa folha de ângulos grátis que podes rever antes de gastar seja o que for. Se a pré-visualização te convencer, um clique transforma-a num modelo 3D para rodar e descarregar em GLB e USDZ.",
-      "scope": "Não modela divisões inteiras nem inventa medidas. Recebes o ficheiro e decides se é bom o suficiente para ficares com ele.",
+      "body": "O easyrender é uma ferramenta de imagem para 3D: transforma a fotografia de um móvel, de uma peça de decoração ou da fachada de um edifício num modelo 3D. Primeiro desenha o objeto de todos os lados, numa folha de ângulos grátis que podes rever antes de gastares seja o que for. Se a pré-visualização te convencer, um clique transforma-a num modelo 3D para rodar e descarregar em GLB e USDZ.",
+      "scope": "Não modela divisões inteiras nem inventa medidas. Recebes o ficheiro e decides se é suficientemente bom para ficares com ele.",
       "primaryCta": "Carregar uma fotografia",
       "secondaryCta": "Ver a galeria"
     }
@@ -115,7 +115,7 @@
           "credits": "{credits} créditos por mês",
           "models": "Cerca de {count} modelos 3D",
           "rollover": "Os créditos não usados passam para o mês seguinte",
-          "cancel": "Cancelas quando quiseres"
+          "cancel": "Podes cancelar quando quiseres"
         },
         "cta": "Passar a Pro"
       },
@@ -136,7 +136,7 @@
       "title": "Perguntas frequentes",
       "items": {
         "connect": {
-          "q": "O que quer dizer \"ligar o teu agente\"?",
+          "q": "O que quer dizer «ligar o teu agente»?",
           "a": "O easyrender é um servidor MCP. Adiciona-o ao Claude Code, ao Claude Desktop, ao Cursor, ao VS Code ou a qualquer cliente MCP com a tua chave de API, e o agente passa a transformar fotografias em modelos 3D por conta própria. Tudo o que ele criar aparece no teu painel web."
         },
         "needAgent": {
@@ -180,7 +180,7 @@
           "a": "Em dois: GLB com texturas, para a web e para a maioria dos programas 3D, e USDZ, para dispositivos Apple. O modelo mantém a forma e os materiais, não as medidas reais."
         },
         "ar": {
-          "q": "Posso ver o modelo em minha casa?",
+          "q": "Posso ver o modelo na minha casa?",
           "a": "A realidade aumentada chega em breve: vais poder abrir o modelo no telemóvel e colocá-lo numa divisão da tua casa. Mostra a forma e os materiais da peça, não o tamanho real."
         }
       }
@@ -617,7 +617,7 @@
       "title": "A fotografia do produto transforma-se num modelo 3D.",
       "cta": "Começar",
       "note": "Pré-visualização grátis · sem cartão",
-      "stackLabel": "O mesmo objeto visto em cinco passagens do motor. Arrasta para o rodar.",
+      "stackLabel": "O mesmo objeto em cinco leituras do motor. Arrasta para o rodar.",
       "photo": "Fotografia original",
       "mesh": "Malha",
       "normals": "Normais",
@@ -629,7 +629,7 @@
     },
     "pipeline": {
       "lead": "Carrega uma fotografia. O motor faz o resto.",
-      "body": "Reconstrói o teu produto de todos os lados e mostra-te a forma antes de pagares.",
+      "body": "O teu produto é reconstruído de todos os lados e vês a forma antes de pagares.",
       "photo": "Fotografia original",
       "placeholder": "Descreve o teu produto",
       "generate": "Gerar",
@@ -649,7 +649,7 @@
       "store": {
         "eyebrow": "Lojas online",
         "title": "Em breve: ver a peça em casa",
-        "body": "Realidade aumentada, muito em breve: o cliente abre a câmara do iPhone ou do telemóvel Android e coloca o produto na divisão.",
+        "body": "Realidade aumentada, muito em breve: o cliente abre a câmara do iPhone ou do telemóvel Android e coloca o produto na sala.",
         "link": "Fala connosco sobre RA para lojas",
         "domain": "atualoja.pt",
         "meta": "Estofo cinzento · GLB e USDZ",
@@ -705,7 +705,7 @@
       }
     },
     "wheel": {
-      "lead": "Entra uma vez no hub. Funciona em todo o lado.",
+      "lead": "O modelo entra uma vez no hub. Funciona em todo o lado.",
       "body": "A loja carrega o catálogo, o estúdio usa-o nos seus projetos e o cliente final acaba por comprar a peça que viu no render.",
       "link": "Explorar o hub",
       "photo": "Fotografia original",
