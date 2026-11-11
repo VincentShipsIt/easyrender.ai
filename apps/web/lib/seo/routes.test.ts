@@ -78,9 +78,9 @@ describe('the route registry', () => {
 
   it('hides the path of an unpublished language', () => {
     expect(livePaths('blog')).toEqual({ en: '/learn', es: '/es/guias' });
-    // Declared in the registry, published nowhere yet, so it is not a URL in any language.
-    expect(isPublished('compare', 'en')).toBe(false);
-    expect(livePaths('compare')).toEqual({});
+    // English comparisons are published; the other locales wait for reviewed copy.
+    expect(isPublished('compare', 'en')).toBe(true);
+    expect(livePaths('compare')).toEqual({ en: '/compare' });
     // Pricing exists in English only until the Spanish copy lands.
     expect(livePaths('pricing')).toEqual({ en: '/credits' });
   });
@@ -146,7 +146,15 @@ describe('noindex paths', () => {
   });
 
   it('leaves the indexable tree alone', () => {
-    for (const path of ['/', '/es', '/learn', '/learn/glb-vs-usdz', '/credits']) {
+    for (const path of [
+      '/',
+      '/es',
+      '/learn',
+      '/learn/glb-vs-usdz',
+      '/credits',
+      '/compare',
+      '/compare/meshy',
+    ]) {
       expect(isNoindexPath(path), path).toBe(false);
     }
   });
@@ -163,11 +171,11 @@ describe('noindex paths', () => {
 });
 
 describe('pages open for review only', () => {
-  it('are the English comparisons and nothing else', () => {
+  it('are none, now that the English comparisons are published', () => {
     const inReview = ROUTE_KEYS.flatMap((key) =>
       LOCALES.filter((locale) => isInReview(key, locale)).map((locale) => `${key}/${locale}`),
     );
-    expect(inReview).toEqual(['compare/en']);
+    expect(inReview).toEqual([]);
   });
 
   it('are never published at the same time, so nothing lists them', () => {
@@ -177,10 +185,9 @@ describe('pages open for review only', () => {
         expect(livePaths(key)[locale], `${key}/${locale}`).toBeUndefined();
       }
     }
-    expect(livePaths('compare')).toEqual({});
   });
 
-  it('carry noindex on the page path and everything under it', () => {
+  it('would carry noindex on the review path if any were open', () => {
     for (const key of ROUTE_KEYS) {
       for (const locale of (ROUTES[key] as RouteEntry).review ?? []) {
         const path = ROUTES[key].paths[locale];
@@ -188,6 +195,8 @@ describe('pages open for review only', () => {
         expect(isNoindexPath(`${path}/meshy`), path).toBe(true);
       }
     }
-    expect(NOINDEX_HEADER_PATHS).toEqual(expect.arrayContaining(['/compare', '/compare/:path*']));
+    expect(NOINDEX_HEADER_PATHS).not.toEqual(
+      expect.arrayContaining(['/compare', '/compare/:path*']),
+    );
   });
 });

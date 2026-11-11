@@ -7,6 +7,7 @@ import {
 } from '@easyrender/harness';
 import type { Locale } from '@/i18n/config';
 import { type BlogPost, isLiveBlogLink, listPosts } from '@/lib/blog/posts';
+import { COMPARE_INDEX, listComparePages } from '@/lib/compare/pages';
 import { FAQ_KEYS } from '@/lib/faq';
 import { formatUsd } from '@/lib/price-format';
 import de from '@/messages/de.json';
@@ -82,6 +83,10 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
   },
   [ROUTES.blog.paths.en]: { title: 'Guides', note: 'Guides on photos, 3D files and formats.' },
   [ROUTES.blog.paths.es]: { title: 'Guías', note: 'Guías en español.' },
+  [ROUTES.compare.paths.en]: {
+    title: COMPARE_INDEX.title,
+    note: COMPARE_INDEX.description,
+  },
 };
 
 function summary(): string[] {
@@ -118,10 +123,20 @@ function indexableLinks(now: Date): { pages: Link[]; guides: Link[] } {
     const posts = new Map<string, BlogPost>(
       listPosts(locale, now).map((post) => [post.path, post]),
     );
+    const compares = new Map(listComparePages().map((page) => [page.path, page]));
     for (const entry of localeEntries(locale, now)) {
       const post = posts.get(entry.path);
       if (post) {
         guides.push({ url: absoluteUrl(post.path), title: post.title, note: post.description });
+        continue;
+      }
+      const compare = compares.get(entry.path);
+      if (compare) {
+        pages.push({
+          url: absoluteUrl(compare.path),
+          title: compare.title,
+          note: compare.description,
+        });
         continue;
       }
       const label = PAGE_LABELS[entry.path];

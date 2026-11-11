@@ -94,11 +94,11 @@ export const ROUTES = {
     priority: 0.6,
     changeFrequency: 'monthly',
   },
-  // Declared so the slugs are agreed and reserved, unpublished until the copy exists. Adding a
-  // locale here without a page under app/ would 404, so each one lands with its route.
-  // The English comparison drafts (content/compare/en) are open for review only: /compare/{slug}
-  // answers 200 with noindex and is linked from nowhere. Jorge has not approved publishing them
-  // (11-nov-2026); until he does, `published` stays empty.
+  // Declared so the slugs are agreed and reserved. Adding a locale here without a page under
+  // app/ would 404, so each one lands with its route.
+  // English comparisons are published and indexable (Jorge, 11-nov-2026): /compare and
+  // /compare/{slug} answer 200, appear in the sitemap and llms.txt, and may be linked from
+  // the guides. Other locales wait for reviewed copy.
   compare: {
     paths: {
       en: '/compare',
@@ -108,8 +108,7 @@ export const ROUTES = {
       it: '/it/confronti',
       pt: '/pt/comparacoes',
     },
-    published: [],
-    review: ['en'],
+    published: ['en'],
     priority: 0.6,
     changeFrequency: 'monthly',
   },

@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { Locale } from '@/i18n/config';
 import { listPosts } from '@/lib/blog/posts';
-import { ROUTES } from '@/lib/seo/routes';
+import { listComparePages } from '@/lib/compare/pages';
+import { isPublished, ROUTES } from '@/lib/seo/routes';
 import { FeaturedPostCard, PostCard } from './post-card';
 
 /**
@@ -13,6 +14,7 @@ import { FeaturedPostCard, PostCard } from './post-card';
 export async function BlogIndexView({ locale }: { locale: Locale }) {
   const t = await getTranslations('Blog');
   const [latest, ...rest] = listPosts(locale);
+  const comparisons = isPublished('compare', locale) ? listComparePages() : [];
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-10 pb-20 sm:px-6 sm:pt-14 sm:pb-28">
@@ -64,6 +66,35 @@ export async function BlogIndexView({ locale }: { locale: Locale }) {
             {rest.map((post) => (
               <li key={post.slug} className="flex">
                 <PostCard post={post} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {comparisons.length > 0 && (
+        <section aria-labelledby="comparisons" className="mt-20 border-t pt-10 sm:mt-24">
+          <h2
+            id="comparisons"
+            className="font-mono text-xs uppercase tracking-widest text-muted-foreground"
+          >
+            Comparisons
+          </h2>
+          <p className="mt-4 max-w-2xl text-muted-foreground text-pretty">
+            Side-by-side looks at 3D modeling methods and tools, for when a guide is not enough to
+            choose.
+          </p>
+          <ul className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+            {comparisons.map((page) => (
+              <li key={page.slug}>
+                <Link href={page.path} className="group block">
+                  <h3 className="font-medium tracking-tight text-balance group-hover:underline">
+                    {page.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
+                    {page.description}
+                  </p>
+                </Link>
               </li>
             ))}
           </ul>

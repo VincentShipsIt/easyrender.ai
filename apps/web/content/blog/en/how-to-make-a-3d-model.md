@@ -70,6 +70,8 @@ RealityScan starts processing after 20 images and takes up to 300. Its guide put
 
 RealityScan and Polycam run it on a phone, and the open-source [Meshroom](https://alicevision.org/) runs it on a computer. It captures real surface detail well. It struggles with plain white surfaces, glass and polished metal, because it needs visible texture to match one photo to the next.
 
+[Photogrammetry software vs one-photo AI](/compare/photogrammetry-software) sets out when this route is worth the setup.
+
 ## Method 3: LiDAR scanning on a phone
 
 Pro iPhones from the iPhone 12 Pro on, and recent iPad Pro models, have a [LiDAR sensor](https://www.apple.com/newsroom/2020/03/apple-unveils-new-ipad-pro-with-lidar-scanner-and-trackpad-support-in-ipados/) that measures depth directly. Apps like Polycam use it to build a model as you walk round the object.
@@ -89,7 +91,7 @@ The method is the same in every tool: one sharp photo of the whole object on a p
 
 easyrender is one of these tools. It first draws a free sheet of nine views, eight round the object in 45-degree steps and one from above, then builds the model from those views. A finished model costs {{renderCredits}} credits ({{renderPrice}}). [Upload a photo](/)
 
-It models one object at a time, such as furniture, decor and building exteriors. Meshy and Tripo also turn images into 3D models and add text-to-3D, each with its own pricing.
+It models one object at a time, such as furniture, decor and building exteriors. Meshy and Tripo also turn images into 3D models and add text-to-3D, each with its own pricing. A closer look is in [Meshy alternative for product photos](/compare/meshy) and [Tripo alternative for product photos](/compare/tripo).
 
 To compare tools, run the same photo through two of them and judge five things side by side:
 
@@ -111,7 +113,7 @@ A good brief removes most of the back and forth. Put these in it:
 - The budget: 30,000 to 50,000 triangles, textures at 2048 pixels or less, and as few materials as the piece allows.
 - The source file, such as the .blend, so you can make changes later.
 
-Freelance marketplaces such as Fiverr and Upwork list product modellers. Ask for a sample model, or a past one in the same category, before you commission a whole catalogue.
+Freelance marketplaces such as Fiverr and Upwork list product modellers. Ask for a sample model, or a past one in the same category, before you commission a whole catalogue. Cost, time and when to hire versus start from a photo are in [hire a 3D modeler or use AI](/compare/3d-modeler-vs-ai).
 
 ## How much does a 3D model cost?
 

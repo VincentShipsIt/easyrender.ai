@@ -7,12 +7,19 @@ import { heroSource, parseBlocks } from '@/lib/blog/markdown';
 import { llmsFullTxt, llmsTxt } from '@/lib/seo/llms';
 import { isNoindexPath } from '@/lib/seo/noindex';
 import { postTitle } from '@/lib/seo/pages';
-import { localeSitemapXml, sitemapIndexXml } from '@/lib/seo/sitemap';
-import { getComparePage, isCompareInReview, readComparePages } from './pages';
+import { localeSitemapXml } from '@/lib/seo/sitemap';
+import {
+  COMPARE_INDEX,
+  getComparePage,
+  isCompareInReview,
+  isComparePublished,
+  listComparePages,
+  readComparePages,
+} from './pages';
 
-// The comparison drafts: written to the same bar as the guides, and kept out of public view
-// while they wait for Jorge's go-ahead. If one of these fails, either the copy broke a rule or
-// a compare URL leaked into a place that would publish it.
+// The published English comparisons: written to the same bar as the guides, now indexable.
+// If one of these fails, either the copy broke a rule or a compare URL is missing from the
+// sitemap, llms.txt or the places we chose to link it from.
 
 const REVIEW_SLUGS = ['360-vs-3d', '3d-modeler-vs-ai', 'meshy', 'photogrammetry-software', 'tripo'];
 
@@ -32,10 +39,15 @@ function filesUnder(dir: string, extensions: string[]): string[] {
   return out;
 }
 
-describe('the comparison drafts', () => {
-  it('are the five pages under review', () => {
+describe('the published comparisons', () => {
+  it('are the five English pages, plus an index', () => {
     expect(pages.map((page) => page.slug)).toEqual(REVIEW_SLUGS);
-    expect(isCompareInReview()).toBe(true);
+    expect(isComparePublished()).toBe(true);
+    expect(isCompareInReview()).toBe(false);
+    expect(listComparePages()).toHaveLength(5);
+    expect(COMPARE_INDEX.title.length).toBeLessThanOrEqual(60);
+    expect(postTitle(COMPARE_INDEX.title).length).toBeLessThanOrEqual(60);
+    expect(COMPARE_INDEX.description.length).toBeLessThanOrEqual(160);
     for (const slug of REVIEW_SLUGS) expect(getComparePage(slug)?.path).toBe(`/compare/${slug}`);
     expect(getComparePage('does-not-exist')).toBeNull();
   });
@@ -116,33 +128,43 @@ describe.each(pages.map((page) => [page.slug, page] as const))('compare page %s'
   });
 });
 
-describe('while they are in review', () => {
-  it('are noindex at every path', () => {
-    for (const page of pages) expect(isNoindexPath(page.path), page.path).toBe(true);
+describe('once they are published', () => {
+  it('are indexable at the hub and at every slug', () => {
+    expect(isNoindexPath('/compare')).toBe(false);
+    for (const page of pages) expect(isNoindexPath(page.path), page.path).toBe(false);
   });
 
-  it('are in no sitemap and no llms.txt', () => {
-    const published = [
-      sitemapIndexXml(),
-      ...LOCALES.map((locale) => localeSitemapXml(locale)),
-      llmsTxt(),
-      llmsFullTxt(),
-    ].join('\n');
-    expect(published).not.toMatch(/\/compare\b/);
+  it('appear in the English sitemap and in llms.txt, and nowhere else', () => {
+    const english = [localeSitemapXml('en'), llmsTxt(), llmsFullTxt()].join('\n');
+    expect(english).toContain('/compare<');
+    expect(english).toMatch(/https:\/\/easyrender\.ai\/compare['"\s<]/);
+    for (const page of pages) {
+      expect(english, page.path).toContain(page.path);
+    }
+    for (const locale of LOCALES.filter((item) => item !== 'en')) {
+      expect(localeSitemapXml(locale)).not.toMatch(/\/compare\b/);
+    }
   });
 
-  it('are linked from nowhere on the public site: no nav, home, message or guide', () => {
-    const sources = [
+  it('are linked from the English guides hub and from related guides, not from chrome', () => {
+    const hub = readFileSync(join(ROOT, 'components', 'blog', 'blog-index-view.tsx'), 'utf8');
+    expect(hub).toMatch(/listComparePages/);
+    const guides = filesUnder(join(ROOT, 'content', 'blog', 'en'), ['.md'])
+      .map((file) => readFileSync(file, 'utf8'))
+      .join('\n');
+    expect(guides).toMatch(/\]\(\/compare\//);
+
+    const chrome = [
       ...filesUnder(join(ROOT, 'app'), ['.ts', '.tsx']),
       ...filesUnder(join(ROOT, 'components'), ['.ts', '.tsx']),
       ...filesUnder(join(ROOT, 'messages'), ['.json']),
-      ...filesUnder(join(ROOT, 'content', 'blog'), ['.md']),
     ].filter(
       (file) =>
         !file.includes(`${join('app', 'compare')}`) &&
-        !file.includes(`${join('components', 'compare')}`),
+        !file.includes(`${join('components', 'compare')}`) &&
+        !file.includes(`${join('components', 'blog', 'blog-index-view')}`),
     );
-    for (const file of sources) {
+    for (const file of chrome) {
       expect(readFileSync(file, 'utf8'), file).not.toMatch(/["'(`]\/compare\b/);
     }
   });

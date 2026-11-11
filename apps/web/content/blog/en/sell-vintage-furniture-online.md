@@ -128,6 +128,8 @@ So use the model for shape and proportion, and the close-ups as the evidence of 
 
 Marketplaces set their own rules for 3D files, so in practice you send a link when someone asks for more angles, or add the GLB to your own Shopify store as product media. The routes to a model are in [how to make a 3D model](/learn/how-to-make-a-3d-model), and what a store does with one is in [3D for ecommerce](/learn/3d-models-for-ecommerce).
 
+Whether to hire a modeler or start from one photo is in [hire a 3D modeler or use AI](/compare/3d-modeler-vs-ai).
+
 easyrender gives each finished model in its public gallery a page you can share by link. Put that link in your reply to a buyer, next to the close-ups and your tape measurements, which stay in the listing.
 
 ## How do you know a listing is working?

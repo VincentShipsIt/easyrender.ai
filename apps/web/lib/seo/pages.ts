@@ -10,6 +10,7 @@ import {
   modifiedDate,
   postLivePaths,
 } from '@/lib/blog/posts';
+import { COMPARE_INDEX, type ComparePage } from '@/lib/compare/pages';
 import { hasPublishedRuns } from '@/lib/evals';
 import {
   article,
@@ -177,5 +178,51 @@ export async function postGraph(post: BlogPost) {
       { name: post.title, path: post.path },
     ]),
     ...(post.faq.length ? [faqPage(post.faq, `${absoluteUrl(post.path)}#faq`)] : []),
+  ];
+}
+
+/** The English comparisons hub. */
+export function compareIndexMetadata(): Metadata {
+  return pageMetadata({
+    locale: 'en',
+    path: ROUTES.compare.paths.en,
+    title: postTitle(COMPARE_INDEX.title),
+    description: COMPARE_INDEX.description,
+    alternates: livePaths('compare'),
+  });
+}
+
+export function compareIndexGraph() {
+  return [
+    breadcrumbList([
+      { name: 'Home', path: ROUTES.home.paths.en },
+      { name: 'Comparisons', path: ROUTES.compare.paths.en },
+    ]),
+  ];
+}
+
+/** One English comparison page, with its illustration as the Open Graph image when present. */
+export function comparePageMetadata(page: ComparePage): Metadata {
+  const image = schemaImage(page.body);
+  return pageMetadata({
+    locale: 'en',
+    path: page.path,
+    title: postTitle(page.title),
+    description: page.description,
+    alternates: { en: page.path },
+    type: 'article',
+    modifiedTime: page.updated,
+    ...(image ? { image: image.src, imageSize: { width: image.width, height: image.height } } : {}),
+  });
+}
+
+export function comparePageGraph(page: ComparePage) {
+  return [
+    breadcrumbList([
+      { name: 'Home', path: ROUTES.home.paths.en },
+      { name: 'Comparisons', path: ROUTES.compare.paths.en },
+      { name: page.title, path: page.path },
+    ]),
+    ...(page.faq.length ? [faqPage(page.faq, `${absoluteUrl(page.path)}#faq`)] : []),
   ];
 }

@@ -21,7 +21,7 @@ Photogrammetry stitches overlapping photos into a model. [Polycam](https://learn
 
 LiDAR, on an iPhone Pro or iPad Pro, measures depth as you walk round the piece. It is quick on big, plain shapes and loses fine detail such as turned spindles.
 
-![Two routes side by side: photogrammetry takes 20 to 100 or more overlapping photos of an object you have in front of you and sees every surface; image-to-3D takes one photo and predicts the sides it cannot see](diagram:photo-vs-photogrammetry "Photogrammetry measures what the camera saw. Image-to-3D predicts what one photo could not show, so its back is an estimate. Photo counts from Polycam's object-mode guide.")
+![Two routes side by side: photogrammetry takes 20 to 100 or more overlapping photos of an object you have in front of you and sees every surface; image-to-3D takes one photo and predicts the sides it cannot see](diagram:photo-vs-photogrammetry "Photogrammetry measures what the camera saw. Image-to-3D works from one photo, so the sides the camera did not see come from that picture. Photo counts from Polycam's object-mode guide.")
 
 This is how we would choose, case by case:
 
@@ -29,6 +29,8 @@ This is how we would choose, case by case:
 - The piece in your stockroom, a textured surface like oak or linen, an hour free: photogrammetry. It records the real surface instead of predicting it.
 - A large, plain piece like a three-seat sofa, with a Pro iPhone to hand: LiDAR. It is fast, and the shape matters more than the weave.
 - Glass, mirror or polished chrome: none of them works well, because each one reads reflections as surface.
+
+The trade-offs between many photos and one photo are in [photogrammetry software vs one-photo AI](/compare/photogrammetry-software).
 
 ## How does image to 3D work?
 
