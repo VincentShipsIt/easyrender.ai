@@ -46,6 +46,12 @@ export async function CompareView({ page }: { page: ComparePage }) {
             </Link>
           </li>
           <li aria-hidden>/</li>
+          <li className="shrink-0">
+            <Link href={ROUTES.compare.paths.en} className="hover:text-foreground">
+              Comparisons
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
           {/* One line, so a long title cannot re-wrap and shift the page when the font loads. */}
           <li aria-current="page" className="min-w-0 truncate text-foreground">
             {page.title}

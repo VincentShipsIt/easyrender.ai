@@ -6,6 +6,7 @@ import {
   modifiedDate,
   postLivePaths,
 } from '@/lib/blog/posts';
+import { isComparePublished, listComparePages } from '@/lib/compare/pages';
 import { hasPublishedRuns } from '@/lib/evals';
 import {
   type ChangeFrequency,
@@ -51,6 +52,18 @@ export function localeEntries(locale: Locale, now: Date = new Date()): SitemapEn
       // The guides index changes when its newest guide does.
       ...(posts[0] ? { lastModified: modifiedDate(posts[0]) } : {}),
     });
+    // Individual comparisons live under /compare/{slug}, like guides under /learn/{slug}.
+    if (key === 'compare' && isComparePublished() && locale === 'en') {
+      for (const page of listComparePages()) {
+        entries.push({
+          path: page.path,
+          changeFrequency: 'monthly',
+          priority: 0.6,
+          alternates: { en: page.path },
+          ...(page.updated ? { lastModified: page.updated } : {}),
+        });
+      }
+    }
   }
 
   for (const post of listPosts(locale, now)) {

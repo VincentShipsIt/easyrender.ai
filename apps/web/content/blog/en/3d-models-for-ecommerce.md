@@ -85,11 +85,13 @@ Verdict: the best route for textured pieces you have in your stockroom, such as 
 
 ### Generate it from one photo with AI
 
-Image-to-3D tools such as Meshy, Tripo and easyrender predict the hidden sides from a single picture. It is the only route when you have a supplier photo and no access to the item. The trade-off is that the back is an estimate, so you check it before you keep the model.
+Image-to-3D tools such as Meshy, Tripo and easyrender start from a single picture. It is the only route when you have a supplier photo and no access to the item. The photo only shows one side, so you check the back in the preview before you keep the model.
 
 ![Nine views of a matte stoneware vase, drawn from one product photo](/showcase/vase-angles.jpg "An angle sheet easyrender drew from one photo of a stoneware vase, unretouched. Round, matte objects like this are the easy case.")
 
-Verdict: the route for a catalogue built from supplier photos. It is weakest on fine logos, open weaves and the side the photo never showed. Each route, with what it needs and where it fails, is in [how to make a 3D model](/learn/how-to-make-a-3d-model).
+Verdict: the route for a catalogue built from supplier photos. Fine logos, open weaves and a side the photo never showed are harder to read from one picture. Each route, with what it needs and where it fails, is in [how to make a 3D model](/learn/how-to-make-a-3d-model).
+
+Hiring someone versus starting from a photo is in [hire a 3D modeler or use AI](/compare/3d-modeler-vs-ai). A closer look at two of the tools is in [Meshy](/compare/meshy) and [Tripo](/compare/tripo).
 
 ## 3D models for furniture stores: where to start
 

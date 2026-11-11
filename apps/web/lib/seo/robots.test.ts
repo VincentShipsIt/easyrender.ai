@@ -28,4 +28,12 @@ describe('robots.txt', () => {
       }
     },
   );
+
+  it('does not block AI crawlers from the published comparisons', () => {
+    expect(NOINDEX_PREFIXES).not.toContain('/compare');
+    for (const agent of AI_CRAWLERS) {
+      const group = groupFor(agent);
+      expect(group?.disallow, agent).not.toContain('/compare');
+    }
+  });
 });
