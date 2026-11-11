@@ -9,6 +9,11 @@ const steps: Array<[string, string[]]> = [
   ['tests', ['bunx', 'turbo', 'run', 'test']],
 ];
 
+// The store plugins are PHP; CI checks them in their own job, and so does this when php is installed.
+if (Bun.which('php')) {
+  steps.push(['woocommerce plugin', ['php', 'plugins/woocommerce/easyrender-3d/tests/run.php']]);
+}
+
 let failed = 0;
 for (const [name, cmd] of steps) {
   console.log(`\n▶ ${name}: ${cmd.join(' ')}`);
