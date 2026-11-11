@@ -103,7 +103,7 @@ For a courier, prepare the piece in this order:
 5. Tape the drawers and doors shut through the blankets.
 6. Photograph it before you wrap it and again just before it leaves, in case of a damage claim.
 
-![Illustration of a wooden chest of drawers being packed for a courier: wrapped in moving blankets, legs removed and wrapped, and a labelled bag of screws in the top drawer](/blog/illustrations/sell-vintage-furniture-online/courier-prep.webp "An illustration, not a photo or an easyrender result: blankets on, legs off, screws bagged and labelled inside a drawer.")
+![Illustration of a vintage pine chest of drawers being prepared for a courier: draped in a moving blanket, legs removed and wrapped, and a bag of screws in the top drawer](/blog/illustrations/sell-vintage-furniture-online/courier-prep.webp "An illustration, not a photo or an easyrender result: blankets on, legs off, screws bagged and labelled inside a drawer.")
 
 ## How to sell antique furniture: what changes?
 
