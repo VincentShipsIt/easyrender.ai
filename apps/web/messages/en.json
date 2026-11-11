@@ -1079,5 +1079,37 @@
     "notReadyTitle": "Almost there",
     "modelAlt": "3D model of {name}",
     "madeWith": "3D by easyrender"
+  },
+  "ShopifyApp": {
+    "title": "3D models for your whole catalogue",
+    "intro": "Generate a 3D model for every product in one click. Shoppers see each piece in their own room from a button or a QR code on the product page.",
+    "loading": "Loading…",
+    "notInShopify": "Open this page from your Shopify admin.",
+    "error": "Something went wrong: {message}",
+    "connectBody": "Connect your easyrender account. Models for this store are paid with credits from that account.",
+    "connectButton": "Connect your easyrender account",
+    "connectWaiting": "Finished? This page updates by itself.",
+    "generate": "Generate 3D for {count} products ({credits} credits)",
+    "starting": "Sending products… {count} sent",
+    "nothing": "Every product with a photo already has a 3D model or is on its way.",
+    "balance": "Balance: {credits} credits",
+    "missing": "{credits} more credits needed",
+    "buy": "Buy credits",
+    "progress": "{ready} ready, {running} in progress, {waiting} waiting",
+    "needsCredits": "{count} are waiting for credits and will continue when you add some.",
+    "needsInfo": "{count} need a usable photo.",
+    "failed": "{count} failed and were refunded. Generate again to retry.",
+    "noPhoto": "{count} have no photo and are skipped.",
+    "themeTitle": "Show it on your product pages",
+    "themeBody": "Open the theme editor, go to a product page, add the \"View in your room\" block and save. Products with a finished model show a button and a QR code."
+  },
+  "ShopifyConnect": {
+    "title": "Connect {shop} to easyrender",
+    "body": "Models for this store will be paid with credits from your easyrender account.",
+    "signIn": "Sign in to continue",
+    "button": "Connect store",
+    "done": "Connected. Go back to Shopify and open the app.",
+    "invalid": "This link has expired. Open the app in Shopify again.",
+    "error": "Could not connect the store."
   }
 }

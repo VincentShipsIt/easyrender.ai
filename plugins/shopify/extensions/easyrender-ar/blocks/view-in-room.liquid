@@ -1,0 +1,45 @@
+{%- comment -%}
+  "View in your room": a button and a QR code for products with a finished easyrender model.
+  The app writes the model's id to the product metafield easyrender.render_id.
+  The button opens easyrender's AR page, which hands over to the phone's own AR (Android Scene
+  Viewer, iPhone Quick Look). On a computer the QR code carries the page to a phone.
+{%- endcomment -%}
+{%- assign render_id = product.metafields.easyrender.render_id.value -%}
+{%- if render_id != blank -%}
+  {{ 'easyrender-ar.css' | asset_url | stylesheet_tag }}
+  <div class="easyrender-ar" {{ block.shopify_attributes }}>
+    <a
+      class="easyrender-ar__button"
+      href="https://easyrender.ai/ar/{{ render_id | url_encode }}"
+      target="_blank"
+      rel="noopener"
+    >
+      {{ block.settings.button_label | escape }}
+    </a>
+    {%- if block.settings.show_qr -%}
+      <figure class="easyrender-ar__qr">
+        <img
+          src="https://easyrender.ai/api/renders/{{ render_id | url_encode }}/qr"
+          alt="{{ block.settings.qr_caption | escape }}"
+          width="140"
+          height="140"
+          loading="lazy"
+        >
+        <figcaption>{{ block.settings.qr_caption | escape }}</figcaption>
+      </figure>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "View in your room",
+  "target": "section",
+  "templates": ["product"],
+  "settings": [
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View in your room" },
+    { "type": "checkbox", "id": "show_qr", "label": "Show a QR code on computers", "default": true },
+    { "type": "text", "id": "qr_caption", "label": "QR code caption", "default": "Scan with your phone to see it in your room" }
+  ]
+}
+{% endschema %}

@@ -1079,5 +1079,37 @@
     "notReadyTitle": "Quasi pronto",
     "modelAlt": "Modello 3D di {name}",
     "madeWith": "3D di easyrender"
+  },
+  "ShopifyApp": {
+    "title": "Modelli 3D per tutto il tuo catalogo",
+    "intro": "Genera un modello 3D di ogni prodotto con un clic. I clienti vedono ogni pezzo a casa propria da un pulsante o da un codice QR nella scheda prodotto.",
+    "loading": "Caricamento…",
+    "notInShopify": "Apri questa pagina dall'amministrazione di Shopify.",
+    "error": "Qualcosa è andato storto: {message}",
+    "connectBody": "Collega il tuo account easyrender. I modelli di questo negozio si pagano con i crediti di quell'account.",
+    "connectButton": "Collega il tuo account easyrender",
+    "connectWaiting": "Fatto? Questa pagina si aggiorna da sola.",
+    "generate": "Genera il 3D di {count} prodotti ({credits} crediti)",
+    "starting": "Invio dei prodotti… {count} inviati",
+    "nothing": "Ogni prodotto con foto ha già un modello 3D o è in lavorazione.",
+    "balance": "Saldo: {credits} crediti",
+    "missing": "Servono altri {credits} crediti",
+    "buy": "Acquista crediti",
+    "progress": "{ready} pronti, {running} in corso, {waiting} in attesa",
+    "needsCredits": "{count} aspettano crediti e proseguiranno quando ne aggiungi.",
+    "needsInfo": "{count} hanno bisogno di una foto utilizzabile.",
+    "failed": "{count} sono falliti e sono stati rimborsati. Genera di nuovo per riprovare.",
+    "noPhoto": "{count} non hanno una foto e vengono saltati.",
+    "themeTitle": "Mostralo nelle schede prodotto",
+    "themeBody": "Apri l'editor del tema, vai a una scheda prodotto, aggiungi il blocco «Guardalo a casa tua» e salva. I prodotti con un modello pronto mostrano un pulsante e un codice QR."
+  },
+  "ShopifyConnect": {
+    "title": "Collega {shop} a easyrender",
+    "body": "I modelli di questo negozio verranno pagati con i crediti del tuo account easyrender.",
+    "signIn": "Accedi per continuare",
+    "button": "Collega il negozio",
+    "done": "Collegato. Torna su Shopify e apri l'app.",
+    "invalid": "Questo link è scaduto. Apri di nuovo l'app in Shopify.",
+    "error": "Impossibile collegare il negozio."
   }
 }

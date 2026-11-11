@@ -1079,5 +1079,37 @@
     "notReadyTitle": "Fast fertig",
     "modelAlt": "3D-Modell von {name}",
     "madeWith": "3D von easyrender"
+  },
+  "ShopifyApp": {
+    "title": "3D-Modelle für Ihren ganzen Katalog",
+    "intro": "Erstellen Sie mit einem Klick ein 3D-Modell für jedes Produkt. Kunden sehen jedes Stück per Button oder QR-Code auf der Produktseite in ihrem eigenen Raum.",
+    "loading": "Wird geladen…",
+    "notInShopify": "Öffnen Sie diese Seite im Shopify-Admin.",
+    "error": "Etwas ist schiefgelaufen: {message}",
+    "connectBody": "Verbinden Sie Ihr easyrender-Konto. Die Modelle dieses Shops werden mit Guthaben dieses Kontos bezahlt.",
+    "connectButton": "easyrender-Konto verbinden",
+    "connectWaiting": "Fertig? Diese Seite aktualisiert sich selbst.",
+    "generate": "3D für {count} Produkte erstellen ({credits} Credits)",
+    "starting": "Produkte werden gesendet… {count} gesendet",
+    "nothing": "Jedes Produkt mit Foto hat bereits ein 3D-Modell oder ist in Arbeit.",
+    "balance": "Guthaben: {credits} Credits",
+    "missing": "{credits} weitere Credits nötig",
+    "buy": "Credits kaufen",
+    "progress": "{ready} fertig, {running} in Arbeit, {waiting} wartend",
+    "needsCredits": "{count} warten auf Credits und machen weiter, sobald Sie welche hinzufügen.",
+    "needsInfo": "{count} brauchen ein brauchbares Foto.",
+    "failed": "{count} sind fehlgeschlagen und wurden erstattet. Erstellen Sie erneut, um es zu wiederholen.",
+    "noPhoto": "{count} haben kein Foto und werden übersprungen.",
+    "themeTitle": "Auf Ihren Produktseiten anzeigen",
+    "themeBody": "Öffnen Sie den Theme-Editor, gehen Sie zu einer Produktseite, fügen Sie den Block „In deinem Zuhause ansehen“ hinzu und speichern Sie. Produkte mit fertigem Modell zeigen einen Button und einen QR-Code."
+  },
+  "ShopifyConnect": {
+    "title": "{shop} mit easyrender verbinden",
+    "body": "Die Modelle dieses Shops werden mit Guthaben Ihres easyrender-Kontos bezahlt.",
+    "signIn": "Zum Fortfahren anmelden",
+    "button": "Shop verbinden",
+    "done": "Verbunden. Gehen Sie zurück zu Shopify und öffnen Sie die App.",
+    "invalid": "Dieser Link ist abgelaufen. Öffnen Sie die App in Shopify erneut.",
+    "error": "Der Shop konnte nicht verbunden werden."
   }
 }

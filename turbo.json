@@ -15,6 +15,7 @@
         "AWS_ROLE_ARN",
         "NEXT_PUBLIC_*",
         "SENTRY_*",
+        "SHOPIFY_*",
         "APP_URL",
         "SHEET_ENABLED",
         "FREE_PREVIEWS_PER_DAY"
