@@ -972,9 +972,9 @@
     "settingsTitle": "Ajustes",
     "sheet": {
       "title": "Hoja de ángulos",
-      "role": "Dibuja el objeto desde ocho lados más una vista cenital en una sola hoja 2K, a partir de tu foto y una instrucción corta. La ves antes de construir nada en 3D.",
+      "role": "Dibuja el objeto desde ocho lados más una vista cenital en una sola hoja 1K, a partir de tu foto y una instrucción corta. La ves antes de construir nada en 3D.",
       "settings": {
-        "output": "Salida: una imagen 2K (PNG)",
+        "output": "Salida: una imagen 1K (PNG)",
         "prompt": "Instrucción: una guía fija de vista giratoria, más pautas según la categoría del producto y su material"
       }
     },

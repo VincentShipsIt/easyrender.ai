@@ -24,7 +24,7 @@ import { formatCount, formatUsd } from '@/lib/price-format';
 import { ROUTES } from '@/lib/seo/routes';
 
 // The model ids come from the harness, so this page cannot name a model the pipeline does not run.
-// `google/nano-banana-pro` is the path segment of SHEET_MODEL; TRELLIS is the Replicate model name.
+// The sheet model id is the path segment of SHEET_MODEL; TRELLIS is the Replicate model name.
 const SHEET_MODEL_ID = SHEET_MODEL.path.replace('/models/', '').replace('/predictions', '');
 
 /** The models page of one language: the two steps, their settings and what each costs. */
@@ -41,7 +41,7 @@ export async function ModelsView({ locale }: { locale: Locale }) {
   const steps = [
     {
       key: 'sheet',
-      name: 'Nano Banana Pro',
+      name: SHEET_MODEL.name,
       id: SHEET_MODEL_ID,
       settings: [t('sheet.settings.output'), t('sheet.settings.prompt')],
     },
