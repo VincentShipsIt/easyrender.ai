@@ -4,7 +4,7 @@ group: usdz-file
 title: What is a USDZ file? AR Quick Look on iPhone, explained
 description: "A USDZ file is the 3D format iPhone and iPad open in AR: what is inside it, how to open and make one, and why it can look the wrong size."
 date: 2026-11-17
-updated: 2026-11-10
+updated: 2026-11-11
 keyword: usdz file
 cta: Pick a sharp photo of one piece, an oak side table or a floor lamp, and check every angle before you spend a credit.
 ---

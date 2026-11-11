@@ -4,7 +4,7 @@ group: 3d-models-for-ecommerce
 title: "3D for ecommerce: how stores get 3D models"
 description: "3D for ecommerce: what a 3D product model adds, which files a store needs (GLB and USDZ), four ways to get one, and the limits to know first."
 date: 2026-11-13
-updated: 2026-11-10
+updated: 2026-11-11
 keyword: 3d for ecommerce
 cta: Pick one piece with depth, an armchair or a sideboard, and check every angle before you decide whether 3D is worth it for your store.
 ---

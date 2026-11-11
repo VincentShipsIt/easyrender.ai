@@ -4,7 +4,7 @@ group: product-photography-for-ecommerce
 title: "Product photography for ecommerce: a small shop setup"
 description: "Product photography for ecommerce on a small budget: one soft light, a plain background, a fixed shot list, and what Amazon and Shopify ask for."
 date: 2026-11-12
-updated: 2026-11-10
+updated: 2026-11-11
 keyword: product photography for ecommerce
 cta: When your next three-quarter main image is ready, run it through image-to-3D and check the hidden sides for free.
 ---
