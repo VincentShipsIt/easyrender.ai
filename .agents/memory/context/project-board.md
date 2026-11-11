@@ -1,4 +1,5 @@
 ---
+
 name: project-board
 description: How the easyrender.ai GitHub board and issues are run (mirrors genfeedai/genfeed.ai Project #12)
 type: reference
@@ -28,6 +29,7 @@ code, AR on the phone) and epic #71 pro render pipeline for interior designers a
 **Why:** Vincent wants the same status columns, issue template and way of working as genfeed.ai,
 and the two revenue epics at the top of the board.
 **How to apply:**
+
 - Search open PRs and issues before starting: whoever opened the PR first owns the work.
 - Set Priority when an item joins the board. An empty Priority is a board defect.
 - Move the parent epic to In Progress as soon as any child starts or ships.
