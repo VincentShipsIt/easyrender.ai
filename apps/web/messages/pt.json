@@ -1065,5 +1065,19 @@
       "report": "Full report"
     },
     "cta": "See the models behind a render"
+  },
+  "Ar": {
+    "metaTitle": "Veja na sua casa",
+    "title": "{name} na sua casa",
+    "tapHint": "Toque no botão, mova o telemóvel devagar até encontrar o chão e toque para colocar a peça.",
+    "viewInRoom": "Ver na sua casa",
+    "arUnavailable": "A realidade aumentada não está disponível neste dispositivo. Abra esta página no telemóvel para colocar a peça na sua casa.",
+    "scanTitle": "Leia com o telemóvel",
+    "scanBody": "Aponte a câmara do telemóvel para o código para ver esta peça na sua casa.",
+    "scanAlt": "Código QR que abre este modelo no telemóvel",
+    "notReady": "Este modelo ainda está a ser criado. Volte dentro de alguns minutos.",
+    "notReadyTitle": "Quase pronto",
+    "modelAlt": "Modelo 3D de {name}",
+    "madeWith": "3D por easyrender"
   }
 }

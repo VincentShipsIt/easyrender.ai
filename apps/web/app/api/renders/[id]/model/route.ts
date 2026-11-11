@@ -1,4 +1,12 @@
-import { canAccess, getFile, getRender, notFound, servedModel } from '@easyrender/core';
+import {
+  canAccess,
+  getFile,
+  getRender,
+  isListed,
+  isShared,
+  notFound,
+  servedModel,
+} from '@easyrender/core';
 import { resolveActor } from '@/lib/actor';
 import { handle } from '@/lib/http';
 
@@ -12,7 +20,7 @@ export const GET = (request: Request, { params }: RouteContext<'/api/renders/[id
     if (render.status !== 'ready' || !render.glbKey) throw notFound();
     // Owners download their model; anyone can view a render that is in the public gallery.
     const owner = canAccess(render, actor) && Boolean(actor.userId);
-    if (!owner && !render.isPublic) throw notFound();
+    if (!owner && !isListed(render) && !isShared(render)) throw notFound();
     const bytes = servedModel(render, await getFile(render.glbKey));
     const isEdited = Array.isArray(render.materialEdits) && render.materialEdits.length > 0;
     const download = new URL(request.url).searchParams.get('download') === '1';
@@ -25,6 +33,8 @@ export const GET = (request: Request, { params }: RouteContext<'/api/renders/[id
           : owner
             ? 'private, max-age=3600'
             : 'public, max-age=3600',
+        // Shoppers on a store's own pages fetch the model from here.
+        ...(isShared(render) ? { 'access-control-allow-origin': '*' } : {}),
         ...(download
           ? { 'content-disposition': `attachment; filename="easyrender-${id}.glb"` }
           : {}),

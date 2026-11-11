@@ -1065,5 +1065,19 @@
       "report": "Full report"
     },
     "cta": "See the models behind a render"
+  },
+  "Ar": {
+    "metaTitle": "In deinem Zuhause ansehen",
+    "title": "{name} in deinem Zuhause",
+    "tapHint": "Tippe auf die Schaltfläche, bewege dein Handy langsam, bis es den Boden erkennt, und tippe dann, um das Stück zu platzieren.",
+    "viewInRoom": "In deinem Zuhause ansehen",
+    "arUnavailable": "AR ist auf diesem Gerät nicht verfügbar. Öffne diese Seite auf deinem Handy, um das Stück in deinem Zuhause zu platzieren.",
+    "scanTitle": "Mit dem Handy scannen",
+    "scanBody": "Richte die Handykamera auf den Code, um dieses Stück in deinem Zuhause zu sehen.",
+    "scanAlt": "QR-Code, der dieses Modell auf dem Handy öffnet",
+    "notReady": "Dieses Modell wird noch erstellt. Schau in ein paar Minuten wieder vorbei.",
+    "notReadyTitle": "Fast fertig",
+    "modelAlt": "3D-Modell von {name}",
+    "madeWith": "3D von easyrender"
   }
 }
