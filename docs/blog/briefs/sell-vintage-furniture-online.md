@@ -69,7 +69,37 @@ Unlinked outside facts: "eBay: wide reach, plus a record of what buyers actually
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, US): Chairish consignment page, AptDeco home, furnishmevintage.com sell-to-us, Chairish home; position 4 missing; no AI Overview. The report calls it a transactional SERP and suggests platforms first, then photos, listing copy, shipping, then an optional 3D section, with an H2 for the antique parent topic.
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): a neutral platform-by-piece table across marketplaces rather than one marketplace's pitch; a sold-listings pricing method with the best-offer caveat; flaw photography with numbered photos cited in the text; a fixed listing order; courier prep steps; a per-piece log to measure results.
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): a neutral platform-by-piece table across marketplaces rather than one marketplace's pitch; a sold-listings pricing method with the best-offer caveat; flaw photography with numbered photos cited in the text; a fixed listing order; courier prep steps; a per-piece log to measure results.
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch and Chairish's official commission page (WebFetch). No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief.
+
+### What currently surfaces
+
+The SERP is still transactional: platform explainers (FLUF Connect comparing Vinterior, Selency, Facebook Marketplace, eBay and local sites), Chairish's own selling-plans help, marketplace fee pages (Ruby Lane), UK "where to sell vintage" guides, and general "selling antique furniture online" posts. Chairish and "sell-to-us" consignment pages still appear, as on 10-nov. The guide should keep leading with platforms, then photos, listing copy and shipping, with 3D optional.
+
+### Facts to refresh or confirm (fees change; re-check before any post edit)
+
+- Chairish, official help opened 11-nov-2026 (https://support.chairish.com/hc/en-us/articles/44165603442321-Chairish-Selling-Plans-Commission-Rate-Overview): new accounts start on the Consignor plan at 40% commission on Chairish sales (20% on Chairish Auctions). At 10 live listings the account is upgraded to Professional at 30% (auctions stay 20%). Paid plans then cut vintage/used commission: Premium 25%, Plus 22%, Elite and Platinum 20% on a price tier (20% / 12% / 3% bands). Newly made and made-to-order items stay at 30% on the paid plans. If listings fall below 10, Professional is kept for a six-month grace period. Do not summarise this as a flat "22–40%" without naming the plan.
+- FLUF Connect (UK-oriented comparison, opened via search 11-nov): Vinterior 24% including VAT for UK private sellers; Selency charges a sale commission and has no registration fee; Etsy $0.20 per listing plus 6.5% transaction plus payment processing; Facebook Marketplace and Gumtree generally free for local bulky sales. Re-open the live page before changing any figure in the guide; do not treat a comparison blog as the primary source when the marketplace publishes its own fees.
+- Ruby Lane (third-party fee page in the SERP): $45 monthly plus 9.9% on the first $2,500 per sale, according to 3Dsellers. Confirm on Ruby Lane itself before using it in the post.
+
+### Do not copy from the SERP
+
+Do not promise a sale, a price, or a "best" marketplace. Keep the sold-listings pricing method and the best-offer caveat. Fees are not a reason to mention scale, measurements or 3D printing.
+
+### Gaps that still hold
+
+A neutral platform-by-piece table, a sold-listings pricing method with the best-offer caveat, flaw photography with numbered photos cited in the text, a fixed listing order, courier-prep steps, and a per-piece log are still the guide's edge against marketplace pitch pages.
+
+### Sources opened this read
+
+- https://fluf.io/guides/where-to-sell-furniture/
+- https://support.chairish.com/hc/en-us/articles/44165603442321-Chairish-Selling-Plans-Commission-Rate-Overview (fetched 11-nov-2026)
+- https://www.3dsellers.com/marketplaces/ruby-lane
+- https://artifactlystudio.com/blog/where-to-sell-vintage-items-online-uk
+- https://lerougetete.com/selling-antique-furniture-online-pros-cons/
 
 ## Creatives
 

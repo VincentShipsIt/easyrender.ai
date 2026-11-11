@@ -73,7 +73,36 @@ Unlinked outside facts: "Blender is free, open source and exports GLB, FBX, OBJ 
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, US): incomplete (units forced `top_positions=4`); only Tinkercad's 3D Design page (pos. 2) and a r/3Dprinting thread (pos. 4) came back. The report asks for a clear "not for 3D printing or STL" statement and fair treatment of Tinkercad, Blender and image-to-3D tools.
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): all five methods in one table with own time, best use and failure mode; numbered steps per method; a single file budget for any method; a method-tagged error table; a worked example (one floor lamp, three ways) with a verdict; an explicit printing exclusion.
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): all five methods in one table with own time, best use and failure mode; numbered steps per method; a single file budget for any method; a method-tagged error table; a worked example (one floor lamp, three ways) with a verdict; an explicit printing exclusion.
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch. No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief. The 10-nov Ahrefs pull for this query was incomplete (`top_positions=4`); this read is the first fuller look at what the how-to currently looks like.
+
+### What currently surfaces
+
+Beginner how-tos that list three to five methods: Trify3D (four methods and free tools), the3dai (four ways for beginners), Hyper3D (five methods for 2026), a university Tinkercad intro, and Tinkercad YouTube basics. Tinkercad, Blender and "make it from a photo or a prompt" are the recurring options. The 10-nov note that the SERP mixes Tinkercad/Blender with community threads still holds; AI image-to-3D now appears as a standard method in 2026 round-ups, not a footnote.
+
+### Facts worth keeping in the brief
+
+- Typical method set on the SERP: Tinkercad (browser, blocks, often aimed at printable parts and STL/3MF), Blender (reference, block-out, mesh or sculpt), CAD for exact parts, photogrammetry when the object is in front of you, and AI from a photo or a prompt for a quick concept, sometimes cleaned up in Blender.
+- Many of these pages treat 3D printing / STL as a default destination, especially the Tinkercad ones. Our guide must keep a clear "not for 3D printing or STL" line and a fair treatment of Tinkercad, Blender and image-to-3D, without sending a shop owner to print a photo-made model.
+- The five-method table (software, photogrammetry, LiDAR, AI from a photo, hire an artist) with own time, best use and failure mode, plus a single file budget and a worked example, is still the structure that separates us from "four tools to try" lists.
+
+### Do not copy from the SERP
+
+Do not present STL or a printer as the output of image-to-3D. Do not say a one-photo model is "exact". Do not borrow "true-to-scale" language. When a method's back or unseen side is discussed, the cause is the photo or the camera path, not a weakness of our export.
+
+### Gaps that still hold
+
+All five methods in one table with own time, best use and failure mode; numbered steps per method; a single file budget for any method; a method-tagged error table; a worked example (one floor lamp, three ways) with a verdict; and an explicit printing exclusion remain the planned edge, and they are still not what the 2026 listicles do.
+
+### Sources opened this read
+
+- https://trify3d.com/blog/how-to-make-a-3d-model
+- https://sites.google.com/brown.edu/mml-3d-modeling-101/home
+- https://the3dai.com/how-to-make-3d-models
+- https://hyper3d.ai/blog/how-to-make-a-3d-model
 
 ## Creatives
 
