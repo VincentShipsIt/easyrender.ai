@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseBlocks, renderInline } from './markdown';
+import { parseBlocks, renderInline, slugify, tableOfContents, tocOf } from './markdown';
 
 describe('the markdown subset the guides are written in', () => {
   it('reads headings, paragraphs, lists, quotes and rules', () => {
@@ -126,5 +126,43 @@ describe('the markdown subset the guides are written in', () => {
     const nodes = renderInline('See [the later guide](/learn/later) or [the home](/).', isLive);
     expect(nodes[1]).toBe('the later guide');
     expect(typeof nodes[3]).toBe('object');
+  });
+});
+
+describe('the table of contents', () => {
+  it('turns a heading into a plain URL fragment', () => {
+    expect(slugify('Step 1: Pick the right photo')).toBe('step-1-pick-the-right-photo');
+    expect(slugify('¿Qué **resolución** necesita la foto?')).toBe(
+      'que-resolucion-necesita-la-foto',
+    );
+    expect(slugify('[GLB](/learn/glb-file) vs `USDZ`')).toBe('glb-vs-usdz');
+  });
+
+  it('lists the ## headings in order, keeps the faq anchor and never repeats an id', () => {
+    const source = [
+      '## Why',
+      'Text.',
+      '### Not listed',
+      '## Why',
+      '## FAQ!',
+      'Intro.',
+      '## FAQ',
+      '### A question?',
+      'An answer.',
+    ].join('\n\n');
+    expect(tocOf(source)).toEqual([
+      { id: 'why', text: 'Why' },
+      { id: 'why-2', text: 'Why' },
+      { id: 'faq-2', text: 'FAQ!' },
+      { id: 'faq', text: 'FAQ' },
+    ]);
+  });
+
+  it('gives the rendered heading blocks the same ids the contents link to', () => {
+    const blocks = parseBlocks('## One\n\nText.\n\n## Two');
+    const { entries, ids } = tableOfContents(blocks);
+    expect(blocks.filter((block) => ids.has(block)).map((block) => ids.get(block))).toEqual(
+      entries.map((entry) => entry.id),
+    );
   });
 });

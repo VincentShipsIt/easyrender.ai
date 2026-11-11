@@ -913,9 +913,12 @@
       "metaTitle": "Guides: turning photos into 3D models · easyrender",
       "metaDescription": "How to turn a photo into a 3D model, which files you get, and what easyrender can and cannot model. Written by the people building it.",
       "title": "Guides",
+      "headline": "Everything we learn turning photos into 3D",
       "description": "How to turn a photo into a 3D model, which files you get, and what easyrender can and cannot model.",
       "empty": "The first guides are being written. Nothing is published yet.",
-      "readMore": "Read the guide"
+      "readMore": "Read the guide",
+      "latest": "Latest guide",
+      "more": "More guides"
     },
     "breadcrumb": {
       "home": "Home"
@@ -924,12 +927,15 @@
       "by": "By {author}",
       "published": "Published {date}",
       "updated": "Updated {date}",
+      "readingTime": "{minutes} min read",
+      "toc": "On this page",
       "backToIndex": "All guides",
       "modelHint": "Drag to turn",
       "cta": {
         "title": "Try it with one photo",
         "button": "Upload a photo"
-      }
+      },
+      "related": "Keep reading"
     }
   },
   "Models": {
