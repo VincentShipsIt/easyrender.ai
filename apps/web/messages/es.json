@@ -117,7 +117,7 @@
           "rollover": "Los créditos sin usar se acumulan",
           "cancel": "Cancela cuando quieras"
         },
-        "cta": "Hazte Pro"
+        "cta": "Hazte {plan}"
       },
       "enterprise": {
         "name": "Empresa",
@@ -517,12 +517,13 @@
     "title": "Créditos",
     "description": "Las vistas previas son gratis. Un render 3D completo cuesta {credits} créditos ({price}). Los créditos no caducan.",
     "balance": "Tienes {credits} créditos.",
-    "balancePro": "Tienes {credits} créditos y estás en el plan Pro.",
+    "balancePro": "Tienes {credits} créditos y estás en el plan {plan}.",
     "success": "Pago recibido. Tus créditos ya están disponibles.",
     "back": "Volver a tu render",
     "signUpToBuy": "Regístrate para comprar",
     "manageSubscription": "Gestionar suscripción",
-    "onPro": "Ya estás en Pro",
+    "changePlan": "Cambiar de plan",
+    "onPro": "Ya estás en {plan}",
     "subscribe": "Suscribirse a {plan}",
     "bestValue": "Mejor precio",
     "payg": {
