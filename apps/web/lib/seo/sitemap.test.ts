@@ -4,8 +4,12 @@ import { NOINDEX_PREFIXES } from './noindex';
 import { SITE_URL } from './site';
 import { localeEntries, localeSitemapXml, sitemapIndexXml, sitemapLocales } from './sitemap';
 
-// No posts are published yet, so these assert the shape and the exclusions, which are the parts
-// that must hold on the day the first post lands.
+// Guides go live on their `date`, so a test that reads the real clock changes result the day a
+// guide lands. These pin `now`: before the first guide for the registry pages alone, and after it
+// to check that a live guide is listed where its language is open and nowhere else.
+const BEFORE_GUIDES = new Date('2026-11-01T00:00:00Z');
+const FIRST_GUIDE_OUT = new Date('2026-11-11T12:00:00Z');
+const ALL_WEEK_1_GUIDES_OUT = new Date('2026-12-01T00:00:00Z');
 
 describe('the per-language sitemaps', () => {
   it('exist for every language with a live home', () => {
@@ -13,14 +17,22 @@ describe('the per-language sitemaps', () => {
   });
 
   it('lists the English home and pricing page, and each other home alone', () => {
-    expect(localeEntries('en').map((entry) => entry.path)).toEqual(['/', '/credits']);
-    expect(localeEntries('es').map((entry) => entry.path)).toEqual(['/es']);
+    const paths = (locale: (typeof LOCALES)[number]) =>
+      localeEntries(locale, BEFORE_GUIDES).map((entry) => entry.path);
+    expect(paths('en')).toEqual(['/', '/credits']);
+    expect(paths('es')).toEqual(['/es']);
     // Only the home is open in these languages: no guides, pricing or legal URL is listed.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(
-        localeEntries(locale).map((entry) => entry.path),
-        locale,
-      ).toEqual([`/${locale}`]);
+      expect(paths(locale), locale).toEqual([`/${locale}`]);
+    }
+  });
+
+  it('adds a live guide to the English sitemap only', () => {
+    const paths = (locale: (typeof LOCALES)[number]) =>
+      localeEntries(locale, FIRST_GUIDE_OUT).map((entry) => entry.path);
+    expect(paths('en')).toEqual(['/', '/credits', '/learn/how-to-make-a-3d-model-from-photos']);
+    for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
+      expect(paths(locale), locale).toEqual([`/${locale}`]);
     }
   });
 
@@ -44,10 +56,16 @@ describe('the per-language sitemaps', () => {
   it('leaves the guides hub out while it is thin', () => {
     for (const locale of LOCALES) {
       expect(
-        localeEntries(locale).map((entry) => entry.path),
+        localeEntries(locale, FIRST_GUIDE_OUT).map((entry) => entry.path),
         locale,
       ).not.toContain('/learn');
     }
+  });
+
+  it('lists the English guides hub once it has enough guides', () => {
+    expect(localeEntries('en', ALL_WEEK_1_GUIDES_OUT).map((entry) => entry.path)).toContain(
+      '/learn',
+    );
   });
 
   it('never lists a noindex path', () => {

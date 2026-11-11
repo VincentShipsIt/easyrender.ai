@@ -109,9 +109,16 @@ describe('llms-full.txt', () => {
     }
   });
 
-  it('stays within claims.md and away from noindex paths', () => {
-    for (const pattern of FORBIDDEN) expect(text, String(pattern)).not.toMatch(pattern);
-    for (const url of urlsIn(text)) {
+  // claims.md binds what easyrender says about itself. The guides go live on their own dates and
+  // discuss other formats and 3D printing as topics, so the product copy is read with `now` pinned
+  // before the first guide, and the guides get their claims review in the blog pipeline.
+  it('keeps the product copy within claims.md', () => {
+    const productCopy = llmsFullTxt(new Date('2026-11-01T00:00:00Z'));
+    for (const pattern of FORBIDDEN) expect(productCopy, String(pattern)).not.toMatch(pattern);
+  });
+
+  it('stays away from noindex paths, guides included', () => {
+    for (const url of urlsIn(llmsFullTxt(new Date('2026-12-01T00:00:00Z')))) {
       const path = url.slice(SITE_URL.length) || '/';
       for (const prefix of NOINDEX_PREFIXES) expect(path.startsWith(prefix), url).toBe(false);
     }
