@@ -57,6 +57,13 @@ describe('parsing a post', () => {
     });
   });
 
+  // Jorge, 11-nov-2026: new posts go live at 00:00 UTC, not midnight in Europe/Madrid.
+  it('publishes a date-only value at 00:00 UTC, not at local midnight', () => {
+    const result = parsePost('en', 'glb-vs-usdz', post(VALID));
+    if ('error' in result) throw new Error(result.error);
+    expect(result.post.date).toBe('2026-11-23T00:00:00.000Z');
+  });
+
   it('refuses a file that is missing a required field, naming it', () => {
     const { group, ...withoutGroup } = VALID;
     expect(group).toBeDefined();
@@ -93,6 +100,17 @@ describe('what a post carries besides its text', () => {
     expect(parsePost('en', 'x', post({ ...VALID, authorType: 'robot' }))).toEqual({
       error: 'invalid authorType "robot"',
     });
+  });
+
+  it('signs every English guide on disk as Jorge Rodríguez, a Person', () => {
+    const posts = readPosts('en');
+    expect(posts.length).toBeGreaterThan(0);
+    for (const entry of posts) {
+      expect({ slug: entry.slug, author: entry.author }).toEqual({
+        slug: entry.slug,
+        author: { name: 'Jorge Rodríguez', type: 'Person' },
+      });
+    }
   });
 
   it('fills prices from the harness, so a guide cannot drift from the pricing page', () => {

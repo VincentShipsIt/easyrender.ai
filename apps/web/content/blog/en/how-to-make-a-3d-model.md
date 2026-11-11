@@ -5,6 +5,8 @@ title: "How to make a 3D model: five ways, with or without skills"
 description: "How to make a 3D model five ways, from Blender to one photo: what each method needs, how long it takes, where it fails, and how to pick one."
 date: 2026-11-16
 updated: 2026-11-11
+author: Jorge Rodríguez
+authorType: person
 keyword: how to make a 3d model
 cta: If you have a sharp photo of a chair, a lamp or a sideboard, you can see it from every angle before deciding whether a model is worth making.
 ---
