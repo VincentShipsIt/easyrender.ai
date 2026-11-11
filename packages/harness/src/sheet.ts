@@ -1,4 +1,5 @@
 import sharp from 'sharp';
+import { type MaterialProfile, materialRules } from './materials';
 import { DEFAULT_SHEET_SETTINGS, type SheetSettings } from './models';
 import { cleanNote } from './note';
 import { DEFAULT_SKILL, type RenderSkill } from './skills';
@@ -24,15 +25,18 @@ Row 2: back-right three-quarter view, straight-on back view, back-left three-qua
 Row 3: left side view, front-left three-quarter view, top-down view.
 Plain pure white background, even soft studio light, no cast shadows. Nine equal square cells with no text, labels, grid lines or borders.`;
 
-// The skill adds category rules and the user's note is appended as guidance; neither replaces
-// the turnaround instructions.
+// The skill adds category rules, the materials add what each material can physically do, and the
+// user's note is appended as guidance; none of them replaces the turnaround instructions.
 export function sheetPrompt(
   userPrompt?: string | null,
   skill: RenderSkill = DEFAULT_SKILL,
   template: string = SHEET_PROMPT,
+  materials: MaterialProfile[] = [],
 ): string {
   const note = cleanNote(userPrompt);
   const parts = [template, `Product guidance: ${skill.guidance}`];
+  const rules = materialRules(materials);
+  if (rules) parts.push(rules);
   if (note) parts.push(`Additional notes about the object: ${note}`);
   return parts.join('\n');
 }
@@ -43,13 +47,14 @@ export function sheetRequest(
   skill: RenderSkill = DEFAULT_SKILL,
   settings: SheetSettings = DEFAULT_SHEET_SETTINGS,
   template: string = SHEET_PROMPT,
+  materials: MaterialProfile[] = [],
 ) {
   return {
     path: settings.path,
     body: {
       input: {
         ...settings.input,
-        prompt: sheetPrompt(userPrompt, skill, template),
+        prompt: sheetPrompt(userPrompt, skill, template, materials),
         image_input: [sourceUrl],
       },
     },
