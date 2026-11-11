@@ -6,6 +6,7 @@ import {
   getBalance,
   getRender,
   MAX_UPLOAD_BYTES,
+  reportError,
   startBuild,
   toView,
 } from '@easyrender/core';
@@ -30,7 +31,7 @@ async function run(fn: () => Promise<unknown>): Promise<ToolResult> {
     return ok(await fn());
   } catch (error) {
     const message = error instanceof AppError ? error.message : 'Unexpected error';
-    if (!(error instanceof AppError)) console.error('mcp tool failed:', error);
+    if (!(error instanceof AppError)) reportError(error, { stage: 'mcp-tool' });
     return { content: [{ type: 'text', text: message }], isError: true };
   }
 }
