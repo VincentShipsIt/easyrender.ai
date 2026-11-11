@@ -17,12 +17,19 @@
         "SENTRY_*",
         "APP_URL",
         "SHEET_ENABLED",
-        "FREE_PREVIEWS_PER_DAY"
+        "FREE_PREVIEWS_PER_DAY",
+        "POSTHOG_HOST",
+        "ANALYTICS_LOCAL_TEST"
       ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "typecheck": { "dependsOn": ["^typecheck"] },
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
     "test": {},
-    "dev": { "cache": false, "persistent": true }
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
   }
 }
