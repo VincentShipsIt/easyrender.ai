@@ -4,14 +4,14 @@ group: how-to-make-a-3d-model
 title: "How to make a 3D model: five ways, with or without skills"
 description: "How to make a 3D model five ways, from Blender to one photo: what each method needs, how long it takes, where it fails, and how to pick one."
 date: 2026-11-16
-updated: 2026-11-10
+updated: 2026-11-11
 keyword: how to make a 3d model
 cta: If you have a sharp photo of a chair, a lamp or a sideboard, you can see it from every angle before deciding whether a model is worth making.
 ---
 
 You can make a 3D model in five ways: build it in software like Blender, scan the object with photogrammetry, scan it with a phone's LiDAR sensor, generate it with AI from a photo, or hire a 3D artist. Which one fits depends on whether the object exists, whether you have it in hand, and how much time you have.
 
-![Illustration of five ways to make a 3D model of the same wooden stool: a laptop running 3D software, a ring of cameras for photogrammetry, a phone scanning depth, one photo turned into a model by AI, and an artist drawing on a tablet, all pointing to one stool in the middle](/blog/illustrations/how-to-make-a-3d-model/hero.webp "Illustration, not an easyrender result: five routes to one stool. Which one fits depends on what you have in front of you.")
+![Illustration of a walnut chess knight, its face and front in real carved wood and its back in matte grey clay with a white wireframe mesh, on a dark background](/blog/illustrations/how-to-make-a-3d-model/hero.webp "Illustration, not an easyrender result: a chess knight drawn half as walnut, half as a clay-and-wireframe mesh.")
 
 ## Which method should you pick?
 

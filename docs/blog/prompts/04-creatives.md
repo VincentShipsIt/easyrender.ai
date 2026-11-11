@@ -12,12 +12,20 @@ You are adding the creatives to the guide `{slug}`. Read the creatives plan in
 
 - Juanito generates it in Higgsfield from the prompt in the brief and saves it as
   `apps/web/public/blog/illustrations/{group}/hero.webp`.
-- Prompt rules: editorial flat illustration, soft muted palette, clean line work, no
-  photorealism, no text, no logos or brands, no rulers, measurements or scale marks, nothing that
-  looks like an easyrender result or a photo of the team. It illustrates the concept of the
-  guide's first paragraph; it does not have to show furniture.
-- At least 1200 pixels wide, so it can be the BlogPosting and Open Graph image. Read the real
-  size with `sips -g pixelWidth -g pixelHeight` and register it in `BLOG_IMAGES`.
+- Prompt rules, Style A2 (the house style for blog illustrations): a dark, technical 3D render.
+  One object, split: half in its real material, half in matte grey clay with a fine white
+  wireframe mesh. White rim light, a charcoal-to-black radial gradient background, a dark glossy
+  floor with a contact shadow, and a single accent colour that comes from the real material.
+  No text, no UI, no numbers, no logos or brands, no rulers, measurements or scale marks, no
+  people or photos of the team.
+- The object illustrates the concept of the guide's first paragraph. Pick a different object for
+  every guide, never one already used in another guide and never one of the home demo objects
+  (the armchair). One unique image per guide.
+- 16:9, 1280×720, saved as WebP. That is at least 1200 pixels wide, so it can be the BlogPosting
+  and Open Graph image. Read the real size with `sips -g pixelWidth -g pixelHeight` and register
+  it in `BLOG_IMAGES`.
+- It is always labelled as an illustration and never presented as product output: the caption
+  starts with "Illustration, not an easyrender result".
 - In the post, directly under the first paragraph:
   `![Concrete description of what is drawn](/blog/illustrations/{group}/hero.webp "Illustration, not an easyrender result: …")`.
 
@@ -34,8 +42,9 @@ Each one explains something the text needs; decoration does not count.
 - **Screenshots and video:** real, unretouched. If one is missing, leave
   `<!-- IMAGE PENDING: … -->` and list it for the team; never an AI stand-in.
 - **Tables and checklists** only where they help a reader decide or check something.
-- Other AI illustrations, beyond the hero, only when a drawing explains texture or a scene better
-  than a diagram, captioned as an illustration, under `public/blog/illustrations/{group}/`.
+- Other AI illustrations, beyond the hero, only when an illustration explains texture or a scene
+  better than a diagram, in the same house style, captioned as an illustration, under
+  `public/blog/illustrations/{group}/`.
 
 ## Rules
 

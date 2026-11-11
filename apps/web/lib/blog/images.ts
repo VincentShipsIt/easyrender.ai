@@ -28,21 +28,26 @@ export const BLOG_IMAGES: Record<string, BlogImage> = {
   '/blog/figures/glb-file/clay-vase-texture.webp': { width: 1024, height: 1024 },
 
   // Drawn illustrations, see ILLUSTRATION_DIR below.
-  '/blog/illustrations/how-to-make-a-3d-model-from-photos/hero.webp': { width: 1600, height: 1080 },
-  '/blog/illustrations/product-photography-for-ecommerce/hero.webp': { width: 1600, height: 1080 },
-  '/blog/illustrations/3d-models-for-ecommerce/hero.webp': { width: 1536, height: 1032 },
-  '/blog/illustrations/sell-vintage-furniture-online/hero.webp': { width: 1600, height: 1080 },
+  '/blog/illustrations/how-to-make-a-3d-model-from-photos/hero.webp': { width: 1280, height: 720 },
+  '/blog/illustrations/product-photography-for-ecommerce/hero.webp': { width: 1280, height: 720 },
+  '/blog/illustrations/3d-models-for-ecommerce/hero.webp': { width: 1280, height: 720 },
+  '/blog/illustrations/sell-vintage-furniture-online/hero.webp': { width: 1280, height: 720 },
   '/blog/illustrations/sell-vintage-furniture-online/courier-prep.webp': {
     width: 1500,
     height: 1008,
   },
-  '/blog/illustrations/glb-file/hero.webp': { width: 1600, height: 1080 },
-  '/blog/illustrations/how-to-make-a-3d-model/hero.webp': { width: 1344, height: 752 },
-  '/blog/illustrations/usdz-file/hero.webp': { width: 1600, height: 1080 },
+  '/blog/illustrations/glb-file/hero.webp': { width: 1280, height: 720 },
+  '/blog/illustrations/how-to-make-a-3d-model/hero.webp': { width: 1280, height: 720 },
+  '/blog/illustrations/usdz-file/hero.webp': { width: 1280, height: 720 },
 };
 
-// Editorial flat illustrations, drawn with an image model on request (prompt in the post's brief,
-// docs/blog/PIPELINE.md) and never a product result: no text, no logos, no measurements. Every
+// Illustrations in the house style, Style A2: a dark, technical 3D render of one object, half in
+// its real material and half in matte grey clay with a fine white wireframe mesh, white rim light,
+// charcoal-to-black radial gradient background, dark glossy floor with a contact shadow, and a
+// single accent colour from the real material. 16:9, 1280x720 WebP. A different object in every
+// guide, never the home demo objects (the armchair). Generated with an image model on request
+// (prompt in the post's brief, docs/blog/PIPELINE.md) and never a product result: no text, no UI,
+// no logos, no numbers or measurements. Every
 // guide opens with one directly under its first paragraph, at least 1200 pixels wide, and it is
 // also the guide's BlogPosting and Open Graph image (schemaImage below). Its caption says it is
 // an illustration, so it cannot be mistaken for easyrender output. content.test.ts checks all of
