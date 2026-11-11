@@ -91,7 +91,7 @@ const PRICE_TOKENS: Record<string, string> = {
 export const fillPrices = (text: string): string =>
   text.replace(/\{\{(\w+)\}\}/g, (match, name: string) => PRICE_TOKENS[name] ?? match);
 
-const stripComments = (text: string): string =>
+export const stripComments = (text: string): string =>
   text
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/\n{3,}/g, '\n\n')

@@ -17,6 +17,14 @@ export type RouteEntry = {
   paths: Record<Locale, string>;
   /** Locales whose copy is written and reviewed. Everything else 404s. */
   published: readonly Locale[];
+  /**
+   * Locales served for internal review only, before anyone has approved publishing them. The
+   * page answers 200 so it can be read, but it is noindex (meta tag and x-robots-tag, because its
+   * path is in NOINDEX_PREFIXES), and it is never listed: not in a sitemap, hreflang, llms.txt or
+   * the language picker, which all read `published`. Never overlaps `published`; moving a locale
+   * from here to `published` (and its prefix out of NOINDEX_PREFIXES) is the publishing step.
+   */
+  review?: readonly Locale[];
   priority: number;
   changeFrequency: ChangeFrequency;
 };
@@ -88,6 +96,9 @@ export const ROUTES = {
   },
   // Declared so the slugs are agreed and reserved, unpublished until the copy exists. Adding a
   // locale here without a page under app/ would 404, so each one lands with its route.
+  // The English comparison drafts (content/compare/en) are open for review only: /compare/{slug}
+  // answers 200 with noindex and is linked from nowhere. Jorge has not approved publishing them
+  // (11-nov-2026); until he does, `published` stays empty.
   compare: {
     paths: {
       en: '/compare',
@@ -98,6 +109,7 @@ export const ROUTES = {
       pt: '/pt/comparacoes',
     },
     published: [],
+    review: ['en'],
     priority: 0.6,
     changeFrequency: 'monthly',
   },
@@ -177,6 +189,10 @@ export const DISALLOWED_PREFIXES = ['/api/', '/account', '/library', '/dashboard
 
 export const isPublished = (key: RouteKey, locale: Locale): boolean =>
   (ROUTES[key].published as readonly Locale[]).includes(locale);
+
+/** True when a locale of a page is served for review only: 200, noindex, never listed. */
+export const isInReview = (key: RouteKey, locale: Locale): boolean =>
+  ((ROUTES[key] as RouteEntry).review ?? []).includes(locale);
 
 /** Every locale a page is live in, in LOCALES order. */
 export function publishedLocales(key: RouteKey): Locale[] {

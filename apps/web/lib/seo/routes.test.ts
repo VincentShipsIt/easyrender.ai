@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { HREFLANG, LOCALES, ROUTABLE_LOCALES } from '@/i18n/config';
-import { isNoindexPath } from './noindex';
-import { hreflangFor, isPublished, livePaths, ROUTE_KEYS, ROUTES } from './routes';
+import { isNoindexPath, NOINDEX_HEADER_PATHS } from './noindex';
+import {
+  hreflangFor,
+  isInReview,
+  isPublished,
+  livePaths,
+  ROUTE_KEYS,
+  ROUTES,
+  type RouteEntry,
+} from './routes';
 import { absoluteUrl, SITE_URL } from './site';
 
 describe('the route registry', () => {
@@ -143,11 +151,43 @@ describe('noindex paths', () => {
     }
   });
 
-  it('keeps every noindex path out of the registry', () => {
+  it('keeps every noindex path out of the registry, except a page open for review', () => {
     for (const key of ROUTE_KEYS) {
       for (const locale of LOCALES) {
+        // A review locale is the one deliberate exception: it is served noindex on purpose.
+        if (isInReview(key, locale)) continue;
         expect(isNoindexPath(ROUTES[key].paths[locale]), `${key}/${locale}`).toBe(false);
       }
     }
+  });
+});
+
+describe('pages open for review only', () => {
+  it('are the English comparisons and nothing else', () => {
+    const inReview = ROUTE_KEYS.flatMap((key) =>
+      LOCALES.filter((locale) => isInReview(key, locale)).map((locale) => `${key}/${locale}`),
+    );
+    expect(inReview).toEqual(['compare/en']);
+  });
+
+  it('are never published at the same time, so nothing lists them', () => {
+    for (const key of ROUTE_KEYS) {
+      for (const locale of (ROUTES[key] as RouteEntry).review ?? []) {
+        expect(isPublished(key, locale), `${key}/${locale}`).toBe(false);
+        expect(livePaths(key)[locale], `${key}/${locale}`).toBeUndefined();
+      }
+    }
+    expect(livePaths('compare')).toEqual({});
+  });
+
+  it('carry noindex on the page path and everything under it', () => {
+    for (const key of ROUTE_KEYS) {
+      for (const locale of (ROUTES[key] as RouteEntry).review ?? []) {
+        const path = ROUTES[key].paths[locale];
+        expect(isNoindexPath(path), path).toBe(true);
+        expect(isNoindexPath(`${path}/meshy`), path).toBe(true);
+      }
+    }
+    expect(NOINDEX_HEADER_PATHS).toEqual(expect.arrayContaining(['/compare', '/compare/:path*']));
   });
 });
