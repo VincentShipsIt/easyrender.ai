@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "easyrender: imagem para 3D a partir de uma só fotografia",
-    "description": "O easyrender transforma a fotografia de um móvel, de uma peça de decoração ou de uma fachada num modelo 3D. Veja todos os ângulos grátis. GLB e USDZ."
+    "description": "O easyrender transforma a fotografia de um móvel, de uma peça de decoração ou de uma fachada num modelo 3D. Vê todos os ângulos grátis. GLB e USDZ."
   },
   "LocaleSwitcher": {
     "switchTo": "Mudar para {language}",
@@ -18,11 +18,11 @@
     "credits": "créditos",
     "dashboard": "Painel",
     "signIn": "Iniciar sessão",
-    "connect": "Ligue",
-    "connectSuffix": "o seu agente"
+    "connect": "Liga",
+    "connectSuffix": "o teu agente"
   },
   "Footer": {
-    "tagline": "Uma fotografia passa a modelo 3D, que pode ver de todos os ângulos e descarregar em GLB e USDZ.",
+    "tagline": "De uma fotografia a um modelo 3D que podes ver de todos os ângulos e descarregar em GLB e USDZ.",
     "product": "Produto",
     "developers": "Programadores",
     "account": "Conta",
@@ -45,20 +45,20 @@
   },
   "Home": {
     "connect": {
-      "title": "Ou deixe o seu agente tratar disso",
-      "description": "O easyrender fala MCP. Qualquer agente compatível pode criar renders, revê-los e gerar modelos 3D com os seus créditos.",
+      "title": "Ou deixa o teu agente tratar disso",
+      "description": "O easyrender fala MCP. Qualquer agente compatível pode criar renders, revê-los e gerar modelos 3D com os teus créditos.",
       "steps": {
         "key": {
-          "title": "Obtenha a sua chave",
-          "body": "Crie uma conta grátis e adicione o easyrender ao claude.ai com um só URL, ou obtenha uma chave de API para o Claude Code e outros agentes."
+          "title": "Obtém a tua chave",
+          "body": "Cria uma conta grátis e adiciona o easyrender ao claude.ai com um só URL, ou obtém uma chave de API para o Claude Code e outros agentes."
         },
         "paste": {
-          "title": "Cole-a no seu agente",
+          "title": "Cola-a no teu agente",
           "body": "Um comando para o Claude Code, um bloco JSON para o Cursor, o VS Code ou o Claude Desktop."
         },
         "watch": {
-          "title": "Peça 3D e veja-o chegar",
-          "body": "Cada modelo que o seu agente criar aparece no seu painel web e na sua biblioteca."
+          "title": "Pede o 3D e vê-o chegar",
+          "body": "Cada modelo que o teu agente criar aparece no teu painel web e na tua biblioteca."
         }
       },
       "openConnectors": "Abrir os conectores",
@@ -66,25 +66,25 @@
       "worksWith": "Funciona com {clients} e com qualquer cliente MCP."
     },
     "try": {
-      "title": "Experimente aqui, com uma fotografia",
-      "description": "Carregue a fotografia de um móvel, de uma peça de decoração ou de um produto. A pré-visualização é grátis; crie uma conta para a ver."
+      "title": "Experimenta aqui com uma fotografia",
+      "description": "Carrega a fotografia de um móvel, de uma peça de decoração ou de um produto. A pré-visualização é grátis; só tens de criar conta para a ver."
     },
     "meta": {
       "title": "Imagem para 3D: de uma foto a um modelo 3D · easyrender",
-      "description": "Imagem para 3D: carregue a fotografia de um móvel ou de uma peça de decoração e veja todos os ângulos grátis. Só gasta créditos se gostar. GLB e USDZ."
+      "description": "Imagem para 3D: carrega a fotografia de um móvel ou de uma peça de decoração e vê todos os ângulos grátis. Só gastas créditos se gostares. GLB e USDZ."
     },
     "intro": {
       "eyebrow": "Foto em 3D",
       "title": "O que é o easyrender?",
-      "body": "O easyrender é uma ferramenta de imagem para 3D: transforma a fotografia de um móvel, de uma peça de decoração ou da fachada de um edifício num modelo 3D. Primeiro desenha o objeto de todos os lados, numa folha de ângulos grátis que pode rever antes de gastar o que quer que seja. Se a pré-visualização estiver bem, um clique transforma-a num modelo 3D para rodar e descarregar em GLB e USDZ.",
-      "scope": "Não modela divisões inteiras nem inventa medidas. Recebe o ficheiro e decide se é bom o suficiente para ficar com ele.",
+      "body": "O easyrender é uma ferramenta de imagem para 3D: transforma a fotografia de um móvel, de uma peça de decoração ou da fachada de um edifício num modelo 3D. Primeiro desenha o objeto de todos os lados, numa folha de ângulos grátis que podes rever antes de gastar seja o que for. Se a pré-visualização te convencer, um clique transforma-a num modelo 3D para rodar e descarregar em GLB e USDZ.",
+      "scope": "Não modela divisões inteiras nem inventa medidas. Recebes o ficheiro e decides se é bom o suficiente para ficares com ele.",
       "primaryCta": "Carregar uma fotografia",
       "secondaryCta": "Ver a galeria"
     }
   },
   "Landing": {
     "pricing": {
-      "title": "Paga-se por modelo. Os créditos não caducam.",
+      "title": "Pagas por modelo. Os créditos não caducam.",
       "description": "As pré-visualizações são grátis. Um modelo 3D pronto custa {credits} créditos ({price}).",
       "seeAll": "Ver todos os preços",
       "bestValue": "Mais vantajoso",
@@ -92,7 +92,7 @@
         "name": "Grátis",
         "note": "para experimentar",
         "features": {
-          "mcp": "Ligue o seu agente por MCP",
+          "mcp": "Liga o teu agente por MCP",
           "previews": "Pré-visualizações grátis de todos os ângulos",
           "noCard": "Sem cartão de crédito"
         },
@@ -115,7 +115,7 @@
           "credits": "{credits} créditos por mês",
           "models": "Cerca de {count} modelos 3D",
           "rollover": "Os créditos não usados passam para o mês seguinte",
-          "cancel": "Cancele quando quiser"
+          "cancel": "Cancelas quando quiseres"
         },
         "cta": "Passar a Pro"
       },
@@ -136,12 +136,12 @@
       "title": "Perguntas frequentes",
       "items": {
         "connect": {
-          "q": "O que quer dizer \"ligar o seu agente\"?",
-          "a": "O easyrender é um servidor MCP. Adicione-o ao Claude Code, ao Claude Desktop, ao Cursor, ao VS Code ou a qualquer cliente MCP com a sua chave de API, e o agente passa a transformar fotografias em modelos 3D sozinho. Tudo o que criar aparece no seu painel web."
+          "q": "O que quer dizer \"ligar o teu agente\"?",
+          "a": "O easyrender é um servidor MCP. Adiciona-o ao Claude Code, ao Claude Desktop, ao Cursor, ao VS Code ou a qualquer cliente MCP com a tua chave de API, e o agente passa a transformar fotografias em modelos 3D por conta própria. Tudo o que ele criar aparece no teu painel web."
         },
         "needAgent": {
           "q": "Preciso de um agente para o usar?",
-          "a": "Não. Pode carregar fotografias na aplicação web, uma a uma ou em lote a partir da sua biblioteca. O agente só serve para pôr o processo em piloto automático."
+          "a": "Não. Podes carregar fotografias na aplicação web, uma a uma ou em lote a partir da tua biblioteca. O agente só serve para pôr o processo em piloto automático."
         },
         "photos": {
           "q": "Que fotografias funcionam melhor?",
@@ -153,19 +153,19 @@
         },
         "output": {
           "q": "O que recebo?",
-          "a": "Uma pré-visualização grátis com o objeto de todos os ângulos e, se gastar créditos, um modelo 3D que pode rodar na respetiva página e descarregar em GLB com texturas, para a web, e em USDZ."
+          "a": "Uma pré-visualização grátis com o objeto de todos os ângulos e, se gastares créditos, um modelo 3D que podes rodar na página do modelo e descarregar em GLB com texturas, para a web, e em USDZ."
         },
         "freePreview": {
           "q": "Porque é que a pré-visualização é grátis?",
-          "a": "Antes de construir o modelo 3D, desenhamos o objeto de todos os ângulos. Revê essa pré-visualização sem pagar e só gasta créditos quando a forma e os detalhes o convencerem."
+          "a": "Antes de construir o modelo 3D, desenhamos o objeto de todos os ângulos. Revês essa pré-visualização sem pagar e só gastas créditos quando a forma e os detalhes te convencerem."
         },
         "failed": {
           "q": "E se um render falhar?",
-          "a": "Se o modelo 3D não chegar a ser gerado, os créditos dessa peça voltam automaticamente ao seu saldo."
+          "a": "Se o modelo 3D não chegar a ser gerado, os créditos dessa peça voltam automaticamente ao teu saldo."
         },
         "public": {
           "q": "O meu render é público?",
-          "a": "Os modelos prontos aparecem na galeria pública por predefinição. Na página do modelo pode desativar «Show in public gallery». Hoje, ao ocultar um modelo, a ligação pode deixar de abrir para outras pessoas. Se quiser partilhar a ligação, mantenha-o na galeria."
+          "a": "Os modelos prontos aparecem na galeria pública por predefinição. Na página do modelo podes desativar «Show in public gallery». Hoje, se ocultares um modelo, a ligação pode deixar de abrir para outras pessoas. Se queres partilhar a ligação, deixa-o na galeria."
         },
         "cost": {
           "q": "Quanto custa um modelo 3D?",
@@ -173,7 +173,7 @@
         },
         "what": {
           "q": "O que é o easyrender?",
-          "a": "O easyrender é uma aplicação web para converter uma imagem em 3D: transforma a fotografia de um objeto num modelo 3D. Carrega a fotografia, revê grátis uma folha com o objeto de todos os ângulos e só gasta créditos se quiser o modelo pronto, que descarrega em GLB e USDZ."
+          "a": "O easyrender é uma aplicação web para converter uma imagem em 3D: transforma a fotografia de um objeto num modelo 3D. Carregas a fotografia, revês grátis uma folha com o objeto de todos os ângulos e só gastas créditos se quiseres o modelo pronto, que descarregas em GLB e USDZ."
         },
         "formats": {
           "q": "Em que formatos posso descarregar?",
@@ -181,20 +181,20 @@
         },
         "ar": {
           "q": "Posso ver o modelo em minha casa?",
-          "a": "A realidade aumentada chega em breve: vai poder abrir o modelo no telemóvel e colocá-lo numa divisão da sua casa. Mostra a forma e os materiais da peça, não o tamanho real."
+          "a": "A realidade aumentada chega em breve: vais poder abrir o modelo no telemóvel e colocá-lo numa divisão da tua casa. Mostra a forma e os materiais da peça, não o tamanho real."
         }
       }
     }
   },
   "AgentDemo": {
-    "window": "O seu agente · easyrender MCP",
-    "ask": "Aqui está o catálogo de primavera. Faça um modelo 3D de cada produto.",
+    "window": "O teu agente · easyrender MCP",
+    "ask": "Aqui tens o catálogo de primavera. Faz um modelo 3D de cada produto.",
     "calls": {
       "create_render": "24 fotos · pré-visualizações grátis",
       "get_render": "24 pré-visualizações prontas",
       "render_3d": "24 modelos · GLB e USDZ"
     },
-    "done": "Feito. Os 24 modelos estão na sua biblioteca do easyrender, em GLB e USDZ. Aqui está o primeiro:",
+    "done": "Feito. Os 24 modelos estão na tua biblioteca do easyrender, em GLB e USDZ. Aqui tens o primeiro:",
     "modelAlt": "Modelo 3D: {title}"
   },
   "McpSetup": {
@@ -203,10 +203,10 @@
     "copy": "Copiar",
     "copied": "Copiado",
     "claudeAi": {
-      "one": "Abra o claude.ai → Settings → Connectors → Add custom connector.",
-      "two": "Cole este URL como URL do conector.",
-      "three": "Clique em Connect, inicie sessão no easyrender e autorize o acesso. Não precisa de chave.",
-      "note": "O mesmo início de sessão serve para qualquer cliente MCP compatível com OAuth. Cada ligação cria uma chave que pode revogar abaixo."
+      "one": "Abre o claude.ai → Settings → Connectors → Add custom connector.",
+      "two": "Cola este URL como URL do conector.",
+      "three": "Clica em Connect, inicia sessão no easyrender e autoriza o acesso. Não precisas de chave.",
+      "note": "O mesmo início de sessão serve para qualquer cliente MCP compatível com OAuth. Cada ligação cria uma chave que podes revogar mais abaixo."
     }
   },
   "Gallery": {
@@ -304,14 +304,14 @@
   },
   "PromptBar": {
     "steps": {
-      "upload": "A carregar a sua fotografia",
+      "upload": "A carregar a tua fotografia",
       "read": "A ler a forma e os materiais",
       "draw": "A desenhar todos os ângulos",
-      "prepare": "A preparar a sua pré-visualização 3D"
+      "prepare": "A preparar a tua pré-visualização 3D"
     },
     "errors": {
-      "type": "Anexe uma fotografia em JPEG, PNG ou WebP.",
-      "noPhoto": "Anexe primeiro uma fotografia do objeto ou do edifício.",
+      "type": "Anexa uma fotografia em JPEG, PNG ou WebP.",
+      "noPhoto": "Anexa primeiro uma fotografia do objeto ou do edifício.",
       "upload": "O carregamento falhou",
       "unreadable": "Não foi possível ler esta fotografia",
       "title": "Não foi possível iniciar este render"
@@ -319,22 +319,22 @@
     "photoSize": "Foto · {size}",
     "removePhoto": "Remover fotografia",
     "placeholder": {
-      "withPhoto": "Descreva-o (opcional), p. ex. aparador em nogueira com puxadores de latão",
-      "empty": "Anexe a fotografia de um móvel, de uma peça de decoração ou de um edifício e descreva-a…"
+      "withPhoto": "Descreve-o (opcional), p. ex. aparador em nogueira com puxadores de latão",
+      "empty": "Anexa a fotografia de um móvel, de uma peça de decoração ou de um edifício e descreve-a…"
     },
     "replacePhoto": "Substituir fotografia",
     "attachPhoto": "Anexar fotografia",
-    "dropOrPaste": "ou arraste, ou cole",
+    "dropOrPaste": "ou arrasta, ou cola",
     "generate": "Gerar",
-    "dropToAttach": "Largue a fotografia para a anexar",
-    "tryOne": "Experimente uma:",
-    "previewReady": "A sua pré-visualização está pronta",
+    "dropToAttach": "Larga a fotografia para a anexar",
+    "tryOne": "Experimenta uma:",
+    "previewReady": "A tua pré-visualização está pronta",
     "photoTo3d": "Da foto ao modelo 3D",
     "auth": {
-      "title": "A sua pré-visualização 3D está pronta",
-      "description": "Crie uma conta grátis para ver a sua fotografia de todos os ângulos e transformá-la num modelo 3D."
+      "title": "A tua pré-visualização 3D está pronta",
+      "description": "Cria uma conta grátis para veres a tua fotografia de todos os ângulos e a transformares num modelo 3D."
     },
-    "reveal": "Registe-se grátis para ver todos os ângulos"
+    "reveal": "Regista-te grátis para veres todos os ângulos"
   },
   "Library": {
     "metaTitle": "Library · easyrender",
@@ -617,21 +617,21 @@
       "title": "A fotografia do produto transforma-se num modelo 3D.",
       "cta": "Começar",
       "note": "Pré-visualização grátis · sem cartão",
-      "stackLabel": "O mesmo objeto visto em cinco passagens do motor. Arraste para o rodar.",
+      "stackLabel": "O mesmo objeto visto em cinco passagens do motor. Arrasta para o rodar.",
       "photo": "Fotografia original",
       "mesh": "Malha",
       "normals": "Normais",
       "depth": "Profundidade",
       "render": "Render PBR",
       "element": "Elemento",
-      "hint": "Arraste para rodar",
-      "subtitle": "Veja o objeto de todos os ângulos, grátis. Só gasta créditos quando a forma o convencer."
+      "hint": "Arrasta para rodar",
+      "subtitle": "Vê o objeto de todos os ângulos, grátis. Só gastas créditos quando a forma te convencer."
     },
     "pipeline": {
-      "lead": "Carregue uma fotografia. O motor faz o resto.",
-      "body": "Reconstrói o seu produto de todos os lados e mostra-lhe a forma antes de pagar.",
+      "lead": "Carrega uma fotografia. O motor faz o resto.",
+      "body": "Reconstrói o teu produto de todos os lados e mostra-te a forma antes de pagares.",
       "photo": "Fotografia original",
-      "placeholder": "Descreva o seu produto",
+      "placeholder": "Descreve o teu produto",
       "generate": "Gerar",
       "steps": {
         "angles": "Ângulos",
@@ -640,7 +640,7 @@
         "ready": "Pronto"
       },
       "noteTitle": "Pré-visualização grátis",
-      "noteBody": "O motor desenha o objeto de todos os lados antes de construir a malha. Se algo não estiver bem, vê-o antes de gastar um crédito.",
+      "noteBody": "O motor desenha o objeto de todos os lados antes de construir a malha. Se algo não estiver bem, vês logo, antes de gastares um crédito.",
       "noteLink": "Experimentar com uma fotografia"
     },
     "industries": {
@@ -650,16 +650,16 @@
         "eyebrow": "Lojas online",
         "title": "Em breve: ver a peça em casa",
         "body": "Realidade aumentada, muito em breve: o cliente abre a câmara do iPhone ou do telemóvel Android e coloca o produto na divisão.",
-        "link": "Fale connosco sobre RA para lojas",
-        "domain": "asualoja.pt",
+        "link": "Fala connosco sobre RA para lojas",
+        "domain": "atualoja.pt",
         "meta": "Estofo cinzento · GLB e USDZ",
-        "button": "Ver no seu espaço",
+        "button": "Ver no teu espaço",
         "searching": "A procurar o chão…",
         "placed": "Colocado"
       },
       "interior": {
         "eyebrow": "Arquitetura e interiores",
-        "title": "Peças reais para os seus renders",
+        "title": "Peças reais para os teus renders",
         "body": "Arquitetos, designers de interiores e de iluminação trazem para o projeto móveis e luminárias que existem e que o cliente pode comprar.",
         "link": "Explorar o hub para estúdios",
         "kelvin": "Temperatura de cor"
@@ -667,7 +667,7 @@
       "games": {
         "eyebrow": "Videojogos",
         "title": "Adereços com física incluída",
-        "body": "Descarregue o GLB e leve-o para a sua cena. A demonstração abaixo passa a peça por um motor de física no seu navegador.",
+        "body": "Descarrega o GLB e leva-o para a tua cena. A demonstração abaixo passa a peça por um motor de física no teu navegador.",
         "link": "Ligar pela API ou por MCP",
         "rigidbody": "Rigidbody",
         "dynamic": "Dinâmico",
@@ -677,7 +677,7 @@
       }
     },
     "tools": {
-      "lead": "Veja a forma antes de gastar um crédito.",
+      "lead": "Vê a forma antes de gastares um crédito.",
       "body": "Cada elemento aparece tal como o motor o construiu: malha, materiais e texturas.",
       "link": "Ver a ficha técnica",
       "topology": "Topologia",
@@ -735,15 +735,15 @@
       "by": "Porque estamos a construir o easyrender",
       "byline": "Um universo de elementos que funciona com tudo",
       "stat": "1 foto",
-      "statBody": "De uma fotografia de catálogo a um modelo com texturas que pode rodar e descarregar em GLB e USDZ.",
+      "statBody": "De uma fotografia de catálogo a um modelo com texturas que podes rodar e descarregar em GLB e USDZ.",
       "marquee": "Formatos e ferramentas compatíveis"
     },
     "cta": {
-      "title": "O seu catálogo já não tem de esperar por uma equipa de 3D",
+      "title": "O teu catálogo já não tem de esperar por uma equipa de 3D",
       "button": "Começar"
     },
     "shelf": {
-      "lead": "Explore o hub.",
+      "lead": "Explora o hub.",
       "body": "Mobiliário, iluminação, decoração e adereços prontos a usar.",
       "link": "Ver todos os elementos",
       "count": "{current} de {total}",
@@ -752,15 +752,15 @@
       "elements": "{count, plural, one {# elemento} other {# elementos}}"
     },
     "lens": {
-      "label": "{name} em quatro leituras ao mesmo tempo: malha, colisor, normais da superfície e render com texturas. O render final segue o seu cursor.",
+      "label": "{name} em quatro leituras ao mesmo tempo: malha, colisor, normais da superfície e render com texturas. O render final segue o teu cursor.",
       "layers": {
         "mesh": "Malha",
         "physics": "Física",
         "normals": "Normais",
         "texture": "Textura"
       },
-      "hint": "Mova o cursor",
-      "hintTouch": "Arraste sobre o modelo"
+      "hint": "Move o cursor",
+      "hintTouch": "Arrasta sobre o modelo"
     }
   },
   "Catalog": {

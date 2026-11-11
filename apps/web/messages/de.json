@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "easyrender: Bild zu 3D-Modell aus einem einzigen Foto",
-    "description": "easyrender macht aus einem Foto von Möbeln, Deko oder einer Fassade ein 3D-Modell. Alle Ansichten kostenlos prüfen, Download als GLB und USDZ."
+    "description": "easyrender macht aus einem Foto von Möbeln, Deko oder einer Fassade ein 3D-Modell. Du prüfst alle Ansichten kostenlos und lädst GLB und USDZ herunter."
   },
   "LocaleSwitcher": {
     "switchTo": "Zu {language} wechseln",
@@ -18,11 +18,11 @@
     "credits": "Credits",
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
-    "connect": "Verbinden",
-    "connectSuffix": "Sie Ihren Agenten"
+    "connect": "Verbinde",
+    "connectSuffix": "deinen Agenten"
   },
   "Footer": {
-    "tagline": "Aus einem Foto wird ein 3D-Modell, das Sie von allen Seiten ansehen und als GLB und USDZ herunterladen.",
+    "tagline": "Aus einem Foto wird ein 3D-Modell. Du drehst es in alle Richtungen und lädst es als GLB und USDZ herunter.",
     "product": "Produkt",
     "developers": "Entwickler",
     "account": "Konto",
@@ -45,12 +45,12 @@
   },
   "Home": {
     "connect": {
-      "title": "Oder Ihr Agent übernimmt das",
-      "description": "easyrender spricht MCP. Jeder Agent, der MCP unterstützt, kann also Renderings anlegen, prüfen und mit Ihren Credits 3D-Modelle erstellen.",
+      "title": "Oder dein Agent erledigt das für dich",
+      "description": "easyrender spricht MCP. Jeder Agent, der MCP unterstützt, kann also Renderings anlegen, prüfen und mit deinen Credits 3D-Modelle bauen.",
       "steps": {
         "key": {
           "title": "Schlüssel holen",
-          "body": "Legen Sie ein kostenloses Konto an und fügen Sie easyrender mit einer URL zu claude.ai hinzu. Für Claude Code und andere Agenten gibt es einen API-Schlüssel."
+          "body": "Leg ein kostenloses Konto an und füge easyrender per URL zu claude.ai hinzu. Für Claude Code und andere Agenten bekommst du einen API-Schlüssel."
         },
         "paste": {
           "title": "Im Agenten einfügen",
@@ -58,7 +58,7 @@
         },
         "watch": {
           "title": "3D anfragen, Ergebnis abholen",
-          "body": "Jedes Modell, das Ihr Agent erstellt, landet in Ihrem Web-Dashboard und in Ihrer Bibliothek."
+          "body": "Jedes Modell, das dein Agent erstellt, landet in deinem Web-Dashboard und in deiner Bibliothek."
         }
       },
       "openConnectors": "Connectors öffnen",
@@ -66,25 +66,25 @@
       "worksWith": "Funktioniert mit {clients} und jedem MCP-Client."
     },
     "try": {
-      "title": "Hier direkt mit einem Foto testen",
-      "description": "Laden Sie ein Foto von einem Möbelstück, einem Deko-Objekt oder einem Produkt hoch. Die Vorschau ist kostenlos. Um sie zu sehen, legen Sie ein Konto an."
+      "title": "Probier es hier direkt mit einem Foto aus",
+      "description": "Lade ein Foto von einem Möbelstück, einem Deko-Objekt oder einem Produkt hoch. Die Vorschau kostet nichts. Um sie zu sehen, brauchst du ein kostenloses Konto."
     },
     "meta": {
       "title": "Bild zu 3D-Modell aus einem Foto · easyrender",
-      "description": "Bild zu 3D-Modell: Foto von Möbeln, Deko oder Fassade hochladen, alle Ansichten kostenlos prüfen. Credits nur, wenn die Form stimmt. Als GLB und USDZ."
+      "description": "Bild zu 3D-Modell: Lade ein Foto von Möbeln, Deko oder einer Fassade hoch und prüfe alle Ansichten gratis. Credits nur, wenn die Form passt. GLB und USDZ."
     },
     "intro": {
       "eyebrow": "Foto zu 3D",
       "title": "Was ist easyrender?",
-      "body": "Mit easyrender wandeln Sie ein Bild in 3D um: Aus dem Foto eines Möbelstücks, eines Deko-Objekts oder einer Gebäudefassade wird ein 3D-Modell. Zuerst zeichnet easyrender das Objekt von allen Seiten, als kostenlose Ansichtsübersicht, die Sie prüfen, bevor Sie etwas ausgeben. Passt die Vorschau, wird daraus mit einem Klick ein 3D-Modell, das Sie drehen und als GLB und USDZ herunterladen.",
-      "scope": "Ganze Räume modelliert es nicht. Maße erfindet es nicht. Sie bekommen die Datei und entscheiden selbst, ob sie gut genug ist.",
+      "body": "Mit easyrender wandelst du ein Bild in 3D um: Aus dem Foto eines Möbelstücks, eines Deko-Objekts oder einer Gebäudefassade wird ein 3D-Modell. Zuerst zeichnet easyrender das Objekt von allen Seiten. Diese Ansichtsübersicht ist kostenlos, und du prüfst sie, bevor du etwas ausgibst. Passt sie, wird daraus mit einem Klick ein 3D-Modell, das du drehen und als GLB und USDZ herunterladen kannst.",
+      "scope": "Ganze Räume modelliert es nicht, und Maße erfindet es auch nicht. Du bekommst die Datei und entscheidest selbst, ob sie gut genug ist.",
       "primaryCta": "Foto hochladen",
       "secondaryCta": "Galerie ansehen"
     }
   },
   "Landing": {
     "pricing": {
-      "title": "Sie zahlen pro Modell. Credits verfallen nicht.",
+      "title": "Du zahlst pro Modell. Credits verfallen nicht.",
       "description": "Die Vorschau ist kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits ({price}).",
       "seeAll": "Alle Preise ansehen",
       "bestValue": "Bester Preis",
@@ -104,7 +104,7 @@
         "features": {
           "min": "Ab {credits} Credits",
           "downloads": "Download als GLB und USDZ",
-          "ar": "Bald: per Smartphone im eigenen Raum ansehen",
+          "ar": "Bald: mit dem Smartphone bei dir im Raum ansehen",
           "api": "MCP-Server und REST-API"
         },
         "cta": "Credits kaufen"
@@ -137,11 +137,11 @@
       "items": {
         "connect": {
           "q": "Was heißt „Agenten verbinden“?",
-          "a": "easyrender ist ein MCP-Server. Fügen Sie ihn mit Ihrem API-Schlüssel zu Claude Code, Claude Desktop, Cursor, VS Code oder einem anderen MCP-Client hinzu. Dann macht Ihr Agent selbstständig aus Fotos 3D-Modelle. Alles, was er erstellt, sehen Sie in Ihrem Web-Dashboard."
+          "a": "easyrender ist ein MCP-Server. Füge ihn mit deinem API-Schlüssel zu Claude Code, Claude Desktop, Cursor, VS Code oder einem anderen MCP-Client hinzu. Danach macht dein Agent selbstständig aus Fotos 3D-Modelle. Alles, was er erstellt, siehst du in deinem Web-Dashboard."
         },
         "needAgent": {
           "q": "Brauche ich dafür einen Agenten?",
-          "a": "Nein. Sie können Fotos in der Web-App hochladen, einzeln oder gesammelt aus Ihrer Bibliothek. Mit einem Agenten läuft das Ganze nur automatisch."
+          "a": "Nein. Du kannst Fotos auch in der Web-App hochladen, einzeln oder gesammelt aus deiner Bibliothek. Mit einem Agenten läuft das Ganze nur automatisch."
         },
         "photos": {
           "q": "Welche Fotos eignen sich am besten?",
@@ -153,27 +153,27 @@
         },
         "output": {
           "q": "Was bekomme ich?",
-          "a": "Eine kostenlose Vorschau, die das Objekt von allen Seiten zeigt. Wenn Sie Credits einsetzen, folgt ein 3D-Modell, das Sie auf seiner Seite drehen und herunterladen können: als texturierte GLB-Datei fürs Web und als USDZ-Datei."
+          "a": "Zuerst eine kostenlose Vorschau, die das Objekt von allen Seiten zeigt. Setzt du Credits ein, folgt ein 3D-Modell, das du auf seiner Seite drehen und herunterladen kannst: als texturierte GLB-Datei fürs Web und als USDZ-Datei."
         },
         "freePreview": {
           "q": "Warum ist die Vorschau kostenlos?",
-          "a": "Bevor das 3D-Modell entsteht, zeichnen wir das Objekt von allen Seiten. Diese Vorschau prüfen Sie kostenlos. Credits setzen Sie erst ein, wenn Form und Details stimmen."
+          "a": "Bevor das 3D-Modell entsteht, zeichnen wir das Objekt von allen Seiten. Diese Vorschau prüfst du kostenlos. Credits setzt du erst ein, wenn Form und Details stimmen."
         },
         "failed": {
           "q": "Was passiert, wenn ein Rendering fehlschlägt?",
-          "a": "Kann das 3D-Modell nicht erstellt werden, gehen die Credits für dieses Rendering automatisch auf Ihr Guthaben zurück."
+          "a": "Kann das 3D-Modell nicht erstellt werden, gehen die Credits für dieses Rendering automatisch auf dein Guthaben zurück."
         },
         "public": {
           "q": "Ist mein Rendering öffentlich?",
-          "a": "Fertige Modelle erscheinen standardmäßig in der öffentlichen Galerie. Auf der Seite des Modells können Sie „Show in public gallery“ ausschalten. Derzeit kann es passieren, dass sich der Link danach für andere nicht mehr öffnet. Wenn Sie den Link teilen möchten, lassen Sie das Modell also in der Galerie."
+          "a": "Fertige Modelle erscheinen standardmäßig in der öffentlichen Galerie. Auf der Seite des Modells kannst du „Show in public gallery“ ausschalten. Derzeit öffnet sich der Link danach aber unter Umständen für andere nicht mehr. Willst du den Link teilen, lass das Modell also in der Galerie."
         },
         "cost": {
           "q": "Was kostet ein 3D-Modell?",
-          "a": "Die Vorschau ist kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits, ein Credit kostet {unit}, ein Modell also {price}. Credits verfallen nicht. Alle Pakete finden Sie auf der Preisseite."
+          "a": "Die Vorschau ist kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits, ein Credit kostet {unit}, ein Modell also {price}. Credits verfallen nicht. Alle Pakete findest du auf der Preisseite."
         },
         "what": {
           "q": "Was ist easyrender?",
-          "a": "easyrender ist eine Web-App, die aus einem Foto eines Objekts ein 3D-Modell macht. Sie laden das Foto hoch, prüfen kostenlos eine Übersicht mit allen Ansichten und setzen nur dann Credits ein, wenn Sie das fertige Modell haben möchten. Das laden Sie als GLB und USDZ herunter."
+          "a": "easyrender ist eine Web-App, die aus dem Foto eines Objekts ein 3D-Modell macht. Du lädst das Foto hoch, prüfst kostenlos eine Übersicht mit allen Ansichten und setzt nur dann Credits ein, wenn du das fertige Modell haben willst. Das lädst du als GLB und USDZ herunter."
         },
         "formats": {
           "q": "In welchen Dateiformaten kann ich herunterladen?",
@@ -181,20 +181,20 @@
         },
         "ar": {
           "q": "Kann ich das Modell in meinem Raum ansehen?",
-          "a": "Augmented Reality kommt bald: Dann öffnen Sie das Modell auf dem Smartphone und stellen es in Ihren Raum. Sie sehen Form und Materialien des Objekts, nicht seine tatsächliche Größe."
+          "a": "Augmented Reality kommt bald. Dann öffnest du das Modell auf dem Smartphone und stellst es in deinen Raum. Du siehst Form und Materialien des Objekts, nicht seine tatsächliche Größe."
         }
       }
     }
   },
   "AgentDemo": {
-    "window": "Ihr Agent · easyrender MCP",
+    "window": "Dein Agent · easyrender MCP",
     "ask": "Hier ist der Frühjahrskatalog. Erstelle bitte von jedem Produkt ein 3D-Modell.",
     "calls": {
       "create_render": "24 Fotos · Vorschau kostenlos",
       "get_render": "24 Vorschauen fertig",
       "render_3d": "24 Modelle · GLB und USDZ"
     },
-    "done": "Erledigt. 24 Modelle liegen in Ihrer easyrender-Bibliothek, jeweils als GLB und USDZ, bereit für AR, sobald es verfügbar ist. Hier das erste:",
+    "done": "Erledigt. 24 Modelle liegen in deiner easyrender-Bibliothek, jeweils als GLB und USDZ und bereit für AR, sobald es da ist. Hier das erste:",
     "modelAlt": "3D-Modell: {title}"
   },
   "McpSetup": {
@@ -203,10 +203,10 @@
     "copy": "Kopieren",
     "copied": "Kopiert",
     "claudeAi": {
-      "one": "Öffnen Sie claude.ai → Settings → Connectors → Add custom connector.",
-      "two": "Fügen Sie diese URL als Connector-URL ein.",
-      "three": "Klicken Sie auf Connect, melden Sie sich bei easyrender an und erlauben Sie den Zugriff. Ein Schlüssel ist nicht nötig.",
-      "note": "Dieselbe Anmeldung funktioniert mit jedem MCP-Client, der OAuth unterstützt. Jede Verbindung erzeugt einen Schlüssel, den Sie unten widerrufen können."
+      "one": "Öffne claude.ai → Settings → Connectors → Add custom connector.",
+      "two": "Füge diese URL als Connector-URL ein.",
+      "three": "Klick auf Connect, melde dich bei easyrender an und erlaube den Zugriff. Einen Schlüssel brauchst du nicht.",
+      "note": "Dieselbe Anmeldung funktioniert mit jedem MCP-Client, der OAuth unterstützt. Jede Verbindung erzeugt einen Schlüssel, den du unten widerrufen kannst."
     }
   },
   "Gallery": {
@@ -304,14 +304,14 @@
   },
   "PromptBar": {
     "steps": {
-      "upload": "Ihr Foto wird hochgeladen",
+      "upload": "Dein Foto wird hochgeladen",
       "read": "Form und Materialien werden erkannt",
       "draw": "Alle Ansichten werden gezeichnet",
-      "prepare": "Ihre 3D-Vorschau wird vorbereitet"
+      "prepare": "Deine 3D-Vorschau wird vorbereitet"
     },
     "errors": {
       "type": "Bitte ein Foto als JPEG, PNG oder WebP anhängen.",
-      "noPhoto": "Hängen Sie zuerst ein Foto des Objekts oder Gebäudes an.",
+      "noPhoto": "Häng zuerst ein Foto des Objekts oder Gebäudes an.",
       "upload": "Upload fehlgeschlagen",
       "unreadable": "Dieses Foto lässt sich nicht lesen",
       "title": "Dieses Rendering konnte nicht starten"
@@ -327,12 +327,12 @@
     "dropOrPaste": "oder hierher ziehen oder einfügen",
     "generate": "Erstellen",
     "dropToAttach": "Foto hier ablegen",
-    "tryOne": "Beispiel testen:",
-    "previewReady": "Ihre Vorschau ist fertig",
+    "tryOne": "Probier ein Beispiel:",
+    "previewReady": "Deine Vorschau ist fertig",
     "photoTo3d": "Foto zu 3D-Modell",
     "auth": {
-      "title": "Ihre 3D-Vorschau ist fertig",
-      "description": "Legen Sie ein kostenloses Konto an, um Ihr Foto aus allen Ansichten zu sehen und daraus ein 3D-Modell zu machen."
+      "title": "Deine 3D-Vorschau ist fertig",
+      "description": "Leg ein kostenloses Konto an. Dann siehst du dein Foto aus allen Ansichten und kannst daraus ein 3D-Modell machen."
     },
     "reveal": "Kostenlos registrieren und alle Ansichten sehen"
   },
@@ -625,13 +625,13 @@
       "render": "PBR-Rendering",
       "element": "Element",
       "hint": "Zum Drehen ziehen",
-      "subtitle": "Prüfen Sie das Objekt kostenlos von allen Seiten. Credits zahlen Sie erst, wenn die Form stimmt."
+      "subtitle": "Prüfe das Objekt kostenlos von allen Seiten. Credits zahlst du erst, wenn die Form stimmt."
     },
     "pipeline": {
-      "lead": "Ein Foto hochladen. Den Rest übernimmt die Engine.",
-      "body": "Sie rekonstruiert Ihr Produkt von allen Seiten und zeigt Ihnen die Form, bevor Sie bezahlen.",
+      "lead": "Lade ein Foto hoch. Den Rest übernimmt die Engine.",
+      "body": "Dein Produkt wird von allen Seiten rekonstruiert, und du siehst die Form, bevor du bezahlst.",
       "photo": "Ausgangsfoto",
-      "placeholder": "Beschreiben Sie Ihr Produkt",
+      "placeholder": "Beschreib dein Produkt",
       "generate": "Erstellen",
       "steps": {
         "angles": "Ansichten",
@@ -640,7 +640,7 @@
         "ready": "Fertig"
       },
       "noteTitle": "Kostenlose Vorschau",
-      "noteBody": "Die Engine zeichnet das Objekt von allen Seiten, bevor sie das Mesh baut. Stimmt etwas nicht, sehen Sie es, bevor Sie einen Credit ausgeben.",
+      "noteBody": "Die Engine zeichnet das Objekt von allen Seiten, bevor sie das Mesh baut. Stimmt etwas nicht, siehst du es, bevor du einen Credit ausgibst.",
       "noteLink": "Mit einem Foto testen"
     },
     "industries": {
@@ -649,9 +649,9 @@
       "store": {
         "eyebrow": "E-Commerce",
         "title": "Bald im eigenen Raum ansehen",
-        "body": "Augmented Reality, demnächst verfügbar: Ihre Kundschaft öffnet die Kamera am iPhone oder Android-Smartphone und stellt das Produkt in den Raum.",
+        "body": "Augmented Reality, demnächst verfügbar: Deine Kundschaft öffnet die Kamera am iPhone oder Android-Smartphone und stellt das Produkt in den eigenen Raum.",
         "link": "Mit uns über AR für Shops sprechen",
-        "domain": "ihrshop.de",
+        "domain": "deinshop.de",
         "meta": "Grauer Bezug · GLB und USDZ",
         "button": "Im Raum ansehen",
         "searching": "Boden wird gesucht…",
@@ -659,7 +659,7 @@
       },
       "interior": {
         "eyebrow": "Architektur und Innenarchitektur",
-        "title": "Echte Stücke für Ihre Renderings",
+        "title": "Echte Stücke für deine Renderings",
         "body": "Architektur-, Innenarchitektur- und Lichtplanungsbüros setzen Möbel und Leuchten ein, die es wirklich gibt und die der Kunde kaufen kann.",
         "link": "Hub für Planungsbüros ansehen",
         "kelvin": "Farbtemperatur"
@@ -667,7 +667,7 @@
       "games": {
         "eyebrow": "Games",
         "title": "Requisiten mit fertiger Physik",
-        "body": "Laden Sie die GLB-Datei herunter und holen Sie sie in Ihre Szene. Die Demo unten schickt das Stück durch eine Physik-Engine in Ihrem Browser.",
+        "body": "Lade die GLB-Datei herunter und hol sie in deine Szene. Die Demo unten schickt das Stück direkt in deinem Browser durch eine Physik-Engine.",
         "link": "Per API oder MCP anbinden",
         "rigidbody": "Rigidbody",
         "dynamic": "Dynamisch",
@@ -678,7 +678,7 @@
     },
     "tools": {
       "lead": "Erst die Form prüfen, dann Credits ausgeben.",
-      "body": "Jedes Element sehen Sie so, wie die Engine es gebaut hat: Mesh, Materialien und Texturen.",
+      "body": "Du siehst jedes Element so, wie die Engine es gebaut hat: Mesh, Materialien und Texturen.",
       "link": "Datenblatt ansehen",
       "topology": "Topologie",
       "triangles": "Dreiecke",
@@ -735,11 +735,11 @@
       "by": "Warum wir easyrender bauen",
       "byline": "Ein Universum aus Elementen, das mit allem funktioniert",
       "stat": "1 Foto",
-      "statBody": "Vom Katalogfoto zum texturierten Modell, das Sie drehen und als GLB und USDZ herunterladen.",
+      "statBody": "Vom Katalogfoto zum texturierten Modell, das du drehen und als GLB und USDZ herunterladen kannst.",
       "marquee": "Formate und Tools, mit denen es funktioniert"
     },
     "cta": {
-      "title": "Ihr Katalog muss nicht mehr auf ein 3D-Team warten",
+      "title": "Dein Katalog muss nicht mehr auf ein 3D-Team warten",
       "button": "Jetzt starten"
     },
     "shelf": {
@@ -752,7 +752,7 @@
       "elements": "{count, plural, one {# Element} other {# Elemente}}"
     },
     "lens": {
-      "label": "{name} in vier Darstellungen zugleich: Mesh, Collider, Oberflächennormalen und texturiertes Rendering. Das fertige Rendering folgt Ihrem Mauszeiger.",
+      "label": "{name} in vier Darstellungen zugleich: Mesh, Collider, Oberflächennormalen und texturiertes Rendering. Das fertige Rendering folgt deinem Mauszeiger.",
       "layers": {
         "mesh": "Mesh",
         "physics": "Physik",
