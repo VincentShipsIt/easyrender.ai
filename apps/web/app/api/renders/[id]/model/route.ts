@@ -1,4 +1,4 @@
-import { canAccess, getFile, getRender, notFound } from '@easyrender/core';
+import { canAccess, getFile, getRender, notFound, servedModel } from '@easyrender/core';
 import { resolveActor } from '@/lib/actor';
 import { handle } from '@/lib/http';
 
@@ -13,12 +13,18 @@ export const GET = (request: Request, { params }: RouteContext<'/api/renders/[id
     // Owners download their model; anyone can view a render that is in the public gallery.
     const owner = canAccess(render, actor) && Boolean(actor.userId);
     if (!owner && !render.isPublic) throw notFound();
-    const bytes = await getFile(render.glbKey);
+    const bytes = servedModel(render, await getFile(render.glbKey));
+    const isEdited = Array.isArray(render.materialEdits) && render.materialEdits.length > 0;
     const download = new URL(request.url).searchParams.get('download') === '1';
     return new Response(bytes as BodyInit, {
       headers: {
         'content-type': 'model/gltf-binary',
-        'cache-control': owner ? 'private, max-age=3600' : 'public, max-age=3600',
+        // An edited model must show the edit at once, so it is revalidated instead of cached.
+        'cache-control': isEdited
+          ? 'no-cache'
+          : owner
+            ? 'private, max-age=3600'
+            : 'public, max-age=3600',
         ...(download
           ? { 'content-disposition': `attachment; filename="easyrender-${id}.glb"` }
           : {}),

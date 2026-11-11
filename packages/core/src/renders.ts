@@ -389,6 +389,9 @@ export type RenderView = {
   // True once the 3x3 angle sheet exists. Without it the preview is the plain photo.
   hasSheet: boolean;
   hasModel: boolean;
+  // Changes when the render does, including its material edits: a viewer adds it to the model URL
+  // so it never shows a cached copy of an older look.
+  modelVersion: number;
   credits: number;
   renderCredits: number;
   sheetCredits: number;
@@ -407,6 +410,7 @@ export function toView(render: Render): RenderView {
     hasPreview: render.status !== 'drafting' && render.status !== 'failed',
     hasSheet: Boolean(render.sheetKey),
     hasModel: render.status === 'ready' && Boolean(render.glbKey),
+    modelVersion: render.updatedAt.getTime(),
     credits: render.credits,
     renderCredits: RENDER_CREDITS,
     sheetCredits: SHEET_CREDITS,

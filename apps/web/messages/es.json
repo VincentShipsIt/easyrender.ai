@@ -305,7 +305,28 @@
       "start": "No se pudo iniciar el render",
       "sheet": "No se pudo generar la hoja de ángulos"
     },
-    "generateSheet": "Generar hoja de ángulos ({credits} créditos)"
+    "generateSheet": "Generar hoja de ángulos ({credits} créditos)",
+    "materials": {
+      "title": "Materiales",
+      "hint": "Cambia el aspecto de cada material. Los cambios guardados se incluyen en las descargas GLB y USDZ.",
+      "loading": "Leyendo los materiales de este modelo",
+      "loadFailed": "No se pudieron leer los materiales de este modelo.",
+      "empty": "Este modelo no tiene materiales que editar.",
+      "unnamed": "Material {number}",
+      "finish": {
+        "stone": "Piedra",
+        "wood": "Madera",
+        "metal": "Metal"
+      },
+      "tint": "Tinte",
+      "roughness": "Rugosidad",
+      "metalness": "Metalicidad",
+      "save": "Guardar cambios",
+      "reset": "Volver al original",
+      "saved": "Guardado. Las descargas ya incluyen tus cambios.",
+      "resetDone": "De vuelta al aspecto generado.",
+      "saveFailed": "No se pudieron guardar los cambios. Inténtalo de nuevo."
+    }
   },
   "PromptBar": {
     "steps": {

@@ -305,7 +305,28 @@
       "start": "Could not start the render",
       "sheet": "Could not generate the angle sheet"
     },
-    "generateSheet": "Generate angle sheet ({credits} credits)"
+    "generateSheet": "Generate angle sheet ({credits} credits)",
+    "materials": {
+      "title": "Materials",
+      "hint": "Change how each material looks. Saved changes are included in the GLB and USDZ downloads.",
+      "loading": "Reading the materials of this model",
+      "loadFailed": "Could not read the materials of this model.",
+      "empty": "This model has no materials to edit.",
+      "unnamed": "Material {number}",
+      "finish": {
+        "stone": "Stone",
+        "wood": "Wood",
+        "metal": "Metal"
+      },
+      "tint": "Tint",
+      "roughness": "Roughness",
+      "metalness": "Metalness",
+      "save": "Save changes",
+      "reset": "Reset to original",
+      "saved": "Saved. The downloads now include your changes.",
+      "resetDone": "Back to the generated look.",
+      "saveFailed": "Could not save the changes. Try again."
+    }
   },
   "PromptBar": {
     "steps": {

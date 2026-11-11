@@ -18,4 +18,5 @@ a line here. Keep this map short.
 - **Material realism (what stone, wood, metal can do):** [marble and stone](context/materials-marble-stone.md),
   [wood](context/materials-wood.md), [metal tube](context/materials-metal-tube.md),
   [PBR values](context/materials-pbr-reference.md). Code: `packages/harness/src/materials.ts`.
+- **Material edits (owner swaps shine and tint, part pipeline next):** [material edits](context/material-edits.md).
 - **Staged room scenes, lived-in look:** [staging rules](context/staging-lived-in-rooms.md).
