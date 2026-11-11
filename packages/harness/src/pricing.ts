@@ -7,15 +7,17 @@ export function creditsFor(costUsd: number): number {
   return Math.ceil(Number((costUsd / (1 - MARGIN) / CREDIT_USD).toFixed(6)));
 }
 
-// The angle sheet alone (one 1K image). Normally it comes free with the preview; this is what
+// The draft angle sheet (one 1K image). The free preview makes one at our cost; this is what
 // generating one later, from the library, costs. It counts toward the 3D render's price.
 export const SHEET_COST_USD = 0.034;
 export const SHEET_CREDITS = creditsFor(SHEET_COST_USD);
 
-// What one full render costs us: the sheet plus a typical TRELLIS run (~60s on an A100, which
-// is a ceiling: Replicate lists about $0.047 and 34s for a typical run).
+// A paid build redraws the sheet at 2K with the final model, then builds from it. That 2K sheet
+// plus a typical TRELLIS run (~60s on an A100, which is a ceiling: Replicate lists about $0.047
+// and 34s for a typical run) is what one full render costs us.
+export const FINAL_SHEET_COST_USD = 0.101;
 export const BUILD_COST_USD = 0.09;
-export const RENDER_COST_USD = SHEET_COST_USD + BUILD_COST_USD;
+export const RENDER_COST_USD = FINAL_SHEET_COST_USD + BUILD_COST_USD;
 export const RENDER_CREDITS = creditsFor(RENDER_COST_USD);
 
 // Pay as you go: buy any number of credits at CREDIT_USD each, through one Stripe price of $0.01.

@@ -67,11 +67,11 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
   },
   [ROUTES.models.paths.en]: {
     title: 'Models',
-    note: 'The two models behind every render, their settings and what each step costs in credits.',
+    note: 'The three models behind every render, their settings and what each step costs in credits.',
   },
   [ROUTES.models.paths.es]: {
     title: 'Modelos',
-    note: 'Los dos modelos detrás de cada render, sus ajustes y el coste de cada paso en créditos.',
+    note: 'Los tres modelos detrás de cada render, sus ajustes y el coste de cada paso en créditos.',
   },
   [ROUTES.evals.paths.en]: {
     title: 'Evals',

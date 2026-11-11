@@ -38,7 +38,7 @@ Tools work in one of two ways. Some go straight from the photo to a model. Other
 
 easyrender uses the second route. We chose it after an A/B run on real listings. That run used a larger image model for the sheet; the sheet is now drawn by a cheaper one that we have not yet tested the same way.
 
-The first stage is the angle sheet: one square image, drawn at 1K and split into a 3 by 3 grid.
+The first stage is the angle sheet: one square image, split into a 3 by 3 grid.
 
 Eight cells circle the object in 45-degree steps, from the front round to front-left, and the ninth looks straight down. Every cell is on plain white, in soft light, with the whole object centred. The second stage reads your photo and those nine views and builds one textured mesh.
 

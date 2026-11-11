@@ -10,7 +10,9 @@ import {
   cleanNote,
   createReplicate,
   cutCells,
+  DEFAULT_FINAL_SHEET_SETTINGS,
   download,
+  FINAL_SHEET_MODEL,
   findGlbUrl,
   isSettled,
   loadHarness,
@@ -197,6 +199,15 @@ export async function advance(id: string): Promise<Render | null> {
     if (stale && !render.sheetPredictionId && !render.buildPredictionId) {
       throw new Error('never started');
     }
+    // The final sheet was drawn but the 3D build never started (the worker died in between).
+    if (
+      stale &&
+      render.status === 'rendering' &&
+      render.buildClaimedAt &&
+      !render.buildPredictionId
+    ) {
+      throw new Error('3D render never started');
+    }
     if (render.status === 'drafting' && render.sheetPredictionId) {
       const prediction = await replicate().get(render.sheetPredictionId);
       if (!isSettled(prediction.status)) {
@@ -214,6 +225,50 @@ export async function advance(id: string): Promise<Render | null> {
         data: { status: 'preview_ready', sheetKey, costUsd: { increment: SHEET_MODEL.costUsd } },
       });
       if (count === 0) return db().render.findUnique({ where: { id } });
+    }
+
+    // A paid build redraws the sheet with the final model first; when it is done, the 3D build starts.
+    if (
+      render.status === 'rendering' &&
+      render.finalSheetPredictionId &&
+      !render.buildPredictionId
+    ) {
+      const prediction = await replicate().get(render.finalSheetPredictionId);
+      if (!isSettled(prediction.status)) {
+        if (stale) throw new Error('final angle sheet timed out');
+        return render;
+      }
+      // A final sheet that failed or was rejected never fails the build: it carries on from the
+      // draft the visitor already saw, and the problem is reported.
+      let finalSheet: Uint8Array | null = null;
+      try {
+        const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
+        if (!url) throw new Error(prediction.error ?? `final sheet ${prediction.status}`);
+        const bytes = await download(url);
+        const quality = await checkSheet(bytes, (await harness()).limits);
+        if (!quality.ok) throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
+        finalSheet = bytes;
+      } catch (error) {
+        reportError(error, { renderId: id, stage: 'final_sheet' });
+      }
+      const finalKey = finalSheet
+        ? await putFile('sheets/sheet.png', finalSheet, 'image/png')
+        : null;
+      // Only the call that wins this claim starts the build, so webhook and polling cannot both.
+      const { count } = await db().render.updateMany({
+        where: { id, status: 'rendering', buildPredictionId: null, buildClaimedAt: null },
+        data: {
+          buildClaimedAt: new Date(),
+          ...(finalKey
+            ? { sheetKey: finalKey, costUsd: { increment: FINAL_SHEET_MODEL.costUsd } }
+            : {}),
+        },
+      });
+      if (count === 0) return db().render.findUnique({ where: { id } });
+      const sheetForBuild = finalSheet ?? (render.sheetKey ? await getFile(render.sheetKey) : null);
+      const started = await startThreeD(id, render.sourceKey, sheetForBuild);
+      await db().render.update({ where: { id }, data: { buildPredictionId: started.id } });
+      return db().render.findUnique({ where: { id } });
     }
 
     if (render.status === 'rendering' && render.buildPredictionId) {
@@ -282,21 +337,42 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
   }
 
   try {
-    const client = replicate();
-    const source = await getFile(render.sourceKey);
-    const images = [await client.upload(source, 'source.jpg', 'image/jpeg')];
+    // A paid build draws the final sheet first (the visitor saw a cheaper draft); the 3D build
+    // starts when it is done, in advance(). Without a draft the build runs from the photo alone.
     if (render.sheetKey) {
-      const cells = await cutCells(await getFile(render.sheetKey));
-      for (const [index, cell] of cells.entries()) {
-        images.push(await client.upload(cell, `view-${index}.png`, 'image/png'));
+      const client = replicate();
+      const source = await getFile(render.sourceKey);
+      const sourceUrl = await client.upload(source, 'source.jpg', 'image/jpeg');
+      const recipe = await harness();
+      const request = sheetRequest(
+        sourceUrl,
+        render.prompt,
+        selectSkillFrom(recipe.skills, render.name, render.prompt),
+        DEFAULT_FINAL_SHEET_SETTINGS,
+        recipe.sheetPrompt,
+        selectMaterialsFrom(recipe.materials, render.name, render.prompt),
+      );
+      try {
+        const prediction = await client.start(
+          request.path,
+          request.body,
+          config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
+        );
+        return await db().render.update({
+          where: { id },
+          data: { finalSheetPredictionId: prediction.id },
+        });
+      } catch (error) {
+        // The final model could not be started: build from the draft rather than fail a paid job.
+        reportError(error, { renderId: id, stage: 'final_sheet_start' });
       }
     }
-    const prediction = await client.start(
-      '/predictions',
-      buildRequest(images, (await harness()).build),
-      config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
-    );
-    return await db().render.update({ where: { id }, data: { buildPredictionId: prediction.id } });
+    const sheet = render.sheetKey ? await getFile(render.sheetKey) : null;
+    const prediction = await startThreeD(id, render.sourceKey, sheet);
+    return await db().render.update({
+      where: { id },
+      data: { buildPredictionId: prediction.id, buildClaimedAt: new Date() },
+    });
   } catch (error) {
     await fail(id, error);
     throw new AppError(
@@ -305,6 +381,23 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
       'upstream',
     );
   }
+}
+
+// Starts the 3D build from the photo and, when there is one, the sheet's nine views.
+async function startThreeD(id: string, sourceKey: string, sheet: Uint8Array | null) {
+  const client = replicate();
+  const source = await getFile(sourceKey);
+  const images = [await client.upload(source, 'source.jpg', 'image/jpeg')];
+  if (sheet) {
+    for (const [index, cell] of (await cutCells(sheet)).entries()) {
+      images.push(await client.upload(cell, `view-${index}.png`, 'image/png'));
+    }
+  }
+  return client.start(
+    '/predictions',
+    buildRequest(images, (await harness()).build),
+    config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
+  );
 }
 
 // The angle sheet on its own, for a render that has none yet. SHEET_ENABLED=false stops the free
