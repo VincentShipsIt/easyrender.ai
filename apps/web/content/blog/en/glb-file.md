@@ -11,7 +11,7 @@ cta: If you have a sharp photo of a lamp or a chair, you can see it from every a
 
 A GLB file is a 3D model saved in the binary version of glTF 2.0, an open format from the Khronos Group. One .glb file holds the shape, materials, textures and any animation, so it loads on the web without extra files. It is the usual format for 3D on product pages and for AR on Android.
 
-![Illustration of three loose sheets, a vase drawn as a wireframe, a wood-grain texture and a shaded sphere for the material, flowing into one transparent box that holds them as stacked layers along with a looping arrow for animation](/blog/illustrations/glb-file/hero.webp "Illustration, not an easyrender result: mesh, texture, material and animation travel together inside one GLB file.")
+![Illustration of a celadon teapot, the left half in real glaze and the right half in matte grey clay under a white wireframe mesh whose UV panels peel away from the body, on a dark background](/blog/illustrations/glb-file/hero.webp "Illustration, not an easyrender result: a teapot drawn half as glaze, half as a wireframe mesh with its UV panels peeling off.")
 
 ## What is inside a GLB file?
 

@@ -11,7 +11,7 @@ cta: Pick one sharp catalogue photo, a chair or a sideboard shot from three-quar
 
 To turn a photo into a 3D model, take one sharp, evenly lit photo of a single object and give it to an image-to-3D tool, which predicts the sides the camera did not see. Photogrammetry is the other route: it needs at least 20 overlapping photos taken all the way round. Either way, the photo decides most of the result.
 
-![Illustration of a hand holding a phone up to a ceramic table lamp with an orange shade, and beside it a wireframe of the same lamp whose unseen back is drawn in dashed lines](/blog/illustrations/how-to-make-a-3d-model-from-photos/hero.webp "Illustration, not an easyrender result: the camera sees one side of the lamp, and the tool predicts the rest, drawn here as dashed lines.")
+![Illustration of a galvanised metal watering can, one half in its real metal and the other half in matte grey clay covered by a white wireframe mesh, on a dark background](/blog/illustrations/how-to-make-a-3d-model-from-photos/hero.webp "Illustration, not an easyrender result: a watering can drawn half as galvanised metal, half as a clay-and-wireframe mesh.")
 
 ## How to make a 3D model from photos: one photo or many?
 

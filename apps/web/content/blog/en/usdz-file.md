@@ -11,7 +11,7 @@ cta: Pick a sharp photo of one piece, an oak side table or a floor lamp, and che
 
 A USDZ file is a 3D model packed in Pixar's Universal Scene Description format, USD, inside an uncompressed zip archive. Apple uses it for AR Quick Look, so an iPhone or iPad can open a USDZ from Safari, Files, Mail or Messages and place the object in the room through the camera. Android does not open USDZ.
 
-![Illustration of two hands holding a tablet that shows a green side table placed on a living room rug in AR, next to an open zipped pouch holding layered sheets and fabric and wood texture swatches](/blog/illustrations/usdz-file/hero.webp "Illustration, not an easyrender result: AR Quick Look places the table in the room from the layers and textures packed inside one USDZ.")
+![Illustration of a glowing mushroom table lamp beside a phone lying flat, the lamp's left half lit warm and its right half in matte grey clay with a white wireframe mesh, on a dark background](/blog/illustrations/usdz-file/hero.webp "Illustration, not an easyrender result: a lamp drawn half lit, half as a clay-and-wireframe mesh, beside a phone.")
 
 ## What is inside a USDZ file?
 

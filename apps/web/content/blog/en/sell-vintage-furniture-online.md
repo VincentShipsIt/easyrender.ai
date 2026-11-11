@@ -11,7 +11,7 @@ cta: Take one daylight photo of the piece from three-quarters and see how it tur
 
 To sell vintage furniture online, pick a platform that fits the piece's value, price it from sold listings, photograph it in daylight from every side including its flaws, and write a listing with maker, era, material and measured size. Curated sites like Chairish suit designer pieces. Facebook Marketplace and eBay suit local and lower-priced sales.
 
-![Illustration of a seller crouching to photograph a mid-century teak sideboard in daylight, with prints of its front, three-quarter and side views and a close-up of a worn corner laid out on the floor](/blog/illustrations/sell-vintage-furniture-online/hero.webp "Illustration, not an easyrender result: every side shot at the piece's middle height, and the worn corner shot close up.")
+![Illustration of a teak mid-century sideboard with sliding doors and tapered legs, its left side in real wood fading into matte grey clay with a white wireframe mesh on the right, on a dark background](/blog/illustrations/sell-vintage-furniture-online/hero.webp "Illustration, not an easyrender result: a sideboard drawn as teak on one side and as a clay-and-wireframe mesh on the other.")
 
 ## Where can you sell vintage furniture online?
 

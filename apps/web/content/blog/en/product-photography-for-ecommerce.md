@@ -11,7 +11,7 @@ cta: When your next three-quarter main image is ready, run it through image-to-3
 
 Good product photography for ecommerce comes from a setup you can repeat: one large soft light, a plain background, a camera on a tripod at the product's middle height, and the same shot list for every item. You do not need studio flashes. A window, a white foam board and a phone cover most small shops.
 
-![Illustration of a home product photo setup: daylight from a window, a white paper backdrop on stands, a teapot on a wooden table, a phone on a tripod at the teapot's height and a white foam board facing the window](/blog/illustrations/product-photography-for-ecommerce/hero.webp "Illustration, not an easyrender result: one window, one white board, and a tripod at the product's middle height.")
+![Illustration of a gooseneck kettle, one half in black enamel with a copper handle and knob, the other half and the spout in matte grey clay with a white wireframe mesh, on a dark background](/blog/illustrations/product-photography-for-ecommerce/hero.webp "Illustration, not an easyrender result: a kettle drawn half in its real finish, half as a clay-and-wireframe mesh.")
 
 ## What equipment do you need for ecommerce product photography?
 

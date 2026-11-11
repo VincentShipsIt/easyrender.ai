@@ -11,7 +11,7 @@ cta: Pick one piece with depth, an armchair or a sideboard, and check every angl
 
 3D for ecommerce means giving a product a 3D model, usually a GLB or USDZ file, that shoppers can spin on screen and, on a phone, place in their room with AR. Stores get these models in four ways: from a 3D artist, from the manufacturer's CAD files, by scanning the product, or with AI from a single photo.
 
-![Illustration of a hand holding a phone with a shop product page that shows a sideboard with arrows to turn it, and the same sideboard standing in a living room with a dotted AR outline](/blog/illustrations/3d-models-for-ecommerce/hero.webp "Illustration, not an easyrender result: one model, turned on the product page and placed in the room with AR.")
+![Illustration of a brown leather loafer beside its shoe box, the front of the loafer in real leather and the heel in matte grey clay with a white wireframe mesh, on a dark background](/blog/illustrations/3d-models-for-ecommerce/hero.webp "Illustration, not an easyrender result: a loafer drawn half as leather, half as a clay-and-wireframe mesh, next to its box.")
 
 ## What does a 3D model add to a product page?
 
