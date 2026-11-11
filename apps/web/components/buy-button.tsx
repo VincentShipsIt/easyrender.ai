@@ -4,6 +4,7 @@ import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { gaEvent } from '@/lib/analytics/browser';
 
 // Posts to a billing endpoint that answers with a Stripe URL, then follows it.
 export function BuyButton({
@@ -38,6 +39,8 @@ export function BuyButton({
           });
           const data = await response.json().catch(() => ({}));
           if (response.ok && data.url) {
+            if (endpoint === '/api/checkout')
+              gaEvent('begin_checkout', { items: [{ item_id: body?.plan }] });
             window.location.href = data.url;
             return;
           }

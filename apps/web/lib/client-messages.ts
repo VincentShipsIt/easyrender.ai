@@ -9,6 +9,7 @@ type Messages = { [key: string]: string | Messages };
 
 export const CLIENT_NAMESPACES = [
   'AgentDemo',
+  'Analytics',
   'Auth',
   'BuyButton',
   'Catalog',

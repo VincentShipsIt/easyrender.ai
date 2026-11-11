@@ -84,8 +84,8 @@ describe('llms.txt', () => {
         expect(path.startsWith(prefix), `${url} vs ${prefix}`).toBe(false);
       }
     }
-    // de, fr, it and pt are open for their home only: nothing below it is listed.
-    expect(text).not.toMatch(/\/(de|fr|it|pt)\//);
+    // Only cookie information is open below these homes.
+    expect(text).not.toMatch(/\/(de|fr|it|pt)\/(?!cookies?\b)/);
   });
 
   it('describes the product within claims.md', () => {

@@ -17,6 +17,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { prepare } from '@/components/prompt-bar';
 import { Button } from '@/components/ui/button';
+import { attribution, attributionHeaders, observeRender } from '@/lib/analytics/browser';
 import { takePending } from '@/lib/pending-upload';
 import { cn } from '@/lib/utils';
 
@@ -110,6 +111,7 @@ export function CatalogLibrary({
         if (!response.ok) return;
         const data = (await response.json()) as { renders: RenderView[]; balance: number };
         if (localVersion.current !== startedAt) return;
+        data.renders.forEach(observeRender);
         setItems(data.renders);
         setBalance(data.balance);
       } catch {
@@ -129,6 +131,7 @@ export function CatalogLibrary({
   }, [inFlight, building, refresh]);
 
   const upsert = (next: RenderView) => {
+    observeRender(next);
     localVersion.current += 1;
     setItems((current) => {
       const index = current.findIndex((item) => item.id === next.id);
@@ -151,10 +154,15 @@ export function CatalogLibrary({
   async function uploadOne(upload: QueuedUpload) {
     try {
       const body = new FormData();
+      body.append('attribution', JSON.stringify(attribution()));
       body.append('image', await prepare(upload.file, t('errors.unreadable')), 'source.jpg');
       body.append('name', upload.name);
       if (upload.prompt) body.append('prompt', upload.prompt);
-      const response = await fetch('/api/renders', { method: 'POST', body });
+      const response = await fetch('/api/renders', {
+        method: 'POST',
+        body,
+        headers: attributionHeaders(),
+      });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         markFailed(upload.key, data.error ?? t('errors.upload'));

@@ -43,7 +43,8 @@
       "signIn": "Sign in",
       "guides": "Guides",
       "models": "Models",
-      "evals": "Evals"
+      "evals": "Evals",
+      "cookies": "Cookies and analytics"
     },
     "copyright": "© 2026 easyrender. Powered by Genfeed.",
     "pricesNote": "Prices in USD. Credits never expire."
@@ -1065,5 +1066,25 @@
       "report": "Full report"
     },
     "cta": "See the models behind a render"
+  },
+  "Analytics": {
+    "title": "Cookies and analytics",
+    "banner": "We use optional analytics to understand how you use easyrender. You can accept or reject them.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "details": "Cookie details",
+    "intro": "Here is what your browser stores and how you can control optional analytics.",
+    "anonTitle": "er_anon",
+    "anon": "This first-party cookie identifies your anonymous previews, applies the daily free-preview allowance and lets you access and associate previews with your account. It is currently set on your first visit and lasts one year. It is not used for attribution.",
+    "consentTitle": "er_consent",
+    "consent": "Remembers your analytics choice, its date and version for one year. It is set only when you choose.",
+    "gaTitle": "Google Analytics 4: _ga and _ga_<id>",
+    "ga": "These cookies measure visits and last up to two years. In strict regions they are only set after you accept. Elsewhere analytics is enabled unless you reject or send Global Privacy Control (GPC). Advertising consent always stays denied.",
+    "posthogTitle": "PostHog (EU), without cookies",
+    "posthog": "PostHog uses no cookies or persistent browser storage. In strict regions it loads only after you accept; elsewhere it respects your rejection and GPC.",
+    "attributionTitle": "First-touch attribution",
+    "attribution": "Campaign parameters and the referring page stay in memory until you create a preview or account, then are stored with that record. No click identifiers are stored. Server funnel events do not depend on your browser analytics choice.",
+    "change": "Change your choice",
+    "withdraw": "You can withdraw by choosing Reject. This stops optional tracking and removes Google Analytics cookies. GPC always blocks optional analytics."
   }
 }
