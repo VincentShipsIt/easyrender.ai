@@ -1065,5 +1065,19 @@
       "report": "Full report"
     },
     "cta": "See the models behind a render"
+  },
+  "Ar": {
+    "metaTitle": "Voir chez vous",
+    "title": "{name} chez vous",
+    "tapHint": "Touchez le bouton, bougez lentement votre téléphone jusqu'à ce qu'il repère le sol, puis touchez pour poser la pièce.",
+    "viewInRoom": "Voir chez vous",
+    "arUnavailable": "La réalité augmentée n'est pas disponible sur cet appareil. Ouvrez cette page sur votre téléphone pour poser la pièce chez vous.",
+    "scanTitle": "Scannez avec votre téléphone",
+    "scanBody": "Pointez l'appareil photo de votre téléphone vers le code pour voir cette pièce chez vous.",
+    "scanAlt": "QR code qui ouvre ce modèle sur un téléphone",
+    "notReady": "Ce modèle est encore en cours de création. Revenez dans quelques minutes.",
+    "notReadyTitle": "Presque prêt",
+    "modelAlt": "Modèle 3D de {name}",
+    "madeWith": "3D par easyrender"
   }
 }

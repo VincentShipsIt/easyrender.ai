@@ -29,6 +29,7 @@ model User {
   ledger    CreditLedger[]
   purchases Purchase[]
   apiKeys   ApiKey[]
+  catalogItems CatalogItem[]
 
   @@map("user")
 }
@@ -119,6 +120,9 @@ model Render {
   error             String?
   // Finished renders show in the public gallery unless the owner hides them.
   isPublic          Boolean      @default(true)
+  // A store embeds the model on its own product pages: anyone with the link can view it, but it
+  // stays out of the public gallery unless isPublic is also true.
+  isLinkShared      Boolean      @default(false)
   // Where the render was started: "web" (the app), "mcp" (an agent) or "api" (REST with a key).
   source            String       @default("web")
   createdAt         DateTime     @default(now())
@@ -169,4 +173,30 @@ model ApiKey {
   createdAt  DateTime  @default(now())
 
   @@index([userId])
+}
+
+// One product of a connected store (Shopify, WooCommerce, ...) that is turned into a 3D model.
+// A plugin sends its products; the server walks each one from photo to finished model.
+model CatalogItem {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform   String
+  // The shop's domain or the site's host: one account can connect several stores.
+  store      String
+  // The product's id on the platform.
+  externalId String
+  title      String
+  imageUrl   String
+  note       String?
+  renderId   String?
+  // queued | drafting | building | ready | needs_credits | needs_info | failed
+  state      String   @default("queued")
+  error      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, platform, store, externalId])
+  @@index([userId, platform, store, state])
+  @@index([renderId])
 }

@@ -1065,5 +1065,19 @@
       "report": "Full report"
     },
     "cta": "See the models behind a render"
+  },
+  "Ar": {
+    "metaTitle": "View in your room",
+    "title": "{name} in your room",
+    "tapHint": "Tap the button, move your phone slowly until it finds the floor, then tap to place the piece.",
+    "viewInRoom": "View in your room",
+    "arUnavailable": "AR is not available on this device. Open this page on your phone to place the piece in your room.",
+    "scanTitle": "Scan with your phone",
+    "scanBody": "Point your phone camera at the code to see this piece in your room.",
+    "scanAlt": "QR code that opens this model on a phone",
+    "notReady": "This model is still being built. Check back in a few minutes.",
+    "notReadyTitle": "Almost there",
+    "modelAlt": "3D model of {name}",
+    "madeWith": "3D by easyrender"
   }
 }
