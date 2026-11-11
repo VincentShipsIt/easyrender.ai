@@ -67,7 +67,37 @@ Unlinked outside facts: "Android's AR uses Google's Scene Viewer, which reads gl
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, US): very incomplete (units forced `top_positions=3`); only Apple's AR Quick Look gallery (pos. 2) came back. The report says Apple's docs will be hard to outrank and should be cited, and the guide wins by explaining USDZ plainly for a shop owner, with the size caveat.
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): what decides USDZ file size (text vs binary geometry, PNG vs JPEG, WebP conversion) as an exporter checklist; inspecting a USDZ with `unzip -l` and reading `metersPerUnit`/`upAxis`; the four web-serving details for Quick Look with a symptom table; a tool table with a verdict per seller type.
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): what decides USDZ file size (text vs binary geometry, PNG vs JPEG, WebP conversion) as an exporter checklist; inspecting a USDZ with `unzip -l` and reading `metersPerUnit`/`upAxis`; the four web-serving details for Quick Look with a symptom table; a tool table with a verdict per seller type.
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch and Apple's documentation in the results. No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief. The 10-nov Ahrefs pull for this query was very incomplete (`top_positions=3`); this read is the first fuller look.
+
+### What currently surfaces
+
+Apple still occupies the query: "Creating USD files for Apple devices", the Quick Look gallery, and older WWDC sessions. Around them sit format explainers (Library of Congress FDD000574; studio glossaries such as Danthree). The 10-nov advice stands: Apple's docs will be hard to outrank and should be cited; the guide wins by explaining USDZ plainly for a shop owner, with the size caveat (a model from a photo is not a measured size).
+
+### Facts to refresh or confirm
+
+- A USDZ file is a self-contained 3D package: an uncompressed ZIP archive holding a USD scene plus the textures and other dependencies it needs. Apple uses it for AR Quick Look on iPhone, iPad and Apple Vision Pro. You can open one from Files, Mail, Messages or Safari and view it or place it in AR. Cite Apple, not a glossary, for the behaviour on device.
+- Official starting points to keep in the guide: https://developer.apple.com/documentation/usd/creating-usd-files-for-apple-devices and https://developer.apple.com/quick-look-gallery/
+- The Library of Congress format description is a useful independent citation for the container (USDZ as a zip of USD + dependencies) if the guide needs a non-Apple source.
+
+### Do not copy from the SERP
+
+Do not say the object appears at "real size" or "true scale" in Quick Look. The model appears at the size stored in the file, and a model made from a photo is not a measured size (already in the Quick Look diagram caption). Do not promise Vision Pro features we have not checked first-hand.
+
+### Gaps that still hold
+
+What decides USDZ file size (text vs binary geometry, PNG vs JPEG, WebP conversion) as an exporter checklist; inspecting a USDZ with `unzip -l` and reading `metersPerUnit` / `upAxis`; the four web-serving details for Quick Look with a symptom table; and a tool table with a verdict per seller type are still the guide's own material.
+
+### Sources opened this read
+
+- https://developer.apple.com/documentation/usd/creating-usd-files-for-apple-devices.md
+- https://developer.apple.com/quick-look-gallery/
+- https://developer.apple.com/videos/play/wwdc2019/602/
+- https://loc.gov/preservation/digital/formats/fdd/fdd000574.shtml
+- https://www.danthree.studio/en/glossary/usdz-file-format
 
 ## Creatives
 

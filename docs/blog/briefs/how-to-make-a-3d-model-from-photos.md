@@ -87,7 +87,37 @@ Links as published in the guide; not re-read on 2026-11-11 unless marked.
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, query "how to make a 3d model from photos", US): top organic returned were neural4d.com (tool page), a YouTube video and a sloyd.ai blog post; positions 1 and 4 missing (likely AI Overview/video). The report reads the SERP as tools and how-tos for image-to-3D and asks the guide to cover one photo vs many, the files you get, limits (no real scale) and printing (no).
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): the two-stage angle-sheet route and how to read the sheet cell by cell; concrete upload limits from a real harness; a symptom/cause/fix table tied to photo choice; a yes/no publish checklist with file budgets.
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): the two-stage angle-sheet route and how to read the sheet cell by cell; concrete upload limits from a real harness; a symptom/cause/fix table tied to photo choice; a yes/no publish checklist with file budgets.
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch and the pages below. No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief.
+
+### What currently surfaces
+
+Vendor and tool how-tos dominate the query "how to make a 3d model from photos" / "how to turn a photo into a 3D model": Meshy's 2026 image-to-3D guide and docs, a photogrammetry-versus-AI explainer (ki-heimlabor.de), Meshy's photogrammetry-software round-up, and Adobe Substance's pictures-to-3D page. The shape of the SERP is still tools plus method explainers, as the 10-nov Ahrefs note described, not a shop-owner checklist.
+
+### Facts worth keeping in the brief
+
+- One-photo AI tools (Meshy and similar) ask for a clear, well-lit subject on a plain background, then export GLB / OBJ / STL. Photogrammetry still wants dozens of overlapping shots all the way round the object (guides cite roughly 40–100, or Meshy's photogrammetry round-up's desktop/mobile tools such as Meshroom and RealityScan).
+- The two-route split (many photos that saw every surface vs one photo whose unseen sides come from that picture) is still the gap our guide owns, together with the two-stage angle-sheet check and the "change the photo if the silhouette is wrong" loop.
+- Several competitor pages mention STL or printing as a normal next step. Ours must keep the printing exclusion: models from a photo carry no measured size and are for screens and AR, not STL.
+
+### Do not copy from the SERP
+
+Do not import competitor claims that a one-photo model is "accurate on every side" or ready to print. Do not add unverified tool prices.
+
+### Gaps that still hold
+
+The two-stage angle-sheet route, reading the sheet cell by cell, concrete upload limits from the harness, a symptom/cause/fix table tied to photo choice, and a yes/no publish checklist with file budgets are still rare on the pages opened today.
+
+### Sources opened this read
+
+- https://www.meshy.ai/tutorials/image-to-3d-model-complete-guide
+- https://docs.meshy.ai/en/webapp/image-to-3d
+- https://ki-heimlabor.de/en/guides/3d-modell-aus-fotos/
+- https://www.meshy.ai/blog/free-photogrammetry-software
+- https://www.adobe.com/products/substance3d/discover/pictures-to-3d-models.html
 
 ## Creatives
 

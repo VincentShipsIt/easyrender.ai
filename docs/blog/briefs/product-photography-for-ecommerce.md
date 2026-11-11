@@ -66,7 +66,40 @@ Links as published in the guide; not re-read on 2026-11-11 unless marked.
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, US): top organic returned were polamarketing.com (DR 31), an Adobe business guide and a Reddit r/productphotography thread; positions 1 and 5 missing. The report reads it as classic how-to plus studio advice plus community threads, and judges a practical small-shop setup able to compete.
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): an exact phone-settings order (Photo mode, AE/AF lock, exposure down for white); a one-window plan with a bounce board; a side-by-side of Amazon and Shopify rules with one export that satisfies both; furniture-specific camera height and lens distance; a way to measure whether photos work (questions, return reasons, four-week reshoot test).
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): an exact phone-settings order (Photo mode, AE/AF lock, exposure down for white); a one-window plan with a bounce board; a side-by-side of Amazon and Shopify rules with one export that satisfies both; furniture-specific camera height and lens distance; a way to measure whether photos work (questions, return reasons, four-week reshoot test).
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch and official help pages. No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief.
+
+### What currently surfaces
+
+The query still mixes classic how-tos and platform rules: Shopify's DIY product-photography guide (updated for 2026), Shopify's product media types help, marketplace size/rule round-ups (Photolister; regional studio guides that cite Amazon, Shopify and others), and practical crop/background explainers. Community threads and agency posts remain in the mix, as on 10-nov.
+
+### Facts to refresh or confirm
+
+- Amazon main image (unchanged in the guides opened today): pure white RGB 255,255,255 background, product filling about 85% of the frame, longest side at least 500 px (1,000+ px enables zoom). No props, mannequins, text, logos or watermarks on the main image.
+- Shopify: help centre still documents uploads up to 5,000×5,000 px / 25 MP and 20 MB, and recommends a 2,048×2,048 square for display. Featured images should share one aspect ratio. 360 and 3D remain interactive media types, not a replacement for stills.
+- Google Merchant Center, checked against Google's own help on 11-nov-2026: from 31 January 2027 the minimum product image is 500×500 px. Google *recommends* 1,500×1,500 px or larger for listing formats. Do not write 1,500 as a hard minimum. Images must show the product accurately, without promotional text, watermarks or borders, and must be publicly crawlable.
+- Some 2026 round-ups also mention AI-imagery provenance (IPTC) on Google. Only repeat that if the official Merchant Center page still says it when the guide is next edited.
+
+### Do not copy from the SERP
+
+Do not invent a single "one export that satisfies Amazon, Shopify and Google" pixel size beyond what the three official pages actually share. Do not treat 1,500×1,500 as Google's minimum.
+
+### Gaps that still hold
+
+A phone-settings order (Photo mode, AE/AF lock, exposure down for white), a one-window plan with a bounce board, a side-by-side of Amazon and Shopify rules with one practical export, furniture-specific camera height and lens distance, and a way to measure whether photos work (questions, return reasons, a four-week reshoot test) are still the guide's edge.
+
+### Sources opened this read
+
+- https://help.shopify.com/en/manual/products/product-media/product-media-types
+- https://www.shopify.com/blog/12206313-the-ultimate-diy-guide-to-beautiful-product-photography
+- https://www.photolister.com/guides/marketplace-product-photo-requirements
+- https://support.google.com/merchants/answer/6324350
+- https://support.google.com/merchants/answer/16989427?hl=en
+- https://support.google.com/merchants/answer/7052112?hl=en
+- https://support.google.com/merchants/answer/18353357?hl=en
 
 ## Creatives
 

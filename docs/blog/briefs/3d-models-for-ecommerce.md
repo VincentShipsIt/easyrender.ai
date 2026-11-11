@@ -75,7 +75,36 @@ Links as published in the guide; not re-read on 2026-11-11 unless marked.
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, query "3d models for ecommerce", US): Modelry (vendor), Sketchfab 3D eCommerce, 3dcloud.com and VNTANA guides; position 3 missing. The report reads it as vendors and guides, and suggests "what it is, files you need, four ways, limits".
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): a self-run measurement method with matched product groups and model-viewer events instead of vendor conversion claims; the file budget held against real files; a product-ranking score for which items get 3D first; a real-phone error table (HTTPS, content type, origin, extensions).
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): a self-run measurement method with matched product groups and model-viewer events instead of vendor conversion claims; the file budget held against real files; a product-ranking score for which items get 3D first; a real-phone error table (HTTPS, content type, origin, extensions).
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch and the Shopify case study. No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief.
+
+### What currently surfaces
+
+The query still looks like vendors and implementation guides: studio explainers on GLB + USDZ deliverables, platform-standards posts (WebGL, USDZ, glTF), tool-vendor blogs (including Tripo on "AI 3D models in ecommerce"), and Shopify's Gunner Kennels case study. File-format and "how to add 3D/AR" pages remain the main organic shape, as on 10-nov.
+
+### Facts to refresh or confirm
+
+- Delivery pattern on the studio guides: GLB for web, Android and most storefronts; USDZ for iPhone/iPad AR Quick Look. Several pages recommend a modest polygon budget (around 100,000 triangles or less), textures at 2,048 px or smaller, and a file of a few megabytes. Treat those as third-party recommendations, not our limits, and keep them next to Google Scene Viewer's published budgets already in the guide.
+- Shopify case study, Gunner Kennels (opened 11-nov-2026): Shopify reports a 40% increase in order conversion and a 5% reduction in returns after 3D/AR. This is one merchant's result, not a generic "3D raises conversion by 40%" claim. If the guide cites it, name Gunner Kennels and link the case study; never present it as a typical lift.
+- Implementation advice that matches our brief: pilot on high-traffic or high-return SKUs, keep still photos, lazy-load the viewer, A/B test against a photo-only control. We still prefer a self-run measurement (matched product groups and model-viewer events) over vendor conversion claims.
+
+### Do not copy from the SERP
+
+Several studio pages ask for "true scale" or a measured origin. That is banned by claims.md. A model made from a photo has no measured size. Do not repeat "true-to-scale", "in Originalgröße", or "à l'échelle réelle" from those pages. Do not invent a typical conversion or return percentage.
+
+### Gaps that still hold
+
+A self-run measurement method, the file budget held against real files, a product-ranking score for which items get 3D first, and a real-phone error table (HTTPS, content type, origin, extensions) are still scarce on the pages opened today.
+
+### Sources opened this read
+
+- https://www.35milimetre.com/blog/glb-usdz-product-3d-models-ecommerce
+- https://www.meayt.com/en/blog/ecommerce-3d-and-ar-product-visuals-guide
+- https://www.shopify.com/case-studies/gunner-kennels
+- https://www.tripo3d.ai/blog/how-to-use-ai-3d-models-in-ecommerce
 
 ## Creatives
 
