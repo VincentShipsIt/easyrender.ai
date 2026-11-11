@@ -19,7 +19,10 @@
     "dashboard": "Dashboard",
     "signIn": "Sign in",
     "connect": "Connect",
-    "connectSuffix": "your agent"
+    "connectSuffix": "your agent",
+    "sections": "Sections",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
   },
   "Footer": {
     "tagline": "One photo becomes a 3D model you can see from every angle and download as GLB and USDZ.",

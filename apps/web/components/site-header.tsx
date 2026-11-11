@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { connection } from 'next/server';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { LocaleSwitcher } from '@/components/locale-switcher';
+import { SiteMenu } from '@/components/site-menu';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/i18n/config';
 import { currentUser } from '@/lib/actor';
@@ -30,37 +31,39 @@ export async function SiteHeader() {
     getLocale(),
   ]);
   const home = ROUTES.home.paths[locale as Locale];
+  const navHref = (item: (typeof NAV)[number]) =>
+    'href' in item ? item.href : `${home}${item.hash}`;
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <div className="flex items-center gap-6">
+      {/* One row at every width: section links only from xl, sign-in (or the balance) from sm,
+          the language dropdown always, signed in or not. Whatever is hidden moves into the menu, so nothing is cut off at 320px. */}
+      <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="flex min-w-0 items-center gap-4">
           <Link href={home} className="flex items-center gap-2 font-semibold tracking-tight">
             <Box className="size-5" />
             {/* Icon only on the narrowest phones so the header actions still fit. */}
             <span className="max-[400px]:sr-only">easyrender</span>
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav aria-label={t('sections')} className="hidden items-center gap-1 xl:flex">
             {NAV.map((item) => (
               <Button key={item.key} variant="ghost" size="sm" asChild>
-                <Link
-                  href={'href' in item ? item.href : `${home}${item.hash}`}
-                  className="text-muted-foreground"
-                >
+                <Link href={navHref(item)} className="text-muted-foreground">
                   {t(`nav.${item.key}`)}
                 </Link>
               </Button>
             ))}
           </nav>
         </div>
-        <nav className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-1">
           <LocaleSwitcher />
           {user ? (
             <>
-              <Button variant="ghost" size="sm" asChild>
+              {/* The balance moves into the menu below sm, like sign-in when signed out: the
+                  language dropdown and Dashboard keep the row ("Tableau de bord" at 320px). */}
+              <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
                 <Link href="/credits">
                   <Coins />
-                  {format.number(balance)}
-                  <span className="hidden sm:inline">{t('credits')}</span>
+                  {format.number(balance)} {t('credits')}
                 </Link>
               </Button>
               <Button size="sm" asChild>
@@ -72,18 +75,46 @@ export async function SiteHeader() {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" asChild>
+              <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
                 <Link href="/sign-in">{t('signIn')}</Link>
               </Button>
               <Button size="sm" asChild>
                 <Link href={`${home}#connect`}>
-                  {t('connect')}
-                  <span className="hidden sm:inline">{t('connectSuffix')}</span>
+                  {/* One text run, so the button's flex gap does not double the space before the suffix. */}
+                  <span>
+                    {t('connect')}
+                    {t('connectSuffix') ? (
+                      <span className="hidden sm:inline"> {t('connectSuffix')}</span>
+                    ) : null}
+                  </span>
                 </Link>
               </Button>
             </>
           )}
-        </nav>
+          <SiteMenu openLabel={t('menuOpen')} closeLabel={t('menuClose')}>
+            <nav aria-label={t('sections')} className="flex flex-col">
+              {NAV.map((item) => (
+                <Button key={item.key} variant="ghost" className="justify-start" asChild>
+                  <Link href={navHref(item)} className="text-muted-foreground">
+                    {t(`nav.${item.key}`)}
+                  </Link>
+                </Button>
+              ))}
+              {user ? (
+                <Button variant="ghost" className="justify-start sm:hidden" asChild>
+                  <Link href="/credits">
+                    <Coins />
+                    {format.number(balance)} {t('credits')}
+                  </Link>
+                </Button>
+              ) : (
+                <Button variant="ghost" className="justify-start sm:hidden" asChild>
+                  <Link href="/sign-in">{t('signIn')}</Link>
+                </Button>
+              )}
+            </nav>
+          </SiteMenu>
+        </div>
       </div>
     </header>
   );

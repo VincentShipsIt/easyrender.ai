@@ -23,6 +23,19 @@ export function equivalentPaths(pathname: string, now: Date = new Date()): Equiv
   return toList(livePaths('home'));
 }
 
+/**
+ * What the language picker in the header lists. The page's own equivalents when it has at least
+ * two, otherwise the homes, with this page kept for its own language: /credits is English only and
+ * is where a signed-in visitor's balance links to, and the picker must not vanish there.
+ */
+export function pickerPaths(pathname: string, now: Date = new Date()): Equivalent[] {
+  const own = equivalentPaths(pathname, now);
+  if (own.length >= 2) return own;
+  const homes = toList(livePaths('home'));
+  const [page] = own;
+  return page ? homes.map((home) => (home.locale === page.locale ? page : home)) : homes;
+}
+
 /** The post group whose URL this is, in any language. */
 function findPost(path: string, now: Date): string | null {
   for (const locale of Object.keys(ROUTES.blog.paths) as Locale[]) {
