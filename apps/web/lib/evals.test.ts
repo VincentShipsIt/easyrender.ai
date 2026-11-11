@@ -4,6 +4,7 @@ import {
   EVAL_CRITERIA,
   type EvalResults,
   type EvalRun,
+  evalResultsProblems,
   hasPublishedRuns,
   listRuns,
   passRate,
@@ -30,6 +31,10 @@ const run = (id: string, date: string, passed: number): EvalRun => ({
 describe('the bundled eval results', () => {
   // The page prints every number it reads from this file, so a malformed run would show up as a
   // wrong score. Each run has to carry every criterion and a sane count.
+  it('passes the same validation the sync script applies', () => {
+    expect(evalResultsProblems(latest)).toEqual([]);
+  });
+
   it('is well formed', () => {
     for (const published of (latest as EvalResults).runs) {
       expect(published.date, published.id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
@@ -72,5 +77,43 @@ describe('hasPublishedRuns', () => {
   it('is false with no run and true with one', () => {
     expect(hasPublishedRuns({ runs: [] })).toBe(false);
     expect(hasPublishedRuns({ runs: [run('a', '2026-11-01', 5)] })).toBe(true);
+  });
+});
+
+describe('evalResultsProblems', () => {
+  const good = () => run('a', '2026-11-12', 5);
+
+  it('accepts the empty file and a well-formed run', () => {
+    expect(evalResultsProblems({ runs: [] })).toEqual([]);
+    expect(
+      evalResultsProblems({ runs: [{ ...good(), reportUrl: 'https://example.com/r' }] }),
+    ).toEqual([]);
+  });
+
+  it('refuses anything that is not a results file', () => {
+    for (const input of [null, [], 'x', {}, { runs: 'no' }]) {
+      expect(evalResultsProblems(input)).toHaveLength(1);
+    }
+  });
+
+  it('names each problem in a run', () => {
+    const broken = {
+      ...good(),
+      date: '12/11/2026',
+      photos: -1,
+      criteria: { ...good().criteria, shape: { passed: 11, total: 10 }, file: undefined },
+      reportUrl: 'http://example.com',
+    };
+    const problems = evalResultsProblems({ runs: [broken, good(), good()] });
+    expect(problems).toEqual(
+      expect.arrayContaining([
+        'runs[0]: date must be YYYY-MM-DD',
+        'runs[0]: photos must be a whole number',
+        'runs[0]: criteria.shape needs passed <= total',
+        'runs[0]: criteria.file needs passed <= total',
+        'runs[0]: reportUrl must be an https URL',
+        'runs[2]: duplicate id a',
+      ]),
+    );
   });
 });
