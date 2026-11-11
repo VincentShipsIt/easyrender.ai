@@ -909,9 +909,12 @@
       "metaTitle": "Guías: pasar una foto a un modelo 3D · easyrender",
       "metaDescription": "Cómo pasar una foto a un modelo 3D, qué archivos te llevas y qué puede y qué no puede modelar easyrender. Escrito por quien lo construye.",
       "title": "Guías",
+      "headline": "Todo lo que aprendemos convirtiendo fotos en 3D",
       "description": "Cómo pasar una foto a un modelo 3D, qué archivos te llevas y qué puede y qué no puede modelar easyrender.",
       "empty": "Las primeras guías se están escribiendo. Todavía no hay ninguna publicada.",
-      "readMore": "Leer la guía"
+      "readMore": "Leer la guía",
+      "latest": "La guía más reciente",
+      "more": "Más guías"
     },
     "breadcrumb": {
       "home": "Inicio"
@@ -920,12 +923,15 @@
       "by": "Por {author}",
       "published": "Publicado el {date}",
       "updated": "Actualizado el {date}",
+      "readingTime": "{minutes} min de lectura",
+      "toc": "En esta página",
       "backToIndex": "Todas las guías",
       "modelHint": "Arrastra para girarlo",
       "cta": {
         "title": "Pruébalo con una foto",
         "button": "Subir una foto"
-      }
+      },
+      "related": "Sigue leyendo"
     }
   },
   "Models": {

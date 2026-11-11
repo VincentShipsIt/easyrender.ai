@@ -6,11 +6,14 @@ import { describe, expect, it } from 'vitest';
 import { parseFrontMatter } from './frontmatter';
 import {
   faqFromBody,
+  getPost,
   isPublishedPost,
   modifiedDate,
   parsePost,
   postPath,
+  readingMinutes,
   readPosts,
+  relatedPosts,
 } from './posts';
 
 const post = (fields: Record<string, string>, body = 'A paragraph.') =>
@@ -183,5 +186,60 @@ describe('the publication date is a schedule', () => {
 
   it('returns nothing for a language with no folder', () => {
     expect(readPosts('fr', mkdtempSync(join(tmpdir(), 'easyrender-blog-empty-')))).toEqual([]);
+  });
+});
+
+describe('readingMinutes', () => {
+  const words = (count: number) => Array.from({ length: count }, () => 'word').join(' ');
+
+  it('rounds up at 230 words a minute and never says zero', () => {
+    expect(readingMinutes('')).toBe(1);
+    expect(readingMinutes(words(230))).toBe(1);
+    expect(readingMinutes(words(231))).toBe(2);
+    expect(readingMinutes(words(2300))).toBe(10);
+  });
+
+  it('counts the words a reader reads, not image lines, link targets or markup', () => {
+    const body = [
+      `## ${words(2)}`,
+      '',
+      '![A long alt text that is never read as prose](/showcase/armchair.jpg "And a caption")',
+      '',
+      `[${words(3)}](https://example.com/a-very-long-url) | --- | **${words(2)}**`,
+      '',
+      `- ${words(223)}`,
+    ].join('\n');
+    // 2 + 3 + 2 + 223 = 230 words: still one minute.
+    expect(readingMinutes(body)).toBe(1);
+  });
+});
+
+describe('relatedPosts', () => {
+  const LATER = new Date('2026-11-17T12:00:00Z');
+
+  it('lists other guides of the same language, newest first, never the post itself', () => {
+    const post = getPost('en', 'glb-file', LATER);
+    expect(post).not.toBeNull();
+    const related = relatedPosts(post as NonNullable<typeof post>, 3, LATER);
+    expect(related).toHaveLength(3);
+    expect(related.map((entry) => entry.slug)).not.toContain('glb-file');
+    expect(related.every((entry) => entry.locale === 'en')).toBe(true);
+    const dates = related.map((entry) => entry.date);
+    expect(dates).toEqual([...dates].sort().reverse());
+  });
+
+  it('leaves out guides that are not published yet', () => {
+    const first = getPost(
+      'en',
+      'how-to-make-a-3d-model-from-photos',
+      new Date('2026-11-11T12:00:00Z'),
+    );
+    expect(first).not.toBeNull();
+    const related = relatedPosts(
+      first as NonNullable<typeof first>,
+      3,
+      new Date('2026-11-11T12:00:00Z'),
+    );
+    expect(related).toEqual([]);
   });
 });

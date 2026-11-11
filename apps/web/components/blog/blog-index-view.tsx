@@ -1,63 +1,74 @@
-import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { getFormatter, getTranslations } from 'next-intl/server';
-import { Badge } from '@/components/ui/badge';
+import { getTranslations } from 'next-intl/server';
 import type { Locale } from '@/i18n/config';
 import { listPosts } from '@/lib/blog/posts';
 import { ROUTES } from '@/lib/seo/routes';
+import { FeaturedPostCard, PostCard } from './post-card';
 
-export const DATE_FORMAT = { year: 'numeric', month: 'long', day: 'numeric' } as const;
-
-/** The guides hub of one language: every post published today, newest first. */
+/**
+ * The guides hub of one language, laid out like an editorial front page: a headline, the newest
+ * guide as a large card, and the others in a grid. With one guide it is the headline and that
+ * card; with none it says so. Guides carry no category in their files, so there is no filter.
+ */
 export async function BlogIndexView({ locale }: { locale: Locale }) {
-  const [t, format] = await Promise.all([getTranslations('Blog'), getFormatter()]);
-  const posts = listPosts(locale);
+  const t = await getTranslations('Blog');
+  const [latest, ...rest] = listPosts(locale);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-      <header className="space-y-3">
-        <Badge variant="outline">easyrender</Badge>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t('index.title')}</h1>
-        <p className="text-lg text-muted-foreground text-pretty">{t('index.description')}</p>
+    <div className="mx-auto max-w-6xl px-4 pt-10 pb-20 sm:px-6 sm:pt-14 sm:pb-28">
+      <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
+        <ol className="flex flex-wrap items-center gap-2">
+          <li>
+            <Link href={ROUTES.home.paths[locale]} className="hover:text-foreground">
+              {t('breadcrumb.home')}
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li aria-current="page" className="text-foreground">
+            {t('index.title')}
+          </li>
+        </ol>
+      </nav>
+
+      <header className="mt-10 max-w-4xl space-y-5 sm:mt-14">
+        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+          {t('index.title')}
+        </p>
+        <h1 className="text-4xl font-semibold tracking-tighter text-balance sm:text-5xl lg:text-6xl">
+          {t('index.headline')}
+        </h1>
+        <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground text-pretty sm:text-xl">
+          {t('index.description')}
+        </p>
       </header>
 
-      {posts.length === 0 ? (
-        <p className="mt-12 rounded-lg border bg-muted/30 p-6 text-muted-foreground">
+      {latest ? (
+        <div className="mt-12 border-t pt-10 sm:mt-16 sm:pt-12">
+          <FeaturedPostCard post={latest} label={t('index.latest')} />
+        </div>
+      ) : (
+        <p className="mt-12 rounded-2xl border border-dashed p-8 text-muted-foreground text-pretty sm:mt-16 sm:p-12">
           {t('index.empty')}
         </p>
-      ) : (
-        <ul className="mt-12 divide-y border-t">
-          {posts.map((post) => (
-            <li key={post.slug} className="py-6">
-              <article className="space-y-2">
-                <h2 className="text-xl font-medium tracking-tight">
-                  <Link href={post.path} className="hover:underline underline-offset-4">
-                    {post.title}
-                  </Link>
-                </h2>
-                <p className="leading-relaxed text-muted-foreground text-pretty">
-                  {post.description}
-                </p>
-                <p className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <time dateTime={post.date}>
-                    {format.dateTime(new Date(post.date), DATE_FORMAT)}
-                  </time>
-                  <Link href={post.path} className="inline-flex items-center gap-1 hover:underline">
-                    {t('index.readMore')}
-                    <ArrowRight className="size-3.5" />
-                  </Link>
-                </p>
-              </article>
-            </li>
-          ))}
-        </ul>
       )}
 
-      <p className="mt-12 text-sm text-muted-foreground">
-        <Link href={ROUTES.home.paths[locale]} className="hover:underline underline-offset-4">
-          {t('breadcrumb.home')}
-        </Link>
-      </p>
+      {rest.length > 0 && (
+        <section aria-labelledby="more-guides" className="mt-20 border-t pt-10 sm:mt-24">
+          <h2
+            id="more-guides"
+            className="font-mono text-xs uppercase tracking-widest text-muted-foreground"
+          >
+            {t('index.more')}
+          </h2>
+          <ul className="mt-8 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            {rest.map((post) => (
+              <li key={post.slug} className="flex">
+                <PostCard post={post} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

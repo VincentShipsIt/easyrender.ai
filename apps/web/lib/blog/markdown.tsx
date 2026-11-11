@@ -18,9 +18,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 import { isFaqHeading } from './faq';
 import { parseImage } from './images';
+import { plainText } from './posts';
 
+// Pictures, models, diagrams and tables carry `data-wide`: the page lets them run wider than the
+// reading measure of the text around them.
+//
 // Renders the markdown subset the guides are written in: headings, paragraphs, lists, quotes,
 // rules, tables, images, 3D models and drawn diagrams from the closed lists in images.ts, and
 // inline emphasis, code and links. It returns React elements rather than HTML, so no
@@ -191,6 +196,9 @@ const INLINE = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]+\]\([^)\s]+\))/g;
 export type LinkGate = (href: string) => boolean;
 const ALWAYS: LinkGate = () => true;
 
+const LINK =
+  'font-medium underline decoration-foreground/30 underline-offset-4 transition-colors hover:decoration-foreground';
+
 /** Turns inline markdown into React nodes. Exported for tests. */
 export function renderInline(text: string, isLive: LinkGate = ALWAYS): ReactNode[] {
   const nodes: ReactNode[] = [];
@@ -223,17 +231,11 @@ export function renderInline(text: string, isLive: LinkGate = ALWAYS): ReactNode
           href.startsWith('/') && !isLive(href) ? (
             label
           ) : href.startsWith('/') ? (
-            <Link key={key} href={href} className="underline underline-offset-4">
+            <Link key={key} href={href} className={LINK}>
               {label}
             </Link>
           ) : (
-            <a
-              key={key}
-              href={href}
-              rel="noopener noreferrer"
-              target="_blank"
-              className="underline underline-offset-4"
-            >
+            <a key={key} href={href} rel="noopener noreferrer" target="_blank" className={LINK}>
               {label}
             </a>
           ),
@@ -269,7 +271,7 @@ function Figure({
         <div
           role="img"
           aria-label={media.alt}
-          className="rounded-lg border bg-card p-4 text-card-foreground sm:p-6"
+          className="rounded-xl border bg-card p-4 text-card-foreground sm:p-6"
         >
           {DIAGRAMS[media.name]?.render(locale)}
         </div>
@@ -292,11 +294,11 @@ function Figure({
           height={media.height}
           {...(isHero ? { preload: true } : {})}
           sizes="(min-width: 768px) 720px, 100vw"
-          className="h-auto w-full rounded-lg border bg-muted"
+          className="h-auto w-full rounded-xl border bg-muted"
         />
       )}
       {media.caption && (
-        <figcaption className="mt-2 text-sm text-muted-foreground">
+        <figcaption className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">
           {renderInline(media.caption, isLive)}
         </figcaption>
       )}
@@ -311,6 +313,8 @@ type BlockContext = {
   locale: string;
   /** The picture right under the first paragraph, the one image loaded straight away. */
   heroSrc?: string;
+  /** The anchor of each `##` heading, the targets of the table of contents. */
+  ids?: Map<Block, string>;
 };
 
 /** The source of the image directly under the first paragraph, or undefined. Exported for tests. */
@@ -325,14 +329,14 @@ export function heroSource(blocks: Block[]): string | undefined {
 function renderBlock(
   block: Block,
   key: string,
-  { hint: modelHint, isLive, locale, heroSrc }: BlockContext,
+  { hint: modelHint, isLive, locale, heroSrc, ids }: BlockContext,
 ) {
   switch (block.kind) {
     case 'rule':
-      return <Separator key={key} className="my-10" />;
+      return <Separator key={key} className="my-12" />;
     case 'media':
       return block.items.length === 1 ? (
-        <div key={key} className="mt-8">
+        <div key={key} data-wide="" className="mt-10">
           <Figure
             media={block.items[0] as Media}
             hint={modelHint}
@@ -342,7 +346,7 @@ function renderBlock(
           />
         </div>
       ) : (
-        <div key={key} className="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
+        <div key={key} data-wide="" className="mt-10 grid grid-cols-2 gap-3 sm:gap-4">
           {block.items.map((media) => (
             <Figure
               key={media.src}
@@ -356,12 +360,16 @@ function renderBlock(
       );
     case 'table':
       return (
-        <div key={key} className="mt-8 rounded-lg border">
-          <Table>
-            <TableHeader>
-              <TableRow>
+        <div key={key} data-wide="" className="mt-10 overflow-hidden rounded-xl border">
+          <Table className="min-w-xl">
+            <TableHeader className="bg-muted/50">
+              <TableRow className="hover:bg-transparent">
                 {block.header.map((cell) => (
-                  <TableHead key={cell} scope="col" className="whitespace-normal">
+                  <TableHead
+                    key={cell}
+                    scope="col"
+                    className="h-auto whitespace-normal px-4 py-3 align-bottom font-semibold"
+                  >
                     {renderInline(cell, isLive)}
                   </TableHead>
                 ))}
@@ -371,8 +379,14 @@ function renderBlock(
               {block.rows.map((row) => (
                 <TableRow key={row.join('|')}>
                   {row.map((cell, column) => (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: static content, never reordered
-                    <TableCell key={column} className="whitespace-normal align-top">
+                    <TableCell
+                      // biome-ignore lint/suspicious/noArrayIndexKey: static content, never reordered
+                      key={column}
+                      className={cn(
+                        'whitespace-normal px-4 py-3 align-top leading-relaxed',
+                        column === 0 ? 'font-medium' : 'text-muted-foreground',
+                      )}
+                    >
                       {renderInline(cell, isLive)}
                     </TableCell>
                   ))}
@@ -385,27 +399,34 @@ function renderBlock(
     case 'heading': {
       if (block.level === 2) {
         return (
-          <h2 key={key} className="mt-12 text-2xl font-semibold tracking-tight">
+          <h2
+            key={key}
+            id={ids?.get(block)}
+            className="mt-16 scroll-mt-24 text-2xl font-semibold tracking-tight text-balance sm:text-3xl"
+          >
             {renderInline(block.text, isLive)}
           </h2>
         );
       }
       if (block.level === 3) {
         return (
-          <h3 key={key} className="mt-8 text-xl font-semibold tracking-tight">
+          <h3 key={key} className="mt-10 text-xl font-semibold tracking-tight text-balance">
             {renderInline(block.text, isLive)}
           </h3>
         );
       }
       return (
-        <h4 key={key} className="mt-6 text-lg font-semibold tracking-tight">
+        <h4 key={key} className="mt-8 text-lg font-semibold tracking-tight">
           {renderInline(block.text, isLive)}
         </h4>
       );
     }
     case 'list':
       return block.ordered ? (
-        <ol key={key} className="mt-5 list-decimal space-y-2 pl-6">
+        <ol
+          key={key}
+          className="mt-6 list-decimal space-y-3 pl-6 marker:text-muted-foreground marker:tabular-nums"
+        >
           {block.items.map((item, position) => (
             // A rendered post never reorders: the list comes from the file, in file order,
             // so the position is the item's identity.
@@ -414,7 +435,7 @@ function renderBlock(
           ))}
         </ol>
       ) : (
-        <ul key={key} className="mt-5 list-disc space-y-2 pl-6">
+        <ul key={key} className="mt-6 list-disc space-y-3 pl-6 marker:text-muted-foreground">
           {block.items.map((item, position) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static content, never reordered
             <li key={`${key}-${position}`}>{renderInline(item, isLive)}</li>
@@ -423,13 +444,16 @@ function renderBlock(
       );
     case 'quote':
       return (
-        <blockquote key={key} className="mt-6 border-l-2 pl-5 text-muted-foreground italic">
+        <blockquote
+          key={key}
+          className="my-10 border-l-2 border-foreground pl-6 text-lg font-medium leading-relaxed tracking-tight text-pretty sm:text-xl"
+        >
           {renderInline(block.text, isLive)}
         </blockquote>
       );
     default:
       return (
-        <p key={key} className="mt-5 leading-relaxed">
+        <p key={key} className="mt-6 text-pretty">
           {renderInline(block.text, isLive)}
         </p>
       );
@@ -493,7 +517,10 @@ function Faq({
 }) {
   return (
     <section aria-labelledby="faq" data-faq="">
-      <h2 id="faq" className="mt-12 scroll-mt-24 text-2xl font-semibold tracking-tight">
+      <h2
+        id="faq"
+        className="mt-16 scroll-mt-24 text-2xl font-semibold tracking-tight text-balance sm:text-3xl"
+      >
         {renderInline(section.heading, context.isLive)}
       </h2>
       {section.intro.map((block, index) => renderBlock(block, `faq-intro-${index}`, context))}
@@ -501,15 +528,15 @@ function Faq({
       <noscript>
         <style>{NO_SCRIPT_FAQ}</style>
       </noscript>
-      <Accordion type="multiple" className="mt-4 border-y">
+      <Accordion type="multiple" className="mt-8 rounded-xl border bg-card px-5 sm:px-6">
         {section.items.map((item, index) => (
           <AccordionItem key={item.question} value={`faq-${index}`}>
-            <AccordionTrigger className="text-base">
+            <AccordionTrigger className="py-5 text-base font-medium hover:no-underline [&>svg]:translate-y-1">
               {renderInline(item.question, context.isLive)}
             </AccordionTrigger>
             <AccordionContent
               forceMount
-              className="text-base leading-relaxed [&>*:first-child]:mt-0"
+              className="pb-5 text-base leading-relaxed text-muted-foreground [&>*:first-child]:mt-0"
             >
               {item.blocks.map((block, position) =>
                 renderBlock(block, `faq-${index}-${position}`, context),
@@ -521,6 +548,45 @@ function Faq({
     </section>
   );
 }
+
+/** One entry of a post's table of contents: a `##` heading and its anchor. */
+export type TocEntry = { id: string; text: string };
+
+/** A heading as a URL fragment: lower case, no accents, words joined by hyphens. */
+export const slugify = (text: string): string =>
+  plainText(text)
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, '-')
+    .replace(/^-+|-+$/g, '');
+
+/**
+ * The `##` headings of a post in order, each with a unique anchor. The FAQ keeps the `faq` id its
+ * section has always had. Exported for tests and for the page's table of contents.
+ */
+export function tableOfContents(blocks: Block[]): { entries: TocEntry[]; ids: Map<Block, string> } {
+  const used = new Set<string>(['faq']);
+  const entries: TocEntry[] = [];
+  const ids = new Map<Block, string>();
+  for (const block of blocks) {
+    if (block.kind !== 'heading' || block.level !== 2) continue;
+    if (isFaqHeading(block.text)) {
+      entries.push({ id: 'faq', text: plainText(block.text) });
+      continue;
+    }
+    const base = slugify(block.text) || 'section';
+    let id = base;
+    for (let n = 2; used.has(id); n += 1) id = `${base}-${n}`;
+    used.add(id);
+    ids.set(block, id);
+    entries.push({ id, text: plainText(block.text) });
+  }
+  return { entries, ids };
+}
+
+/** The table of contents of a markdown body. */
+export const tocOf = (source: string): TocEntry[] => tableOfContents(parseBlocks(source)).entries;
 
 /** The article body of a post, as prose. `modelHint` labels a 3D model once it can be turned. */
 export function Markdown({
@@ -541,6 +607,7 @@ export function Markdown({
     hint: modelHint,
     isLive,
     locale,
+    ids: tableOfContents(blocks).ids,
     ...(heroSrc ? { heroSrc } : {}),
   };
   return (

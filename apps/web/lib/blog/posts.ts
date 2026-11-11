@@ -97,7 +97,8 @@ const stripComments = (text: string): string =>
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 
-const plainText = (markdown: string): string =>
+/** Markdown inline syntax reduced to its words. */
+export const plainText = (markdown: string): string =>
   markdown
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
@@ -106,6 +107,25 @@ const plainText = (markdown: string): string =>
     .replace(/`([^`]+)`/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
+
+// An adult reads running prose at roughly 200-250 words a minute; 230 is the usual middle value.
+const WORDS_PER_MINUTE = 230;
+
+/**
+ * Minutes to read a post body, rounded up, never under one. Computed from the words themselves
+ * (no figures, captions or table pipes counted), so it is never typed into a post by hand.
+ */
+export function readingMinutes(body: string): number {
+  const prose = body
+    .split('\n')
+    .filter((line) => !/^\s*!\[/.test(line))
+    .join(' ');
+  // Markers such as `|`, `##` or `-` hold no letter, so they are not counted as words.
+  const words = plainText(prose)
+    .split(' ')
+    .filter((word) => /[\p{L}\p{N}]/u.test(word)).length;
+  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+}
 
 /** The `### question` and its answer paragraphs under the FAQ heading of a post body. */
 export function faqFromBody(body: string): FaqItem[] {
@@ -264,6 +284,13 @@ export function isLiveBlogLink(locale: Locale, now: Date = new Date()): (href: s
 /** One published post, or null: a future-dated or unknown slug is a 404. */
 export function getPost(locale: Locale, slug: string, now: Date = new Date()): BlogPost | null {
   return listPosts(locale, now).find((post) => post.slug === slug) ?? null;
+}
+
+/** Other guides of the same language to read next, newest first, never the post itself. */
+export function relatedPosts(post: BlogPost, limit = 3, now: Date = new Date()): BlogPost[] {
+  return listPosts(post.locale, now)
+    .filter((other) => other.slug !== post.slug)
+    .slice(0, limit);
 }
 
 // A hub with one or two guides is a thin page, so it stays out of the index until it has
