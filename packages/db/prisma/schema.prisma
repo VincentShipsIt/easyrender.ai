@@ -30,6 +30,7 @@ model User {
   purchases Purchase[]
   apiKeys   ApiKey[]
   catalogItems CatalogItem[]
+  shopifyShops ShopifyShop[]
 
   @@map("user")
 }
@@ -199,4 +200,19 @@ model CatalogItem {
   @@unique([userId, platform, store, externalId])
   @@index([userId, platform, store, state])
   @@index([renderId])
+}
+
+// A Shopify store that installed the app. The merchant links it to an easyrender account, which pays
+// for the models. The Admin API token is stored encrypted (see packages/core/src/shopify.ts).
+model ShopifyShop {
+  // The shop's permanent domain, e.g. my-store.myshopify.com.
+  shop        String   @id
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  accessToken String
+  scope       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
 }

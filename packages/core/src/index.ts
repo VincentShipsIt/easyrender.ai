@@ -9,4 +9,6 @@ export * from './remote-image';
 export * from './render-materials';
 export * from './renders';
 export * from './report';
+export * from './shopify';
+export * from './shopify-app';
 export * from './storage';
