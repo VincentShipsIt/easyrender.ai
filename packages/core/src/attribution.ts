@@ -111,7 +111,11 @@ export function sanitizeProperties(properties: Record<string, unknown>): Record<
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(properties)) {
     if (/gclid|fbclid|msclkid|ttclid|email|token|password|\$ip|^\$?title$/i.test(key)) continue;
-    if (typeof value === 'string' && (/url|referrer|location/i.test(key) || /^https?:/.test(value)))
+    if (
+      typeof value === 'string' &&
+      key !== 'referrer_host' &&
+      (/url|referrer|location/i.test(key) || /^https?:/.test(value))
+    )
       result[key] = analyticsUrl(value);
     else if (value && typeof value === 'object' && !Array.isArray(value))
       result[key] = sanitizeProperties(value as Record<string, unknown>);

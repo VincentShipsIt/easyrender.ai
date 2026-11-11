@@ -92,7 +92,9 @@ test('FR accepts: sanitized PostHog pageviews, one landing, real GA collects and
   context,
 }) => {
   const requests = await intercept(page);
-  await page.goto(`${base}/fr?__geo=FR&utm_source=test&utm_campaign=req02-t1&foo=1&gclid=abc`);
+  await page.goto(`${base}/fr?__geo=FR&utm_source=test&utm_campaign=req02-t1&foo=1&gclid=abc`, {
+    referer: 'https://external.test/source?private=1',
+  });
   await expect(page.getByTestId('consent-banner')).toBeVisible();
   await page
     .getByTestId('consent-banner')
@@ -110,7 +112,10 @@ test('FR accepts: sanitized PostHog pageviews, one landing, real GA collects and
   expect(views[0].properties?.$current_url).toContain('utm_source=test');
   for (const view of views)
     expect(String(view.properties?.$current_url)).not.toMatch(/__geo|foo=|gclid/);
-  expect(requests.filter((r) => r.event === 'landing_view')).toHaveLength(1);
+  const landings = requests.filter((r) => r.event === 'landing_view');
+  expect(landings).toHaveLength(1);
+  expect(landings[0].properties?.referrer_host).toBe('external.test');
+  expect(String(views[0].properties?.$referrer)).not.toContain('private=');
   expect(
     requests.some(
       (r) => r.url.includes('/g/collect') && `${r.url}&${r.body}`.includes('en=page_view'),

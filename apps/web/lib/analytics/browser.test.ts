@@ -11,11 +11,13 @@ it('before_send retains the public SDK project key required for ingestion and st
       $referrer: 'https://ref.test/?private=1',
       title: 'private account name',
       fbclid: 'abc',
+      referrer_host: 'external.test',
     },
   });
   expect(event.properties).toEqual({
     token: 'phc_localtest',
     $current_url: 'https://example.test/?utm_source=test',
     $referrer: 'https://ref.test/',
+    referrer_host: 'external.test',
   });
 });
