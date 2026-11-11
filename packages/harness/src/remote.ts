@@ -85,7 +85,6 @@ export function parseMaterials(raw: unknown): MaterialProfile[] | null {
 
 type HarnessFile = Partial<Pick<Harness, 'sheetPrompt'>> & {
   materials?: unknown;
-  sheet?: Partial<SheetSettings>;
   build?: Partial<BuildSettings>;
   limits?: Partial<Limits>;
 };
@@ -96,13 +95,9 @@ export function parseHarness(raw: unknown): Omit<Harness, 'skills' | 'source'> |
   const file = raw as HarnessFile;
   const sheetPrompt = isString(file.sheetPrompt, 200) ? file.sheetPrompt : SHEET_PROMPT;
   if (!/3x3/.test(sheetPrompt)) return null;
-  const sheet: SheetSettings = {
-    path:
-      isString(file.sheet?.path, 1, 200) && file.sheet.path.startsWith('/')
-        ? file.sheet.path
-        : DEFAULT_SHEET_SETTINGS.path,
-    input: isRecord(file.sheet?.input) ? file.sheet.input : DEFAULT_SHEET_SETTINGS.input,
-  };
+  // The sheet model and its resolution set what a sheet costs, so they stay in code: the harness
+  // repo cannot point the pipeline at a model the credit prices were not worked out for.
+  const sheet: SheetSettings = DEFAULT_SHEET_SETTINGS;
   const build: BuildSettings = {
     version:
       isString(file.build?.version, 64, 64) && /^[0-9a-f]{64}$/.test(file.build.version)
