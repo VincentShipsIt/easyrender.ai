@@ -35,8 +35,8 @@ export async function SiteHeader() {
     'href' in item ? item.href : `${home}${item.hash}`;
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* One row at every width: section links only from xl, sign-in from sm, the language
-          dropdown always. Whatever is hidden moves into the menu, so nothing is cut off at 320px. */}
+      {/* One row at every width: section links only from xl, sign-in (or the balance) from sm,
+          the language dropdown always, signed in or not. Whatever is hidden moves into the menu, so nothing is cut off at 320px. */}
       <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-4">
           <Link href={home} className="flex items-center gap-2 font-semibold tracking-tight">
@@ -58,11 +58,12 @@ export async function SiteHeader() {
           <LocaleSwitcher />
           {user ? (
             <>
-              <Button variant="ghost" size="sm" asChild>
+              {/* The balance moves into the menu below sm, like sign-in when signed out: the
+                  language dropdown and Dashboard keep the row ("Tableau de bord" at 320px). */}
+              <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
                 <Link href="/credits">
                   <Coins />
-                  {format.number(balance)}
-                  <span className="hidden sm:inline">{t('credits')}</span>
+                  {format.number(balance)} {t('credits')}
                 </Link>
               </Button>
               <Button size="sm" asChild>
@@ -99,7 +100,14 @@ export async function SiteHeader() {
                   </Link>
                 </Button>
               ))}
-              {user ? null : (
+              {user ? (
+                <Button variant="ghost" className="justify-start sm:hidden" asChild>
+                  <Link href="/credits">
+                    <Coins />
+                    {format.number(balance)} {t('credits')}
+                  </Link>
+                </Button>
+              ) : (
                 <Button variant="ghost" className="justify-start sm:hidden" asChild>
                   <Link href="/sign-in">{t('signIn')}</Link>
                 </Button>
