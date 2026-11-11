@@ -5,6 +5,8 @@ title: How to turn a photo into a 3D model
 description: How to turn a photo into a 3D model: which photo to use, how to check the sides the camera never saw, the files you get and the limits.
 date: 2026-11-11
 updated: 2026-11-11
+author: Jorge Rodríguez
+authorType: person
 keyword: how to turn a photo into a 3d model
 cta: Pick one sharp catalogue photo, a chair or a sideboard shot from three-quarters, and check it from every angle before you spend a credit.
 ---
