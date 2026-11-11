@@ -38,7 +38,9 @@
       "dashboard": "Tableau de bord",
       "signUp": "Créer un compte",
       "signIn": "Se connecter",
-      "guides": "Guides"
+      "guides": "Guides",
+      "models": "Models",
+      "evals": "Evals"
     },
     "copyright": "© 2026 easyrender. Avec la technologie de Genfeed.",
     "pricesNote": "Prix en USD. Les crédits n'expirent pas."
@@ -925,5 +927,104 @@
         "button": "Upload a photo"
       }
     }
+  },
+  "Models": {
+    "metaTitle": "Models: what easyrender runs on · easyrender",
+    "metaDescription": "The two models behind every easyrender render, the settings they run with and what each step costs in credits. A failed step is refunded.",
+    "breadcrumb": "Models",
+    "home": "Home",
+    "eyebrow": "Models",
+    "title": "The models behind every render",
+    "description": "Two models, one after the other: the first draws your photo from every side, the second builds the 3D file from those drawings. Here is which, with what settings, and what each step costs.",
+    "provider": "Both models run on Replicate.",
+    "stepLabel": "Step {number}",
+    "settingsTitle": "Settings",
+    "sheet": {
+      "title": "Angle sheet",
+      "role": "Draws the object from eight sides plus a top view on one 2K sheet, from your photo and a short prompt. You see it before any 3D is built.",
+      "settings": {
+        "output": "Output: one 2K image (PNG)",
+        "prompt": "Prompt: a fixed turnaround brief, plus guidance for the product category and its material"
+      }
+    },
+    "build": {
+      "title": "3D build",
+      "role": "Rebuilds a textured 3D model from your photo and the eight sheet views. The result downloads as GLB and USDZ.",
+      "settings": {
+        "texture": "Texture size: {texture} px",
+        "simplify": "Mesh simplification: {simplify}",
+        "seed": "Fixed random seed"
+      }
+    },
+    "pricing": {
+      "title": "What each step costs",
+      "step": "Step",
+      "credits": "Credits",
+      "price": "Price",
+      "sheet": "Angle sheet",
+      "build": "3D build, once the sheet exists",
+      "total": "Full 3D render, sheet included",
+      "note": "The sheet is free as a daily preview. A credit costs {unit} and never expires. If a step fails, its credits are refunded."
+    },
+    "change": {
+      "title": "What can change",
+      "body": "Prompts and model settings can be tuned without a release. The models and their prices are fixed in the app, so the credits on the button are what you pay."
+    },
+    "cta": "See how renders are checked"
+  },
+  "Evals": {
+    "metaTitle": "Evals: how renders are checked · easyrender",
+    "metaDescription": "How easyrender scores its own renders: the five criteria, the checks that run on every render, and the results of each published run.",
+    "breadcrumb": "Evals",
+    "home": "Home",
+    "eyebrow": "Evals",
+    "title": "How we check renders",
+    "description": "Every render passes automatic checks before it is stored. Separately, a run renders a golden set of product photos and scores them against five criteria, so a change to a prompt or a model shows up as a number.",
+    "checks": {
+      "title": "Checked on every render",
+      "description": "These checks already run in production. A render that fails one is not delivered, and its credits are refunded.",
+      "photo": "Photo: at least {min} px on the short side, under {max} px on the long side, no wider than {aspect}:1 and not a flat colour. It is rejected before any model runs, so it costs nothing.",
+      "sheet": "Sheet: at least {side} px, the object visible in at least {cells} of the 9 cells, and no more than {repeats} of the 8 turnaround views repeated.",
+      "file": "3D file: a complete GLB (binary glTF, version 2) of more than {kb} KB."
+    },
+    "criteria": {
+      "title": "What a run scores",
+      "description": "Each photo of the golden set is rendered with the live pipeline and scored on five criteria, pass or fail.",
+      "shape": {
+        "title": "Shape and proportions",
+        "description": "The model keeps the shape, proportions and parts of the photographed object, with nothing added or removed."
+      },
+      "views": {
+        "title": "Eight different views",
+        "description": "The eight turnaround views of the sheet are different pictures, and the object is in every cell."
+      },
+      "material": {
+        "title": "Material realism",
+        "description": "The object looks makeable in its material: stone cut or carved and never bent, wood with the grain along each part, metal tube bending in smooth arcs."
+      },
+      "finish": {
+        "title": "Colour and finish",
+        "description": "Colour, texture and finish (polished, brushed, matte) match the photo."
+      },
+      "file": {
+        "title": "A valid file",
+        "description": "The GLB opens, is complete and passes the file check."
+      },
+      "methods": {
+        "checks": "Automatic check",
+        "review": "Reviewed against the photo"
+      }
+    },
+    "results": {
+      "title": "Results",
+      "emptyTitle": "No run published yet",
+      "emptyBody": "The first run is published here. Until then this page shows no scores, and none are made up.",
+      "photos": "{photos} photos",
+      "overall": "Overall pass rate",
+      "models": "{sheet}, then {build}",
+      "passed": "{passed} of {total}",
+      "report": "Full report"
+    },
+    "cta": "See the models behind a render"
   }
 }

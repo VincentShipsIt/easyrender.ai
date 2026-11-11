@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { LOCALES } from '@/i18n/config';
 import { NOINDEX_PREFIXES } from './noindex';
+import { ROUTES } from './routes';
 import { SITE_URL } from './site';
 import { localeEntries, localeSitemapXml, sitemapIndexXml, sitemapLocales } from './sitemap';
 
@@ -16,11 +17,11 @@ describe('the per-language sitemaps', () => {
     expect(sitemapLocales()).toEqual(['en', 'es', 'de', 'fr', 'it', 'pt']);
   });
 
-  it('lists the English home and pricing page, and each other home alone', () => {
+  it('lists the English home, pricing and models pages, and each other home alone', () => {
     const paths = (locale: (typeof LOCALES)[number]) =>
       localeEntries(locale, BEFORE_GUIDES).map((entry) => entry.path);
-    expect(paths('en')).toEqual(['/', '/credits']);
-    expect(paths('es')).toEqual(['/es']);
+    expect(paths('en')).toEqual(['/', '/credits', '/models']);
+    expect(paths('es')).toEqual(['/es', '/es/modelos']);
     // Only the home is open in these languages: no guides, pricing or legal URL is listed.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       expect(paths(locale), locale).toEqual([`/${locale}`]);
@@ -30,7 +31,12 @@ describe('the per-language sitemaps', () => {
   it('adds a live guide to the English sitemap only', () => {
     const paths = (locale: (typeof LOCALES)[number]) =>
       localeEntries(locale, FIRST_GUIDE_OUT).map((entry) => entry.path);
-    expect(paths('en')).toEqual(['/', '/credits', '/learn/how-to-make-a-3d-model-from-photos']);
+    expect(paths('en')).toEqual([
+      '/',
+      '/credits',
+      '/models',
+      '/learn/how-to-make-a-3d-model-from-photos',
+    ]);
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       expect(paths(locale), locale).toEqual([`/${locale}`]);
     }
@@ -85,8 +91,18 @@ describe('the per-language sitemaps', () => {
 
   it('gives a single-language page no hreflang block', () => {
     const xml = localeSitemapXml('en');
-    const pricing = xml.slice(xml.indexOf('/credits'));
+    const start = xml.indexOf('/credits');
+    const pricing = xml.slice(start, xml.indexOf('</url>', start));
     expect(pricing).not.toContain('xhtml:link');
+  });
+
+  // /evals is noindex while it has no run to show, so the sitemap must not offer it. It joins the
+  // sitemap on the day the first run is published (see lib/evals.test.ts for the empty file).
+  it('leaves the evals page out while no run is published', () => {
+    for (const locale of ['en', 'es'] as const) {
+      const paths = localeEntries(locale, BEFORE_GUIDES).map((entry) => entry.path);
+      expect(paths, locale).not.toContain(ROUTES.evals.paths[locale]);
+    }
   });
 });
 

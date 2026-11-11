@@ -6,6 +6,7 @@ import {
   modifiedDate,
   postLivePaths,
 } from '@/lib/blog/posts';
+import { hasPublishedRuns } from '@/lib/evals';
 import {
   type ChangeFrequency,
   hreflangFor,
@@ -37,6 +38,8 @@ export function localeEntries(locale: Locale, now: Date = new Date()): SitemapEn
     if (!liveLocales(key).includes(locale)) continue;
     // The guides hub is noindex while it is thin, so it must not be listed either.
     if (key === 'blog' && !isBlogIndexIndexable(locale, now)) continue;
+    // The evals page is noindex until a run is published, so it is not listed either.
+    if (key === 'evals' && !hasPublishedRuns()) continue;
     const entry = ROUTES[key];
     const posts = key === 'blog' ? listPosts(locale, now) : [];
     entries.push({

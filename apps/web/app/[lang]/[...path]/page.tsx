@@ -2,10 +2,21 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogIndexView } from '@/components/blog/blog-index-view';
 import { BlogPostView } from '@/components/blog/blog-post-view';
+import { EvalsView } from '@/components/evals/evals-view';
+import { ModelsView } from '@/components/models/models-view';
 import { isRoutableLocale, type Locale } from '@/i18n/config';
 import { type BlogPost, getPost } from '@/lib/blog/posts';
 import { JsonLd } from '@/lib/seo/jsonld';
-import { blogIndexGraph, blogIndexMetadata, postGraph, postMetadata } from '@/lib/seo/pages';
+import {
+  blogIndexGraph,
+  blogIndexMetadata,
+  evalsGraph,
+  evalsMetadata,
+  modelsGraph,
+  modelsMetadata,
+  postGraph,
+  postMetadata,
+} from '@/lib/seo/pages';
 import { isPublished, ROUTES } from '@/lib/seo/routes';
 
 // Everything below a language home, resolved through the route registry so only the native slugs
@@ -18,12 +29,21 @@ import { isPublished, ROUTES } from '@/lib/seo/routes';
 type Match =
   | { kind: 'blogIndex'; locale: Locale }
   | { kind: 'post'; post: BlogPost }
+  | { kind: 'models'; locale: Locale }
+  | { kind: 'evals'; locale: Locale }
   | { kind: 'none' };
 
 function resolve(lang: string, segments: string[]): Match {
   if (!isRoutableLocale(lang) || lang === 'en') return { kind: 'none' };
   const locale: Locale = lang;
   const path = `/${[locale, ...segments].join('/')}`;
+
+  if (isPublished('models', locale) && path === ROUTES.models.paths[locale]) {
+    return { kind: 'models', locale };
+  }
+  if (isPublished('evals', locale) && path === ROUTES.evals.paths[locale]) {
+    return { kind: 'evals', locale };
+  }
 
   if (isPublished('blog', locale)) {
     const hub = ROUTES.blog.paths[locale];
@@ -45,6 +65,8 @@ export async function generateMetadata({
   const match = resolve(lang, path);
   if (match.kind === 'post') return postMetadata(match.post);
   if (match.kind === 'blogIndex') return blogIndexMetadata(match.locale);
+  if (match.kind === 'models') return modelsMetadata(match.locale);
+  if (match.kind === 'evals') return evalsMetadata(match.locale);
   return {};
 }
 
@@ -65,6 +87,22 @@ export default async function LocalePage({ params }: PageProps<'/[lang]/[...path
       <>
         <JsonLd graph={await postGraph(match.post)} />
         <BlogPostView post={match.post} />
+      </>
+    );
+  }
+  if (match.kind === 'models') {
+    return (
+      <>
+        <JsonLd graph={await modelsGraph(match.locale)} />
+        <ModelsView locale={match.locale} />
+      </>
+    );
+  }
+  if (match.kind === 'evals') {
+    return (
+      <>
+        <JsonLd graph={await evalsGraph(match.locale)} />
+        <EvalsView locale={match.locale} />
       </>
     );
   }

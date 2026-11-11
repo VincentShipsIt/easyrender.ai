@@ -58,6 +58,22 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
     title: 'Pricing',
     note: 'Credit packs and the Pro plan, as currently charged.',
   },
+  [ROUTES.models.paths.en]: {
+    title: 'Models',
+    note: 'The two models behind every render, their settings and what each step costs in credits.',
+  },
+  [ROUTES.models.paths.es]: {
+    title: 'Modelos',
+    note: 'Los dos modelos detrás de cada render, sus ajustes y el coste de cada paso en créditos.',
+  },
+  [ROUTES.evals.paths.en]: {
+    title: 'Evals',
+    note: 'How renders are checked and the results of each published eval run.',
+  },
+  [ROUTES.evals.paths.es]: {
+    title: 'Evaluaciones',
+    note: 'Cómo se revisan los renders y los resultados de cada ejecución publicada.',
+  },
   [ROUTES.blog.paths.en]: { title: 'Guides', note: 'Guides on photos, 3D files and formats.' },
   [ROUTES.blog.paths.es]: { title: 'Guías', note: 'Guías en español.' },
 };
