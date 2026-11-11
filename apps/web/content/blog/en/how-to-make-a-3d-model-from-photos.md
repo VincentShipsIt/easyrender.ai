@@ -52,7 +52,7 @@ For furniture we add rules of our own, written from testing: keep the exact numb
 
 The best photo shows the whole object, sharp, in soft even light, against a plain background. Nothing should cover it: no cushion over the armrest, no plant in front of a leg.
 
-For furniture, a three-quarter angle beats a straight front shot. From the front, a lounge chair hides its depth and the tool has to guess how deep the seat is. From three-quarters it sees the front and one side at once, so it guesses less.
+For furniture, a three-quarter angle beats a straight front shot. From the front, a lounge chair photo hides the depth of the seat. From three-quarters the photo shows the front and one side at once, so less of the shape is missing.
 
 ![A bouclé lounge armchair with a tubular steel frame, photographed from three-quarters on a white background](/showcase/armchair.jpg "A good input photo: the whole chair, three-quarter angle, plain background.")
 
@@ -83,7 +83,7 @@ Shadows count as background too. A hard shadow under a coffee table can turn int
 
 ## Step 3: Check the preview from every angle
 
-Good image-to-3D tools show the object from several sides before they build the final model. Look hard at the back and the sides, because that is where the guesses go wrong.
+Good image-to-3D tools show the object from several sides before they build the final model. Look hard at the back and the sides, because that is where the photo did not show the object.
 
 Read the sheet like a contact sheet. Count legs, doors and drawers in every cell, not only in the front one. Then compare opposite cells, such as front-right with back-left: a chair whose arms change shape between them will come out lopsided.
 
@@ -127,7 +127,7 @@ Most bad models trace back to the photo. This is the list we work through, from 
 | Upload rejected as too narrow                     | The image is more than four times wider than tall, such as a banner crop                                                                                     | Crop to the object, with a margin on every side                                        |
 | Two chair legs merge into one                     | From the front, the back legs hide behind the front ones                                                                                                     | Use a three-quarter photo where all four legs stand apart                              |
 | Four doors come back as three                     | Low-contrast seams between the doors                                                                                                                         | Shoot with light raking across the front, or write "four doors" in the note            |
-| The back is a copy of the front                   | Hidden sides are inferred from visible symmetry                                                                                                              | Write "open back" or "plain back" in the note, or use a photo that shows a back corner |
+| The back looks the same as the front              | The photo only showed the front, so the back follows that view                                                                                               | Write "open back" or "plain back" in the note, or use a photo that shows a back corner |
 | Rattan or cane becomes a printed pattern          | One photo cannot see through the gaps                                                                                                                        | Accept it for a small viewer, or scan the piece with photogrammetry                    |
 | Fabric looks yellower or darker than in the photo | The viewer's light differs from the photo's, or the material leaves Metallic unset, so the glTF default of fully metallic applies                            | Check under neutral light, and set Metallic to 0 in Blender before you publish         |
 | Surfaces look faceted under side light            | A file without vertex normals, for which viewers calculate flat ones, as the [glTF spec](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) requires | In Blender, use Shade Smooth and export again                                          |
@@ -164,7 +164,7 @@ At least 800 pixels on the shortest side, and more if you have it. easyrender re
 
 ### Is image-to-3D the same as photogrammetry?
 
-No, photogrammetry measures the object from many real photos, so every surface it shows was seen by the camera. Image-to-3D starts from one photo and predicts the hidden sides, so the back is an estimate. Photogrammetry needs the object in hand; image-to-3D works from a catalogue shot of a piece you have never touched.
+No, photogrammetry measures the object from many real photos, so every surface it shows was seen by the camera. Image-to-3D starts from one photo, so the sides the camera did not see come from that picture. Photogrammetry needs the object in hand; image-to-3D works from a catalogue shot of a piece you have never touched.
 
 ### Is it free to turn a photo into a 3D model?
 
@@ -172,4 +172,4 @@ Trying usually is; the final file usually is not. Most tools offer a free tier o
 
 ### Can you 3D print a model made from a photo?
 
-Treat it as a model for screens, not for printing. The hidden sides are estimates and the model carries no measured size, so a print would not match the real piece. easyrender exports GLB and USDZ for the web and AR, not STL or print files. For a printed part, model it in CAD from real measurements.
+Treat it as a model for screens, not for printing. The photo did not show every side, and the model carries no measured size, so a print would not match the real piece. easyrender exports GLB and USDZ for the web and AR, not STL or print files. For a printed part, model it in CAD from real measurements.
