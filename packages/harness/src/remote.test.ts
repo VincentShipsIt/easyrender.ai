@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { LIMITS } from './guardrails';
+import { MATERIALS } from './materials';
 import { DEFAULT_BUILD_SETTINGS } from './models';
 import {
   clearHarnessCache,
@@ -46,6 +47,21 @@ describe('parseHarness', () => {
     expect(parsed?.build.version).toBe(DEFAULT_BUILD_SETTINGS.version);
     expect(parsed?.limits.maxEmptyCells).toBe(LIMITS.maxEmptyCells);
     expect(parsed?.sheetPrompt).toBe(SHEET_PROMPT);
+  });
+
+  it('takes material profiles from the harness only when every entry is valid', () => {
+    const profile = {
+      id: 'glass',
+      label: 'Glass',
+      keywords: ['glass', 'cristal'],
+      guidance: 'Glass is cut, blown or bent hot, so show thick, even edges and smooth curves.',
+    };
+    expect(parseHarness({ materials: [profile] })?.materials).toEqual([profile]);
+    expect(parseHarness({ materials: [profile, { id: 'x' }] })?.materials).toBe(MATERIALS);
+    expect(parseHarness({ materials: [{ ...profile, keywords: ['.*'] }] })?.materials).toBe(
+      MATERIALS,
+    );
+    expect(parseHarness({})?.materials).toBe(MATERIALS);
   });
 
   it('applies valid overrides and refuses a prompt that is not a 3x3 sheet', () => {

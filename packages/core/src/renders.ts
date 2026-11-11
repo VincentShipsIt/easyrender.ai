@@ -17,7 +17,7 @@ import {
   RENDER_CREDITS,
   SHEET_CREDITS,
   SHEET_MODEL,
-  selectMaterials,
+  selectMaterialsFrom,
   selectSkillFrom,
   sheetOutputUrl,
   sheetRequest,
@@ -148,7 +148,7 @@ export async function createDraft(input: {
       selectSkillFrom(recipe.skills, render.name, prompt),
       recipe.sheet,
       recipe.sheetPrompt,
-      selectMaterials(render.name, prompt),
+      selectMaterialsFrom(recipe.materials, render.name, prompt),
     );
     const prediction = await client.start(
       request.path,
@@ -357,7 +357,7 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
       selectSkillFrom(recipe.skills, render.name, render.prompt),
       recipe.sheet,
       recipe.sheetPrompt,
-      selectMaterials(render.name, render.prompt),
+      selectMaterialsFrom(recipe.materials, render.name, render.prompt),
     );
     const prediction = await client.start(
       request.path,
