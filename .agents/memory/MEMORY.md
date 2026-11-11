@@ -15,3 +15,7 @@ a line here. Keep this map short.
 - **Money, credits, pricing, Stripe:** [credits and pricing](context/credits-and-pricing.md).
 - **Deploys, env vars, database:** [deploys and environments](context/deploys-and-environments.md).
 - **UI work:** `DESIGN.md` at the repo root.
+- **Material realism (what stone, wood, metal can do):** [marble and stone](context/materials-marble-stone.md),
+  [wood](context/materials-wood.md), [metal tube](context/materials-metal-tube.md),
+  [PBR values](context/materials-pbr-reference.md). Code: `packages/harness/src/materials.ts`.
+- **Staged room scenes, lived-in look:** [staging rules](context/staging-lived-in-rooms.md).
