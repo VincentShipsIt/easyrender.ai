@@ -60,7 +60,9 @@ All verified against the repo on 2026-11-11.
 | Angle sheet: one square image at 1K, 3×3 grid, eight cells in 45° steps plus top-down                                                                      | `packages/harness/src/models.ts` (`SHEET_MODEL`, `aspect_ratio: '1:1'`), `packages/harness/src/sheet.ts` (`VIEWS`, `SHEET_PROMPT`) |
 | Sheet rejected under 768 px, object missing in more than 2 cells, more than 3 of 8 views near copies                                                       | `guardrails.ts` (`minSheetSide`, `maxEmptyCells`, `maxDuplicateViews`)                                                             |
 | Distinct views differ by 3%+, repeated by under 1%                                                                                                         | Comment on `duplicateViewDistance` in `guardrails.ts`                                                                              |
-| Two-stage route picked by an A/B run on real listings                                                                                                      | Comment at the top of `models.ts`                                                                                                  |
+| The build reads the photo plus the nine sheet views | `packages/core/src/renders.ts` (`build`: source upload, then `cutCells` of the sheet) |
+| Upload: JPEG, PNG or WebP, under 4 MB | `packages/core/src/renders.ts` (`MAX_UPLOAD_BYTES`, `IMAGE_TYPES`) |
+| Free preview: two a day without credits, watermarked until paid | `packages/core/src/config.ts` (`freePreviewsPerDay`), `packages/harness/src/watermark.ts` |
 | Hidden sides inferred conservatively, no invented logos or text; furniture rules (exact count of legs, arms, cushions, drawers; grain direction and seams) | `packages/harness/src/skills.ts`                                                                                                   |
 | Build asks for a 2048 px texture                                                                                                                           | `models.ts` (`texture_size: 2048`)                                                                                                 |
 | Showcase models 14,590 (clay vase) to 69,910 (bedside table) triangles                                                                                     | `apps/web/public/showcase/*.glb`, read from the accessors                                                                          |
@@ -152,3 +154,7 @@ Items to fix (not applied):
 - 7: read the top 5 for the keyword and name two points they lack.
 - 12: make the armchair GLB caption neutral (drop "look at the fabric under neutral light"), and keep row 7 generic.
 ```
+
+## Fact-check, 2026-11-11
+
+Removed the claim that an A/B run picked the two-stage route and gave a usable model on every test object: the repo holds only a code comment about a run made with the earlier Nano Banana Pro sheet, no results, and `content/evals/latest.json` has no runs. RealityScan "processing" changed to "analysing" (the page says the app analyses after 20 images and processes when you tap Process). The Polycam page could not be read on this date; its figures stay as recorded in `INFORME-SEO-POSTS-W1-2026-11-10.md`. The sample angle sheet (`armchair-angles.jpg`, 1200 px) predates the 1K sheet model.
