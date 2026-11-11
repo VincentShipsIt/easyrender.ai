@@ -130,7 +130,7 @@ Yes, if they follow the same rules. A sharp three-quarter main image on a plain 
 
 The 2048-pixel export above is plenty. easyrender rejects photos under 400 pixels on the shortest side and warns below 800, so the risk is a supplier thumbnail, not your own camera.
 
-A 360 spin is a different thing: a set of photos taken on a turntable, which the shopper scrubs through. A 3D model is one file the shopper can turn freely and, on a phone, place in the room.
+A 360 spin is a different thing: a set of photos taken on a turntable, which the shopper scrubs through. A 3D model is one file the shopper can turn freely and, on a phone, place in the room. [360 product photography or a 3D model](/compare/360-vs-3d) sets out how each is made, what it costs and when to pick one.
 
 easyrender builds a model from one of those photos and shows a free preview of every angle first. It works on single pieces like a floor lamp or an armchair, so give it the piece alone rather than a styled room. [Upload a photo](/)
 

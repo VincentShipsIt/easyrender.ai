@@ -20,7 +20,17 @@ describe('the per-language sitemaps', () => {
   it('lists the English home, pricing and models pages, and each other home alone', () => {
     const paths = (locale: (typeof LOCALES)[number]) =>
       localeEntries(locale, BEFORE_GUIDES).map((entry) => entry.path);
-    expect(paths('en')).toEqual(['/', '/credits', '/models']);
+    expect(paths('en')).toEqual([
+      '/',
+      '/credits',
+      '/models',
+      '/compare',
+      '/compare/360-vs-3d',
+      '/compare/3d-modeler-vs-ai',
+      '/compare/meshy',
+      '/compare/photogrammetry-software',
+      '/compare/tripo',
+    ]);
     expect(paths('es')).toEqual(['/es', '/es/modelos']);
     // Only the home is open in these languages: no guides, pricing or legal URL is listed.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
@@ -35,6 +45,12 @@ describe('the per-language sitemaps', () => {
       '/',
       '/credits',
       '/models',
+      '/compare',
+      '/compare/360-vs-3d',
+      '/compare/3d-modeler-vs-ai',
+      '/compare/meshy',
+      '/compare/photogrammetry-software',
+      '/compare/tripo',
       '/learn/how-to-make-a-3d-model-from-photos',
     ]);
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {

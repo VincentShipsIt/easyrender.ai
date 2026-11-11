@@ -17,8 +17,8 @@ import { isInReview, isPublished, ROUTES } from '@/lib/seo/routes';
 //   cta: One sentence above the closing button.
 //   ---
 //
-// They are open for review only (`review` on ROUTES.compare): served at /compare/{slug} with
-// noindex, and listed nowhere. Nothing in this module feeds a sitemap, hreflang or llms.txt.
+// English is published (`published` on ROUTES.compare): served at /compare and /compare/{slug},
+// listed in the sitemap and llms.txt, and safe to link from the guides. Other locales wait.
 
 export type ComparePage = {
   slug: string;
@@ -37,6 +37,15 @@ export type ComparePage = {
 const CONTENT_ROOT = join(process.cwd(), 'content', 'compare', 'en');
 
 export const comparePath = (slug: string): string => `${ROUTES.compare.paths.en}/${slug}`;
+
+/** The English /compare hub: title and description for the page, the sitemap and llms.txt. */
+export const COMPARE_INDEX = {
+  title: 'Compare 3D modeling methods and tools',
+  description:
+    'Compare 3D modeling methods and tools for product work: a modeler vs AI, 360 vs 3D, photogrammetry, Meshy and Tripo.',
+} as const;
+
+export const isComparePublished = (): boolean => isPublished('compare', 'en');
 
 /** One content file as a page, or the reason it cannot be one. */
 export function parseComparePage(
@@ -91,6 +100,12 @@ export const isCompareInReview = (): boolean => isInReview('compare', 'en');
 
 /** The page to serve at /compare/{slug}, or null (a 404) when compare is not open in English. */
 export function getComparePage(slug: string): ComparePage | null {
-  if (!isCompareInReview() && !isPublished('compare', 'en')) return null;
+  if (!isCompareInReview() && !isComparePublished()) return null;
   return readComparePages().find((page) => page.slug === slug) ?? null;
+}
+
+/** Every comparison page, or an empty list when compare is not open in English. */
+export function listComparePages(): ComparePage[] {
+  if (!isCompareInReview() && !isComparePublished()) return [];
+  return readComparePages();
 }
