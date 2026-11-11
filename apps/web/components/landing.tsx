@@ -8,12 +8,13 @@ import {
 } from '@easyrender/harness';
 import { ArrowRight, Check, ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
-import { getFormatter, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { FAQ_KEYS } from '@/lib/faq';
+import { formatCount, formatUsd } from '@/lib/price-format';
 import { cn } from '@/lib/utils';
 
 // A home page section in the studio layout: a two-tone statement (title, then description in
@@ -51,13 +52,9 @@ export function Section({
 }
 
 export async function Pricing() {
-  const [t, format] = await Promise.all([getTranslations('Landing.pricing'), getFormatter()]);
+  const [t, locale] = await Promise.all([getTranslations('Landing.pricing'), getLocale()]);
   const usd = (cents: number) =>
-    format.number(cents / 100, {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
-    });
+    formatUsd(locale, cents / 100, { minimumFractionDigits: cents % 100 === 0 ? 0 : 2 });
   const plans = [
     {
       name: t('free.name'),
@@ -72,7 +69,7 @@ export async function Pricing() {
       price: usd(1),
       note: t('payg.note'),
       features: [
-        t('payg.features.min', { credits: format.number(PAYG.min) }),
+        t('payg.features.min', { credits: formatCount(locale, PAYG.min) }),
         t('payg.features.downloads'),
         t('payg.features.ar'),
         t('payg.features.api'),
@@ -85,7 +82,7 @@ export async function Pricing() {
       price: usd(PRO_PLAN.priceCents),
       note: t('pro.note'),
       features: [
-        t('pro.features.credits', { credits: format.number(PRO_PLAN.monthlyCredits) }),
+        t('pro.features.credits', { credits: formatCount(locale, PRO_PLAN.monthlyCredits) }),
         t('pro.features.models', { count: rendersFor(PRO_PLAN.monthlyCredits) }),
         t('pro.features.rollover'),
         t('pro.features.cancel'),
@@ -167,8 +164,8 @@ export type FaqItem = { question: string; answer: string };
  * one list and cannot drift apart.
  */
 export async function faqItems(): Promise<FaqItem[]> {
-  const [t, format] = await Promise.all([getTranslations('Landing.faq'), getFormatter()]);
-  const usd = (value: number) => format.number(value, { style: 'currency', currency: 'USD' });
+  const [t, locale] = await Promise.all([getTranslations('Landing.faq'), getLocale()]);
+  const usd = (value: number) => formatUsd(locale, value);
   const price = usd(RENDER_CREDITS * CREDIT_USD);
   const unit = usd(CREDIT_USD);
   return FAQ_KEYS.map((key) => ({

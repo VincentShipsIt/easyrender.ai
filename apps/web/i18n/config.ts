@@ -39,6 +39,21 @@ export const HTML_LANG: Record<Locale, string> = {
   pt: 'pt-PT',
 };
 
+// The tag Intl formats numbers and prices with. A bare 'pt' is Brazilian to Intl ("US$ 0,20"),
+// and the site speaks Portugal's Portuguese only, so pt formats as pt-PT ("0,20 US$").
+export const INTL_LOCALE: Record<Locale, string> = {
+  en: 'en',
+  es: 'es',
+  de: 'de',
+  fr: 'fr',
+  it: 'it',
+  pt: 'pt-PT',
+};
+
+/** The Intl tag for a site locale; anything that is not one of ours passes through untouched. */
+export const intlLocale = (locale: string): string =>
+  isLocale(locale) ? INTL_LOCALE[locale] : locale;
+
 // Open Graph wants a territory, so it gets the primary one.
 export const OG_LOCALE: Record<Locale, string> = {
   en: 'en_US',
