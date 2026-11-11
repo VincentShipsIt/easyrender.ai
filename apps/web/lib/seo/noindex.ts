@@ -10,6 +10,7 @@
 //  - /ar/* is the phone page behind a store's QR code, /shopify/* the Shopify app's own pages.
 
 export const NOINDEX_PREFIXES = [
+  '/admin',
   '/explore',
   '/hub',
   '/r/',

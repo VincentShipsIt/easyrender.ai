@@ -14,7 +14,9 @@ describe('robots.txt', () => {
   it('lets every search engine crawl the noindex zones, so their noindex is read', () => {
     const all = groupFor('*');
     expect(all?.allow).toBe('/');
-    for (const prefix of NOINDEX_PREFIXES) expect(all?.disallow).not.toContain(prefix);
+    for (const prefix of NOINDEX_PREFIXES.filter((path) => path !== '/admin'))
+      expect(all?.disallow).not.toContain(prefix);
+    expect(all?.disallow).toContain('/admin');
   });
 
   it.each(['GPTBot', 'OAI-SearchBot', 'PerplexityBot', 'ClaudeBot', 'Google-Extended'])(

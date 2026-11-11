@@ -21,6 +21,13 @@ const nextConfig: NextConfig = {
   // adds a generateMetadata to it, which matters most for the ad landings.
   async headers() {
     return [
+      {
+        source: '/admin/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+          { key: 'Cache-Control', value: 'private, no-store' },
+        ],
+      },
       ...NOINDEX_HEADER_PATHS.map((source) => ({
         source,
         headers: [{ key: 'x-robots-tag', value: 'noindex, follow' }],

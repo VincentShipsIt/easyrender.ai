@@ -123,6 +123,10 @@ CLI (`components.json` is configured), then edit.
   text on `paper` only with `ink`.
 - Colour modifiers use the usual `/5 /10 /20 /40 /50 /60 /70 /80 /90` stops.
 
+Admin analytics adds semantic `success` for favorable KPI deltas (paired with arrows and text),
+and five muted `chart-*` data-series tokens in `globals.css`. These are data encodings, not
+chrome accents. Chart series also use labels, legends and dashed previous-period lines.
+
 ## Typography
 
 - Product: Geist Sans, Geist Mono for ids, sizes and credit counts. `text-sm` for body,
