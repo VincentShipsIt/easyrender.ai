@@ -57,8 +57,8 @@ type Props = {
   /** Starting camera, in model-viewer's `camera-orbit` syntax. */
   cameraOrbit?: string;
   autoRotate?: boolean;
-  /** Called once the model has loaded and is drawn. */
-  onLoad?: () => void;
+  /** Called once the model has loaded and is drawn, with the <model-viewer> element. */
+  onLoad?: (element: HTMLElement) => void;
 };
 
 // Google's <model-viewer>, loaded on the client only, and only once its box comes near the
@@ -105,7 +105,7 @@ export function ModelViewer({
   useEffect(() => {
     const element = viewer.current;
     if (!ready || !element) return;
-    const handle = () => onLoadRef.current?.();
+    const handle = () => onLoadRef.current?.(element);
     element.addEventListener('load', handle);
     return () => element.removeEventListener('load', handle);
   }, [ready]);

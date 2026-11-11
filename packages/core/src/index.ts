@@ -4,6 +4,7 @@ export * from './config';
 export * from './credits';
 export * from './errors';
 export * from './oauth';
+export * from './render-materials';
 export * from './renders';
 export * from './report';
 export * from './storage';

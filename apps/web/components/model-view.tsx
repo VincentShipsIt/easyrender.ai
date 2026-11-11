@@ -3,6 +3,7 @@
 import { Download, Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { MaterialPanel } from '@/components/material-panel';
 import { ModelViewer } from '@/components/model-viewer';
 import { Button } from '@/components/ui/button';
 
@@ -30,18 +31,29 @@ export function ModelView({
   src,
   name,
   downloadUrl,
+  editableRenderId,
 }: {
   src: string;
   name: string;
   downloadUrl?: string | null;
+  /** Set for the owner of a finished render: shows the material controls under the viewer. */
+  editableRenderId?: string;
 }) {
   const t = useTranslations('Render');
   const [exporting, setExporting] = useState(false);
+  const [viewer, setViewer] = useState<HTMLElement | null>(null);
 
   return (
     <div className="space-y-3">
       <div className="aspect-square w-full overflow-hidden rounded-xl border bg-gradient-to-b from-muted/30 to-muted sm:aspect-[4/3]">
-        <ModelViewer src={src} alt={t('modelAlt', { name })} interactive ar lazy={false} />
+        <ModelViewer
+          src={src}
+          alt={t('modelAlt', { name })}
+          interactive
+          ar
+          lazy={false}
+          onLoad={setViewer}
+        />
       </div>
       {downloadUrl && (
         <div className="flex flex-wrap gap-2">
@@ -69,6 +81,7 @@ export function ModelView({
           </Button>
         </div>
       )}
+      {editableRenderId && <MaterialPanel renderId={editableRenderId} viewer={viewer} />}
     </div>
   );
 }

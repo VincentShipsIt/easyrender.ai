@@ -1,3 +1,4 @@
+export * from './glb';
 export * from './guardrails';
 export * from './materials';
 export * from './models';

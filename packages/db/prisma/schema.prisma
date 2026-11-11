@@ -105,6 +105,9 @@ model Render {
   sourceUrl         String?
   sheetKey          String?
   glbKey            String?
+  // Material changes made by the owner, as a list of { index, baseColor?, roughness?, metalness? }
+  // by glTF material. The stored GLB is never rewritten: the edits are applied when it is served.
+  materialEdits     Json?
   sheetPredictionId String?      @unique
   buildPredictionId String?      @unique
   costUsd           Float        @default(0)
