@@ -104,7 +104,7 @@
         "features": {
           "min": "From {credits} credits",
           "downloads": "GLB and USDZ downloads",
-          "ar": "See it in your room from your phone",
+          "ar": "Coming soon: see it in your room from your phone",
           "api": "MCP server and REST API"
         },
         "cta": "Buy credits"

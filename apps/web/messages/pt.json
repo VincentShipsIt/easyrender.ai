@@ -77,7 +77,7 @@
       "eyebrow": "Foto em 3D",
       "title": "O que é o easyrender?",
       "body": "O easyrender é uma ferramenta de imagem para 3D: transforma a fotografia de um móvel, de uma peça de decoração ou da fachada de um edifício num modelo 3D. Primeiro desenha o objeto de todos os lados, numa folha de ângulos grátis que podes rever antes de gastares seja o que for. Se a pré-visualização te convencer, um clique transforma-a num modelo 3D para rodar e descarregar em GLB e USDZ.",
-      "scope": "Não modela divisões inteiras nem inventa medidas. Recebes o ficheiro e decides se é suficientemente bom para ficares com ele.",
+      "scope": "Não modela divisões inteiras nem inventa medidas. Recebes o ficheiro e decides tu se vale a pena ficar com ele.",
       "primaryCta": "Carregar uma fotografia",
       "secondaryCta": "Ver a galeria"
     }
@@ -165,11 +165,11 @@
         },
         "public": {
           "q": "O meu render é público?",
-          "a": "Os modelos prontos aparecem na galeria pública por predefinição. Na página do modelo podes desativar «Show in public gallery». Hoje, se ocultares um modelo, a ligação pode deixar de abrir para outras pessoas. Se queres partilhar a ligação, deixa-o na galeria."
+          "a": "Os modelos prontos aparecem na galeria pública por predefinição. Na página do modelo podes desativar «Show in public gallery». Hoje, se ocultares um modelo, a ligação pode deixar de abrir para outras pessoas. Se quiseres partilhar a ligação, deixa-o na galeria."
         },
         "cost": {
           "q": "Quanto custa um modelo 3D?",
-          "a": "A pré-visualização é grátis. Um modelo 3D pronto custa {credits} créditos e cada crédito custa {unit}, por isso um modelo fica por {price}. Os créditos não caducam. A página de preços mostra todos os pacotes."
+          "a": "A pré-visualização é grátis. Um modelo 3D pronto custa {credits} créditos e cada crédito custa {unit}, por isso um modelo fica a {price}. Os créditos não caducam. A página de preços mostra todos os pacotes."
         },
         "what": {
           "q": "O que é o easyrender?",
@@ -617,7 +617,7 @@
       "title": "A fotografia do produto transforma-se num modelo 3D.",
       "cta": "Começar",
       "note": "Pré-visualização grátis · sem cartão",
-      "stackLabel": "O mesmo objeto em cinco leituras do motor. Arrasta para o rodar.",
+      "stackLabel": "O mesmo objeto em cinco camadas do motor. Arrasta para o rodar.",
       "photo": "Fotografia original",
       "mesh": "Malha",
       "normals": "Normais",
@@ -731,7 +731,7 @@
     },
     "proof": {
       "title": "O catálogo 3D que faltava",
-      "quote": "Faltam objetos 3D com física real. Os catálogos que existem são pequenos e cada formato vive na sua ilha.",
+      "quote": "Faltam objetos 3D com física real. Os catálogos que existem são pequenos e cada formato vive isolado no seu canto.",
       "by": "Porque estamos a construir o easyrender",
       "byline": "Um universo de elementos que funciona com tudo",
       "stat": "1 foto",
@@ -752,7 +752,7 @@
       "elements": "{count, plural, one {# elemento} other {# elementos}}"
     },
     "lens": {
-      "label": "{name} em quatro leituras ao mesmo tempo: malha, colisor, normais da superfície e render com texturas. O render final segue o teu cursor.",
+      "label": "{name} em quatro camadas ao mesmo tempo: malha, colisor, normais da superfície e render com texturas. O render final segue o teu cursor.",
       "layers": {
         "mesh": "Malha",
         "physics": "Física",

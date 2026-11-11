@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "easyrender: da immagine a 3D con una sola foto",
-    "description": "easyrender trasforma un'immagine in 3D: dalla foto di un mobile o di una facciata, un modello 3D da scaricare in GLB e USDZ. Anteprima gratis da ogni lato."
+    "description": "easyrender trasforma un'immagine in un modello 3D: dalla foto di un mobile o di una facciata ottieni un file GLB e USDZ. Anteprima gratis da ogni lato."
   },
   "LocaleSwitcher": {
     "switchTo": "Passa a {language}",
@@ -71,12 +71,12 @@
     },
     "meta": {
       "title": "Da immagine a 3D con una sola foto · easyrender",
-      "description": "Da immagine a 3D: dalla foto di un mobile o di una facciata ottieni un modello 3D. Anteprima gratis da ogni lato, usi i crediti solo se ti convince. GLB e USDZ."
+      "description": "Trasforma un'immagine in 3D: carica la foto di un mobile o di una facciata. Anteprima gratis da ogni lato, usi i crediti solo se ti convince. GLB e USDZ."
     },
     "intro": {
       "eyebrow": "Da foto a 3D",
       "title": "Che cos'è easyrender?",
-      "body": "Con easyrender passi da immagine a 3D: carichi la foto di un mobile, di un complemento d'arredo o della facciata di un edificio e ne ricavi un modello 3D. Per prima cosa easyrender disegna l'oggetto da ogni lato in una tavola delle angolazioni gratuita, che controlli prima di spendere un credito. Se ti convince, con un clic ottieni il modello 3D da ruotare e scaricare in GLB e USDZ.",
+      "body": "Con easyrender trasformi un'immagine in un modello 3D: carichi la foto di un mobile, di un complemento d'arredo o della facciata di un edificio e ne ricavi un modello 3D. Per prima cosa easyrender disegna l'oggetto da ogni lato in una tavola delle angolazioni gratuita, che controlli prima di spendere un credito. Se ti convince, con un clic ottieni il modello 3D da ruotare e scaricare in GLB e USDZ.",
       "scope": "Non modella stanze intere e non inventa misure. Ricevi il file e decidi tu se tenerlo.",
       "primaryCta": "Carica una foto",
       "secondaryCta": "Guarda la galleria"
@@ -84,7 +84,7 @@
   },
   "Landing": {
     "pricing": {
-      "title": "Paghi a modello. I crediti non scadono.",
+      "title": "Paghi per ogni modello. I crediti non scadono.",
       "description": "Le anteprime sono gratis. Un modello 3D finito costa {credits} crediti ({price}).",
       "seeAll": "Vedi tutti i prezzi",
       "bestValue": "Più conveniente",
@@ -92,7 +92,7 @@
         "name": "Gratis",
         "note": "per provare",
         "features": {
-          "mcp": "Collegamento dell'agente via MCP",
+          "mcp": "Collega il tuo agente via MCP",
           "previews": "Anteprime gratis di ogni angolazione",
           "noCard": "Senza carta di credito"
         },
@@ -125,7 +125,7 @@
         "note": "prezzi per volume",
         "features": {
           "volume": "Sconti sui volumi",
-          "invoice": "Pagamento con fattura",
+          "invoice": "Pagamento su fattura",
           "support": "Assistenza prioritaria",
           "onboarding": "Chiamata di onboarding"
         },
@@ -145,7 +145,7 @@
         },
         "photos": {
           "q": "Quali foto funzionano meglio?",
-          "a": "Una foto nitida e ben illuminata, con l'oggetto intero e, se possibile, su uno sfondo semplice. Vanno bene le foto di catalogo, le foto prodotto di un solo pezzo o una facciata ben visibile. Sfondi affollati, oggetti tagliati, foto mosse o dettagli molto fini rendono l'anteprima meno precisa."
+          "a": "Una foto nitida e ben illuminata, con l'oggetto intero e, se possibile, su uno sfondo semplice. Vanno bene le foto di catalogo, le foto prodotto di un solo pezzo o una facciata ben visibile. Sfondi disordinati, oggetti tagliati, foto mosse o dettagli molto fini rendono l'anteprima meno precisa."
         },
         "scope": {
           "q": "Cosa può modellare oggi?",
@@ -173,7 +173,7 @@
         },
         "what": {
           "q": "Che cos'è easyrender?",
-          "a": "easyrender è un'app web per trasformare una foto in 3D: dall'immagine di un oggetto ricava un modello 3D. Carichi la foto, controlli gratis una tavola con l'oggetto da ogni angolazione e usi i crediti solo se vuoi il modello finito, da scaricare in GLB e USDZ."
+          "a": "easyrender è un'app web che trasforma la foto di un oggetto in un modello 3D. Carichi la foto, controlli gratis una tavola con l'oggetto da ogni angolazione e usi i crediti solo se vuoi il modello finito, da scaricare in GLB e USDZ."
         },
         "formats": {
           "q": "In quali formati posso scaricarlo?",
@@ -181,7 +181,7 @@
         },
         "ar": {
           "q": "Posso vedere il modello a casa mia?",
-          "a": "La realtà aumentata è in arrivo: potrai aprire il modello sul telefono e posizionarlo nella stanza. Mostrerà forma e materiali dell'oggetto, non le sue dimensioni reali."
+          "a": "La realtà aumentata è in arrivo: potrai aprire il modello sul telefono e vederlo a casa tua. Mostrerà forma e materiali dell'oggetto, non le sue dimensioni reali."
         }
       }
     }
@@ -319,8 +319,8 @@
     "photoSize": "Foto · {size}",
     "removePhoto": "Rimuovi la foto",
     "placeholder": {
-      "withPhoto": "Descrivila (facoltativo), ad es. credenza in noce con maniglie in ottone",
-      "empty": "Allega la foto di un mobile, di un complemento o di un edificio, poi descrivila…"
+      "withPhoto": "Descrivi l'oggetto (facoltativo), ad es. credenza in noce con maniglie in ottone",
+      "empty": "Allega la foto di un mobile, di un complemento o di un edificio, poi descrivi l'oggetto…"
     },
     "replacePhoto": "Sostituisci la foto",
     "attachPhoto": "Allega una foto",
@@ -650,10 +650,10 @@
         "eyebrow": "E-commerce",
         "title": "Presto a casa dei tuoi clienti",
         "body": "Realtà aumentata in arrivo: il cliente aprirà la fotocamera dell'iPhone o di un telefono Android e metterà il prodotto nella stanza.",
-        "link": "Parlaci della realtà aumentata",
+        "link": "Parliamo di realtà aumentata per il tuo negozio",
         "domain": "iltuonegozio.it",
         "meta": "Tessuto grigio · GLB e USDZ",
-        "button": "Vedi nel tuo spazio",
+        "button": "Visualizza nel tuo spazio",
         "searching": "Ricerca del pavimento…",
         "placed": "Posizionato"
       },
@@ -667,13 +667,13 @@
       "games": {
         "eyebrow": "Videogiochi",
         "title": "Oggetti di scena con la fisica inclusa",
-        "body": "Scarica il GLB e portalo nella tua scena. La demo qui sotto fa passare il pezzo in un motore fisico, direttamente nel browser.",
+        "body": "Scarica il GLB e portalo nella tua scena. Nella demo qui sotto il pezzo si muove in un motore fisico, direttamente nel browser.",
         "link": "Collegalo via API o MCP",
         "rigidbody": "Rigidbody",
         "dynamic": "Dinamico",
         "collider": "Collider",
         "friction": "Attrito",
-        "live": "Simulazione dal vivo"
+        "live": "Simulazione in tempo reale"
       }
     },
     "tools": {
@@ -705,7 +705,7 @@
       }
     },
     "wheel": {
-      "lead": "Un solo caricamento nell'hub. Funziona ovunque.",
+      "lead": "Lo carichi una volta nell'hub. Funziona ovunque.",
       "body": "Il negozio carica il catalogo, lo studio lo usa nei suoi progetti e il cliente finisce per comprare il pezzo che ha visto nel render.",
       "link": "Esplora l'hub",
       "photo": "Foto di partenza",
@@ -732,7 +732,7 @@
     "proof": {
       "title": "Il catalogo 3D che mancava",
       "quote": "Mancano oggetti 3D con una fisica reale. I cataloghi che esistono sono piccoli e ogni formato fa storia a sé.",
-      "by": "Perché costruiamo easyrender",
+      "by": "Perché stiamo creando easyrender",
       "byline": "Un universo di elementi che funziona con tutto",
       "stat": "1 foto",
       "statBody": "Da una foto di catalogo a un modello con texture da ruotare e scaricare in GLB e USDZ.",

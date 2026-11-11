@@ -2,6 +2,7 @@ import { CREDIT_USD, PAYG, PRO_PLAN, RENDER_CREDITS } from '@easyrender/harness'
 import type { Locale } from '@/i18n/config';
 import { type BlogPost, isLiveBlogLink, listPosts } from '@/lib/blog/posts';
 import { FAQ_KEYS } from '@/lib/faq';
+import { formatUsd } from '@/lib/price-format';
 import de from '@/messages/de.json';
 import en from '@/messages/en.json';
 import es from '@/messages/es.json';
@@ -131,12 +132,8 @@ export function llmsTxt(now: Date = new Date()): string {
 /** The home FAQ of a locale as plain question and answer pairs, with prices from the harness. */
 export function faqText(locale: Locale): { question: string; answer: string }[] {
   const items = MESSAGES[locale].Landing.faq.items;
-  // The same format the page prints: next-intl formats with the bare locale of the URL.
-  const format = (value: number) =>
-    new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency: 'USD',
-    }).format(value);
+  // The same format the page prints (pt formats as pt-PT, see lib/price-format.ts).
+  const format = (value: number) => formatUsd(locale, value);
   const vars: Record<string, string> = {
     credits: String(RENDER_CREDITS),
     price: format(RENDER_CREDITS * CREDIT_USD),

@@ -4,7 +4,7 @@
     "description": "easyrender macht aus dem Foto eines Möbelstücks oder Deko-Objekts ein 3D-Modell. Du prüfst alle Ansichten kostenlos und lädst es als GLB und USDZ herunter."
   },
   "LocaleSwitcher": {
-    "switchTo": "Zu {language} wechseln",
+    "switchTo": "Auf {language} umstellen",
     "label": "Sprache"
   },
   "Header": {
@@ -19,7 +19,7 @@
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
     "connect": "Verbinden",
-    "connectSuffix": "mit deinem Agenten"
+    "connectSuffix": ""
   },
   "Footer": {
     "tagline": "Aus einem Foto wird ein 3D-Modell. Du drehst es in alle Richtungen und lädst es als GLB und USDZ herunter.",
@@ -46,7 +46,7 @@
   "Home": {
     "connect": {
       "title": "Oder dein Agent erledigt das für dich",
-      "description": "easyrender unterstützt MCP. Jeder Agent mit MCP-Unterstützung kann also Renderings anlegen, prüfen und mit deinen Credits 3D-Modelle erstellen.",
+      "description": "easyrender spricht MCP: Jeder Agent, der MCP unterstützt, kann Renderings erstellen, prüfen und mit deinen Credits 3D-Modelle bauen.",
       "steps": {
         "key": {
           "title": "Schlüssel holen",
@@ -71,10 +71,10 @@
     },
     "meta": {
       "title": "Bild zu 3D-Modell aus einem Foto · easyrender",
-      "description": "Bild zu 3D-Modell: Lade ein Möbel- oder Dekofoto hoch, prüfe alle Ansichten kostenlos und zahle erst, wenn die Form stimmt. Download als GLB und USDZ."
+      "description": "Mach aus einem Möbel- oder Dekofoto ein 3D-Modell: Prüf alle Ansichten kostenlos und zahl erst, wenn die Form stimmt. Download als GLB und USDZ."
     },
     "intro": {
-      "eyebrow": "Foto zu 3D",
+      "eyebrow": "Vom Foto zu 3D",
       "title": "Was ist easyrender?",
       "body": "Mit easyrender wandelst du ein Bild in 3D um: Aus dem Foto eines Möbelstücks, eines Deko-Objekts oder einer Gebäudefassade wird ein 3D-Modell. Zuerst zeichnet easyrender das Objekt von allen Seiten. Diese Ansichtsübersicht ist kostenlos, und du prüfst sie, bevor du etwas ausgibst. Passt sie, wird daraus mit einem Klick ein 3D-Modell, das du drehen und als GLB und USDZ herunterladen kannst.",
       "scope": "Ganze Räume modelliert es nicht, und Maße erfindet es auch nicht. Du bekommst die Datei und entscheidest selbst, ob sie gut genug ist.",
@@ -126,7 +126,7 @@
         "features": {
           "volume": "Credits zu Mengenpreisen",
           "invoice": "Zahlung per Rechnung",
-          "support": "Bevorzugter Support",
+          "support": "Priorisierter Support",
           "onboarding": "Einführungsgespräch"
         },
         "cta": "Termin buchen"
@@ -153,7 +153,7 @@
         },
         "output": {
           "q": "Was bekomme ich?",
-          "a": "Zuerst eine kostenlose Vorschau, die das Objekt von allen Seiten zeigt. Setzt du Credits ein, folgt ein 3D-Modell, das du auf seiner Seite drehen und herunterladen kannst: als texturierte GLB-Datei fürs Web und als USDZ-Datei."
+          "a": "Zuerst eine kostenlose Vorschau, die das Objekt von allen Seiten zeigt. Setzt du Credits ein, folgt ein 3D-Modell, das du auf der Modellseite drehen und herunterladen kannst: als texturierte GLB-Datei fürs Web und als USDZ-Datei."
         },
         "freePreview": {
           "q": "Warum ist die Vorschau kostenlos?",
@@ -169,14 +169,14 @@
         },
         "cost": {
           "q": "Was kostet ein 3D-Modell?",
-          "a": "Die Vorschau ist kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits, ein Credit kostet {unit}, ein Modell also {price}. Credits verfallen nicht. Alle Pakete findest du auf der Preisseite."
+          "a": "Die Vorschau ist kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits. Bei {unit} pro Credit sind das {price}. Credits verfallen nicht. Alle Pakete findest du auf der Preisseite."
         },
         "what": {
           "q": "Was ist easyrender?",
           "a": "easyrender ist eine Web-App, die aus dem Foto eines Objekts ein 3D-Modell macht. Du lädst das Foto hoch, prüfst kostenlos eine Übersicht mit allen Ansichten und setzt nur dann Credits ein, wenn du das fertige Modell haben willst. Das lädst du als GLB und USDZ herunter."
         },
         "formats": {
-          "q": "In welchen Dateiformaten kann ich herunterladen?",
+          "q": "In welchen Formaten kann ich das Modell herunterladen?",
           "a": "In zwei Formaten: als texturierte GLB-Datei für das Web und die meisten 3D-Programme und als USDZ-Datei für Apple-Geräte. Das Modell übernimmt Form und Materialien, aber keine echten Maße und keinen Maßstab."
         },
         "ar": {
@@ -194,7 +194,7 @@
       "get_render": "24 Vorschauen fertig",
       "render_3d": "24 Modelle · GLB und USDZ"
     },
-    "done": "Erledigt. 24 Modelle liegen in deiner easyrender-Bibliothek, jeweils als GLB und USDZ und bereit für AR, sobald die Funktion verfügbar ist. Hier das erste:",
+    "done": "Erledigt. 24 Modelle liegen in deiner easyrender-Bibliothek, jeweils als GLB und USDZ. Hier ist das erste:",
     "modelAlt": "3D-Modell: {title}"
   },
   "McpSetup": {
@@ -310,7 +310,7 @@
       "prepare": "Deine 3D-Vorschau wird vorbereitet"
     },
     "errors": {
-      "type": "Bitte ein Foto als JPEG, PNG oder WebP anhängen.",
+      "type": "Häng bitte ein Foto als JPEG, PNG oder WebP an.",
       "noPhoto": "Häng zuerst ein Foto des Objekts oder Gebäudes an.",
       "upload": "Upload fehlgeschlagen",
       "unreadable": "Dieses Foto lässt sich nicht lesen",
@@ -329,7 +329,7 @@
     "dropToAttach": "Foto hier ablegen",
     "tryOne": "Probier ein Beispiel:",
     "previewReady": "Deine Vorschau ist fertig",
-    "photoTo3d": "Foto zu 3D-Modell",
+    "photoTo3d": "Vom Foto zum 3D-Modell",
     "auth": {
       "title": "Deine 3D-Vorschau ist fertig",
       "description": "Leg ein kostenloses Konto an. Dann siehst du dein Foto aus allen Ansichten und kannst daraus ein 3D-Modell machen."
@@ -616,7 +616,7 @@
     "hero": {
       "title": "Aus dem Produktfoto wird ein 3D-Modell.",
       "cta": "Jetzt starten",
-      "note": "Vorschau kostenlos · ohne Karte",
+      "note": "Vorschau kostenlos · ohne Kreditkarte",
       "stackLabel": "Ein Objekt in fünf Durchläufen der Engine. Zum Drehen ziehen.",
       "photo": "Ausgangsfoto",
       "mesh": "Mesh",
@@ -695,7 +695,7 @@
       "physics": "Physik und Kontakt",
       "friction": "Reibung",
       "restitution": "Abprall",
-      "light": "Projektlicht",
+      "light": "Beleuchtung",
       "temperature": "Temperatur",
       "uv": "UVs und Texturen",
       "export": "Export",
@@ -720,7 +720,7 @@
           "body": "mit Mesh, Materialien und Physik"
         },
         "studio": {
-          "title": "Ein Büro setzt es ein",
+          "title": "Ein Studio setzt es ein",
           "body": "in einem Rendering, einer Szene oder einem Level"
         },
         "client": {
@@ -743,7 +743,7 @@
       "button": "Jetzt starten"
     },
     "shelf": {
-      "lead": "Den Hub ansehen.",
+      "lead": "Entdecke den Hub.",
       "body": "Möbel, Leuchten, Deko und Requisiten, fertig zum Einsatz.",
       "link": "Alle Elemente ansehen",
       "count": "{current} von {total}",
