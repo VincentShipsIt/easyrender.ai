@@ -2,6 +2,8 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { LOCALES } from '@/i18n/config';
+import { BLOG_IMAGES, parseImage } from '@/lib/blog/images';
+import { heroSource, parseBlocks } from '@/lib/blog/markdown';
 import { llmsFullTxt, llmsTxt } from '@/lib/seo/llms';
 import { isNoindexPath } from '@/lib/seo/noindex';
 import { postTitle } from '@/lib/seo/pages';
@@ -53,15 +55,24 @@ describe.each(pages.map((page) => [page.slug, page] as const))('compare page %s'
     expect(page.faq.length).toBeLessThanOrEqual(6);
   });
 
-  it('reserves its own illustration and shows no image yet', () => {
-    const source = raw(slug);
-    const placeholder =
-      /<!-- ILLUSTRATION PENDING: public\/compare\/illustrations\/([\w-]+)\/hero\.webp/.exec(
-        source,
-      );
-    expect(placeholder?.[1]).toBe(slug);
-    // No blog hero or any other picture: the illustration is still to be made.
-    expect(page.body).not.toMatch(/!\[/);
+  it('opens with its own illustration directly under the first paragraph', () => {
+    const blocks = parseBlocks(page.body);
+    expect(blocks[0]?.kind).toBe('paragraph');
+    const hero = heroSource(blocks);
+    const src = `/compare/illustrations/${slug}/hero.webp`;
+    expect(hero).toBe(src);
+    expect(BLOG_IMAGES[src]).toEqual({ width: 1280, height: 720 });
+    expect(
+      statSync(join(ROOT, 'public', 'compare', 'illustrations', slug, 'hero.webp')).isFile(),
+    ).toBe(true);
+
+    const image = page.body
+      .split('\n')
+      .map(parseImage)
+      .find((item) => item?.src === src);
+    expect(image?.alt).toMatch(/^Illustration of /);
+    expect(image?.caption).toMatch(/^Illustration, not an easyrender result:/);
+    expect(raw(slug)).not.toMatch(/ILLUSTRATION PENDING/);
   });
 
   it('types no easyrender price and leaves no token unfilled', () => {

@@ -11,7 +11,7 @@ cta: Try the same product photo you would give Meshy, and check every angle for 
 
 If you want a Meshy alternative for real products, easyrender turns one photo into a 3D model by way of a free nine-view angle sheet, and charges per model only when you build it. Meshy covers more ground: text-to-3D, up to four input images, texturing, rigging and animation, with monthly credit plans. Pick by what you start from.
 
-<!-- ILLUSTRATION PENDING: public/compare/illustrations/meshy/hero.webp, 16:9 1280x720 WebP, Style A2 (dark technical 3D render, one object split: half real material, half matte grey clay with fine white wireframe; white rim light; charcoal-to-black radial gradient; dark glossy floor, contact shadow; one accent colour from the material; no text/UI/numbers/logos/rulers/people). Object: a woven seagrass storage basket with two rope handles. Concept: one real product photo becoming a mesh, the woven half for the photo you start from and the clay-and-wireframe half for the model an AI tool builds from it. -->
+![Illustration of a brass mantel clock, one half in its real polished brass and the other half in matte grey clay covered by a white wireframe mesh, on a dark background](/compare/illustrations/meshy/hero.webp "Illustration, not an easyrender result: a mantel clock drawn half as polished brass, half as a clay-and-wireframe mesh.")
 
 ## How do Meshy and easyrender compare?
 

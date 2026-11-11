@@ -11,7 +11,7 @@ cta: Start from the one product photo you already have, and check the free angle
 
 If you need a Tripo alternative for one product photo, easyrender draws a free nine-view angle sheet from it and charges per model only when you build. Tripo is broader: text, image and multiview input, PBR textures, quad meshes, rigging, animation and format conversion. Choose by your input and by what the model is for.
 
-<!-- ILLUSTRATION PENDING: public/compare/illustrations/tripo/hero.webp, 16:9 1280x720 WebP, Style A2 (dark technical 3D render, one object split: half real material, half matte grey clay with fine white wireframe; white rim light; charcoal-to-black radial gradient; dark glossy floor, contact shadow; one accent colour from the material; no text/UI/numbers/logos/rulers/people). Object: a painted wooden rocking horse with a rope mane. Concept: a real product seen from one side becoming a full 3D model, the painted wood half for the photo and the clay-and-wireframe half for the predicted mesh. -->
+![Illustration of a rattan stool with a woven oval seat and curved legs, one half in its real cane and the other half in matte grey clay covered by a white wireframe mesh, on a dark background](/compare/illustrations/tripo/hero.webp "Illustration, not an easyrender result: a rattan stool drawn half as woven cane, half as a clay-and-wireframe mesh.")
 
 ## How do Tripo and easyrender compare?
 

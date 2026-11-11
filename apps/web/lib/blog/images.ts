@@ -39,6 +39,15 @@ export const BLOG_IMAGES: Record<string, BlogImage> = {
   '/blog/illustrations/glb-file/hero.webp': { width: 1280, height: 720 },
   '/blog/illustrations/how-to-make-a-3d-model/hero.webp': { width: 1280, height: 720 },
   '/blog/illustrations/usdz-file/hero.webp': { width: 1280, height: 720 },
+
+  // Style A2 heroes for the compare review pages. Same 16:9 1280x720 WebP convention
+  // as the guides; they live under /compare/illustrations so they are not mixed
+  // with blog heroes. Registered here so Markdown can render them.
+  '/compare/illustrations/3d-modeler-vs-ai/hero.webp': { width: 1280, height: 720 },
+  '/compare/illustrations/360-vs-3d/hero.webp': { width: 1280, height: 720 },
+  '/compare/illustrations/photogrammetry-software/hero.webp': { width: 1280, height: 720 },
+  '/compare/illustrations/meshy/hero.webp': { width: 1280, height: 720 },
+  '/compare/illustrations/tripo/hero.webp': { width: 1280, height: 720 },
 };
 
 // Illustrations in the house style, Style A2: a dark, technical 3D render of one object, half in
