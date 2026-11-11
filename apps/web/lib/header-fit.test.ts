@@ -9,11 +9,12 @@ import pt from '@/messages/pt.json';
 
 // The header (components/site-header.tsx) is one row at every width. Its fit was measured in
 // Chromium at 320, 360, 390, 414, 768, 1024, 1280 and 1440px in all six languages (PR "fix:
-// header overflow"). These budgets keep a later copy change from overflowing it again without a
-// new browser check. Headroom when they were set: the phone CTA had 95px left at 320px (de,
-// 15 characters), the full CTA 96px at 768px (fr), the desktop row 32px at 1280px (pt, 78).
-// Raising a budget means re-measuring the header in a browser first.
-const MAX_PHONE_CTA = 18; // Header.connect, the only label next to the menu button below 640px
+// header overflow"), and again once the language links became a dropdown that is always in the
+// row. These budgets keep a later copy change from overflowing it again without a new browser
+// check. Headroom with the dropdown: the phone CTA has 36px left at 320px (de, 15 characters),
+// the full CTA 219px at 768px (fr), the desktop row 155px at 1280px (pt, 78). Section links stay
+// at xl: at 1024px they would leave pt only 27px. Raising a budget means re-measuring first.
+const MAX_PHONE_CTA = 18; // Header.connect, the only label between the language dropdown and the menu below 640px
 const MAX_FULL_CTA = 22; // Header.connect + " " + Header.connectSuffix, from 640px
 const MAX_DESKTOP_ROW = 80; // every Header.nav label + signIn + the full CTA, from 1280px
 

@@ -35,8 +35,8 @@ export async function SiteHeader() {
     'href' in item ? item.href : `${home}${item.hash}`;
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* One row at every width: section links only from xl, the language links from md, sign-in
-          from sm. Whatever is hidden moves into the menu, so nothing is cut off at 320px. */}
+      {/* One row at every width: section links only from xl, sign-in from sm, the language
+          dropdown always. Whatever is hidden moves into the menu, so nothing is cut off at 320px. */}
       <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-4">
           <Link href={home} className="flex items-center gap-2 font-semibold tracking-tight">
@@ -55,7 +55,7 @@ export async function SiteHeader() {
           </nav>
         </div>
         <div className="flex shrink-0 items-center gap-1">
-          <LocaleSwitcher className="hidden md:flex" />
+          <LocaleSwitcher />
           {user ? (
             <>
               <Button variant="ghost" size="sm" asChild>
@@ -105,7 +105,6 @@ export async function SiteHeader() {
                 </Button>
               )}
             </nav>
-            <LocaleSwitcher className="flex-wrap border-t px-3 pt-3 md:hidden" />
           </SiteMenu>
         </div>
       </div>
