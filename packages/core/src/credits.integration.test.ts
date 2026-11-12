@@ -39,6 +39,9 @@ vi.mock('./storage', () => ({
 
 const run = describe.skipIf(!url);
 
+// What checkSheet reports for a good sheet; the real measurements are tested in the harness.
+const sheetMeasures = { side: 2048, emptyCells: 0, repeatedViews: 0, closestViews: 0.08 };
+
 run('credits and generation billing (real database)', () => {
   // Imported lazily so the suite is inert without a database.
   const load = async () => ({
@@ -64,7 +67,9 @@ run('credits and generation billing (real database)', () => {
     replicate.start.mockReset().mockResolvedValue({ id: `pred_${Math.random()}` });
     replicate.get.mockReset();
     replicate.download.mockReset().mockResolvedValue(new Uint8Array([9, 9, 9]));
-    replicate.checkSheet.mockReset().mockResolvedValue({ ok: true, warnings: [] });
+    replicate.checkSheet
+      .mockReset()
+      .mockResolvedValue({ ok: true, warnings: [], measures: sheetMeasures });
     process.env.REPLICATE_API_TOKEN = 'test';
   });
 
@@ -250,6 +255,10 @@ run('credits and generation billing (real database)', () => {
       expect(after.sheetKey).toBe('fake:sheets/sheet.png');
       expect(after.costUsd).toBeCloseTo(0.101, 5);
       expect(await balance(userId)).toBe(0);
+      expect(after.quality).toEqual({
+        finalSheet: { ...sheetMeasures, warnings: [] },
+        isDraftUsed: false,
+      });
     });
 
     it('builds from the draft when the final model cannot be started', async () => {
@@ -283,6 +292,72 @@ run('credits and generation billing (real database)', () => {
       expect(after.buildPredictionId).toBe(`build_${userId}`);
       expect(after.sheetKey).toBe('fake:sheets/draft.png');
       expect(await balance(userId)).toBe(0);
+      expect(after.quality).toEqual({ isDraftUsed: true, finalSheetProblem: 'sheet_empty' });
+    });
+
+    it('records that the draft was used when the final model reports a failure', async () => {
+      const { renders } = await load();
+      const userId = await newUser(RENDER_CREDITS);
+      const render = await draft(userId);
+      replicate.start
+        .mockResolvedValueOnce({ id: `final_${userId}` })
+        .mockResolvedValueOnce({ id: `build_${userId}` });
+      await renders.startBuild(render.id, { userId });
+      replicate.get.mockResolvedValue({ status: 'failed', error: 'model error' });
+      await renders.advance(render.id);
+      const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+      expect(after.status).toBe('rendering');
+      expect(after.sheetKey).toBe('fake:sheets/draft.png');
+      expect(after.quality).toEqual({ isDraftUsed: true, finalSheetProblem: 'redraw_failed' });
+    });
+
+    it('keeps the measurements of earlier stages when a later one is stored', async () => {
+      const { renders } = await load();
+      const userId = await newUser(RENDER_CREDITS);
+      const photo = { width: 1200, height: 900, spread: 40, sharpness: 120, warnings: [] };
+      const render = await newRender(userId, {
+        sheetKey: 'fake:sheets/draft.png',
+        quality: { photo, draftSheet: { ...sheetMeasures, warnings: ['similar_views'] } },
+      });
+      replicate.start
+        .mockResolvedValueOnce({ id: `final_${userId}` })
+        .mockResolvedValueOnce({ id: `build_${userId}` });
+      await renders.startBuild(render.id, { userId });
+      replicate.get.mockResolvedValue({ status: 'succeeded', output: 'https://x.test/final.png' });
+      await renders.advance(render.id);
+      const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+      expect(after.quality).toEqual({
+        photo,
+        draftSheet: { ...sheetMeasures, warnings: ['similar_views'] },
+        finalSheet: { ...sheetMeasures, warnings: [] },
+        isDraftUsed: false,
+      });
+    });
+
+    it('stores the size of the finished model', async () => {
+      const { renders } = await load();
+      const userId = await newUser(RENDER_CREDITS);
+      const render = await draft(userId);
+      replicate.start
+        .mockResolvedValueOnce({ id: `final_${userId}` })
+        .mockResolvedValueOnce({ id: `build_${userId}` });
+      await renders.startBuild(render.id, { userId });
+      replicate.get.mockResolvedValue({ status: 'succeeded', output: 'https://x.test/final.png' });
+      await renders.advance(render.id);
+      // The fake download is three bytes, so use a real binary glTF for the model.
+      const glb = new Uint8Array(30_000);
+      const view = new DataView(glb.buffer);
+      view.setUint32(0, 0x46546c67, true);
+      view.setUint32(4, 2, true);
+      view.setUint32(8, glb.byteLength, true);
+      replicate.download.mockResolvedValue(glb);
+      replicate.get.mockResolvedValue({
+        status: 'succeeded',
+        output: 'https://x.test/model.glb',
+      });
+      const done = await renders.advance(render.id);
+      expect(done?.status).toBe('ready');
+      expect(done?.quality).toMatchObject({ glb: { bytes: 30_000 }, isDraftUsed: false });
     });
 
     it('refunds a build whose final sheet never finishes', async () => {
@@ -464,6 +539,28 @@ run('credits and generation billing (real database)', () => {
         ]),
       );
     };
+
+    it('stores what the guardrails measured on the photo and the draft sheet', async () => {
+      const { renders } = await load();
+      const userId = await newUser(0);
+      const created = await renders.createDraft({
+        actor: { userId },
+        bytes: photo(),
+        contentType: 'image/png',
+        source: 'web',
+      });
+      // 420px is under the 800px a good photo needs, so the warning is stored too.
+      expect(created.quality).toMatchObject({
+        photo: { width: 420, height: 420, warnings: ['low_resolution'] },
+      });
+      replicate.get.mockResolvedValue({ status: 'succeeded', output: 'https://x.test/sheet.png' });
+      const after = await renders.advance(created.id);
+      expect(after?.status).toBe('preview_ready');
+      expect(after?.quality).toMatchObject({
+        photo: { width: 420, height: 420 },
+        draftSheet: { ...sheetMeasures, warnings: [] },
+      });
+    });
 
     it('does not count failed previews, but counts the ones that worked', async () => {
       const { renders } = await load();

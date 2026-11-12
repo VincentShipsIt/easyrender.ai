@@ -3,6 +3,7 @@ import {
   BUILD_MODEL,
   buildCostUsd,
   buildRequest,
+  type Check,
   checkGlb,
   checkNote,
   checkPhoto,
@@ -16,6 +17,7 @@ import {
   findGlbUrl,
   isSettled,
   loadHarness,
+  type Passed,
   RENDER_CREDITS,
   SHEET_CREDITS,
   SHEET_MODEL,
@@ -27,6 +29,7 @@ import {
 import { config } from './config';
 import { grantCredits, spendCredits } from './credits';
 import { AppError, notFound } from './errors';
+import { type RenderQuality, withQuality } from './render-quality';
 import { reportError } from './report';
 import { getFile, putFile } from './storage';
 
@@ -64,9 +67,9 @@ export const canView = (render: Render, actor: Actor) =>
   canAccess(render, actor) || isListed(render) || isShared(render);
 
 // Turns a failed harness check into the API error the caller sees.
-function enforce(check: Awaited<ReturnType<typeof checkPhoto>>, status = 422) {
+function enforce<M>(check: Check<M>, status = 422): Passed<M> {
   if (!check.ok) throw new AppError(check.message, status, check.code);
-  return check.warnings;
+  return check;
 }
 
 // Each preview costs a real sheet generation, so visitors get a small daily allowance.
@@ -126,9 +129,10 @@ export async function createDraft(input: {
     throw new AppError('Photo is larger than 4 MB', 413, 'too_large');
   }
   // Guardrails first: a bad photo or note is refused before it uses an allowance or a generation.
-  const warnings = enforce(await checkPhoto(input.bytes));
+  const photo = enforce(await checkPhoto(input.bytes));
   enforce(checkNote(input.prompt), 400);
-  if (warnings.length > 0) console.warn(`photo warnings: ${warnings.join(', ')}`);
+  if (photo.warnings.length > 0) console.warn(`photo warnings: ${photo.warnings.join(', ')}`);
+  const quality: RenderQuality = { photo: { ...photo.measures, warnings: photo.warnings } };
   await assertPreviewAllowance(input.actor);
 
   const ext = extension(input.contentType);
@@ -145,6 +149,7 @@ export async function createDraft(input: {
       isLinkShared: input.isLinkShared ?? false,
       isPublic: input.isLinkShared ? false : undefined,
       sourceKey,
+      quality,
       status: config.sheetEnabled() ? 'drafting' : 'preview_ready',
     },
   });
@@ -231,7 +236,14 @@ export async function advance(id: string): Promise<Render | null> {
       const sheetKey = await putFile('sheets/sheet.png', sheet, 'image/png');
       const { count } = await db().render.updateMany({
         where: { id, status: 'drafting' },
-        data: { status: 'preview_ready', sheetKey, costUsd: { increment: SHEET_MODEL.costUsd } },
+        data: {
+          status: 'preview_ready',
+          sheetKey,
+          quality: withQuality(render, {
+            draftSheet: { ...quality.measures, warnings: quality.warnings },
+          }),
+          costUsd: { increment: SHEET_MODEL.costUsd },
+        },
       });
       if (count === 0) return db().render.findUnique({ where: { id } });
     }
@@ -250,13 +262,19 @@ export async function advance(id: string): Promise<Render | null> {
       // A final sheet that failed or was rejected never fails the build: it carries on from the
       // draft the visitor already saw, and the problem is reported.
       let finalSheet: Uint8Array | null = null;
+      let finalMeasures: RenderQuality['finalSheet'];
+      let finalProblem = 'redraw_failed';
       try {
         const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
         if (!url) throw new Error(prediction.error ?? `final sheet ${prediction.status}`);
         const bytes = await download(url);
         const quality = await checkSheet(bytes, (await harness()).limits);
-        if (!quality.ok) throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
+        if (!quality.ok) {
+          finalProblem = quality.code;
+          throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
+        }
         finalSheet = bytes;
+        finalMeasures = { ...quality.measures, warnings: quality.warnings };
       } catch (error) {
         reportError(error, { renderId: id, stage: 'final_sheet' });
       }
@@ -268,6 +286,12 @@ export async function advance(id: string): Promise<Render | null> {
         where: { id, status: 'rendering', buildPredictionId: null, buildClaimedAt: null },
         data: {
           buildClaimedAt: new Date(),
+          quality: withQuality(
+            render,
+            finalMeasures
+              ? { finalSheet: finalMeasures, isDraftUsed: false }
+              : { isDraftUsed: true, finalSheetProblem: finalProblem },
+          ),
           ...(finalKey
             ? { sheetKey: finalKey, costUsd: { increment: FINAL_SHEET_MODEL.costUsd } }
             : {}),
@@ -297,6 +321,7 @@ export async function advance(id: string): Promise<Render | null> {
         data: {
           status: 'ready',
           glbKey,
+          quality: withQuality(render, { glb: quality.measures }),
           costUsd: { increment: buildCostUsd(prediction.metrics?.predict_time) },
         },
       });
