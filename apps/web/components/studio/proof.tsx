@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { CubeMark } from './icons';
+import { BrandMark } from '@/components/brand-mark';
 
 // Formats the models ship in, and tools that open them.
 const WORKS_WITH = [
@@ -30,7 +30,7 @@ export async function StudioProof() {
         <blockquote className="proof__quote reveal">
           <p>{t('quote')}</p>
           <footer>
-            <CubeMark />
+            <BrandMark />
             <span>
               <b>{t('by')}</b>
               <i>{t('byline')}</i>
