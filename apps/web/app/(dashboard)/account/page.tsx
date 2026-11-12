@@ -28,7 +28,6 @@ export default async function AccountPage() {
 
   return (
     <div className="max-w-2xl space-y-8">
-      <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
       <Card>
         <CardHeader>
           <CardTitle>{user.name || t('yourAccount')}</CardTitle>

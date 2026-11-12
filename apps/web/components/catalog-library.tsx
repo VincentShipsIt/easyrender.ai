@@ -15,10 +15,10 @@ import {
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { prepare } from '@/components/prompt-bar';
 import { Button } from '@/components/ui/button';
 import { attribution, attributionHeaders, observeRender } from '@/lib/analytics/browser';
 import { takePending } from '@/lib/pending-upload';
+import { prepare } from '@/lib/prepare-image';
 import { cn } from '@/lib/utils';
 
 const UPLOAD_CONCURRENCY = 2;
@@ -350,12 +350,6 @@ export function CatalogLibrary({
         </div>
       )}
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {t('summary', { total, done: counts.done, balance: format.number(balance) })}
-          </p>
-        </div>
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" onClick={() => input.current?.click()}>
             <Upload className="size-4" />

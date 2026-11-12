@@ -460,6 +460,53 @@
       "rendering": "Creazione del 3D",
       "ready": "Pronto",
       "failed": "Non riuscito"
+    },
+    "toggleRenders": "Mostra o nascondi il pannello dei render",
+    "breadcrumb": "Percorso di navigazione",
+    "panel": {
+      "title": "Render",
+      "ready": "Pronti",
+      "inProgress": "In corso",
+      "needsAttention": "Da guardare",
+      "empty": "I tuoi render compariranno qui man mano che li crei."
+    },
+    "preview": {
+      "open": "Apri",
+      "latest": "Ultimi",
+      "keysCaption": "Chiavi",
+      "noKeys": "Ancora nessuna chiave",
+      "neverUsed": "Mai usata",
+      "signedIn": "Accesso effettuato",
+      "credits": "Crediti",
+      "inProgress": "In corso",
+      "ready": "Pronti",
+      "models": "Modelli",
+      "building": "In lavorazione",
+      "needYou": "Da guardare",
+      "agents": "Agenti",
+      "keys": "Chiavi",
+      "byAgents": "Da agenti",
+      "balance": "Saldo",
+      "sheet": "Foglio angoli",
+      "build": "Crea il 3D"
+    }
+  },
+  "AppHome": {
+    "heading": "Cosa facciamo in 3D?",
+    "slot": "Trascina una foto",
+    "hint": "JPG, PNG o WebP, fino a 4 MB. Puoi anche incollarla.",
+    "placeholder": "Descrivi il prodotto o trascina una foto",
+    "dropOverlay": "Rilascia la foto per allegarla",
+    "remove": "Rimuovi la foto",
+    "create": "Crea anteprima gratuita",
+    "uploading": "Caricamento…",
+    "balance": "{credits} crediti",
+    "batch": "Carica più foto",
+    "connect": "Collega un agente",
+    "errors": {
+      "type": "Usa una foto JPG, PNG o WebP.",
+      "upload": "Caricamento non riuscito. Riprova.",
+      "unreadable": "Impossibile leggere questa foto."
     }
   },
   "NotFound": {

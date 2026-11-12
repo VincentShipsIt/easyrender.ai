@@ -460,6 +460,53 @@
       "rendering": "3D wird erstellt",
       "ready": "Fertig",
       "failed": "Fehlgeschlagen"
+    },
+    "toggleRenders": "Render-Leiste ein- oder ausblenden",
+    "breadcrumb": "Brotkrumen-Navigation",
+    "panel": {
+      "title": "Renders",
+      "ready": "Fertig",
+      "inProgress": "In Arbeit",
+      "needsAttention": "Braucht dich",
+      "empty": "Deine Renders erscheinen hier, sobald du sie erstellst."
+    },
+    "preview": {
+      "open": "Öffnen",
+      "latest": "Neueste",
+      "keysCaption": "Schlüssel",
+      "noKeys": "Noch keine Schlüssel",
+      "neverUsed": "Noch nicht genutzt",
+      "signedIn": "Angemeldet",
+      "credits": "Credits",
+      "inProgress": "In Arbeit",
+      "ready": "Fertig",
+      "models": "Modelle",
+      "building": "Im Bau",
+      "needYou": "Braucht dich",
+      "agents": "Agenten",
+      "keys": "Schlüssel",
+      "byAgents": "Von Agenten",
+      "balance": "Guthaben",
+      "sheet": "Winkelblatt",
+      "build": "3D erstellen"
+    }
+  },
+  "AppHome": {
+    "heading": "Was sollen wir in 3D machen?",
+    "slot": "Foto ablegen",
+    "hint": "JPG, PNG oder WebP, bis 4 MB. Einfügen geht auch.",
+    "placeholder": "Beschreibe das Produkt oder lege einfach ein Foto ab",
+    "dropOverlay": "Foto zum Anhängen ablegen",
+    "remove": "Foto entfernen",
+    "create": "Kostenlose Vorschau erstellen",
+    "uploading": "Wird hochgeladen…",
+    "balance": "{credits} Credits",
+    "batch": "Mehrere Fotos hochladen",
+    "connect": "Agenten verbinden",
+    "errors": {
+      "type": "Verwende ein JPG-, PNG- oder WebP-Foto.",
+      "upload": "Der Upload ist fehlgeschlagen. Versuche es erneut.",
+      "unreadable": "Dieses Foto konnte nicht gelesen werden."
     }
   },
   "NotFound": {

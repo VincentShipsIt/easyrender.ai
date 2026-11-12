@@ -460,6 +460,53 @@
       "rendering": "Creando el 3D",
       "ready": "Listo",
       "failed": "Fallido"
+    },
+    "toggleRenders": "Mostrar u ocultar el panel de renders",
+    "breadcrumb": "Ruta de navegación",
+    "panel": {
+      "title": "Renders",
+      "ready": "Listos",
+      "inProgress": "En curso",
+      "needsAttention": "Requieren atención",
+      "empty": "Tus renders aparecerán aquí a medida que los crees."
+    },
+    "preview": {
+      "open": "Abrir",
+      "latest": "Últimos",
+      "keysCaption": "Claves",
+      "noKeys": "Aún no hay claves",
+      "neverUsed": "Sin usar",
+      "signedIn": "Sesión iniciada",
+      "credits": "Créditos",
+      "inProgress": "En curso",
+      "ready": "Listos",
+      "models": "Modelos",
+      "building": "En proceso",
+      "needYou": "Te esperan",
+      "agents": "Agentes",
+      "keys": "Claves",
+      "byAgents": "De agentes",
+      "balance": "Saldo",
+      "sheet": "Hoja de ángulos",
+      "build": "Crear 3D"
+    }
+  },
+  "AppHome": {
+    "heading": "¿Qué hacemos en 3D?",
+    "slot": "Suelta una foto",
+    "hint": "JPG, PNG o WebP, hasta 4 MB. También puedes pegarla.",
+    "placeholder": "Describe el producto o suelta una foto",
+    "dropOverlay": "Suelta la foto para adjuntarla",
+    "remove": "Quitar la foto",
+    "create": "Crear vista previa gratis",
+    "uploading": "Subiendo…",
+    "balance": "{credits} créditos",
+    "batch": "Subir varias fotos",
+    "connect": "Conectar un agente",
+    "errors": {
+      "type": "Usa una foto JPG, PNG o WebP.",
+      "upload": "No se pudo subir. Inténtalo de nuevo.",
+      "unreadable": "No se pudo leer esta foto."
     }
   },
   "NotFound": {

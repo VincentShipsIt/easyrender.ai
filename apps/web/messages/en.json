@@ -460,6 +460,53 @@
       "rendering": "Building 3D",
       "ready": "Ready",
       "failed": "Failed"
+    },
+    "toggleRenders": "Toggle renders panel",
+    "breadcrumb": "Breadcrumb",
+    "panel": {
+      "title": "Renders",
+      "ready": "Ready",
+      "inProgress": "In progress",
+      "needsAttention": "Needs attention",
+      "empty": "Renders show up here as you make them."
+    },
+    "preview": {
+      "open": "Open",
+      "latest": "Latest",
+      "keysCaption": "Keys",
+      "noKeys": "No keys yet",
+      "neverUsed": "Not used yet",
+      "signedIn": "Signed in",
+      "credits": "Credits",
+      "inProgress": "In progress",
+      "ready": "Ready",
+      "models": "Models",
+      "building": "Building",
+      "needYou": "Need you",
+      "agents": "Agents",
+      "keys": "Keys",
+      "byAgents": "By agents",
+      "balance": "Balance",
+      "sheet": "Angle sheet",
+      "build": "Build 3D"
+    }
+  },
+  "AppHome": {
+    "heading": "What should we make in 3D?",
+    "slot": "Drop photo",
+    "hint": "JPG, PNG or WebP, up to 4 MB. You can also paste.",
+    "placeholder": "Describe the product, or just drop a photo",
+    "dropOverlay": "Drop photo to attach",
+    "remove": "Remove photo",
+    "create": "Create free preview",
+    "uploading": "Uploading…",
+    "balance": "{credits} credits",
+    "batch": "Upload a batch",
+    "connect": "Connect an agent",
+    "errors": {
+      "type": "Use a JPG, PNG or WebP photo.",
+      "upload": "The upload failed. Try again.",
+      "unreadable": "Could not read this photo."
     }
   },
   "NotFound": {

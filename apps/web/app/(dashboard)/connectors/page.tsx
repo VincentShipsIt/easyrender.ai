@@ -27,10 +27,6 @@ export default async function ConnectorsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="space-y-1">
-        <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
-        <p className="text-muted-foreground">{t('description')}</p>
-      </div>
       <ConnectorsPanel
         initial={keys.map((key) => ({
           ...key,
