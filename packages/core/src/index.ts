@@ -7,6 +7,7 @@ export * from './errors';
 export * from './oauth';
 export * from './remote-image';
 export * from './render-materials';
+export * from './render-quality';
 export * from './renders';
 export * from './report';
 export * from './shopify';
