@@ -9,6 +9,8 @@
   `components/studio`.
 - `apps/mobile`: Expo SDK 58, expo-router. Talks to the same `/api/renders*` and Better Auth
   endpoints as the web app. See `apps/mobile/README.md`.
+- `apps/desktop`: Electron shell (own bun.lock, outside the root workspace so Vercel never downloads
+  Electron). Loads the hosted web app, no UI of its own. See `apps/desktop/README.md`.
 - `packages/core`: business logic. `credits.ts`, `billing.ts`, `renders.ts`, `api-keys.ts`,
   `oauth.ts`, `storage.ts` (S3 behind CloudFront, local disk when `S3_BUCKET` is empty).
 - `packages/harness`: Replicate client, model settings, pricing, guardrails (photo, sheet and GLB

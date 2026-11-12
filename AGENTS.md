@@ -18,6 +18,7 @@ use it). Credits are the only unit: 1 credit = $0.01, priced at provider cost pl
 ```
 apps/web        Next.js 16 App Router: marketing, dashboard, REST API, MCP (/api/mcp), OAuth
 apps/mobile     Expo app. Own bun.lock, NOT in the root workspace (React Native pins react 19.3.0)
+apps/desktop    Electron shell that loads the hosted web app. Own bun.lock, NOT in the root workspace
 packages/core   credits, billing, API keys, OAuth, renders, storage (framework-free)
 packages/db     Prisma schema and client (Postgres)
 packages/harness  Replicate pipeline, models, pricing, guardrails, skills loader
@@ -67,6 +68,7 @@ bun run check:ui-guards           # no raw HTML controls in apps/web
 bun run preflight                 # what CI runs: biome, ui guards, typecheck, tests
 bun run db:generate               # prisma generate
 cd apps/mobile && bun install && bunx expo export --platform android   # mobile bundle check
+cd apps/desktop && bun install && bun run typecheck && bun run test    # desktop; `bun run dev` opens the window
 ```
 
 Run `bun run preflight` before you push. The `credits.integration.test.ts` suite needs a scratch
