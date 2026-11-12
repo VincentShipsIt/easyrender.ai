@@ -205,25 +205,6 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
                     {t('newModel')}
                   </Link>
                 </Button>
-                {APP_NAV.map((item) => (
-                  <Button
-                    key={item.href}
-                    variant="ghost"
-                    className={cn(
-                      'justify-start font-normal text-muted-foreground',
-                      isActivePath(pathname, item.href) && 'bg-accent font-medium text-foreground',
-                    )}
-                    asChild
-                  >
-                    <Link
-                      href={item.href}
-                      aria-current={isActivePath(pathname, item.href) ? 'page' : undefined}
-                    >
-                      <item.icon />
-                      {nav(item.key)}
-                    </Link>
-                  </Button>
-                ))}
               </div>
               <div className="flex flex-col gap-0.5">
                 <p className="px-3 pb-1 text-xs text-muted-foreground">{t('recents')}</p>
@@ -234,11 +215,15 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
                     <Button
                       key={item.id}
                       variant="ghost"
-                      className="justify-start font-normal"
+                      className={cn(
+                        'justify-start font-normal',
+                        pathname === `/r/${item.id}` && 'bg-accent',
+                      )}
                       asChild
                     >
                       <Link
                         href={`/r/${item.id}`}
+                        aria-current={pathname === `/r/${item.id}` ? 'page' : undefined}
                         title={isKnownStatus(item.status) ? t(`status.${item.status}`) : undefined}
                       >
                         <StatusDot status={item.status} />

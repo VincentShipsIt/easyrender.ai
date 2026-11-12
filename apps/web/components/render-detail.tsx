@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 export type DetailMeta = { label: string; value: ReactNode };
 
@@ -18,6 +19,7 @@ export function RenderDetail({
   angles,
   meta,
   actions,
+  isInApp = false,
 }: {
   title: string;
   prompt: string | null;
@@ -27,17 +29,21 @@ export function RenderDetail({
   angles: ReactNode;
   meta: DetailMeta[];
   actions?: ReactNode;
+  // Inside the signed-in shell the shell's breadcrumb and padding apply, so this page adds neither.
+  isInApp?: boolean;
 }) {
   const t = useTranslations('Render');
   return (
-    <div className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6 sm:py-10">
-      <nav className="flex items-center gap-1 text-sm text-muted-foreground">
-        <Link href="/explore" className="hover:text-foreground">
-          {t('gallery')}
-        </Link>
-        <ChevronRight className="size-4" />
-        <span className="truncate text-foreground">{title}</span>
-      </nav>
+    <div className={cn('space-y-6', !isInApp && 'mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10')}>
+      {!isInApp && (
+        <nav className="flex items-center gap-1 text-sm text-muted-foreground">
+          <Link href="/explore" className="hover:text-foreground">
+            {t('gallery')}
+          </Link>
+          <ChevronRight className="size-4" />
+          <span className="truncate text-foreground">{title}</span>
+        </nav>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
         <div className="min-w-0 space-y-6">
@@ -69,7 +75,9 @@ export function RenderDetail({
           </div>
         </div>
 
-        <div className="space-y-4 lg:sticky lg:top-20 lg:self-start">
+        <div
+          className={cn('space-y-4 lg:sticky lg:self-start', isInApp ? 'lg:top-0' : 'lg:top-20')}
+        >
           <Card>
             <CardHeader className="gap-3">
               {badges && badges.length > 0 && (

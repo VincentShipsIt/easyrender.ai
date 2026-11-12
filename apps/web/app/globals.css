@@ -96,6 +96,15 @@
   html {
     scroll-behavior: smooth;
   }
+  /* One themed scrollbar for every scroll area: thin, a track-less thumb from the muted-foreground
+     token (so it follows light, dark and the studio palette), a little stronger on hover. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 35%, transparent) transparent;
+  }
+  *:hover {
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 55%, transparent) transparent;
+  }
   body {
     @apply bg-background text-foreground;
   }

@@ -445,6 +445,7 @@
     "account": "Cuenta"
   },
   "AppShell": {
+    "model": "Modelo",
     "navLabel": "Navegación de la app",
     "sidebar": "Barra lateral",
     "toggleSidebar": "Mostrar u ocultar la barra lateral",

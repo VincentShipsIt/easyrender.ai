@@ -445,6 +445,7 @@
     "account": "Account"
   },
   "AppShell": {
+    "model": "Modell",
     "navLabel": "App-Navigation",
     "sidebar": "Seitenleiste",
     "toggleSidebar": "Seitenleiste ein- oder ausblenden",

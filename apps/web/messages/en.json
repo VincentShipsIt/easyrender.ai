@@ -445,6 +445,7 @@
     "account": "Account"
   },
   "AppShell": {
+    "model": "Model",
     "navLabel": "App navigation",
     "sidebar": "Sidebar",
     "toggleSidebar": "Toggle sidebar",

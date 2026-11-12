@@ -8,7 +8,7 @@ import { ModelView } from '@/components/model-view';
 import { DATE_FORMAT, RenderDetail } from '@/components/render-detail';
 import { RenderView } from '@/components/render-view';
 import { Button } from '@/components/ui/button';
-import { resolveActor } from '@/lib/actor';
+import { currentUser, resolveActor } from '@/lib/actor';
 import { noindexMetadata } from '@/lib/seo/metadata';
 import { findShowcase } from '@/lib/showcase';
 
@@ -26,9 +26,14 @@ export default async function RenderPage({ params }: PageProps<'/r/[id]'>) {
   const { id } = await params;
   const demo = findShowcase(id);
   if (demo) {
-    const [t, format] = await Promise.all([getTranslations(), getFormatter()]);
+    const [t, format, user] = await Promise.all([
+      getTranslations(),
+      getFormatter(),
+      currentUser().catch(() => null),
+    ]);
     return (
       <RenderDetail
+        isInApp={Boolean(user)}
         title={t(`Showcase.items.${demo.slug}.title`)}
         prompt={t(`Showcase.items.${demo.slug}.prompt`)}
         badges={[t(`Showcase.categories.${demo.category}`), t('Render.example')]}
