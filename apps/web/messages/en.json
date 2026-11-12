@@ -444,6 +444,29 @@
     "credits": "Credits",
     "account": "Account"
   },
+  "AppShell": {
+    "navLabel": "App navigation",
+    "sidebar": "Sidebar",
+    "toggleSidebar": "Toggle sidebar",
+    "home": "easyrender home",
+    "newModel": "New 3D model",
+    "recents": "Recents",
+    "noRecents": "Nothing yet. Upload a photo or ask your agent.",
+    "credits": "credits",
+    "untitled": "Untitled",
+    "status": {
+      "drafting": "Drafting",
+      "preview_ready": "Preview ready",
+      "rendering": "Building 3D",
+      "ready": "Ready",
+      "failed": "Failed"
+    }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "That page does not exist or has moved.",
+    "home": "Go to the home page"
+  },
   "Dashboard": {
     "metaTitle": "Dashboard · easyrender",
     "title": "Dashboard",

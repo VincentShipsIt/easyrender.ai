@@ -444,6 +444,29 @@
     "credits": "Credits",
     "account": "Account"
   },
+  "AppShell": {
+    "navLabel": "Navegação do app",
+    "sidebar": "Barra lateral",
+    "toggleSidebar": "Mostrar ou ocultar a barra lateral",
+    "home": "Início do easyrender",
+    "newModel": "Novo modelo 3D",
+    "recents": "Recentes",
+    "noRecents": "Nada por enquanto. Envie uma foto ou peça ao seu agente.",
+    "credits": "créditos",
+    "untitled": "Sem título",
+    "status": {
+      "drafting": "Preparando",
+      "preview_ready": "Prévia pronta",
+      "rendering": "Criando o 3D",
+      "ready": "Pronto",
+      "failed": "Falhou"
+    }
+  },
+  "NotFound": {
+    "title": "Página não encontrada",
+    "description": "Essa página não existe ou foi movida.",
+    "home": "Ir para o início"
+  },
   "Dashboard": {
     "metaTitle": "Dashboard · easyrender",
     "title": "Dashboard",
