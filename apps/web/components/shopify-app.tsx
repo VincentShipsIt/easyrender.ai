@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { captureBrowser } from '@/lib/analytics/browser';
 
 type Overview =
   | { isLinked: false; linkUrl: string }
@@ -106,6 +107,11 @@ export function ShopifyApp() {
         setSent(total);
         if (result.remaining === 0 || result.sent === 0) break;
       }
+      if (total > 0)
+        captureBrowser('shopify_generation_started', {
+          item_count: total,
+          credits: approvedCredits,
+        });
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : String(caught));
     }

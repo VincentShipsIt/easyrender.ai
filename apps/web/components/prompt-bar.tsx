@@ -21,7 +21,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
-import { attribution, attributionHeaders, observeRender } from '@/lib/analytics/browser';
+import {
+  attribution,
+  attributionHeaders,
+  captureBrowser,
+  observeRender,
+} from '@/lib/analytics/browser';
 import { savePending } from '@/lib/pending-upload';
 import { prepare } from '@/lib/prepare-image';
 import { SHOWCASE } from '@/lib/showcase';
@@ -145,6 +150,10 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error ?? t('errors.upload'));
       observeRender(data);
+      captureBrowser('render_preview_created', {
+        source: 'home',
+        has_prompt: Boolean(prompt),
+      });
       setProgress(100);
       router.push(`/r/${data.id}`);
     } catch (err) {

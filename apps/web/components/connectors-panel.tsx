@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { captureBrowser } from '@/lib/analytics/browser';
 
 export type KeyRow = {
   id: string;
@@ -47,6 +48,7 @@ export function ConnectorsPanel({ initial, mcpUrl }: { initial: KeyRow[]; mcpUrl
         return;
       }
       const { key, ...rest } = await response.json();
+      captureBrowser('api_key_created');
       setCreated(key);
       setKeys((current) => [{ ...rest, lastUsedAt: null }, ...current]);
       form?.reset();
@@ -64,6 +66,7 @@ export function ConnectorsPanel({ initial, mcpUrl }: { initial: KeyRow[]; mcpUrl
       setError(t('errors.revoke'));
       return;
     }
+    captureBrowser('api_key_revoked');
     setKeys((current) => current.filter((key) => key.id !== id));
   }
 
