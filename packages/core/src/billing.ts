@@ -1,5 +1,7 @@
 import { db } from '@easyrender/db';
 import {
+  type ChargeCurrency,
+  currencyForCountry,
   isPlanId,
   isValidPaygCredits,
   PAYG,
@@ -7,8 +9,8 @@ import {
   type PlanId,
   PRICING_FLAG,
   type PricingVariant,
-  paygPriceCents,
   pricingFor,
+  unitAmountCents,
 } from '@easyrender/harness';
 import Stripe from 'stripe';
 import { captureServer, deferAnalytics } from './analytics';
@@ -63,6 +65,24 @@ const priceId = (product: 'payg' | PlanId, variant: PricingVariant) => {
   return id;
 };
 
+// EUR checkout stays off until the pricing pages show EUR. Set EUR_CHECKOUT_ENABLED=1 to turn it on.
+const isEurCheckoutEnabled = () => process.env.EUR_CHECKOUT_ENABLED === '1';
+
+// A Stripe customer is locked to the currency of its first invoice or subscription. Keep returning
+// buyers in that currency, whatever country they browse from now.
+async function checkoutCurrency(
+  client: Stripe,
+  customerId: string | null,
+  country: string | null | undefined,
+): Promise<ChargeCurrency> {
+  const wanted = isEurCheckoutEnabled() ? currencyForCountry(country) : 'usd';
+  if (!customerId) return wanted;
+  const customer = await client.customers.retrieve(customerId);
+  if ('deleted' in customer && customer.deleted) return wanted;
+  if (customer.currency === 'usd' || customer.currency === 'eur') return customer.currency;
+  return wanted;
+}
+
 const devCheckoutUrl = (request: CheckoutRequest) =>
   request.plan === 'payg'
     ? `${config.appUrl()}/api/dev/checkout?plan=payg&credits=${request.credits}`
@@ -71,7 +91,11 @@ const devCheckoutUrl = (request: CheckoutRequest) =>
 export async function createCheckout(
   userId: string,
   input: { plan?: unknown; credits?: unknown },
-  context: { anonId?: string | null; expectedVariant?: string | null } = {},
+  context: {
+    anonId?: string | null;
+    expectedVariant?: string | null;
+    country?: string | null;
+  } = {},
 ): Promise<string> {
   // The caller supplies only a plan/quantity. Resolve again here, even for non-HTTP callers.
   const variant = await assignedPricing(userId, context.anonId);
@@ -101,8 +125,13 @@ export async function createCheckout(
   const customer = user.stripeCustomerId
     ? { customer: user.stripeCustomerId }
     : { customer_email: user.email };
-  const selectedPrice = await client.prices.retrieve(priceId(request.plan, variant));
-  validateCheckoutPrice(selectedPrice, request.plan, variant);
+  const currency = await checkoutCurrency(client, user.stripeCustomerId, context.country);
+  const selectedPrice = await client.prices.retrieve(priceId(request.plan, variant), {
+    expand: ['currency_options'],
+  });
+  validateCheckoutPrice(selectedPrice, request.plan, variant, currency);
+  // USD is the price's base currency, so only EUR names its currency explicitly.
+  const chargeCurrency = currency === 'usd' ? {} : { currency };
   const urls = {
     success_url: `${config.appUrl()}/credits?status=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${config.appUrl()}/credits?status=canceled`,
@@ -124,6 +153,7 @@ export async function createCheckout(
       metadata,
       subscription_data: { metadata },
       adaptive_pricing: { enabled: false },
+      ...chargeCurrency,
       ...urls,
     });
     if (!session.url) throw new AppError('Stripe did not return a checkout URL', 502, 'upstream');
@@ -138,6 +168,7 @@ export async function createCheckout(
     line_items: [{ price: selectedPrice.id, quantity: request.credits }],
     metadata,
     adaptive_pricing: { enabled: false },
+    ...chargeCurrency,
     ...urls,
   });
   await db().purchase.create({
@@ -146,7 +177,8 @@ export async function createCheckout(
       stripeSessionId: session.id,
       packId: purchasePackId('payg', variant),
       credits: request.credits,
-      amountCents: paygPriceCents(request.credits, variant),
+      amountCents: request.credits * unitAmountCents('payg', variant, currency),
+      currency,
     },
   });
   if (!session.url) throw new AppError('Stripe did not return a checkout URL', 502, 'upstream');
@@ -157,14 +189,16 @@ export function validateCheckoutPrice(
   price: Stripe.Price,
   plan: 'payg' | PlanId,
   variant: PricingVariant,
+  currency: ChargeCurrency = 'usd',
 ) {
-  const pricing = pricingFor(variant);
-  const amount = plan === 'payg' ? paygPriceCents(1, variant) : pricing.plans[plan].priceCents;
+  const amount = unitAmountCents(plan, variant, 'usd');
   const isRecurring = plan !== 'payg';
   if (
     !price.active ||
     price.currency !== 'usd' ||
     price.unit_amount !== amount ||
+    (currency === 'eur' &&
+      price.currency_options?.eur?.unit_amount !== unitAmountCents(plan, variant, 'eur')) ||
     price.billing_scheme !== 'per_unit' ||
     price.transform_quantity ||
     (isRecurring
@@ -339,6 +373,7 @@ async function onInvoicePaid(invoice: Stripe.Invoice) {
   if (!details || !userId || !plan) return;
   const variant = variantFromInvoice(invoice);
   const paidPlan = pricingFor(variant).plans[plan];
+  const currency = invoice.currency === 'eur' ? 'eur' : 'usd';
   const purchase = await db().purchase.upsert({
     where: { stripeSessionId: invoice.id },
     // A nonempty no-op update lets Prisma use a database-native atomic upsert on replays.
@@ -348,7 +383,8 @@ async function onInvoicePaid(invoice: Stripe.Invoice) {
       stripeSessionId: invoice.id,
       packId: purchasePackId(plan, variant),
       credits: paidPlan.monthlyCredits,
-      amountCents: invoice.amount_paid ?? paidPlan.priceCents,
+      amountCents: invoice.amount_paid ?? unitAmountCents(plan, variant, currency),
+      currency,
     },
   });
   await grantCredits({
@@ -398,6 +434,14 @@ export async function getBillingStatus(userId: string) {
   };
 }
 
+// The pack's price in USD at list, so EUR and USD orders can be compared in one revenue number.
+function listRevenueUsd(purchase: { packId: string; credits: number }): number | null {
+  const [plan] = purchase.packId.split(':');
+  const variant = purchasedVariant(purchase.packId);
+  if (plan === 'payg') return (purchase.credits * unitAmountCents('payg', variant)) / 100;
+  return isPlanId(plan) ? unitAmountCents(plan, variant) / 100 : null;
+}
+
 async function capturePurchase(
   purchase: { id: string; userId: string; packId: string; credits: number; amountCents: number },
   currency: string,
@@ -428,6 +472,7 @@ async function capturePurchase(
         credits: purchase.credits,
         amount: purchase.amountCents / 100,
         currency: currency.toUpperCase(),
+        list_revenue_usd: listRevenueUsd(purchase),
         is_first_purchase: first?.id === purchase.id,
         payment_provider: 'stripe',
       },
@@ -466,7 +511,7 @@ export async function confirmedPurchase(userId: string, sessionId: string) {
     pricing_variant: purchasedVariant(purchase.packId),
     transaction_id: purchase.id,
     value: purchase.amountCents / 100,
-    currency: 'USD',
+    currency: purchase.currency.toUpperCase(),
     items: [{ item_id: purchase.packId, quantity: 1, price: purchase.amountCents / 100 }],
   };
 }

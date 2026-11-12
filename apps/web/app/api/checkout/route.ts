@@ -12,6 +12,8 @@ export const POST = (request: Request) =>
       url: await createCheckout(userId, body, {
         anonId,
         expectedVariant: request.headers.get('x-pricing-variant'),
+        // Set by Vercel's edge from the connection, never by the browser.
+        country: request.headers.get('x-vercel-ip-country'),
       }),
     });
   });

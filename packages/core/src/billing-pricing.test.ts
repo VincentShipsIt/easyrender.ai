@@ -1,4 +1,4 @@
-import { type PricingVariant, pricingFor } from '@easyrender/harness';
+import { type PricingVariant, pricingFor, unitAmountCents } from '@easyrender/harness';
 import type Stripe from 'stripe';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import {
@@ -14,6 +14,8 @@ const state = vi.hoisted(() => ({
   session: vi.fn(),
   price: vi.fn(),
   purchase: vi.fn(),
+  customer: vi.fn(),
+  customerId: null as string | null,
 }));
 vi.mock('./pricing-experiment', async (original) => ({
   ...(await original<typeof import('./pricing-experiment')>()),
@@ -24,7 +26,7 @@ vi.mock('@easyrender/db', () => ({
     user: {
       findUnique: async () => ({
         email: 'qa@example.invalid',
-        stripeCustomerId: null,
+        stripeCustomerId: state.customerId,
         subscriptionStatus: null,
       }),
     },
@@ -34,6 +36,7 @@ vi.mock('@easyrender/db', () => ({
 vi.mock('stripe', () => ({
   default: class {
     prices = { retrieve: state.price };
+    customers = { retrieve: state.customer };
     checkout = { sessions: { create: state.session } };
   },
 }));
@@ -42,6 +45,7 @@ const price = (plan: 'payg' | 'creator', variant: PricingVariant = 'test') =>
     id: `price_${plan}_${variant}`,
     active: true,
     currency: 'usd',
+    currency_options: { eur: { unit_amount: unitAmountCents(plan, variant, 'eur') } },
     billing_scheme: 'per_unit',
     transform_quantity: null,
     unit_amount:
@@ -50,10 +54,11 @@ const price = (plan: 'payg' | 'creator', variant: PricingVariant = 'test') =>
         : pricingFor(variant).plans[plan].priceCents,
     recurring:
       plan === 'payg' ? null : { interval: 'month', interval_count: 1, usage_type: 'licensed' },
-  }) as Stripe.Price;
+  }) as unknown as Stripe.Price;
 beforeEach(() => {
   vi.clearAllMocks();
   state.variant = 'test';
+  state.customerId = null;
   vi.stubEnv('STRIPE_SECRET_KEY', 'local-only');
   vi.stubEnv('STRIPE_PRICE_PAYG_TEST', 'price_payg_test');
   vi.stubEnv('STRIPE_PRICE_CREATOR_TEST', 'price_creator_test');
@@ -146,4 +151,52 @@ it('uses the actual invoice price after portal changes, even when the flag is of
   expect(variantFromInvoice(invoice('price_creator_test'))).toBe('test');
   expect(variantFromInvoice(invoice('price_creator_control'))).toBe('control');
   expect(planFromInvoice(invoice('price_creator_test'))).toBe('creator');
+});
+
+it('charges a euro-area buyer the fixed EUR price once EUR checkout is on', async () => {
+  vi.stubEnv('EUR_CHECKOUT_ENABLED', '1');
+  await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'ES' });
+  expect(state.session.mock.calls[0][0]).toMatchObject({
+    currency: 'eur',
+    adaptive_pricing: { enabled: false },
+    line_items: [{ price: 'price_payg_test', quantity: 500 }],
+  });
+  expect(state.purchase.mock.calls[0][0].data).toMatchObject({
+    credits: 500,
+    amountCents: 1000,
+    currency: 'eur',
+  });
+});
+it('keeps USD for other countries, and for everyone while EUR checkout is off', async () => {
+  vi.stubEnv('EUR_CHECKOUT_ENABLED', '1');
+  await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'US' });
+  vi.stubEnv('EUR_CHECKOUT_ENABLED', '0');
+  await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'ES' });
+  for (const [call] of state.session.mock.calls) expect(call).not.toHaveProperty('currency');
+  for (const [call] of state.purchase.mock.calls) expect(call.data.currency).toBe('usd');
+});
+it('refuses EUR when the Stripe price carries a different EUR amount', async () => {
+  vi.stubEnv('EUR_CHECKOUT_ENABLED', '1');
+  state.price.mockResolvedValue({
+    ...price('payg'),
+    currency_options: { eur: { unit_amount: 3 } },
+  });
+  await expect(
+    createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'DE' }),
+  ).rejects.toMatchObject({ code: 'price_mismatch' });
+  state.price.mockResolvedValue({ ...price('payg'), currency_options: undefined });
+  await expect(
+    createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'DE' }),
+  ).rejects.toMatchObject({ code: 'price_mismatch' });
+  expect(state.session).not.toHaveBeenCalled();
+});
+it('keeps a returning customer in the currency Stripe already locked them to', async () => {
+  vi.stubEnv('EUR_CHECKOUT_ENABLED', '1');
+  state.customerId = 'cus_1';
+  state.customer.mockResolvedValue({ id: 'cus_1', currency: 'usd' });
+  await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'FR' });
+  expect(state.session.mock.calls[0][0]).not.toHaveProperty('currency');
+  state.customer.mockResolvedValue({ id: 'cus_1', currency: 'eur' });
+  await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'US' });
+  expect(state.session.mock.calls[1][0]).toMatchObject({ currency: 'eur' });
 });
