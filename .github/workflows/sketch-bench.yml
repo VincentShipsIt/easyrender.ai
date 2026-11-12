@@ -1,0 +1,39 @@
+name: Sketch bench
+run-name: "Sketch to 3D latency spike"
+
+# Manual only. Times sketch to image and image to 3D on fal.ai for the live sketch canvas (#98).
+# It spends real fal credit (about $0.30), so it needs the word "spend" typed in.
+# Needs the repository secret FAL_KEY.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "spend" to confirm this spends fal credit'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  bench:
+    name: Sketch bench
+    if: ${{ inputs.confirm == 'spend' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+      - name: Run the bench
+        env:
+          FAL_KEY: ${{ secrets.FAL_KEY }}
+        run: bun scripts/sketch-bench.ts --spend | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sketch-bench
+          path: sketch-bench-out/
