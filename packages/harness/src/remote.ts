@@ -1,4 +1,5 @@
 import { LIMITS, type Limits } from './guardrails';
+import { MATERIALS, type MaterialProfile } from './materials';
 import {
   type BuildSettings,
   DEFAULT_BUILD_SETTINGS,
@@ -21,6 +22,7 @@ const TIMEOUT_MS = 3000;
 export type Harness = {
   skills: RenderSkill[];
   sheetPrompt: string;
+  materials: MaterialProfile[];
   sheet: SheetSettings;
   build: BuildSettings;
   limits: Limits;
@@ -31,6 +33,7 @@ export type Harness = {
 export const DEFAULT_HARNESS: Harness = {
   skills: SKILLS,
   sheetPrompt: SHEET_PROMPT,
+  materials: MATERIALS,
   sheet: DEFAULT_SHEET_SETTINGS,
   build: DEFAULT_BUILD_SETTINGS,
   limits: LIMITS,
@@ -62,8 +65,26 @@ export function parseSkills(
   return skills.length > 0 ? skills : null;
 }
 
+// The material profiles, all or nothing like the skills: one bad entry keeps the bundled ones.
+export function parseMaterials(raw: unknown): MaterialProfile[] | null {
+  if (!Array.isArray(raw) || raw.length === 0) return null;
+  const materials: MaterialProfile[] = [];
+  for (const entry of raw) {
+    if (!isRecord(entry)) return null;
+    const { id, label, keywords, guidance } = entry;
+    if (!isString(id, 1, 40) || !isString(label, 1, 80) || !isString(guidance, 20, 900))
+      return null;
+    if (!Array.isArray(keywords) || keywords.length === 0) return null;
+    if (!keywords.every((word) => isString(word, 1, 40) && /^[\p{L}\p{N} -]+$/u.test(word))) {
+      return null;
+    }
+    materials.push({ id, label, keywords: keywords as string[], guidance });
+  }
+  return materials;
+}
+
 type HarnessFile = Partial<Pick<Harness, 'sheetPrompt'>> & {
-  sheet?: Partial<SheetSettings>;
+  materials?: unknown;
   build?: Partial<BuildSettings>;
   limits?: Partial<Limits>;
 };
@@ -74,13 +95,9 @@ export function parseHarness(raw: unknown): Omit<Harness, 'skills' | 'source'> |
   const file = raw as HarnessFile;
   const sheetPrompt = isString(file.sheetPrompt, 200) ? file.sheetPrompt : SHEET_PROMPT;
   if (!/3x3/.test(sheetPrompt)) return null;
-  const sheet: SheetSettings = {
-    path:
-      isString(file.sheet?.path, 1, 200) && file.sheet.path.startsWith('/')
-        ? file.sheet.path
-        : DEFAULT_SHEET_SETTINGS.path,
-    input: isRecord(file.sheet?.input) ? file.sheet.input : DEFAULT_SHEET_SETTINGS.input,
-  };
+  // The sheet model and its resolution set what a sheet costs, so they stay in code: the harness
+  // repo cannot point the pipeline at a model the credit prices were not worked out for.
+  const sheet: SheetSettings = DEFAULT_SHEET_SETTINGS;
   const build: BuildSettings = {
     version:
       isString(file.build?.version, 64, 64) && /^[0-9a-f]{64}$/.test(file.build.version)
@@ -93,7 +110,13 @@ export function parseHarness(raw: unknown): Omit<Harness, 'skills' | 'source'> |
     const value = file.limits?.[key];
     if (typeof value === 'number' && Number.isFinite(value) && value >= 0) limits[key] = value;
   }
-  return { sheetPrompt, sheet, build, limits };
+  return {
+    sheetPrompt,
+    materials: parseMaterials(file.materials) ?? MATERIALS,
+    sheet,
+    build,
+    limits,
+  };
 }
 
 async function getText(
@@ -167,6 +190,8 @@ export async function loadHarness(
     skills: skills ?? DEFAULT_HARNESS.skills,
     source: { skills: skills ? 'remote' : 'default', harness: harness ? 'remote' : 'default' },
   };
+  // One line per refresh (every five minutes at most) so the deploy logs show what is live.
+  console.info(`harness loaded: skills=${value.source.skills} harness=${value.source.harness}`);
   cache = { at: now, value };
   return value;
 }

@@ -1,12 +1,18 @@
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 import { getRequestConfig } from 'next-intl/server';
-import { isLocale, LOCALE_COOKIE, matchLocale } from './config';
+import { DEFAULT_LOCALE, isRoutableLocale, LOCALE_HEADER } from './config';
 
-// No locale in the URL: the visitor's choice is kept in a cookie, and the first visit follows
-// the browser's language.
-export default getRequestConfig(async () => {
-  const saved = (await cookies()).get(LOCALE_COOKIE)?.value;
-  const locale = isLocale(saved) ? saved : matchLocale((await headers()).get('accept-language'));
+// The language comes from the URL and nothing else: English at the root, the rest under their
+// prefix. proxy.ts puts the prefix in a header so the root layout and every server component
+// agree without a cookie and without sniffing Accept-Language, which would make one URL answer
+// in different languages (arch doc, section 4.4).
+export default getRequestConfig(async ({ locale: override }) => {
+  const fromUrl = (await headers()).get(LOCALE_HEADER);
+  const locale = isRoutableLocale(override)
+    ? override
+    : isRoutableLocale(fromUrl)
+      ? fromUrl
+      : DEFAULT_LOCALE;
   return {
     locale,
     messages: (await import(`../messages/${locale}.json`)).default,

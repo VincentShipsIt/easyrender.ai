@@ -1,4 +1,4 @@
-import { advance } from '@easyrender/core';
+import { advance, reportError, tickForRender } from '@easyrender/core';
 import { NextResponse } from 'next/server';
 
 export const maxDuration = 60;
@@ -9,8 +9,10 @@ export async function POST(request: Request) {
   if (!id) return NextResponse.json({ ok: false }, { status: 400 });
   try {
     await advance(id);
+    // A store's product moves on to its next step as soon as its render does.
+    await tickForRender(id);
   } catch (error) {
-    console.error('replicate webhook failed', id, error);
+    reportError(error, { renderId: id, stage: 'replicate-webhook' });
     return NextResponse.json({ ok: false }, { status: 500 });
   }
   return NextResponse.json({ ok: true });

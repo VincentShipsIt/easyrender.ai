@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowRight, Box } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import type { CSSProperties } from 'react';
@@ -72,18 +73,12 @@ export function StudioIndustries({ salesHref }: { salesHref: string }) {
                   <div className="shop__bar">
                     <span>{t('store.domain')}</span>
                   </div>
-                  {/* biome-ignore lint/performance/noImgElement: static product shot inside the phone mock */}
-                  <img
-                    src={photoUrl(CHAIR.id)}
-                    alt=""
-                    width={720}
-                    height={720}
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  {/* The phone screen is about 200px wide, so next/image serves a resized copy of
+                      the 720px product shot instead of the original. */}
+                  <Image src={photoUrl(CHAIR.id)} alt="" width={720} height={720} sizes="200px" />
                   <div className="shop__info">
                     <p className="shop__name">{names[CHAIR.id]}</p>
-                    <p className="shop__meta">{t('store.meta', { dims: fmt.dims(CHAIR) })}</p>
+                    <p className="shop__meta">{t('store.meta')}</p>
                     <span className="shop__btn" data-er="button">
                       <Box />
                       {t('store.button')}
@@ -91,8 +86,10 @@ export function StudioIndustries({ salesHref }: { salesHref: string }) {
                   </div>
                 </div>
                 <div className="cam">
+                  {/* No src in the markup: the camera view sits under the shop screen until the
+                      demo runs, and the AR code sets the backdrop when the panel starts. */}
                   {/* biome-ignore lint/performance/noImgElement: camera backdrop the model is drawn over */}
-                  <img src="/studio/room-ar.jpg" alt="" loading="lazy" decoding="async" />
+                  <img data-er="backdrop" alt="" decoding="async" />
                   <div className="view" data-er="view" />
                   <div className="reticle" data-er="reticle" />
                   <span className="cam__pill" data-er="pill">
@@ -160,10 +157,6 @@ export function StudioIndustries({ salesHref }: { salesHref: string }) {
                 <div>
                   <dt>{t('games.rigidbody')}</dt>
                   <dd>{t('games.dynamic')}</dd>
-                </div>
-                <div>
-                  <dt>{t('games.mass')}</dt>
-                  <dd data-er="mass">{fmt.kg(FIRST_DROP.mass)}</dd>
                 </div>
                 <div>
                   <dt>{t('games.collider')}</dt>

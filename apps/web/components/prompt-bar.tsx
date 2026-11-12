@@ -11,43 +11,35 @@ import {
   TriangleAlert,
   X,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { type FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { AuthDialog } from '@/components/auth-dialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
+import { attribution, attributionHeaders, observeRender } from '@/lib/analytics/browser';
 import { savePending } from '@/lib/pending-upload';
+import { prepare } from '@/lib/prepare-image';
 import { SHOWCASE } from '@/lib/showcase';
 import { cn } from '@/lib/utils';
 
-const MAX_SIDE = 2048;
 const TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const STEPS = ['upload', 'read', 'draw', 'prepare'] as const;
 const EXAMPLES = SHOWCASE.slice(0, 4);
 
+// The sign-up dialog (Radix Dialog, Tabs and the better-auth client) is only needed once a
+// logged-out visitor finishes a demo, so it is split out of the page bundle. A closed dialog
+// renders nothing, so the server HTML is the same; `loadAuthDialog` warms the chunk up early.
+const loadAuthDialog = () => import('@/components/auth-dialog').then((mod) => mod.AuthDialog);
+const AuthDialog = dynamic(loadAuthDialog, { ssr: false });
+
 type Phase = 'idle' | 'simulating' | 'teaser' | 'uploading' | 'error';
 
-// Downscales on the client so uploads stay under the 4 MB request limit. Its error is shown as is,
-// so callers pass the message in the visitor's language.
-export async function prepare(file: File, unreadable = 'Could not read this photo'): Promise<Blob> {
-  const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
-  const canvas = document.createElement('canvas');
-  canvas.width = Math.round(bitmap.width * scale);
-  canvas.height = Math.round(bitmap.height * scale);
-  canvas.getContext('2d')?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  return new Promise((resolve, reject) =>
-    canvas.toBlob(
-      (blob) => (blob ? resolve(blob) : reject(new Error(unreadable))),
-      'image/jpeg',
-      0.9,
-    ),
-  );
-}
+export { prepare };
 
 const formatSize = (bytes: number) =>
   bytes > 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
@@ -65,6 +57,12 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
+  // Mounted on first open and kept mounted after, so closing still animates.
+  const [authMounted, setAuthMounted] = useState(false);
+  const openAuth = useCallback(() => {
+    setAuthMounted(true);
+    setAuthOpen(true);
+  }, []);
   const [authed, setAuthed] = useState(signedIn);
 
   useEffect(() => setAuthed(signedIn), [signedIn]);
@@ -111,6 +109,7 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
         savePending(blob, source.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' '), prompt),
       )
       .catch(() => undefined);
+    void loadAuthDialog();
     setPhase('simulating');
     setProgress(2);
     const started = Date.now();
@@ -122,7 +121,7 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
         clearInterval(timer);
         setProgress(100);
         setPhase('teaser');
-        setAuthOpen(true);
+        openAuth();
       }
     }, 80);
   }
@@ -135,11 +134,17 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
     const timer = setInterval(() => setProgress((value) => Math.min(value + 4, 90)), 300);
     try {
       const body = new FormData();
+      body.append('attribution', JSON.stringify(attribution()));
       body.append('image', await prepare(source, t('errors.unreadable')), 'source.jpg');
       body.append('prompt', prompt);
-      const response = await fetch('/api/renders', { method: 'POST', body });
+      const response = await fetch('/api/renders', {
+        method: 'POST',
+        body,
+        headers: attributionHeaders(),
+      });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error ?? t('errors.upload'));
+      observeRender(data);
       setProgress(100);
       router.push(`/r/${data.id}`);
     } catch (err) {
@@ -158,7 +163,7 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
       return;
     }
     if (authed) void generate(file);
-    else if (phase === 'teaser') setAuthOpen(true);
+    else if (phase === 'teaser') openAuth();
     else simulate(file);
   }
 
@@ -282,12 +287,13 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
               className="h-7 rounded-full pl-1 text-xs"
               onClick={() => loadExample(index)}
             >
-              {/* biome-ignore lint/performance/noImgElement: tiny static thumbnail */}
-              <img
+              {/* A 20px thumbnail of a 720px photo: next/image serves a small resized copy. */}
+              <Image
                 src={example.photo}
                 alt=""
-                loading="lazy"
-                decoding="async"
+                width={20}
+                height={20}
+                sizes="20px"
                 className="size-5 rounded-full object-cover"
               />
               {showcase(`items.${example.slug}.title`)}
@@ -320,7 +326,7 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
             </div>
             <Progress value={progress} />
             {phase === 'teaser' ? (
-              <Teaser thumb={thumb} onReveal={() => setAuthOpen(true)} />
+              <Teaser thumb={thumb} onReveal={openAuth} />
             ) : (
               <ol className="grid gap-1.5 text-xs sm:grid-cols-2">
                 {STEPS.map((key, index) => (
@@ -347,38 +353,43 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
         </Card>
       )}
 
-      <AuthDialog
-        open={authOpen}
-        onOpenChange={setAuthOpen}
-        title={t('auth.title')}
-        description={t('auth.description')}
-        onDone={() => {
-          setAuthOpen(false);
-          setAuthed(true);
-          // The Library picks up the saved photo and shows it next to its 3D model.
-          router.push('/library');
-          router.refresh();
-        }}
-      >
-        {thumb && (
-          <div className="grid grid-cols-4 gap-1.5">
-            {[0, 1, 2, 3].map((index) => (
-              <div key={index} className="relative aspect-square overflow-hidden rounded-md border">
-                {/* biome-ignore lint/performance/noImgElement: local object URL thumbnail */}
-                <img
-                  src={thumb}
-                  alt=""
-                  className={cn('size-full object-cover', index > 0 && 'scale-110 blur-sm')}
-                  style={{ transform: index % 2 ? 'scaleX(-1) scale(1.1)' : undefined }}
-                />
-                {index > 0 && (
-                  <Lock className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </AuthDialog>
+      {authMounted && (
+        <AuthDialog
+          open={authOpen}
+          onOpenChange={setAuthOpen}
+          title={t('auth.title')}
+          description={t('auth.description')}
+          onDone={() => {
+            setAuthOpen(false);
+            setAuthed(true);
+            // The Library picks up the saved photo and shows it next to its 3D model.
+            router.push('/library');
+            router.refresh();
+          }}
+        >
+          {thumb && (
+            <div className="grid grid-cols-4 gap-1.5">
+              {[0, 1, 2, 3].map((index) => (
+                <div
+                  key={index}
+                  className="relative aspect-square overflow-hidden rounded-md border"
+                >
+                  {/* biome-ignore lint/performance/noImgElement: local object URL thumbnail */}
+                  <img
+                    src={thumb}
+                    alt=""
+                    className={cn('size-full object-cover', index > 0 && 'scale-110 blur-sm')}
+                    style={{ transform: index % 2 ? 'scaleX(-1) scale(1.1)' : undefined }}
+                  />
+                  {index > 0 && (
+                    <Lock className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </AuthDialog>
+      )}
     </div>
   );
 }

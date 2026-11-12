@@ -35,7 +35,7 @@
       "file": "swivel-chair.hd.glb",
       "kb": 736
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "armchair",
@@ -73,7 +73,7 @@
       "file": "armchair.hd.glb",
       "kb": 762
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "coffee-table",
@@ -107,7 +107,7 @@
         "kb": 21
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "bedside-table",
@@ -141,7 +141,7 @@
         "kb": 102
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "vase",
@@ -175,7 +175,7 @@
         "kb": 19
       }
     ],
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "clay-vase",
@@ -213,7 +213,7 @@
       "file": "clay-vase.hd.glb",
       "kb": 1296
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "sofa",
@@ -251,7 +251,7 @@
       "file": "sofa.hd.glb",
       "kb": 1712
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "lamp",
@@ -289,7 +289,7 @@
       "file": "lamp.hd.glb",
       "kb": 666
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "cactus",
@@ -327,7 +327,7 @@
       "file": "cactus.hd.glb",
       "kb": 1124
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "sneaker",
@@ -365,7 +365,7 @@
       "file": "sneaker.hd.glb",
       "kb": 868
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "espresso",
@@ -403,7 +403,7 @@
       "file": "espresso.hd.glb",
       "kb": 844
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "crate",
@@ -441,7 +441,7 @@
       "file": "crate.hd.glb",
       "kb": 2062
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   },
   {
     "id": "barrel",
@@ -479,6 +479,6 @@
       "file": "barrel.hd.glb",
       "kb": 520
     },
-    "formats": ["GLB", "USDZ", "FBX", "OBJ"]
+    "formats": ["GLB", "USDZ"]
   }
 ]

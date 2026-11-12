@@ -6,6 +6,9 @@ import { prefersReducedMotion } from '../engine/stage';
 import type { Scope } from '../scope';
 
 const SRC = '/studio/interior.mp4';
+// Set here rather than in the markup: a `poster` attribute is fetched with the page however far
+// below the fold the video sits, and this panel is only set up once it comes near the viewport.
+// The panel keeps its aspect ratio while it waits, so nothing shifts when the still arrives.
 const POSTER = '/studio/interior.jpg';
 const WARM = 2700;
 const COOL = 6500;
@@ -16,7 +19,6 @@ export function initArch(panel: HTMLElement, { scope }: { scope: Scope }) {
   const track = part(panel, 'track');
   const pins = parts(panel, 'pin');
   const still = prefersReducedMotion();
-  // Set here, as the section nears the viewport: a poster in the markup is fetched with the page.
   video.poster = POSTER;
 
   let raf = 0;

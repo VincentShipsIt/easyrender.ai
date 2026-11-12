@@ -51,7 +51,7 @@ export const SKILLS: RenderSkill[] = [
       'alfombra',
     ],
     guidance:
-      'This is furniture or a home object. Keep the exact number and shape of legs, arms, cushions and drawers. Preserve upholstery weave, wood grain direction and seams, and keep real-world proportions (seat height, depth) identical in every view.',
+      'This is furniture or a home object. Keep the exact number and shape of legs, arms, cushions and drawers. Preserve upholstery weave, wood grain direction and seams, and keep real-world proportions (seat height, depth) identical in every view. Keep every part physically makeable from its material: stone is cut or carved and never bent, tube bends in smooth arcs, solid wood follows its grain, upholstery sits over a frame.',
   },
   {
     id: 'jewelry',

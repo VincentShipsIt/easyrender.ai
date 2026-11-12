@@ -46,8 +46,6 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
     photo: part<HTMLImageElement>(root, 'photo'),
     tris: part(root, 'tris'),
     name: part(root, 'name'),
-    dims: part(root, 'dims'),
-    mass: part(root, 'mass'),
   };
 
   type PassView = { view: View; pivot: THREE.Group; fit: Fit | null; blob: THREE.Mesh | null };
@@ -124,8 +122,6 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
     ui.photo.src = photoUrl(id);
     ui.tris.textContent = fmt.int(item.wireTris);
     ui.name.textContent = names[id] ?? id;
-    ui.dims.textContent = fmt.dims(item);
-    ui.mass.textContent = fmt.kg(item.mass);
   }
 
   let index = 0;
@@ -134,8 +130,10 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
     if (!scope.alive) return;
     show(ORDER[0], first);
   } catch (error) {
-    // No WebGL: the cards still appear, with the input photo and the copy.
+    // No WebGL: the cards still appear, with the input photo and the copy. The markup ships
+    // without the photo (the stack is hidden until now), so it is set here or by show().
     console.warn('studio hero: 3D is not available', error);
+    ui.photo.src = photoUrl(ORDER[0]);
     stack.classList.add('is-in');
     return;
   }

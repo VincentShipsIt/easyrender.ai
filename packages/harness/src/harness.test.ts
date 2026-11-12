@@ -1,15 +1,21 @@
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
-import { buildCostUsd, buildRequest, SHEET_MODEL } from './models';
+import { buildCostUsd, buildRequest, FINAL_SHEET_MODEL, SHEET_MODEL } from './models';
 import {
+  CREDIT_USD,
   creditsFor,
+  FINAL_SHEET_COST_USD,
+  isPlanId,
   isValidPaygCredits,
+  PLAN_IDS,
   PRO_PLAN,
   paygPriceCents,
+  RENDER_COST_USD,
   RENDER_CREDITS,
   rendersFor,
   SHEET_COST_USD,
   SHEET_CREDITS,
+  SUBSCRIPTION_PLANS,
 } from './pricing';
 import { findGlbUrl } from './replicate';
 import { cutCells, sheetOutputUrl, sheetPrompt, VIEWS } from './sheet';
@@ -19,14 +25,15 @@ describe('pricing', () => {
   it('keeps a 70% margin over cost', () => {
     expect(creditsFor(0.3)).toBe(100);
     expect(creditsFor(0.24)).toBe(80);
-    expect(RENDER_CREDITS).toBe(80);
+    expect(RENDER_CREDITS).toBe(64);
     // revenue per render covers cost / (1 - margin)
-    expect(RENDER_CREDITS * 0.01 * 0.3).toBeGreaterThanOrEqual(0.24 - 1e-9);
+    expect(RENDER_CREDITS * 0.01 * 0.3).toBeGreaterThanOrEqual(RENDER_COST_USD - 1e-9);
   });
 
   it('prices the angle sheet alone below the full render', () => {
     expect(SHEET_COST_USD).toBe(SHEET_MODEL.costUsd);
-    expect(SHEET_CREDITS).toBe(50);
+    expect(FINAL_SHEET_COST_USD).toBe(FINAL_SHEET_MODEL.costUsd);
+    expect(SHEET_CREDITS).toBe(12);
     expect(SHEET_CREDITS).toBeLessThan(RENDER_CREDITS);
   });
 
@@ -41,8 +48,23 @@ describe('pricing', () => {
   });
 
   it('counts whole renders per credit amount', () => {
-    expect(rendersFor(1000)).toBe(12);
-    expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(62);
+    expect(rendersFor(1000)).toBe(15);
+    expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(85);
+  });
+
+  it('gives every monthly plan a cheaper credit than pay as you go, and a bigger plan a cheaper one', () => {
+    expect(PLAN_IDS).toEqual(['creator', 'pro', 'scale']);
+    const perCredit = PLAN_IDS.map(
+      (id) => SUBSCRIPTION_PLANS[id].priceCents / 100 / SUBSCRIPTION_PLANS[id].monthlyCredits,
+    );
+    for (const price of perCredit) expect(price).toBeLessThan(CREDIT_USD);
+    expect(perCredit).toEqual([...perCredit].sort((a, b) => b - a));
+    expect(new Set(perCredit).size).toBe(perCredit.length);
+  });
+
+  it('only accepts known plan ids', () => {
+    expect(['creator', 'pro', 'scale'].every(isPlanId)).toBe(true);
+    expect(['enterprise', 'toString', '', null, 3].some(isPlanId)).toBe(false);
   });
 });
 

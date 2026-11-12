@@ -218,7 +218,6 @@ export async function initGame(
 ) {
   const ui = {
     name: part(panel, 'name'),
-    mass: part(panel, 'mass'),
     collider: part(panel, 'collider'),
     friction: part(panel, 'friction'),
   };
@@ -254,7 +253,6 @@ export async function initGame(
 
   const inspect = (selected: Body) => {
     ui.name.textContent = names[selected.item.id] ?? selected.item.id;
-    ui.mass.textContent = fmt.kg(selected.item.mass);
     ui.collider.textContent = colliders[selected.item.collider];
     ui.friction.textContent = fmt.fixed(selected.item.friction);
     for (const body of sim.bodies) body.wire.opacity = body === selected ? 0.95 : 0.22;
@@ -316,7 +314,6 @@ export async function initPhysicsTile(
   { scope, fmt }: Pick<PhysicsContext, 'scope' | 'fmt'>,
 ) {
   const ui = {
-    mass: part(tile, 'mass'),
     friction: part(tile, 'friction'),
     restitution: part(tile, 'restitution'),
   };
@@ -391,7 +388,6 @@ export async function initPhysicsTile(
     });
     if (!scope.alive) return;
     body.wire.opacity = 0.75;
-    ui.mass.textContent = fmt.kg(item.mass);
     ui.friction.textContent = fmt.fixed(item.friction);
     ui.restitution.textContent = fmt.fixed(item.restitution);
     t = 0;

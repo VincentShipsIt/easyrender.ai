@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: easyrender.ai asset storage (private S3 bucket behind CloudFront) and a Vercel OIDC role that can write to it.
 
 Parameters:
@@ -7,12 +7,24 @@ Parameters:
     Default: easyrender.ai
   CreateOidcProvider:
     Type: String
-    AllowedValues: ['true', 'false']
-    Default: 'true'
+    AllowedValues: ["true", "false"]
+    Default: "true"
     Description: Set to false when the account already has the oidc.vercel.com/<team> provider.
 
+  CdnDomain:
+    Type: String
+    Default: ""
+    Description: Optional custom hostname for the CDN, e.g. cdn.easyrender.ai. Needs CertificateArn too.
+  CertificateArn:
+    Type: String
+    Default: ""
+    Description: ACM certificate for CdnDomain. CloudFront only accepts certificates from us-east-1.
+
 Conditions:
-  MakeProvider: !Equals [!Ref CreateOidcProvider, 'true']
+  MakeProvider: !Equals [!Ref CreateOidcProvider, "true"]
+  HasDomain: !And
+    - !Not [!Equals [!Ref CdnDomain, ""]]
+    - !Not [!Equals [!Ref CertificateArn, ""]]
 
 Resources:
   AssetsBucket:
@@ -37,7 +49,7 @@ Resources:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
       OriginAccessControlConfig:
-        Name: !Sub '${AWS::StackName}-oac'
+        Name: !Sub "${AWS::StackName}-oac"
         OriginAccessControlOriginType: s3
         SigningBehavior: always
         SigningProtocol: sigv4
@@ -50,12 +62,19 @@ Resources:
         Comment: easyrender.ai assets
         HttpVersion: http2and3
         PriceClass: PriceClass_100
+        Aliases: !If [HasDomain, [!Ref CdnDomain], !Ref "AWS::NoValue"]
+        ViewerCertificate: !If
+          - HasDomain
+          - AcmCertificateArn: !Ref CertificateArn
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2021
+          - !Ref "AWS::NoValue"
         Origins:
           - Id: assets
             DomainName: !GetAtt AssetsBucket.RegionalDomainName
             OriginAccessControlId: !GetAtt OriginAccessControl.Id
             S3OriginConfig:
-              OriginAccessIdentity: ''
+              OriginAccessIdentity: ""
         DefaultCacheBehavior:
           TargetOriginId: assets
           ViewerProtocolPolicy: redirect-to-https
@@ -68,25 +87,25 @@ Resources:
     Properties:
       Bucket: !Ref AssetsBucket
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Sid: CloudFrontRead
             Effect: Allow
             Principal:
               Service: cloudfront.amazonaws.com
             Action: s3:GetObject
-            Resource: !Sub '${AssetsBucket.Arn}/*'
+            Resource: !Sub "${AssetsBucket.Arn}/*"
             Condition:
               StringEquals:
-                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
 
   VercelOidcProvider:
     Type: AWS::IAM::OIDCProvider
     Condition: MakeProvider
     Properties:
-      Url: !Sub 'https://oidc.vercel.com/shipshitdev'
+      Url: !Sub "https://oidc.vercel.com/shipshitdev"
       ClientIdList:
-        - !Sub 'https://vercel.com/shipshitdev'
+        - !Sub "https://vercel.com/shipshitdev"
 
   VercelRole:
     Type: AWS::IAM::Role
@@ -94,31 +113,36 @@ Resources:
       Description: Assumed by easyrender.ai Vercel deployments to write assets.
       MaxSessionDuration: 3600
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
-              Federated: !Sub 'arn:aws:iam::${AWS::AccountId}:oidc-provider/oidc.vercel.com/shipshitdev'
+              Federated: !Sub "arn:aws:iam::${AWS::AccountId}:oidc-provider/oidc.vercel.com/shipshitdev"
             Action: sts:AssumeRoleWithWebIdentity
             Condition:
               StringEquals:
                 # Condition keys cannot be intrinsics, so the team slug is fixed here.
                 oidc.vercel.com/shipshitdev:aud: https://vercel.com/shipshitdev
               StringLike:
-                oidc.vercel.com/shipshitdev:sub: !Sub 'owner:shipshitdev:project:${VercelProject}:environment:*'
+                oidc.vercel.com/shipshitdev:sub: !Sub "owner:shipshitdev:project:${VercelProject}:environment:*"
       Policies:
         - PolicyName: assets-write
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action: s3:PutObject
-                Resource: !Sub '${AssetsBucket.Arn}/*'
+                Resource: !Sub "${AssetsBucket.Arn}/*"
 
 Outputs:
   S3Bucket:
     Value: !Ref AssetsBucket
   AssetsCdnUrl:
-    Value: !Sub 'https://${Distribution.DomainName}'
+    Value: !If
+      - HasDomain
+      - !Sub "https://${CdnDomain}"
+      - !Sub "https://${Distribution.DomainName}"
+  DistributionDomain:
+    Value: !GetAtt Distribution.DomainName
   AwsRoleArn:
     Value: !GetAtt VercelRole.Arn

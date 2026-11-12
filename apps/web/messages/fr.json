@@ -1,0 +1,1453 @@
+{
+  "Metadata": {
+    "title": "easyrender : ta photo produit en 3D",
+    "description": "easyrender transforme la photo d'un meuble, d'un objet déco ou d'une façade en modèle 3D. Aperçu gratuit sous tous les angles, puis fichiers GLB et USDZ."
+  },
+  "LocaleSwitcher": {
+    "switchTo": "Passer en {language}",
+    "label": "Langue"
+  },
+  "Header": {
+    "nav": {
+      "howItWorks": "Comment ça marche",
+      "hub": "Hub",
+      "connect": "Connecter",
+      "try": "Essayer",
+      "pricing": "Tarifs"
+    },
+    "credits": "crédits",
+    "dashboard": "Tableau de bord",
+    "signIn": "Se connecter",
+    "connect": "Connecter",
+    "connectSuffix": "ton agent",
+    "sections": "Rubriques",
+    "menuOpen": "Ouvrir le menu",
+    "menuClose": "Fermer le menu"
+  },
+  "Footer": {
+    "tagline": "Une photo devient un modèle 3D à regarder sous tous les angles et à télécharger en GLB et USDZ.",
+    "product": "Produit",
+    "developers": "Développeurs",
+    "account": "Compte",
+    "links": {
+      "howItWorks": "Comment ça marche",
+      "try": "Essayer",
+      "hub": "Hub",
+      "gallery": "Galerie",
+      "pricing": "Tarifs",
+      "faq": "FAQ",
+      "mcp": "Serveur MCP",
+      "apiKeys": "Clés API",
+      "dashboard": "Tableau de bord",
+      "signUp": "Créer un compte",
+      "signIn": "Se connecter",
+      "guides": "Guides",
+      "models": "Models",
+      "evals": "Evals",
+      "cookies": "Cookies et statistiques"
+    },
+    "copyright": "© 2026 easyrender. Avec la technologie de Genfeed.",
+    "pricesNote": "Prix en USD. Les crédits n'expirent pas."
+  },
+  "Home": {
+    "connect": {
+      "title": "Ou confie le travail à ton agent",
+      "description": "easyrender parle MCP : n'importe quel agent compatible peut créer des rendus, les vérifier et générer des modèles 3D avec tes crédits.",
+      "steps": {
+        "key": {
+          "title": "Récupère ta clé",
+          "body": "Crée un compte gratuit et ajoute easyrender à claude.ai avec une seule URL, ou génère une clé API pour Claude Code et les autres agents."
+        },
+        "paste": {
+          "title": "Colle-la dans ton agent",
+          "body": "Une commande pour Claude Code, un bloc JSON pour Cursor, VS Code ou Claude Desktop."
+        },
+        "watch": {
+          "title": "Demande un modèle 3D, il arrive tout seul",
+          "body": "Chaque modèle créé par ton agent arrive dans ton tableau de bord web et dans ta bibliothèque."
+        }
+      },
+      "openConnectors": "Ouvrir tes connecteurs",
+      "getKey": "Récupère ta clé API gratuite",
+      "worksWith": "Fonctionne avec {clients} et tout client MCP."
+    },
+    "try": {
+      "title": "Transforme une photo en 3D, ici même",
+      "description": "Dépose la photo d'un meuble, d'un objet déco ou d'un produit. L'aperçu est gratuit ; il suffit de créer un compte pour le voir."
+    },
+    "meta": {
+      "title": "Image en 3D : ta photo devient un modèle 3D · easyrender",
+      "description": "Transforme une image en 3D : la photo d'un meuble ou d'une façade devient un modèle 3D. Aperçu gratuit, tu ne paies que si le résultat te plaît. Export GLB et USDZ."
+    },
+    "intro": {
+      "eyebrow": "Image vers 3D",
+      "title": "Qu'est-ce qu'easyrender ?",
+      "body": "easyrender transforme une image en 3D : la photo d'un meuble, d'un objet de décoration ou de la façade d'un bâtiment devient un modèle 3D. L'outil dessine d'abord l'objet sous tous ses angles, sur une planche gratuite que tu vérifies avant de dépenser quoi que ce soit. Si l'aperçu te convient, un clic suffit pour obtenir le modèle 3D, à faire pivoter et à télécharger en GLB et USDZ.",
+      "scope": "Il modélise un objet à la fois, pas une pièce entière, et il n'invente pas de dimensions. Tu reçois le fichier, et c'est toi qui décides s'il mérite d'être gardé.",
+      "primaryCta": "Importer une photo",
+      "secondaryCta": "Voir la galerie"
+    }
+  },
+  "Landing": {
+    "pricing": {
+      "title": "Tu paies au modèle. Les crédits n'expirent pas.",
+      "description": "Les aperçus sont gratuits. Un modèle 3D terminé coûte {credits} crédits ({price}).",
+      "seeAll": "Voir tous les tarifs",
+      "bestValue": "Le plus avantageux",
+      "free": {
+        "name": "Gratuit",
+        "note": "pour essayer",
+        "features": {
+          "mcp": "Connecte ton agent via MCP",
+          "previews": "Aperçus gratuits sous tous les angles",
+          "noCard": "Sans carte bancaire"
+        },
+        "cta": "Commencer gratuitement"
+      },
+      "payg": {
+        "name": "Paiement à l'usage",
+        "note": "par crédit",
+        "features": {
+          "min": "À partir de {credits} crédits",
+          "downloads": "Téléchargements GLB et USDZ",
+          "ar": "Bientôt : l'objet chez toi, en réalité augmentée",
+          "api": "Serveur MCP et API REST"
+        },
+        "cta": "Acheter des crédits"
+      },
+      "pro": {
+        "note": "par mois",
+        "features": {
+          "credits": "{credits} crédits chaque mois",
+          "models": "Environ {count} modèles 3D",
+          "rollover": "Les crédits non utilisés sont reportés",
+          "cancel": "Résiliable à tout moment"
+        },
+        "cta": "Passer à {plan}"
+      },
+      "enterprise": {
+        "name": "Entreprise",
+        "price": "Sur mesure",
+        "note": "tarif selon volume",
+        "features": {
+          "volume": "Crédits à tarif dégressif",
+          "invoice": "Paiement sur facture",
+          "support": "Support prioritaire",
+          "onboarding": "Appel de prise en main"
+        },
+        "cta": "Réserver un appel"
+      }
+    },
+    "faq": {
+      "title": "Tes questions, nos réponses",
+      "items": {
+        "connect": {
+          "q": "Que veut dire « connecter ton agent » ?",
+          "a": "easyrender est un serveur MCP. Ajoute-le à Claude Code, Claude Desktop, Cursor, VS Code ou à n'importe quel client MCP avec ta clé API, et ton agent pourra transformer des photos en modèles 3D tout seul. Tout ce qu'il crée apparaît dans ton tableau de bord web."
+        },
+        "needAgent": {
+          "q": "Faut-il un agent pour s'en servir ?",
+          "a": "Non. Tu peux importer tes photos dans l'application web, une par une ou par lots depuis ta bibliothèque. L'agent sert seulement à automatiser le travail."
+        },
+        "photos": {
+          "q": "Quelles photos donnent les meilleurs résultats ?",
+          "a": "Une photo nette et bien éclairée, avec l'objet entier dans le cadre, idéalement sur un fond uni. Les photos de catalogue, les visuels de fiche produit montrant un seul article ou une façade bien dégagée conviennent bien. Un fond chargé, un objet coupé, un flou marqué ou des détails très fins donnent un aperçu moins réussi."
+        },
+        "scope": {
+          "q": "Que peut-il modéliser aujourd'hui ?",
+          "a": "Des meubles, des objets de décoration et des façades de bâtiments, à partir d'une seule photo. Il modélise un objet à la fois, pas une pièce entière. Les petits logos et les textes fins ressortent souvent flous."
+        },
+        "output": {
+          "q": "Qu'est-ce que j'obtiens ?",
+          "a": "D'abord un aperçu gratuit qui montre l'objet sous tous les angles. Ensuite, si tu dépenses des crédits, un modèle 3D à faire pivoter sur sa page et à télécharger en GLB texturé pour le web et en USDZ."
+        },
+        "freePreview": {
+          "q": "Pourquoi l'aperçu est-il gratuit ?",
+          "a": "Avant de construire le modèle 3D, on dessine l'objet sous tous les angles. Tu vérifies cet aperçu sans rien payer, et tu ne dépenses des crédits que si la forme et les détails te conviennent."
+        },
+        "failed": {
+          "q": "Et si un rendu échoue ?",
+          "a": "Si la création du modèle 3D échoue, les crédits de ce rendu reviennent automatiquement sur ton solde."
+        },
+        "public": {
+          "q": "Mon rendu est-il public ?",
+          "a": "Les modèles terminés apparaissent par défaut dans la galerie publique. Sur la page du modèle, tu peux désactiver « Show in public gallery ». Pour l'instant, masquer un modèle peut aussi empêcher son lien de s'ouvrir pour les autres. Laisse-le dans la galerie si tu veux partager le lien."
+        },
+        "cost": {
+          "q": "Combien coûte un modèle 3D ?",
+          "a": "Les aperçus sont gratuits. Un modèle 3D terminé coûte {credits} crédits et chaque crédit coûte {unit}, soit {price} par modèle. Les crédits n'expirent pas. Tous les packs figurent sur la page Tarifs."
+        },
+        "what": {
+          "q": "Qu'est-ce qu'easyrender ?",
+          "a": "easyrender est une application web pour convertir une image en 3D : la photo d'un objet devient un modèle 3D. Tu importes la photo, tu vérifies gratuitement une planche qui montre l'objet sous tous les angles, et tu ne dépenses des crédits que si tu veux le modèle terminé, à télécharger en GLB et USDZ."
+        },
+        "formats": {
+          "q": "Quels formats puis-je télécharger ?",
+          "a": "Deux : un GLB texturé, pour le web et la plupart des logiciels 3D, et un USDZ, pour les appareils Apple. Le modèle conserve sa forme et ses matières, mais pas les mesures réelles ni l'échelle."
+        },
+        "ar": {
+          "q": "Puis-je voir le modèle chez moi ?",
+          "a": "La réalité augmentée arrive bientôt : tu pourras ouvrir le modèle sur ton téléphone et le poser dans ta pièce. Elle montrera la forme et les matières de l'objet, pas sa taille réelle."
+        }
+      }
+    }
+  },
+  "AgentDemo": {
+    "window": "Ton agent · easyrender MCP",
+    "ask": "Voici le catalogue de printemps. Fais un modèle 3D de chaque produit.",
+    "calls": {
+      "create_render": "24 photos · aperçus gratuits",
+      "get_render": "24 aperçus prêts",
+      "render_3d": "24 modèles · GLB et USDZ"
+    },
+    "done": "C'est fait. Tes 24 modèles sont dans ta bibliothèque easyrender, en GLB et USDZ. Voici le premier :",
+    "modelAlt": "Modèle 3D : {title}"
+  },
+  "McpSetup": {
+    "terminal": "À lancer dans ton terminal",
+    "addTo": "Ajouter à {file}",
+    "copy": "Copier",
+    "copied": "Copié",
+    "claudeAi": {
+      "one": "Ouvre claude.ai → Paramètres → Connecteurs → Ajouter un connecteur personnalisé.",
+      "two": "Colle cette URL comme URL du connecteur.",
+      "three": "Clique sur Connecter, connecte-toi à easyrender et autorise l'accès. Pas besoin de clé.",
+      "note": "La même connexion fonctionne avec n'importe quel client MCP compatible OAuth. Chaque connexion crée une clé que tu peux révoquer ci-dessous."
+    }
+  },
+  "Gallery": {
+    "modelAlt": "3D model: {title}",
+    "sourceAlt": "Source of {title}"
+  },
+  "Explore": {
+    "metaTitle": "Gallery · easyrender",
+    "eyebrow": "Gallery",
+    "title": "Made with easyrender",
+    "description": "Every model here started as a single photo."
+  },
+  "Showcase": {
+    "untitled": "Rendu sans titre",
+    "model3d": "Modèle 3D",
+    "categories": {
+      "Furniture": "Mobilier",
+      "Decor": "Déco",
+      "Exterior": "Extérieur"
+    },
+    "items": {
+      "swivel-chair": {
+        "title": "Fauteuil pivotant",
+        "prompt": "Fauteuil pivotant en tissu gris"
+      },
+      "coffee-table": {
+        "title": "Table basse ronde",
+        "prompt": "Table basse ronde en bois massif"
+      },
+      "vase": {
+        "title": "Vase en grès",
+        "prompt": "Vase en grès mat"
+      },
+      "armchair": {
+        "title": "Fauteuil en bouclette",
+        "prompt": "Fauteuil lounge en tissu bouclette, piètement en acier brossé"
+      },
+      "clay-vase": {
+        "title": "Vase en terre cuite",
+        "prompt": "Vase en terre cuite patinée"
+      },
+      "bedside-table": {
+        "title": "Table de chevet",
+        "prompt": "Table de chevet en bois massif avec tiroir"
+      }
+    }
+  },
+  "Render": {
+    "metaTitle": "3D render",
+    "gallery": "Gallery",
+    "inputPhoto": "Input photo",
+    "sourceAlt": "Source of {title}",
+    "everyAngle": "Every angle",
+    "prompt": "Prompt",
+    "noPrompt": "No prompt, photo only",
+    "example": "Example",
+    "noAngleSheet": "Made from the photo alone, without an angle sheet.",
+    "makeYourOwn": "Make your own",
+    "public": "Public",
+    "private": "Private",
+    "untitled": "Untitled render",
+    "modelAlt": "3D model: {name}",
+    "meta": {
+      "status": "Status",
+      "engine": "Engine",
+      "dimensions": "Dimensions",
+      "formats": "Formats",
+      "visibility": "Visibility",
+      "created": "Created",
+      "creditsUsed": "Credits used"
+    },
+    "status": {
+      "drafting": "Drawing every angle",
+      "preview_ready": "Preview ready",
+      "rendering": "Building 3D model",
+      "ready": "Ready",
+      "failed": "Failed"
+    },
+    "drafting": "Drawing every angle of your object. This takes about a minute.",
+    "rendering": "Building the 3D model. This takes about two minutes.",
+    "previewReady": "Your preview is ready below. Check every angle, then render the 3D model.",
+    "previewAlt": "Preview of every angle",
+    "noPreview": "No preview",
+    "signUpToRender": "Sign up to render in 3D",
+    "buyToRender": "Buy credits to render in 3D",
+    "render3d": "Render 3D ({credits} credits)",
+    "tryAnother": "Try another photo",
+    "showInGallery": "Show in public gallery",
+    "finishedOnly": "Finished models only",
+    "errors": {
+      "start": "Could not start the render",
+      "sheet": "Could not generate the angle sheet"
+    },
+    "generateSheet": "Generate angle sheet ({credits} credits)",
+    "materials": {
+      "title": "Materials",
+      "hint": "Change how each material looks. Saved changes are included in the GLB and USDZ downloads.",
+      "loading": "Reading the materials of this model",
+      "loadFailed": "Could not read the materials of this model.",
+      "empty": "This model has no materials to edit.",
+      "unnamed": "Material {number}",
+      "finish": {
+        "stone": "Stone",
+        "wood": "Wood",
+        "metal": "Metal"
+      },
+      "tint": "Tint",
+      "roughness": "Roughness",
+      "metalness": "Metalness",
+      "save": "Save changes",
+      "reset": "Reset to original",
+      "saved": "Saved. The downloads now include your changes.",
+      "resetDone": "Back to the generated look.",
+      "saveFailed": "Could not save the changes. Try again."
+    }
+  },
+  "PromptBar": {
+    "steps": {
+      "upload": "Envoi de ta photo",
+      "read": "Lecture de la forme et des matières",
+      "draw": "Dessin de tous les angles",
+      "prepare": "Préparation de ton aperçu 3D"
+    },
+    "errors": {
+      "type": "Ajoute une photo JPEG, PNG ou WebP.",
+      "noPhoto": "Ajoute d'abord une photo de l'objet ou du bâtiment.",
+      "upload": "Échec de l'import",
+      "unreadable": "Impossible de lire cette photo",
+      "title": "Impossible de lancer ce rendu"
+    },
+    "photoSize": "Photo · {size}",
+    "removePhoto": "Retirer la photo",
+    "placeholder": {
+      "withPhoto": "Décris-le (facultatif), p. ex. buffet en noyer avec poignées en laiton",
+      "empty": "Ajoute la photo d'un meuble, d'un objet déco ou d'un bâtiment, puis décris-le…"
+    },
+    "replacePhoto": "Remplacer la photo",
+    "attachPhoto": "Ajouter une photo",
+    "dropOrPaste": "ou glisse-la ici, ou colle-la",
+    "generate": "Générer",
+    "dropToAttach": "Dépose ta photo ici",
+    "tryOne": "Essaie :",
+    "previewReady": "Ton aperçu est prêt",
+    "photoTo3d": "De la photo au modèle 3D",
+    "auth": {
+      "title": "Ton aperçu 3D est prêt",
+      "description": "Crée un compte gratuit pour voir ta photo sous tous les angles et la transformer en modèle 3D."
+    },
+    "reveal": "Inscris-toi gratuitement pour voir tous les angles"
+  },
+  "Library": {
+    "metaTitle": "Library · easyrender",
+    "title": "Library",
+    "summary": "{total, plural, one {# item} other {# items}} · {done} in 3D · {balance} credits",
+    "upload": "Upload photos",
+    "buyToGenerate": "Buy credits to generate {count}",
+    "generateAll": "Generate all",
+    "generateAllCount": "Generate all ({count} · {credits} credits)",
+    "buyCredits": "Buy credits",
+    "stillWaiting": "{count, plural, one {# item is} other {# items are}} still waiting.",
+    "empty": {
+      "title": "Drop your catalog photos here",
+      "body": "One photo per product. Each one gets a free preview, then generate them all in 3D at once.",
+      "cost": "Previews are free. 3D costs {credits} credits per item."
+    },
+    "filters": {
+      "all": "All",
+      "needs": "Needs 3D",
+      "working": "In progress",
+      "done": "3D ready",
+      "failed": "Failed"
+    },
+    "views": {
+      "photo": "Photo",
+      "3d": "3D",
+      "both": "Side by side"
+    },
+    "status": {
+      "drafting": "Preparing preview",
+      "preview_ready": "Ready for 3D",
+      "rendering": "Building 3D",
+      "ready": "3D ready",
+      "failed": "Failed"
+    },
+    "uploading": "Uploading",
+    "untitled": "Untitled",
+    "emptyView": "Nothing in this view.",
+    "modelAlt": "3D model of {name}",
+    "pane": {
+      "loading": "Loading 3D",
+      "drafting": "Preparing preview",
+      "rendering": "Building 3D model",
+      "failed": "Failed. Credits were refunded."
+    },
+    "generateOne": "Generate · {credits}",
+    "errors": {
+      "upload": "Upload failed",
+      "unreadable": "Could not read this photo",
+      "dailyLimit": "Not uploaded: daily limit reached",
+      "outOfCredits": "Out of credits. Buy more to generate the rest.",
+      "someFailed": "Some items could not start",
+      "connection": "Some items could not start. Check your connection and try again.",
+      "sheetOutOfCredits": "Not enough credits for an angle sheet. Buy more to continue."
+    },
+    "fromHome": "Your photo from the home page is here. Generate its angle sheet or 3D model below.",
+    "generateSheet": "Angles · {credits}",
+    "sheetAlt": "Every angle of {name}",
+    "dropOverlay": {
+      "title": "Drop photos to add them",
+      "body": "Each one gets a free preview. You choose which to build in 3D."
+    },
+    "addMore": {
+      "title": "Add more photos",
+      "body": "Click, or drop them anywhere on this page"
+    },
+    "retry": "Try again",
+    "dismiss": "Dismiss",
+    "estimate": {
+      "prices": "Previews are free. 3D costs {credits} credits per item.",
+      "previewing": "{count, plural, one {# preview} other {# previews}} in progress.",
+      "all": "Build {count, plural, one {# item} other {# items}} in 3D: {credits} of your {balance} credits.",
+      "short": "Short by {credits} credits. Buy more"
+    }
+  },
+  "DashboardNav": {
+    "overview": "Overview",
+    "library": "Library",
+    "connectors": "Connectors",
+    "credits": "Credits",
+    "account": "Account"
+  },
+  "AppShell": {
+    "navLabel": "Navigation de l’app",
+    "sidebar": "Barre latérale",
+    "toggleSidebar": "Afficher ou masquer la barre latérale",
+    "home": "Accueil easyrender",
+    "newModel": "Nouveau modèle 3D",
+    "recents": "Récents",
+    "noRecents": "Rien pour l’instant. Importez une photo ou demandez-le à votre agent.",
+    "credits": "crédits",
+    "untitled": "Sans titre",
+    "status": {
+      "drafting": "Préparation",
+      "preview_ready": "Aperçu prêt",
+      "rendering": "Création du 3D",
+      "ready": "Terminé",
+      "failed": "Échec"
+    },
+    "toggleRenders": "Afficher ou masquer le panneau des rendus",
+    "breadcrumb": "Fil d’Ariane",
+    "panel": {
+      "title": "Rendus",
+      "ready": "Prêts",
+      "inProgress": "En cours",
+      "needsAttention": "À traiter",
+      "empty": "Vos rendus apparaîtront ici au fur et à mesure."
+    },
+    "preview": {
+      "open": "Ouvrir",
+      "latest": "Derniers",
+      "keysCaption": "Clés",
+      "noKeys": "Aucune clé pour l’instant",
+      "neverUsed": "Jamais utilisée",
+      "signedIn": "Connecté",
+      "credits": "Crédits",
+      "inProgress": "En cours",
+      "ready": "Prêts",
+      "models": "Modèles",
+      "building": "En cours",
+      "needYou": "À traiter",
+      "agents": "Agents",
+      "keys": "Clés",
+      "byAgents": "Par agents",
+      "balance": "Solde",
+      "sheet": "Planche d’angles",
+      "build": "Créer le 3D"
+    }
+  },
+  "AppHome": {
+    "heading": "Que fait-on en 3D ?",
+    "slot": "Déposez une photo",
+    "hint": "JPG, PNG ou WebP, 4 Mo maximum. Vous pouvez aussi la coller.",
+    "placeholder": "Décrivez le produit ou déposez simplement une photo",
+    "dropOverlay": "Déposez la photo pour l’ajouter",
+    "remove": "Retirer la photo",
+    "create": "Créer un aperçu gratuit",
+    "uploading": "Envoi en cours…",
+    "balance": "{credits} crédits",
+    "batch": "Envoyer plusieurs photos",
+    "connect": "Connecter un agent",
+    "errors": {
+      "type": "Utilisez une photo JPG, PNG ou WebP.",
+      "upload": "L’envoi a échoué. Réessayez.",
+      "unreadable": "Impossible de lire cette photo."
+    }
+  },
+  "NotFound": {
+    "title": "Page introuvable",
+    "description": "Cette page n’existe pas ou a été déplacée.",
+    "home": "Aller à l’accueil"
+  },
+  "Dashboard": {
+    "metaTitle": "Dashboard · easyrender",
+    "title": "Dashboard",
+    "description": "Everything your agents and you have generated, in one place.",
+    "openLibrary": "Open library",
+    "justNow": "just now",
+    "tiles": {
+      "credits": "Credits",
+      "models": "3D models",
+      "inProgress": "In progress",
+      "byAgent": "Made by your agents"
+    },
+    "connect": {
+      "title": "Connect your agent",
+      "noKey": "Create a key on the Connectors page, paste the snippet into your agent, then ask it for 3D models. They will show up here.",
+      "unused": "You have a key but no agent has used it yet. Paste the snippet into your agent with your key.",
+      "createKey": "Create my key",
+      "manageKeys": "Manage keys"
+    },
+    "recent": {
+      "title": "Recent generations",
+      "description": "From your agents, the API and the web app.",
+      "empty": "Nothing yet. Ask your agent for a 3D model, or <link>upload photos to your library</link>."
+    },
+    "untitled": "Untitled render",
+    "source": {
+      "mcp": "Agent",
+      "api": "API",
+      "web": "Web"
+    },
+    "status": {
+      "drafting": "Drawing angles",
+      "preview_ready": "Preview ready",
+      "rendering": "Building 3D",
+      "ready": "3D ready",
+      "failed": "Failed"
+    }
+  },
+  "Connectors": {
+    "metaTitle": "Connectors · easyrender",
+    "title": "Connectors",
+    "description": "Hook easyrender into your agents and tools. Everything they make lands in your library.",
+    "more": "More connectors",
+    "comingSoon": "Coming soon",
+    "soon": {
+      "shopify": {
+        "title": "Shopify",
+        "body": "Sync products and publish 3D viewers to product pages."
+      },
+      "woo": {
+        "title": "WooCommerce and PrestaShop",
+        "body": "Import your catalogue and embed models with a snippet."
+      },
+      "listings": {
+        "title": "Listing sites",
+        "body": "Push models to your real estate listings and portals."
+      }
+    }
+  },
+  "ConnectorsPanel": {
+    "defaultName": "My agent",
+    "errors": {
+      "expired": "Your session expired. Sign in again to create a key.",
+      "create": "Could not create the key. Try again.",
+      "revoke": "Could not revoke the key. It is still active; try again."
+    },
+    "connect": {
+      "title": "Connect your agent",
+      "created": "Your new key is filled in below. Copy the snippet now: the key will not be shown again.",
+      "noKeys": "Use the claude.ai tab to connect with a sign-in. For other agents, create a key, then paste the snippet.",
+      "hasKeys": "Paste the snippet into your agent and replace {placeholder} with one of your keys. The claude.ai tab needs no key."
+    },
+    "createMyKey": "Create my key",
+    "keys": {
+      "title": "API keys",
+      "description": "One key per agent or tool, so you can see which one is in use and revoke it alone. Renders made with a key spend your credits.",
+      "namePlaceholder": "Key name, e.g. Claude Code",
+      "create": "Create",
+      "none": "No keys yet.",
+      "connected": "Connected",
+      "idle": "Idle",
+      "neverUsed": "Never used",
+      "created": "created {date}",
+      "lastUsed": "last used {date}",
+      "revoke": "Revoke {name}"
+    }
+  },
+  "Account": {
+    "metaTitle": "Account · easyrender",
+    "title": "Account",
+    "yourAccount": "Your account",
+    "balance": "<strong>{credits}</strong> credits",
+    "buyCredits": "Buy credits",
+    "billing": "Billing"
+  },
+  "Credits": {
+    "eyebrow": "Pricing",
+    "title": "Credits",
+    "description": "Previews are free. A full 3D render costs {credits} credits ({price}). Credits never expire.",
+    "balance": "You have {credits} credits.",
+    "balancePro": "You have {credits} credits and you are on {plan}.",
+    "success": "Payment received. Your credits are ready.",
+    "back": "Back to your render",
+    "signUpToBuy": "Sign up to buy",
+    "manageSubscription": "Manage subscription",
+    "changePlan": "Change plan",
+    "onPro": "You are on {plan}",
+    "subscribe": "Subscribe to {plan}",
+    "bestValue": "Best value",
+    "payg": {
+      "title": "Pay as you go",
+      "description": "Buy exactly what you need, one cent per credit.",
+      "note": "per credit",
+      "features": {
+        "downloads": "GLB and USDZ downloads",
+        "ar": "See it in your room from your phone",
+        "api": "API and MCP access"
+      }
+    },
+    "pro": {
+      "description": "{credits} credits every month, about {count} renders.",
+      "note": "per month",
+      "features": {
+        "credits": "{credits} credits added each month",
+        "rollover": "Unused credits roll over",
+        "topUp": "Top up with pay as you go anytime",
+        "cancel": "Cancel anytime"
+      }
+    },
+    "enterprise": {
+      "title": "Enterprise",
+      "description": "Volume pricing, invoicing and a direct line to the team.",
+      "price": "Custom",
+      "features": {
+        "volume": "Volume credit pricing",
+        "invoice": "Invoice billing",
+        "support": "Priority support",
+        "onboarding": "Onboarding call"
+      },
+      "cta": "Book a call"
+    },
+    "metaTitle": "Pricing: pay per 3D model · easyrender",
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month."
+  },
+  "PaygPicker": {
+    "custom": "Or enter an amount",
+    "estimate": "{price} for about {count} renders",
+    "range": "Choose between {min} and {max} credits",
+    "buyAmount": "Buy {credits} credits",
+    "buy": "Buy credits"
+  },
+  "BuyButton": {
+    "failed": "Checkout failed"
+  },
+  "Auth": {
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signUpContinue": "Create account and continue",
+    "signInContinue": "Sign in and continue",
+    "dialogNote": "Free previews every day. No credit card needed.",
+    "name": "Name",
+    "namePlaceholder": "Jane Agent",
+    "email": "Email",
+    "emailPlaceholder": "you@agency.com",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "createAccount": "Create account",
+    "signUpTitle": "Create your account",
+    "signInTitle": "Welcome back",
+    "signUpDescription": "Free previews of every angle. Pay only for the 3D models you keep.",
+    "signInDescription": "Sign in to render, download and share your 3D models.",
+    "haveAccount": "Already have an account?",
+    "newHere": "New here?",
+    "createAnAccount": "Create an account",
+    "errors": {
+      "generic": "Could not sign you in. Try again.",
+      "oauth": "Google sign in did not finish. Try again or use your email."
+    },
+    "google": "Continue with Google",
+    "or": "or"
+  },
+  "OAuth": {
+    "title": "Connect {client} to easyrender?",
+    "description": "{client} will be able to use easyrender on your behalf. You will be sent back to {host} afterwards.",
+    "can": {
+      "create": "Upload photos and start previews",
+      "read": "Read your renders and their status",
+      "spend": "Build 3D models, which spends your credits"
+    },
+    "revoke": "You can disconnect it any time by revoking its key on the Connectors page.",
+    "approve": "Allow access",
+    "deny": "Cancel",
+    "invalidTitle": "This connection request is not valid",
+    "invalidBody": "Go back to the app you came from and try connecting again."
+  },
+  "Studio": {
+    "hero": {
+      "title": "Ta photo produit devient un modèle 3D.",
+      "cta": "Commencer",
+      "note": "Aperçu gratuit · sans carte bancaire",
+      "stackLabel": "Un même objet vu à travers cinq passes du moteur. Fais-le glisser pour le tourner.",
+      "photo": "Photo d'origine",
+      "mesh": "Maillage",
+      "normals": "Normales",
+      "depth": "Profondeur",
+      "render": "Rendu PBR",
+      "element": "Élément",
+      "hint": "Glisse pour tourner",
+      "subtitle": "Regarde-le sous tous les angles, gratuitement. Tu ne dépenses des crédits que si le résultat te plaît."
+    },
+    "pipeline": {
+      "lead": "Importe une photo. Le moteur s'occupe du reste.",
+      "body": "Il reconstruit ton produit sous toutes ses faces et te montre la forme avant que tu paies.",
+      "photo": "Photo d'origine",
+      "placeholder": "Décris ton produit",
+      "generate": "Générer",
+      "steps": {
+        "angles": "Angles",
+        "mesh": "Maillage",
+        "texture": "Texture",
+        "ready": "Prêt"
+      },
+      "noteTitle": "Aperçu gratuit",
+      "noteBody": "Le moteur dessine l'objet sous toutes ses faces avant de construire le maillage. Si quelque chose cloche, tu le vois avant de dépenser un crédit.",
+      "noteLink": "Essayer avec une photo"
+    },
+    "industries": {
+      "lead": "Un modèle. Trois métiers.",
+      "body": "Le même objet sert dans le rendu d'un studio et comme accessoire dans un jeu. Bientôt, l'acheteur pourra aussi l'essayer chez lui.",
+      "store": {
+        "eyebrow": "E-commerce",
+        "title": "Bientôt chez tes clients",
+        "body": "Réalité augmentée, bientôt disponible : le client ouvrira l'appareil photo de son iPhone ou de son téléphone Android et placera le produit dans sa pièce.",
+        "link": "Parlons de la RA pour ta boutique",
+        "domain": "taboutique.fr",
+        "meta": "Tissu gris · GLB et USDZ",
+        "button": "Voir chez moi",
+        "searching": "Recherche du sol…",
+        "placed": "Placé"
+      },
+      "interior": {
+        "eyebrow": "Architecture et design d'intérieur",
+        "title": "De vrais meubles dans tes rendus",
+        "body": "Architectes, architectes d'intérieur et concepteurs lumière intègrent des meubles et des luminaires qui existent et que le client peut acheter.",
+        "link": "Voir le hub pour les studios",
+        "kelvin": "Température de couleur"
+      },
+      "games": {
+        "eyebrow": "Jeux vidéo",
+        "title": "Des objets prêts pour la physique",
+        "body": "Télécharge le GLB et importe-le dans ta scène. La démo ci-dessous fait passer l'objet par un moteur physique, directement dans ton navigateur.",
+        "link": "Branche-le via l'API ou MCP",
+        "rigidbody": "Rigidbody",
+        "dynamic": "Dynamique",
+        "collider": "Collider",
+        "friction": "Frottement",
+        "live": "Simulation en direct"
+      }
+    },
+    "tools": {
+      "lead": "Vois la forme avant de dépenser un crédit.",
+      "body": "Chaque élément s'affiche tel que le moteur l'a construit : maillage, matières et textures.",
+      "link": "Voir la fiche technique",
+      "topology": "Topologie",
+      "triangles": "Triangles",
+      "material": "Matériau PBR",
+      "roughness": "Rugosité",
+      "metalness": "Métallique",
+      "scale": "Proportions",
+      "collider": "Collider",
+      "box": "Boîte",
+      "hull": "Enveloppe",
+      "mesh": "Maillage",
+      "vertexCount": "{count} sommets",
+      "triangleCount": "{count} triangles",
+      "physics": "Physique et contact",
+      "friction": "Frottement",
+      "restitution": "Rebond",
+      "light": "Éclairage du projet",
+      "temperature": "Température",
+      "uv": "UV et textures",
+      "export": "Export",
+      "formats": {
+        "glb": "Web · Android",
+        "usdz": "iPhone · Vision Pro"
+      }
+    },
+    "wheel": {
+      "lead": "Ajouté une fois au hub, le modèle sert partout.",
+      "body": "La boutique envoie son catalogue, le studio l'utilise dans ses projets et le client finit par acheter l'objet qu'il a vu dans le rendu.",
+      "link": "Voir le hub",
+      "photo": "Photo d'origine",
+      "chip": "En vente sur la boutique",
+      "stops": {
+        "store": {
+          "title": "La boutique envoie une photo",
+          "body": "de chaque produit de son catalogue"
+        },
+        "hub": {
+          "title": "Le hub garde le modèle",
+          "body": "avec son maillage, ses matières et sa physique"
+        },
+        "studio": {
+          "title": "Un studio l'utilise",
+          "body": "dans un rendu, une scène ou un niveau"
+        },
+        "client": {
+          "title": "Le client achète l'objet",
+          "body": "et d'autres boutiques veulent en être"
+        }
+      }
+    },
+    "proof": {
+      "title": "Le catalogue 3D qui manquait",
+      "quote": "Il manque des objets 3D dotés d'une vraie physique. Les catalogues existants sont petits, et chaque format reste dans son coin.",
+      "by": "Pourquoi on crée easyrender",
+      "byline": "Un univers d'éléments compatible avec tout",
+      "stat": "1 photo",
+      "statBody": "D'une photo de catalogue à un modèle texturé, à faire pivoter et à télécharger en GLB et USDZ.",
+      "marquee": "Formats et outils compatibles"
+    },
+    "cta": {
+      "title": "Ton catalogue n'a plus à attendre une équipe 3D",
+      "button": "Commencer"
+    },
+    "shelf": {
+      "lead": "Parcours le hub.",
+      "body": "Meubles, luminaires, déco et accessoires, prêts à l'emploi.",
+      "link": "Voir tous les éléments",
+      "count": "{current} sur {total}",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "elements": "{count, plural, one {# élément} other {# éléments}}"
+    },
+    "lens": {
+      "label": "{name} affiché en quatre vues à la fois : maillage, collider, normales de surface et rendu texturé. Le rendu final suit ton pointeur.",
+      "layers": {
+        "mesh": "Maillage",
+        "physics": "Physique",
+        "normals": "Normales",
+        "texture": "Texture"
+      },
+      "hint": "Déplace le pointeur",
+      "hintTouch": "Fais glisser le doigt sur le modèle"
+    }
+  },
+  "Catalog": {
+    "items": {
+      "swivel-chair": {
+        "name": "Fauteuil pivotant",
+        "prompt": "Fauteuil pivotant en tissu gris"
+      },
+      "armchair": {
+        "name": "Fauteuil en bouclette",
+        "prompt": "Fauteuil lounge en tissu bouclette, piètement en acier brossé"
+      },
+      "coffee-table": {
+        "name": "Table basse ronde",
+        "prompt": "Table basse ronde en bois massif"
+      },
+      "bedside-table": {
+        "name": "Table de chevet",
+        "prompt": "Table de chevet en bois massif avec tiroir"
+      },
+      "vase": {
+        "name": "Vase en grès",
+        "prompt": "Vase en grès mat"
+      },
+      "clay-vase": {
+        "name": "Vase en terre cuite",
+        "prompt": "Vase en terre cuite patinée"
+      },
+      "sofa": {
+        "name": "Canapé trois places",
+        "prompt": "Canapé bas trois places en bouclette anthracite"
+      },
+      "lamp": {
+        "name": "Lampe à poser en laiton",
+        "prompt": "Lampe champignon en laiton brossé"
+      },
+      "cactus": {
+        "name": "Pot avec cactus",
+        "prompt": "Pot rond en béton avec un cactus colonnaire"
+      },
+      "sneaker": {
+        "name": "Basket en cuir",
+        "prompt": "Basket basse en cuir blanc, semelle en gomme"
+      },
+      "espresso": {
+        "name": "Machine à expresso",
+        "prompt": "Machine à expresso domestique en inox"
+      },
+      "crate": {
+        "name": "Caisse en bois",
+        "prompt": "Caisse de transport en pin avec coins en acier"
+      },
+      "barrel": {
+        "name": "Fût en acier de 200 L",
+        "prompt": "Fût en acier de 200 litres peint en rouge oxyde"
+      }
+    },
+    "categories": {
+      "furniture": "Mobilier",
+      "decor": "Déco",
+      "lighting": "Luminaires",
+      "product": "Produits",
+      "props": "Accessoires",
+      "outdoor": "Extérieur"
+    },
+    "materials": {
+      "upholstery": "Tissu",
+      "wood": "Bois massif",
+      "ceramic": "Céramique",
+      "metal": "Métal",
+      "steel": "Acier",
+      "concrete": "Béton",
+      "leather": "Cuir",
+      "polymer": "Polymère"
+    },
+    "colliders": {
+      "box": "Boîte",
+      "cylinder": "Cylindre",
+      "hull": "Enveloppe convexe"
+    },
+    "engines": {
+      "trellis": "TRELLIS",
+      "trellisSheet": "TRELLIS + planche de vues",
+      "tripo": "Tripo H3.1"
+    }
+  },
+  "Hub": {
+    "metaTitle": "Hub · easyrender",
+    "metaDescription": "Furniture, lighting, decor and props in 3D, each with the mesh and the materials the engine built. Take one to your store, your render or your engine.",
+    "eyebrow": "Hub · {count, plural, one {# element} other {# elements}}",
+    "title": "Every element, ready to use",
+    "description": "Each piece comes with its mesh, its materials and a collider. Take it to your store, your render or your engine.",
+    "all": "All",
+    "categoryLabel": "Category",
+    "search": "Search elements",
+    "viewLabel": "Thumbnail view",
+    "render": "Render",
+    "mesh": "Mesh",
+    "openSheet": "Open the sheet for {name}",
+    "viewSheet": "View sheet",
+    "emptyQuery": "Nothing matches “{query}”. Try another word or clear the filter.",
+    "emptyCategory": "There are no elements in {category} yet.",
+    "cta": {
+      "title": "Have a catalogue? Add it to the hub",
+      "button": "Get started"
+    },
+    "sheet": {
+      "passLabel": "Engine pass",
+      "passes": {
+        "beauty": "Render",
+        "wire": "Mesh",
+        "normal": "Normals",
+        "depth": "Depth",
+        "collider": "Collider"
+      },
+      "hint": "Drag to turn · scroll to zoom",
+      "viewer": "3D viewer. Arrow keys turn it, plus and minus zoom.",
+      "close": "Close sheet",
+      "size": "Size",
+      "sizeNote": "Width × height × depth",
+      "triangles": "Triangles",
+      "lods": "LOD 1: {lod1} · LOD 2: {lod2}",
+      "file": "File",
+      "fileNote": "GLB with a compressed texture",
+      "material": "Material",
+      "mass": "Estimated mass",
+      "contact": "Contact",
+      "friction": "Friction {value}",
+      "restitution": "Bounce {value}",
+      "collider": "Collider",
+      "hullNote": "{count} vertices",
+      "primitive": "Primitive",
+      "formats": "Formats",
+      "photo": "Input photo",
+      "engine": "Generated with {engine}",
+      "download": "Download GLB",
+      "embed": "Copy embed code",
+      "copied": "Code copied",
+      "copyFailed": "Could not copy. Try again"
+    }
+  },
+  "Blog": {
+    "index": {
+      "metaTitle": "Guides: turning photos into 3D models · easyrender",
+      "metaDescription": "How to turn a photo into a 3D model, which files you get, and what easyrender can and cannot model. Written by the people building it.",
+      "title": "Guides",
+      "headline": "Tout ce qu'on apprend en transformant des photos en 3D",
+      "description": "How to turn a photo into a 3D model, which files you get, and what easyrender can and cannot model.",
+      "empty": "The first guides are being written. Nothing is published yet.",
+      "readMore": "Read the guide",
+      "latest": "Le dernier guide",
+      "more": "Autres guides"
+    },
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "post": {
+      "by": "Par {author}",
+      "published": "Published {date}",
+      "updated": "Updated {date}",
+      "readingTime": "{minutes} min de lecture",
+      "toc": "Sur cette page",
+      "backToIndex": "All guides",
+      "modelHint": "Glisse pour tourner",
+      "cta": {
+        "title": "Try it with one photo",
+        "button": "Upload a photo"
+      },
+      "related": "À lire ensuite"
+    }
+  },
+  "Models": {
+    "metaTitle": "Models: what easyrender runs on · easyrender",
+    "metaDescription": "The three models behind every easyrender render, the settings they run with and what each step costs in credits. A failed step is refunded.",
+    "breadcrumb": "Models",
+    "home": "Home",
+    "eyebrow": "Models",
+    "title": "The models behind every render",
+    "description": "Three models, one after the other: the first draws a quick draft of your photo from every side for free, the second redraws it at full size when you build, and the third builds the 3D file from those drawings. Here is which, with what settings, and what each step costs.",
+    "provider": "All three models run on Replicate.",
+    "stepLabel": "Step {number}",
+    "settingsTitle": "Settings",
+    "sheet": {
+      "title": "Draft sheet",
+      "role": "Draws the object from eight sides plus a top view on one 1K sheet, from your photo and a short prompt. It is your free preview: you see it before anything is built.",
+      "settings": {
+        "output": "Output: one 1K image (PNG)",
+        "prompt": "Prompt: a fixed turnaround brief, plus guidance for the product category and its material"
+      }
+    },
+    "final": {
+      "title": "Final sheet",
+      "role": "When you build the 3D model, the sheet is drawn again at full size with the same brief, so the 3D build starts from sharper views.",
+      "settings": {
+        "output": "Output: one 2K image (PNG)",
+        "prompt": "Prompt: the same turnaround brief as the draft"
+      }
+    },
+    "build": {
+      "title": "3D build",
+      "role": "Rebuilds a textured 3D model from your photo and the nine sheet views. The result downloads as GLB and USDZ.",
+      "settings": {
+        "texture": "Texture size: {texture} px",
+        "simplify": "Mesh simplification: {simplify}",
+        "seed": "Fixed random seed"
+      }
+    },
+    "pricing": {
+      "title": "What each step costs",
+      "step": "Step",
+      "credits": "Credits",
+      "price": "Price",
+      "sheet": "Draft sheet",
+      "build": "Final sheet and 3D build, once the draft exists",
+      "total": "Full 3D render, draft included",
+      "note": "The draft is free as a daily preview. A credit costs {unit} and never expires. If a step fails, its credits are refunded."
+    },
+    "change": {
+      "title": "What can change",
+      "body": "Prompts and model settings can be tuned without a release. The models and their prices are fixed in the app, so the credits on the button are what you pay."
+    },
+    "cta": "See how renders are checked"
+  },
+  "Evals": {
+    "metaTitle": "Evals: how renders are checked · easyrender",
+    "metaDescription": "How easyrender scores its own renders: the five criteria, the checks that run on every render, and the results of each published run.",
+    "breadcrumb": "Evals",
+    "home": "Home",
+    "eyebrow": "Evals",
+    "title": "How we check renders",
+    "description": "Every render passes automatic checks before it is stored. Separately, a run renders a golden set of product photos and scores them against five criteria, so a change to a prompt or a model shows up as a number.",
+    "checks": {
+      "title": "Checked on every render",
+      "description": "These checks already run in production. A render that fails one is not delivered, and its credits are refunded.",
+      "photo": "Photo: at least {min} px on the short side, under {max} px on the long side, no wider than {aspect}:1 and not a flat colour. It is rejected before any model runs, so it costs nothing.",
+      "sheet": "Sheet: at least {side} px, the object visible in at least {cells} of the 9 cells, and no more than {repeats} of the 8 turnaround views repeated.",
+      "file": "3D file: a complete GLB (binary glTF, version 2) of more than {kb} KB."
+    },
+    "criteria": {
+      "title": "What a run scores",
+      "description": "Each photo of the golden set is rendered with the live pipeline and scored on five criteria, pass or fail.",
+      "shape": {
+        "title": "Shape and proportions",
+        "description": "The model keeps the shape, proportions and parts of the photographed object, with nothing added or removed."
+      },
+      "views": {
+        "title": "Eight different views",
+        "description": "The eight turnaround views of the sheet are different pictures, and the object is in every cell."
+      },
+      "material": {
+        "title": "Material realism",
+        "description": "The object looks makeable in its material: stone cut or carved and never bent, wood with the grain along each part, metal tube bending in smooth arcs."
+      },
+      "finish": {
+        "title": "Colour and finish",
+        "description": "Colour, texture and finish (polished, brushed, matte) match the photo."
+      },
+      "file": {
+        "title": "A valid file",
+        "description": "The GLB opens, is complete and passes the file check."
+      },
+      "methods": {
+        "checks": "Automatic check",
+        "review": "Reviewed against the photo"
+      }
+    },
+    "results": {
+      "title": "Results",
+      "emptyTitle": "No run published yet",
+      "emptyBody": "The first run is published here. Until then this page shows no scores, and none are made up.",
+      "photos": "{photos} photos",
+      "overall": "Overall pass rate",
+      "models": "{sheet}, then {build}",
+      "passed": "{passed} of {total}",
+      "report": "Full report"
+    },
+    "cta": "See the models behind a render"
+  },
+  "Analytics": {
+    "title": "Cookies et statistiques",
+    "banner": "Nous utilisons des statistiques facultatives pour comprendre comment tu utilises easyrender. Tu peux les accepter ou les refuser.",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "details": "Détails des cookies",
+    "intro": "Voici ce que ton navigateur conserve et comment tu peux gérer les statistiques facultatives.",
+    "anonTitle": "er_anon",
+    "anon": "Ce cookie interne identifie tes aperçus anonymes, applique la limite quotidienne gratuite et te permet de les consulter et de les associer à ton compte. Il est actuellement créé dès ta première visite et dure un an. Il ne sert pas à l’attribution.",
+    "consentTitle": "er_consent",
+    "consent": "Mémorise ton choix, sa date et sa version pendant un an. Il est créé uniquement quand tu choisis.",
+    "gaTitle": "Google Analytics 4 : _ga et _ga_<id>",
+    "ga": "Ces cookies mesurent les visites et durent jusqu’à deux ans. Dans les régions strictes, ils sont créés uniquement après ton accord. Ailleurs, les statistiques sont actives sauf si tu refuses ou envoies Global Privacy Control (GPC). Le consentement publicitaire reste toujours refusé.",
+    "posthogTitle": "PostHog (UE), sans cookies",
+    "posthog": "PostHog n’utilise ni cookies ni stockage persistant dans ton navigateur. Dans les régions strictes, il se charge uniquement après ton accord ; ailleurs, il respecte ton refus et GPC.",
+    "attributionTitle": "Attribution du premier contact",
+    "attribution": "Les paramètres de campagne et la page d’origine restent en mémoire jusqu’à la création d’un aperçu ou d’un compte, puis sont enregistrés avec celui-ci. Aucun identifiant de clic n’est conservé. Les événements serveur ne dépendent pas de ton choix de statistiques navigateur.",
+    "change": "Change ton choix",
+    "withdraw": "Tu peux retirer ton accord en choisissant Refuser. Cela arrête le suivi facultatif et supprime les cookies Google Analytics. GPC bloque toujours les statistiques facultatives."
+  },
+  "Ar": {
+    "metaTitle": "Voir chez vous",
+    "title": "{name} chez vous",
+    "tapHint": "Touchez le bouton, bougez lentement votre téléphone jusqu'à ce qu'il repère le sol, puis touchez pour poser la pièce.",
+    "viewInRoom": "Voir chez vous",
+    "arUnavailable": "La réalité augmentée n'est pas disponible sur cet appareil. Ouvrez cette page sur votre téléphone pour poser la pièce chez vous.",
+    "scanTitle": "Scannez avec votre téléphone",
+    "scanBody": "Pointez l'appareil photo de votre téléphone vers le code pour voir cette pièce chez vous.",
+    "scanAlt": "QR code qui ouvre ce modèle sur un téléphone",
+    "notReady": "Ce modèle est encore en cours de création. Revenez dans quelques minutes.",
+    "notReadyTitle": "Presque prêt",
+    "modelAlt": "Modèle 3D de {name}",
+    "madeWith": "3D par easyrender"
+  },
+  "ShopifyApp": {
+    "title": "Des modèles 3D pour tout votre catalogue",
+    "intro": "Générez un modèle 3D de chaque produit en un clic. Vos clients voient chaque pièce chez eux grâce à un bouton ou un QR code sur la fiche produit.",
+    "loading": "Chargement…",
+    "notInShopify": "Ouvrez cette page depuis l'administration Shopify.",
+    "error": "Une erreur est survenue : {message}",
+    "connectBody": "Connectez votre compte easyrender. Les modèles de cette boutique sont payés avec les crédits de ce compte.",
+    "connectButton": "Connecter votre compte easyrender",
+    "connectWaiting": "Terminé ? Cette page se met à jour toute seule.",
+    "generate": "Générer la 3D de {count} produits ({credits} crédits)",
+    "starting": "Envoi des produits… {count} envoyés",
+    "nothing": "Chaque produit avec une photo a déjà un modèle 3D ou est en cours.",
+    "balance": "Solde : {credits} crédits",
+    "missing": "Il manque {credits} crédits",
+    "buy": "Acheter des crédits",
+    "progress": "{ready} prêts, {running} en cours, {waiting} en attente",
+    "needsCredits": "{count} attendent des crédits et reprendront quand vous en ajouterez.",
+    "needsInfo": "{count} ont besoin d'une photo exploitable.",
+    "failed": "{count} ont échoué et ont été remboursés. Relancez la génération pour réessayer.",
+    "noPhoto": "{count} n'ont pas de photo et sont ignorés.",
+    "themeTitle": "Affichez-le sur vos fiches produit",
+    "themeBody": "Ouvrez l'éditeur de thème, allez sur une fiche produit, ajoutez le bloc « Voir chez vous » et enregistrez. Les produits avec un modèle terminé affichent un bouton et un QR code."
+  },
+  "ShopifyConnect": {
+    "title": "Connecter {shop} à easyrender",
+    "body": "Les modèles de cette boutique seront payés avec les crédits de votre compte easyrender.",
+    "signIn": "Connectez-vous pour continuer",
+    "button": "Connecter la boutique",
+    "done": "Connectée. Retournez dans Shopify et ouvrez l'application.",
+    "invalid": "Ce lien a expiré. Ouvrez à nouveau l'application dans Shopify.",
+    "error": "Impossible de connecter la boutique."
+  },
+  "AdminAnalytics": {
+    "title": "Admin analytics",
+    "eyebrow": "easyrender / internal intelligence",
+    "description": "Acquisition, revenue and product health. Every number carries its source.",
+    "internal": "Internal · restricted access",
+    "labels": {
+      "overview": "Overview",
+      "revenue": "Revenue",
+      "attribution": "Attribution",
+      "funnel": "Funnel & cohorts",
+      "product": "Product usage",
+      "icp": "Customer profile",
+      "health": "Data sources & health",
+      "adminNav": "Admin navigation",
+      "all": "All",
+      "auto": "Auto",
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "refresh": "Refresh",
+      "from": "From",
+      "to": "To",
+      "apply": "Apply range",
+      "includeTeam": "Include team accounts",
+      "buckets": "Buckets",
+      "comparePrevious": "Compare with previous period",
+      "postgres": "Postgres",
+      "stripe": "Stripe",
+      "posthog": "PostHog",
+      "mixed": "Postgres + external sources",
+      "measured": "Measured",
+      "proxy": "Proxy / estimate",
+      "unavailable": "Not measurable yet",
+      "empty": "No rows for this selection",
+      "emptyHelp": "See Data sources & health for configuration and coverage.",
+      "counts": "Counts",
+      "previous": "Previous",
+      "next": "Next",
+      "rows": "rows",
+      "filter": "Filter rows",
+      "exportVisible": "Export visible rows",
+      "dataAsOf": "Data as of",
+      "visits": "Visits (landing views)",
+      "uniqueVisitors": "Daily unique estimates",
+      "pageviews": "Pageviews",
+      "signups": "Signups",
+      "activatedSheet": "Signups with a sheet",
+      "activatedModel": "Signups with a model",
+      "anonymous": "Unclaimed anonymous previews",
+      "paying": "Paying accounts",
+      "newPaying": "New paying accounts",
+      "totalPayers": "Total paying accounts",
+      "sheetActivation": "Sheet activation rate",
+      "modelActivation": "Model activation rate",
+      "sold": "Paid credits granted",
+      "consumed": "Credits consumed (gross)",
+      "free": "Other credits granted",
+      "returned": "Failed-job credits returned",
+      "providerCost": "Provider cost · USD",
+      "gross": "Gross revenue",
+      "refunds": "Cash refunds",
+      "net": "Net revenue",
+      "fees": "Stripe fees",
+      "arpu": "ARPU · render-active accounts",
+      "arppu": "ARPPU · paying accounts",
+      "mrr": "Current MRR",
+      "margin": "Gross margin estimate",
+      "subscribers": "Current subscribers",
+      "incomeUsage": "Revenue & signups",
+      "incomeDistribution": "Revenue by product",
+      "previousRevenue": "Previous revenue",
+      "previousSignups": "Previous signups",
+      "products": "Packs & plans",
+      "plans": "Current plan mix",
+      "plan": "Plan",
+      "currency": "Currency",
+      "orders": "Orders / invoices",
+      "units": "Credits",
+      "average": "Average order",
+      "revenueTime": "Revenue over time",
+      "date": "Date",
+      "countries": "Countries",
+      "country": "Country",
+      "customerType": "New vs returning customers",
+      "type": "Type",
+      "new": "New",
+      "returning": "Returning",
+      "refundList": "Refunds",
+      "ltv": "Top customers · lifetime gross",
+      "email": "Email",
+      "at": "Date",
+      "amount": "Amount",
+      "id": "ID",
+      "channel": "First-touch channels",
+      "utm_source": "UTM source",
+      "utm_medium": "UTM medium",
+      "utm_campaign": "Campaigns",
+      "utm_content": "Campaign content",
+      "referrer": "Referrer host",
+      "landing_path": "Landing path",
+      "geo_country": "First-touch country",
+      "name": "Dimension",
+      "visitSignup": "Visit → signup",
+      "signupPayer": "Signup → payer",
+      "revenueSignup": "Revenue / signup",
+      "signal": "Signal",
+      "noPayers": "Review: no payers",
+      "aboveAverage": "Above average payer rate",
+      "insufficient": "Insufficient signal",
+      "channels": "Signups & payers by channel",
+      "channelRevenue": "Revenue by channel",
+      "utmCoverage": "Signups with source + campaign",
+      "previewCountries": "Preview country mix",
+      "previews": "Previews",
+      "paidSearch": "Paid search",
+      "paidSocial": "Paid social",
+      "organicSearch": "Organic search",
+      "ai": "AI assistants",
+      "organicSocial": "Organic social",
+      "directories": "MCP / AI directories",
+      "direct": "Direct",
+      "referral": "Referral",
+      "referrals": "Affiliate referrals",
+      "outreach": "Direct outreach",
+      "sharedGallery": "Shared gallery",
+      "communities": "Communities",
+      "industry": "Industry",
+      "aiVideo": "AI video",
+      "step": "Step",
+      "count": "Count",
+      "conversion": "Step conversion",
+      "dropoff": "Drop-off",
+      "timeSheet": "Signup → first sheet · minutes",
+      "timeModel": "Signup → first model · minutes",
+      "timePurchase": "Signup → first payment · minutes",
+      "cohorts": "Weekly signup cohorts · cumulative",
+      "users": "Users",
+      "sheet": "Sheet",
+      "model": "3D model",
+      "purchase": "Payment",
+      "claimedPreviews": "Previews with anon + user ID",
+      "catalog": "Catalog sizes · actual usage",
+      "size": "Models / account",
+      "accounts": "Top accounts",
+      "sources": "Render sources",
+      "source": "Source",
+      "renders": "Renders",
+      "models": "3D models ready",
+      "sheets": "Angle sheets ready",
+      "failure": "Failure rate · settled rows",
+      "success": "Success rate · settled rows",
+      "generationMedian": "Generation median · minutes",
+      "generationP90": "Generation p90 · minutes",
+      "costModel": "Provider cost / model · USD",
+      "publicShare": "Public model share",
+      "keysCreated": "API keys created",
+      "keysUsed": "API keys last used in period",
+      "generation": "Generation outcomes",
+      "ready": "Ready",
+      "failed": "Failed",
+      "inProgress": "In progress",
+      "failures": "Top failure categories · text redacted",
+      "reason": "Reason",
+      "timeout": "Timeout / stalled",
+      "validation": "Input or output validation",
+      "capacity": "Provider capacity",
+      "provider": "Other provider error",
+      "lastActive": "Last render activity",
+      "emailType": "Mailbox type",
+      "freeMailbox": "Free mailbox",
+      "company": "Company / other domain",
+      "companyDomains": "Company domains · counts only",
+      "domain": "Domain",
+      "unknown": "Unknown",
+      "payg": "Pay as you go",
+      "creator": "Creator",
+      "pro": "Pro",
+      "scale": "Scale",
+      "attributionColumns": "Attribution deployment",
+      "table": "Table",
+      "available": "Available",
+      "yes": "Yes",
+      "no": "No",
+      "reconciliation": "Database vs PostHog · V-18",
+      "event": "Event",
+      "database": "Database",
+      "difference": "Difference",
+      "configured": "Configured",
+      "fetchedAt": "Last fetch (UTC)",
+      "rowCount": "Rows fetched",
+      "error": "Error",
+      "missing": "Missing variables",
+      "traffic": "Traffic over time",
+      "attributionMissing": "Attribution columns not deployed yet",
+      "postgresUnavailable": "Postgres unavailable or analytics row limit exceeded",
+      "posthogUnavailable": "PostHog unavailable · visits are not measurable",
+      "stripeUnavailable": "Stripe unavailable or incomplete · using DB fallback",
+      "profilePlanned": "Business profile · not measurable yet",
+      "profileDetails": "Business type, store platform and self-reported catalog size need a profile question at signup (planned).",
+      "periodDefinitions": "Activation follows signups in the selected period through its end. Usage follows render creation; revenue follows payments. Previous means the immediately preceding equal-duration window. Current subscriptions have no historical comparison.",
+      "mutableRenderTimes": "Render completion and generation times are proxies: updatedAt also changes after completion; no immutable sheet completion timestamp exists. A sheet requires sheetKey; a model requires ready + glbKey.",
+      "boundedSnapshot": "Read-only snapshot, capped at 50,000 rows per table. Exceeding a cap stops the report rather than publishing partial totals.",
+      "dbFallback": "DB fallback (no Stripe fees/refunds/MRR from Stripe). Paid purchases use stored USD amounts for PAYG and subscriptions; only legacy subscription grants without a purchase link infer catalog prices. Net assumes no observable cash refunds. Dev grants are not revenue.",
+      "anonymousTeamCaveat": "Team exclusions apply to known account emails. Anonymous previews and cookieless traffic cannot reliably exclude the team.",
+      "multipleCurrencies": "Tables separate currencies. Charts show the first currency only; no FX conversion or cross-currency total is calculated. Provider margin is USD only.",
+      "attributionScope": "First-touch signup cohort and period payment activity. Visit joins use matching dimensions; missing traffic stays unknown. Signals require at least 20 signups.",
+      "weeklyReading": "Weekly reading: inspect campaign payers, UTM coverage and country mix. Signals are diagnostic, not experiment approval. Ad spend, CPC, platform clicks and the 14-day / budget gates need the external campaign tracker.",
+      "visitsCaveat": "Visits = landing_view; pageviews = $pageview. Unique visitors sum daily hash estimates, not distinct people across the period. Consent and blockers bias traffic; do not compare markets as equal coverage.",
+      "cohortDefinition": "Each cell is cumulative conversion by the end of cohort week 0–8. Unfinished weeks are blank. Revenue is gross in the first displayed currency through the selected end.",
+      "anonymousLink": "anonId + userId proves a claimed preview, not signup conversion: startBuild/startSheet assigns ownership after signup. A trustworthy anonymous-preview → signup rate needs a signup-time link.",
+      "reconciliationScope": "DB excludes team by default; PostHog includes all events. Sheet counts use creation-time proxies, model counts updatedAt; event timestamps and snapshot state can differ. Investigate differences; equality is not proof of correct tracking.",
+      "healthNotes": "Refresh invalidates database (5 min) and external-source (10 min) caches. Missing sources never become zero. Errors are sanitized; raw API responses and secrets stay server-side.",
+      "stripeScope": "Stripe payments without a known account are excluded with team filtering. Current subscriptions are filtered by customer identity. First-payer classification and LTV are bounded by fetched Stripe history.",
+      "w0": "Week 0",
+      "w1": "Week 1",
+      "w2": "Week 2",
+      "w3": "Week 3",
+      "w4": "Week 4",
+      "w5": "Week 5",
+      "w6": "Week 6",
+      "w7": "Week 7",
+      "w8": "Week 8",
+      "businessType": "Business type",
+      "storePlatform": "Store platform",
+      "selfReportedCatalog": "Self-reported catalog size",
+      "isTruncated": "Truncated",
+      "analyticsRowLimit": "Analytics row limit exceeded · no partial totals are shown",
+      "overviewPerDay": "Visits, paying customers, uses & revenue per day",
+      "overviewPerWeek": "Visits, paying customers, uses & revenue per week",
+      "overviewPerMonth": "Visits, paying customers, uses & revenue per month",
+      "overviewScale": "Counts: square-root scale on the left to keep smaller series visible. Revenue: linear scale on the right. Toggle series to focus.",
+      "seriesToggles": "Visible series",
+      "payingCustomers": "Paying customers",
+      "uses": "Uses (sheets + 3D models)",
+      "newSignups": "New signups",
+      "grossRevenueSeries": "Gross revenue",
+      "payingDayHelp": "distinct users who paid that day",
+      "payingWeekHelp": "distinct users who paid that week",
+      "payingMonthHelp": "distinct users who paid that month",
+      "models3d": "3D models",
+      "grossRevenueHelp": "Gross revenue before refunds and fees",
+      "visitsNotConfigured": "Visits: PostHog not configured",
+      "visitsIncomplete": "Visits: PostHog data incomplete",
+      "visitsError": "Visits: PostHog unavailable (request failed)",
+      "sheetCountUnit": "sheets"
+    }
+  }
+}

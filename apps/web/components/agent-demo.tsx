@@ -1,6 +1,7 @@
 'use client';
 
 import { Bot, Check, Loader2, Wrench } from 'lucide-react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { ModelViewer } from '@/components/model-viewer';
@@ -90,12 +91,13 @@ export function AgentDemo({ item }: { item: ShowcaseItem }) {
             <div className="min-w-0 flex-1 space-y-2">
               <p>{t('done')}</p>
               <div className="grid grid-cols-[auto_1fr] items-stretch gap-2 rounded-xl border bg-gradient-to-b from-muted/20 to-muted/60 p-2">
-                {/* biome-ignore lint/performance/noImgElement: small static thumbnail */}
-                <img
+                {/* Shown at 80-96px: next/image serves a resized copy, not the 720px photo. */}
+                <Image
                   src={item.photo}
                   alt=""
-                  loading="lazy"
-                  decoding="async"
+                  width={96}
+                  height={96}
+                  sizes="96px"
                   className="size-20 self-center rounded-lg border object-cover sm:size-24"
                 />
                 <div className="relative h-32 sm:h-36">

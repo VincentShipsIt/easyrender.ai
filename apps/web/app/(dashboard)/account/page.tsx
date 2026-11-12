@@ -1,4 +1,5 @@
 import { getBalance, getBillingStatus } from '@easyrender/core';
+import { SUBSCRIPTION_PLANS } from '@easyrender/harness';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -27,7 +28,6 @@ export default async function AccountPage() {
 
   return (
     <div className="max-w-2xl space-y-8">
-      <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
       <Card>
         <CardHeader>
           <CardTitle>{user.name || t('yourAccount')}</CardTitle>
@@ -39,7 +39,7 @@ export default async function AccountPage() {
               credits: format.number(balance),
               strong: (chunks) => <span className="font-medium">{chunks}</span>,
             })}
-            {billing.pro && ' · Pro'}
+            {billing.plan && ` · ${SUBSCRIPTION_PLANS[billing.plan].label}`}
           </p>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" asChild>

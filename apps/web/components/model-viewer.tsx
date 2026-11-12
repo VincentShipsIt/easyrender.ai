@@ -54,9 +54,16 @@ type Props = {
   ar?: boolean;
   lazy?: boolean;
   rotationSpeed?: string;
+  /** Starting camera, in model-viewer's `camera-orbit` syntax. */
+  cameraOrbit?: string;
+  autoRotate?: boolean;
+  /** Called once the model has loaded and is drawn, with the <model-viewer> element. */
+  onLoad?: (element: HTMLElement) => void;
 };
 
-// Google's <model-viewer>, loaded on the client only.
+// Google's <model-viewer>, loaded on the client only, and only once its box comes near the
+// viewport: the library bundles its own three.js (~370 KB), so a viewer far down a page must not
+// download it during the first paint. The box keeps its size while empty, so nothing shifts.
 export function ModelViewer({
   src,
   alt,
@@ -67,45 +74,53 @@ export function ModelViewer({
   ar = false,
   lazy = true,
   rotationSpeed = '24deg',
+  cameraOrbit,
+  autoRotate = true,
+  onLoad,
 }: Props) {
+  const box = useRef<HTMLDivElement>(null);
+  const viewer = useRef<HTMLElement>(null);
   const [ready, setReady] = useState(false);
-  const host = useRef<HTMLDivElement>(null);
+  // Read through a ref so a new callback on every render does not re-attach the listener.
+  const onLoadRef = useRef(onLoad);
+  onLoadRef.current = onLoad;
   useEffect(() => {
+    const element = box.current;
+    if (!element) return;
     let alive = true;
-    const start = () => loadModelViewer().then(() => alive && setReady(true));
-    const element = host.current;
-    // A lazy viewer far down the page does not need the library (or its model) until it is
-    // about to be seen.
-    if (!lazy || !element) {
-      start();
-      return () => {
-        alive = false;
-      };
-    }
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
         observer.disconnect();
-        start();
+        loadModelViewer().then(() => alive && setReady(true));
       },
-      { rootMargin: '600px 0px' },
+      { rootMargin: '300px 0px' },
     );
     observer.observe(element);
     return () => {
       alive = false;
       observer.disconnect();
     };
-  }, [lazy]);
+  }, []);
+  useEffect(() => {
+    const element = viewer.current;
+    if (!ready || !element) return;
+    const handle = () => onLoadRef.current?.(element);
+    element.addEventListener('load', handle);
+    return () => element.removeEventListener('load', handle);
+  }, [ready]);
 
   return (
-    <div ref={host} className={cn('relative size-full', className)} style={style}>
+    <div ref={box} className={cn('relative size-full', className)} style={style}>
       {ready && (
         <model-viewer
+          ref={viewer}
           src={src}
           alt={alt}
           loading={lazy ? 'lazy' : 'eager'}
-          auto-rotate
+          auto-rotate={autoRotate || undefined}
           auto-rotate-delay="0"
+          camera-orbit={cameraOrbit}
           rotation-per-second={rotationSpeed}
           interaction-prompt="none"
           camera-controls={interactive || undefined}

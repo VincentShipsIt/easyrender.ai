@@ -3,22 +3,9 @@ import { getTranslations } from 'next-intl/server';
 import { BrandMark } from '@/components/brand-mark';
 
 // Formats the models ship in, and tools that open them.
-const WORKS_WITH = [
-  'GLB',
-  'USDZ',
-  'FBX',
-  'OBJ',
-  'Unity',
-  'Unreal Engine',
-  'Blender',
-  'SketchUp',
-  'three.js',
-  'Shopify',
-  'ARKit',
-  'ARCore',
-];
+const WORKS_WITH = ['GLB', 'USDZ', 'Blender', 'SketchUp', 'three.js', 'Shopify', 'ARKit', 'ARCore'];
 
-// Why the hub exists, the time it takes, and where the models work.
+// Why the hub exists, what it starts from, and where the models work.
 export async function StudioProof() {
   const t = await getTranslations('Studio.proof');
   return (

@@ -1,11 +1,21 @@
 import { getBalance, getBillingStatus } from '@easyrender/core';
-import { ENTERPRISE_BOOKING_URL, PRO_PLAN, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
+import {
+  CREDIT_USD,
+  ENTERPRISE_BOOKING_URL,
+  PLAN_IDS,
+  type PlanId,
+  RENDER_CREDITS,
+  rendersFor,
+  SUBSCRIPTION_PLANS,
+} from '@easyrender/harness';
 import { Check, CircleCheck } from 'lucide-react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { BuyButton } from '@/components/buy-button';
 import { PaygPicker } from '@/components/payg-picker';
+import { PurchaseConversion } from '@/components/purchase-conversion';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,9 +28,32 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { currentUser } from '@/lib/actor';
+import { breadcrumbList, JsonLd } from '@/lib/seo/jsonld';
+import { pageMetadata } from '@/lib/seo/metadata';
+import { livePaths, ROUTES } from '@/lib/seo/routes';
 import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
+
+// The public pricing page, and the only indexable route in the dashboard group: it overrides the
+// layout's noindex. /es/precios and the rest arrive with their own copy.
+export async function generateMetadata(): Promise<Metadata> {
+  const [t, format] = await Promise.all([getTranslations('Credits'), getFormatter()]);
+  const metadata = pageMetadata({
+    locale: 'en',
+    path: ROUTES.pricing.paths.en,
+    title: t('metaTitle'),
+    description: t('metaDescription', {
+      credits: RENDER_CREDITS,
+      price: format.number(RENDER_CREDITS * CREDIT_USD, { style: 'currency', currency: 'USD' }),
+      proCredits: format.number(SUBSCRIPTION_PLANS.pro.monthlyCredits),
+    }),
+    alternates: livePaths('pricing'),
+  });
+  // The dashboard layout is noindex; metadata merges field by field, so the override has to be
+  // explicit or the public pricing page inherits it.
+  return { ...metadata, robots: { index: true, follow: true } };
+}
 
 const SIGN_UP = `/sign-up?next=${encodeURIComponent('/credits')}`;
 
@@ -76,7 +109,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
   const user = await currentUser();
   const [balance, billing] = user
     ? await Promise.all([getBalance(user.id), getBillingStatus(user.id)])
-    : [0, { pro: false, canManage: false }];
+    : [0, { plan: null, canManage: false }];
   const [t, format] = await Promise.all([getTranslations('Credits'), getFormatter()]);
   const usd = (cents: number) =>
     format.number(cents / 100, {
@@ -93,33 +126,62 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
     </Button>
   );
 
-  let proFooter: ReactNode = signUp;
-  if (user && billing.pro) {
-    proFooter = billing.canManage ? (
-      <BuyButton label={t('manageSubscription')} endpoint="/api/billing/portal" variant="outline" />
-    ) : (
+  const planFooter = (id: PlanId): ReactNode => {
+    if (!user) return signUp;
+    if (!billing.plan) {
+      return (
+        <BuyButton
+          label={t('subscribe', { plan: SUBSCRIPTION_PLANS[id].label })}
+          body={{ plan: id }}
+        />
+      );
+    }
+    // Already subscribed: the billing portal is where a plan is changed or cancelled.
+    if (billing.canManage) {
+      return (
+        <BuyButton
+          label={t(billing.plan === id ? 'manageSubscription' : 'changePlan')}
+          endpoint="/api/billing/portal"
+          variant="outline"
+        />
+      );
+    }
+    return (
       <Button className="w-full" variant="outline" disabled>
-        {t('onPro')}
+        {t('onPro', { plan: SUBSCRIPTION_PLANS[billing.plan].label })}
       </Button>
     );
-  } else if (user) {
-    proFooter = (
-      <BuyButton label={t('subscribe', { plan: PRO_PLAN.label })} body={{ plan: 'pro' }} />
-    );
-  }
+  };
 
   return (
     <div className="space-y-8">
+      <PurchaseConversion />
+      <JsonLd
+        graph={[
+          breadcrumbList([
+            { name: 'easyrender', path: ROUTES.home.paths.en },
+            { name: t('title'), path: ROUTES.pricing.paths.en },
+          ]),
+        ]}
+      />
       <div className="space-y-3">
-        <Badge variant="outline">{t('eyebrow')}</Badge>
-        <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
-        <p className="text-muted-foreground">
-          {t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
-        </p>
+        {/* Signed in, the breadcrumb names the page. The pricing page keeps its heading for visitors and search. */}
+        {!user && (
+          <>
+            <Badge variant="outline">{t('eyebrow')}</Badge>
+            <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
+            <p className="text-muted-foreground">
+              {t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
+            </p>
+          </>
+        )}
         {user && (
           <p className="text-sm">
-            {billing.pro
-              ? t('balancePro', { credits: credits(balance) })
+            {billing.plan
+              ? t('balancePro', {
+                  credits: credits(balance),
+                  plan: SUBSCRIPTION_PLANS[billing.plan].label,
+                })
               : t('balance', { credits: credits(balance) })}
           </p>
         )}
@@ -144,24 +206,30 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
           features={[t('payg.features.downloads'), t('payg.features.ar'), t('payg.features.api')]}
           footer={user ? <PaygPicker /> : signUp}
         />
-        <PlanCard
-          title={PRO_PLAN.label}
-          description={t('pro.description', {
-            credits: credits(PRO_PLAN.monthlyCredits),
-            count: rendersFor(PRO_PLAN.monthlyCredits),
-          })}
-          price={usd(PRO_PLAN.priceCents)}
-          note={t('pro.note')}
-          badge={t('bestValue')}
-          featured
-          features={[
-            t('pro.features.credits', { credits: credits(PRO_PLAN.monthlyCredits) }),
-            t('pro.features.rollover'),
-            t('pro.features.topUp'),
-            t('pro.features.cancel'),
-          ]}
-          footer={proFooter}
-        />
+        {PLAN_IDS.map((id) => {
+          const plan = SUBSCRIPTION_PLANS[id];
+          return (
+            <PlanCard
+              key={id}
+              title={plan.label}
+              description={t('pro.description', {
+                credits: credits(plan.monthlyCredits),
+                count: rendersFor(plan.monthlyCredits),
+              })}
+              price={usd(plan.priceCents)}
+              note={t('pro.note')}
+              badge={id === 'pro' ? t('bestValue') : undefined}
+              featured={id === 'pro'}
+              features={[
+                t('pro.features.credits', { credits: credits(plan.monthlyCredits) }),
+                t('pro.features.rollover'),
+                t('pro.features.topUp'),
+                t('pro.features.cancel'),
+              ]}
+              footer={planFooter(id)}
+            />
+          );
+        })}
         <PlanCard
           title={t('enterprise.title')}
           description={t('enterprise.description')}

@@ -7,8 +7,10 @@ import {
   MAX_UPLOAD_BYTES,
   toView,
 } from '@easyrender/core';
+import { normalizeAttribution } from '@easyrender/core/attribution';
 import { NextResponse } from 'next/server';
 import { resolveActor } from '@/lib/actor';
+import { privacyRegion } from '@/lib/analytics/privacy-region';
 import { handle } from '@/lib/http';
 
 export const maxDuration = 60;
@@ -24,8 +26,19 @@ export const POST = (request: Request) =>
       throw new AppError('Photo is larger than 4 MB', 413, 'too_large');
     const prompt = form?.get('prompt');
     const name = form?.get('name');
+    let attribution: unknown = null;
+    try {
+      attribution = JSON.parse(String(form?.get('attribution') ?? 'null'));
+    } catch {
+      /* Malformed optional attribution never rejects a photo. */
+    }
     const render = await createDraft({
       actor,
+      attribution: normalizeAttribution(
+        attribution,
+        new URL(request.url).origin,
+        privacyRegion(request.headers),
+      ),
       bytes: new Uint8Array(await image.arrayBuffer()),
       contentType: image.type,
       prompt: typeof prompt === 'string' ? prompt.slice(0, 500) : null,

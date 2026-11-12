@@ -10,6 +10,18 @@ datasource db {
 // ── Better Auth ─────────────────────────────────────────────
 
 model User {
+  // First-touch attribution. Nullable, additive, never overwritten.
+  utm_source String?
+  utm_medium String?
+  utm_campaign String?
+  utm_content String?
+  utm_term String?
+  referrer String?
+  landing_path String?
+  first_seen_at String?
+  geo_country String?
+  consent_region_at_create String?
+
   id            String   @id
   name          String
   email         String   @unique
@@ -19,6 +31,7 @@ model User {
   stripeCustomerId   String? @unique
   subscriptionId     String? @unique
   subscriptionStatus String?
+  subscriptionPlan   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -28,6 +41,8 @@ model User {
   ledger    CreditLedger[]
   purchases Purchase[]
   apiKeys   ApiKey[]
+  catalogItems CatalogItem[]
+  shopifyShops ShopifyShop[]
 
   @@map("user")
 }
@@ -90,6 +105,18 @@ enum RenderStatus {
 }
 
 model Render {
+  // First-touch attribution. Nullable, additive, never overwritten.
+  utm_source String?
+  utm_medium String?
+  utm_campaign String?
+  utm_content String?
+  utm_term String?
+  referrer String?
+  landing_path String?
+  first_seen_at String?
+  geo_country String?
+  consent_region_at_create String?
+
   id                String       @id @default(cuid())
   userId            String?
   user              User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
@@ -104,13 +131,26 @@ model Render {
   sourceUrl         String?
   sheetKey          String?
   glbKey            String?
+  // Material changes made by the owner, as a list of { index, baseColor?, roughness?, metalness? }
+  // by glTF material. The stored GLB is never rewritten: the edits are applied when it is served.
+  materialEdits     Json?
+  // What the guardrails measured at each stage (photo, draft sheet, final sheet, model), for
+  // comparing quality across renders. Never read to decide anything; see render-quality.ts.
+  quality           Json?
   sheetPredictionId String?      @unique
   buildPredictionId String?      @unique
+  // A paid build redraws the sheet with the final model before the 3D build; this is that prediction.
+  finalSheetPredictionId String? @unique
+  // Set by whichever call starts the 3D build, so webhook and polling cannot start it twice.
+  buildClaimedAt    DateTime?
   costUsd           Float        @default(0)
   credits           Int          @default(0)
   error             String?
   // Finished renders show in the public gallery unless the owner hides them.
   isPublic          Boolean      @default(true)
+  // A store embeds the model on its own product pages: anyone with the link can view it, but it
+  // stays out of the public gallery unless isPublic is also true.
+  isLinkShared      Boolean      @default(false)
   // Where the render was started: "web" (the app), "mcp" (an agent) or "api" (REST with a key).
   source            String       @default("web")
   createdAt         DateTime     @default(now())
@@ -159,6 +199,47 @@ model ApiKey {
   hash       String    @unique
   lastUsedAt DateTime?
   createdAt  DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// One product of a connected store (Shopify, WooCommerce, ...) that is turned into a 3D model.
+// A plugin sends its products; the server walks each one from photo to finished model.
+model CatalogItem {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform   String
+  // The shop's domain or the site's host: one account can connect several stores.
+  store      String
+  // The product's id on the platform.
+  externalId String
+  title      String
+  imageUrl   String
+  note       String?
+  renderId   String?
+  // queued | drafting | building | ready | needs_credits | needs_info | failed
+  state      String   @default("queued")
+  error      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, platform, store, externalId])
+  @@index([userId, platform, store, state])
+  @@index([renderId])
+}
+
+// A Shopify store that installed the app. The merchant links it to an easyrender account, which pays
+// for the models. The Admin API token is stored encrypted (see packages/core/src/shopify.ts).
+model ShopifyShop {
+  // The shop's permanent domain, e.g. my-store.myshopify.com.
+  shop        String   @id
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  accessToken String
+  scope       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([userId])
 }

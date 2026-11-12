@@ -6,6 +6,7 @@
       "dependsOn": ["^build"],
       "env": [
         "REPLICATE_API_TOKEN",
+        "HARNESS_GITHUB_TOKEN",
         "BETTER_AUTH_*",
         "STRIPE_*",
         "S3_BUCKET",
@@ -13,14 +14,30 @@
         "AWS_REGION",
         "AWS_ROLE_ARN",
         "NEXT_PUBLIC_*",
+        "SENTRY_*",
+        "SHOPIFY_*",
         "APP_URL",
         "SHEET_ENABLED",
-        "FREE_PREVIEWS_PER_DAY"
+        "FREE_PREVIEWS_PER_DAY",
+        "ADMIN_EMAILS",
+        "ANALYTICS_EXCLUDE_EMAILS",
+        "ANALYTICS_TZ",
+        "POSTHOG_PERSONAL_API_KEY",
+        "POSTHOG_PROJECT_ID",
+        "POSTHOG_API_HOST",
+        "STRIPE_ANALYTICS_KEY",
+        "POSTHOG_HOST",
+        "ANALYTICS_LOCAL_TEST"
       ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "typecheck": { "dependsOn": ["^typecheck"] },
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
+    },
     "test": {},
-    "dev": { "cache": false, "persistent": true }
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
   }
 }
