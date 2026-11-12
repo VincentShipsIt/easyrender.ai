@@ -14,25 +14,25 @@
  * with the response body instead of being skipped.
  */
 
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 
 const FAL_KEY = process.env.FAL_KEY;
-const SKETCH_DIR = join(import.meta.dir, "sketch-bench");
-const OUT_DIR = "sketch-bench-out";
+const SKETCH_DIR = join(import.meta.dir, 'sketch-bench');
+const OUT_DIR = 'sketch-bench-out';
 const PROMPT =
-  "studio product photo of this piece of furniture, oak and linen, soft daylight, plain white background";
+  'studio product photo of this piece of furniture, oak and linen, soft daylight, plain white background';
 
 type TimedCall = { coldMs: number; warmMs: number; output: unknown };
 
 function toDataUri(png: Uint8Array): string {
-  return `data:image/png;base64,${Buffer.from(png).toString("base64")}`;
+  return `data:image/png;base64,${Buffer.from(png).toString('base64')}`;
 }
 
 async function callFal(model: string, input: Record<string, unknown>): Promise<unknown> {
   const response = await fetch(`https://fal.run/${model}`, {
-    method: "POST",
-    headers: { Authorization: `Key ${FAL_KEY}`, "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { Authorization: `Key ${FAL_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
   });
   const text = await response.text();
@@ -52,18 +52,18 @@ async function timeTwice(model: string, input: Record<string, unknown>): Promise
 }
 
 function firstUrl(output: unknown, keys: string[]): string | undefined {
-  if (typeof output !== "object" || output === null) return undefined;
+  if (typeof output !== 'object' || output === null) return undefined;
   const record = output as Record<string, unknown>;
   for (const key of keys) {
     const value = record[key];
-    if (typeof value === "string") return value;
+    if (typeof value === 'string') return value;
     if (Array.isArray(value) && value.length > 0) {
       const head: unknown = value[0];
-      if (typeof head === "object" && head !== null && "url" in head) {
+      if (typeof head === 'object' && head !== null && 'url' in head) {
         return String((head as { url: unknown }).url);
       }
     }
-    if (typeof value === "object" && value !== null && "url" in value) {
+    if (typeof value === 'object' && value !== null && 'url' in value) {
       return String((value as { url: unknown }).url);
     }
   }
@@ -71,57 +71,57 @@ function firstUrl(output: unknown, keys: string[]): string | undefined {
 }
 
 async function main() {
-  if (!process.argv.includes("--spend")) {
-    throw new Error("This spends fal credit. Re-run with --spend.");
+  if (!process.argv.includes('--spend')) {
+    throw new Error('This spends fal credit. Re-run with --spend.');
   }
-  if (!FAL_KEY) throw new Error("FAL_KEY is not set.");
+  if (!FAL_KEY) throw new Error('FAL_KEY is not set.');
 
   await mkdir(OUT_DIR, { recursive: true });
-  const files = (await readdir(SKETCH_DIR)).filter((name) => name.endsWith(".png")).sort();
+  const files = (await readdir(SKETCH_DIR)).filter((name) => name.endsWith('.png')).sort();
   const rows: string[] = [];
   const links: string[] = [];
 
   for (const file of files) {
-    const name = file.replace(/\.png$/, "");
+    const name = file.replace(/\.png$/, '');
     const sketch = toDataUri(await readFile(join(SKETCH_DIR, file)));
 
-    const image = await timeTwice("fal-ai/fast-lcm-diffusion/image-to-image", {
+    const image = await timeTwice('fal-ai/fast-lcm-diffusion/image-to-image', {
       image_url: sketch,
       prompt: PROMPT,
       strength: 0.85,
       num_inference_steps: 4,
     });
-    const imageUrl = firstUrl(image.output, ["images", "image"]);
+    const imageUrl = firstUrl(image.output, ['images', 'image']);
     if (!imageUrl) throw new Error(`No image in LCM output for ${name}`);
     rows.push(
       `| ${name} | sketch to image (LCM) | ${(image.coldMs / 1000).toFixed(1)} | ${(image.warmMs / 1000).toFixed(1)} |`,
     );
     links.push(`- ${name} render: ${imageUrl}`);
 
-    for (const model of ["fal-ai/trellis", "fal-ai/triposr"]) {
+    for (const model of ['fal-ai/trellis', 'fal-ai/triposr']) {
       const mesh = await timeTwice(model, { image_url: imageUrl });
-      const meshUrl = firstUrl(mesh.output, ["model_mesh", "model_mesh_url", "mesh"]);
+      const meshUrl = firstUrl(mesh.output, ['model_mesh', 'model_mesh_url', 'mesh']);
       rows.push(
-        `| ${name} | image to 3D (${model.replace("fal-ai/", "")}) | ${(mesh.coldMs / 1000).toFixed(1)} | ${(mesh.warmMs / 1000).toFixed(1)} |`,
+        `| ${name} | image to 3D (${model.replace('fal-ai/', '')}) | ${(mesh.coldMs / 1000).toFixed(1)} | ${(mesh.warmMs / 1000).toFixed(1)} |`,
       );
-      links.push(`- ${name} ${model}: ${meshUrl ?? "no mesh url in output"}`);
+      links.push(`- ${name} ${model}: ${meshUrl ?? 'no mesh url in output'}`);
     }
   }
 
   const report = [
-    "## Sketch to 3D latency (fal.ai)",
-    "",
-    "Seconds, wall clock from this runner, including network. Cold is the first call, warm the second.",
-    "",
-    "| Sketch | Step | Cold s | Warm s |",
-    "|---|---|---|---|",
+    '## Sketch to 3D latency (fal.ai)',
+    '',
+    'Seconds, wall clock from this runner, including network. Cold is the first call, warm the second.',
+    '',
+    '| Sketch | Step | Cold s | Warm s |',
+    '|---|---|---|---|',
     ...rows,
-    "",
-    "### Outputs (open to judge quality)",
+    '',
+    '### Outputs (open to judge quality)',
     ...links,
-    "",
-  ].join("\n");
-  await writeFile(join(OUT_DIR, "report.md"), report);
+    '',
+  ].join('\n');
+  await writeFile(join(OUT_DIR, 'report.md'), report);
   console.write(`${report}\n`);
 }
 
