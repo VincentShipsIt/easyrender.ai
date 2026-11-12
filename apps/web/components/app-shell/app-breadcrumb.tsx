@@ -12,7 +12,11 @@ export function AppBreadcrumb() {
   const nav = useTranslations('DashboardNav');
   const pathname = usePathname();
   const module = [...APP_NAV, ACCOUNT_NAV].find((item) => isActivePath(pathname, item.href));
-  const crumbs = [{ href: module?.href ?? '/dashboard', label: nav(module?.key ?? 'overview') }];
+  const crumbs: { href: string; label: string }[] = [
+    { href: module?.href ?? '/dashboard', label: nav(module?.key ?? 'overview') },
+  ];
+  // A render's page is one level inside the Library.
+  if (pathname.startsWith('/r/')) crumbs.push({ href: pathname, label: t('model') });
   return (
     <nav aria-label={t('breadcrumb')} className="min-w-0">
       <ol className="flex items-center gap-1.5 text-sm">
