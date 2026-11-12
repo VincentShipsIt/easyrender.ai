@@ -1,4 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "bun run vercel-build"
+  "buildCommand": "bun run vercel-build",
+  "ignoreCommand": "[ \"$VERCEL_ENV\" != production ] && git diff --quiet HEAD^ HEAD -- ':/apps/web' ':/packages' ':/package.json' ':/bun.lock' ':/turbo.json' ':/vercel.json'"
 }

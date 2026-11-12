@@ -3,6 +3,8 @@ run-name: "CI · ${{ github.event.pull_request.title }}"
 
 # Production deploys through the Vercel Git integration on merge to main. This workflow only checks
 # pull requests; it never deploys. "CI Gate" is the one required check: it fails if any job fails.
+# The "Schema change" job runs the same additive-only check the production build runs, so a risky
+# schema change fails here instead of stopping the deploy after the merge.
 on:
   pull_request:
     branches: [main]
@@ -42,6 +44,42 @@ jobs:
       - name: Tests
         run: bun run test
 
+  schema:
+    name: Schema change
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: easyrender
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/easyrender
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Apply the schema on main to an empty database
+        working-directory: packages/db
+        run: |
+          git show "origin/${{ github.base_ref }}:packages/db/prisma/schema.prisma" > "$RUNNER_TEMP/main.prisma"
+          bun run prisma db push --schema "$RUNNER_TEMP/main.prisma"
+      - name: Check that this branch's schema change is additive
+        run: bun run --cwd packages/db db:check
+
   mobile:
     name: Mobile typecheck
     runs-on: ubuntu-latest
@@ -75,12 +113,12 @@ jobs:
   gate:
     name: CI Gate
     if: ${{ always() }}
-    needs: [checks, mobile, plugins]
+    needs: [checks, schema, mobile, plugins]
     runs-on: ubuntu-latest
     steps:
       - name: Require every job to pass
         run: |
-          if [ "${{ needs.checks.result }}" != "success" ] || [ "${{ needs.mobile.result }}" != "success" ] || [ "${{ needs.plugins.result }}" != "success" ]; then
-            echo "checks: ${{ needs.checks.result }}, mobile: ${{ needs.mobile.result }}, plugins: ${{ needs.plugins.result }}"
+          if [ "${{ needs.checks.result }}" != "success" ] || [ "${{ needs.schema.result }}" != "success" ] || [ "${{ needs.mobile.result }}" != "success" ] || [ "${{ needs.plugins.result }}" != "success" ]; then
+            echo "checks: ${{ needs.checks.result }}, schema: ${{ needs.schema.result }}, mobile: ${{ needs.mobile.result }}, plugins: ${{ needs.plugins.result }}"
             exit 1
           fi
