@@ -266,6 +266,15 @@ async function strip(photo: string, ids: string[]) {
     .toFile(`${out}/${photo}/strip.png`);
 }
 
+// A bad token fails here, before any prediction is paid for, instead of 42 times in the table.
+const account = await fetch('https://api.replicate.com/v1/account', {
+  headers: { Authorization: `Bearer ${token}` },
+});
+if (!account.ok) {
+  console.error(`Replicate refused the token (${account.status}). Nothing was run or spent.`);
+  process.exit(1);
+}
+
 mkdirSync(out, { recursive: true });
 const schemas = new Map<string, Set<string> | null>();
 for (const model of new Set(candidates.map((c) => c.model))) {
@@ -333,3 +342,9 @@ writeFileSync(`${out}/summary.md`, summary);
 console.log(summary);
 if (process.env.GITHUB_STEP_SUMMARY)
   writeFileSync(process.env.GITHUB_STEP_SUMMARY, summary, { flag: 'a' });
+
+// A run where no sheet came back is a failed run, not a green one.
+if (!rows.some((row) => row.sheet.ok)) {
+  console.error('No candidate produced a usable sheet.');
+  process.exit(1);
+}
