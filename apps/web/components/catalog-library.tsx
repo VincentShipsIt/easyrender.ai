@@ -16,7 +16,12 @@ import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { attribution, attributionHeaders, observeRender } from '@/lib/analytics/browser';
+import {
+  attribution,
+  attributionHeaders,
+  captureBrowser,
+  observeRender,
+} from '@/lib/analytics/browser';
 import { takePending } from '@/lib/pending-upload';
 import { prepare } from '@/lib/prepare-image';
 import { cn } from '@/lib/utils';
@@ -173,6 +178,10 @@ export function CatalogLibrary({
         return true;
       }
       upsert(data as RenderView);
+      captureBrowser('render_preview_created', {
+        source: 'library',
+        has_prompt: Boolean(upload.prompt),
+      });
       dismiss(upload.key);
     } catch (error) {
       markFailed(upload.key, error instanceof Error ? error.message : t('errors.upload'));
@@ -293,6 +302,10 @@ export function CatalogLibrary({
           const data = await response.json().catch(() => ({}));
           if (response.ok) {
             upsert(data as RenderView);
+            captureBrowser('render_generation_started', {
+              source: 'library',
+              credits: owed(item),
+            });
             setBalance((current) => Math.max(0, current - owed(item)));
             return true;
           }
@@ -322,6 +335,10 @@ export function CatalogLibrary({
       const data = await response.json().catch(() => ({}));
       if (response.ok) {
         upsert(data as RenderView);
+        captureBrowser('render_sheet_generation_started', {
+          source: 'library',
+          credits: sheetCredits,
+        });
         setBalance((current) => Math.max(0, current - sheetCredits));
         return;
       }

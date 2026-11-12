@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { attribution, attributionHeaders, gaEvent } from '@/lib/analytics/browser';
+import { attribution, attributionHeaders, captureBrowser, gaEvent } from '@/lib/analytics/browser';
 import { authClient } from '@/lib/auth-client';
 
 export type AuthMode = 'sign-in' | 'sign-up';
@@ -54,6 +54,9 @@ export function AuthFields({
       setBusy(false);
       return;
     }
+    captureBrowser(mode === 'sign-up' ? 'sign_up_completed' : 'sign_in_completed', {
+      method: 'email',
+    });
     if (mode === 'sign-up') gaEvent('sign_up', { method: 'email' });
     await onDone();
   }

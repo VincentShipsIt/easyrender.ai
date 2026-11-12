@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { observeRender } from '@/lib/analytics/browser';
+import { captureBrowser, observeRender } from '@/lib/analytics/browser';
 
 const RUNNING = new Set(['drafting', 'rendering']);
 
@@ -51,8 +51,10 @@ export function RenderView({
     setError(null);
     const response = await fetch(`/api/renders/${render.id}/render`, { method: 'POST' });
     const data = await response.json();
-    if (response.ok) setRender(data);
-    else setError(data.error ?? t('errors.start'));
+    if (response.ok) {
+      setRender(data);
+      captureBrowser('render_generation_started', { source: 'render_detail', credits: owed });
+    } else setError(data.error ?? t('errors.start'));
     setStarting(false);
   }
 
@@ -61,8 +63,13 @@ export function RenderView({
     setError(null);
     const response = await fetch(`/api/renders/${render.id}/sheet`, { method: 'POST' });
     const data = await response.json().catch(() => ({}));
-    if (response.ok) setRender(data);
-    else setError(data.error ?? t('errors.sheet'));
+    if (response.ok) {
+      setRender(data);
+      captureBrowser('render_sheet_generation_started', {
+        source: 'render_detail',
+        credits: render.sheetCredits,
+      });
+    } else setError(data.error ?? t('errors.sheet'));
     setStarting(false);
   }
 
@@ -73,7 +80,10 @@ export function RenderView({
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ isPublic }),
     });
-    if (response.ok) setRender(await response.json());
+    if (response.ok) {
+      setRender(await response.json());
+      captureBrowser('render_visibility_changed', { is_public: isPublic });
+    }
     setSaving(false);
   }
 

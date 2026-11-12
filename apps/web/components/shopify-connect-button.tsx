@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { captureBrowser } from '@/lib/analytics/browser';
 
 export function ShopifyConnectButton({ state }: { state: string }) {
   const t = useTranslations('ShopifyConnect');
@@ -19,7 +20,10 @@ export function ShopifyConnectButton({ state }: { state: string }) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ state }),
     });
-    if (response.ok) return setPhase('done');
+    if (response.ok) {
+      captureBrowser('shopify_account_linked');
+      return setPhase('done');
+    }
     setError((await response.json().catch(() => ({}))).error ?? t('error'));
     setPhase('idle');
   }

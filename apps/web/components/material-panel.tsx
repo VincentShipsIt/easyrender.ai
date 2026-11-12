@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
+import { captureBrowser } from '@/lib/analytics/browser';
 import { hexToLinear, linearToHex } from '@/lib/color';
 
 type Props = {
@@ -148,6 +149,9 @@ export function MaterialPanel({ renderId, viewer }: Props) {
     }).catch(() => null);
     if (response?.ok) {
       adopt((await response.json()) as Loaded);
+      captureBrowser(edits.length ? 'material_edits_saved' : 'material_edits_reset', {
+        material_count: edits.length,
+      });
       setMessage({ tone: 'saved', text: edits.length ? t('saved') : t('resetDone') });
     } else {
       setMessage({ tone: 'error', text: t('saveFailed') });
