@@ -1,0 +1,70 @@
+{
+  "name": "@easyrender/desktop",
+  "private": true,
+  "version": "0.1.0",
+  "description": "easyrender desktop app: a native shell around the signed-in web app",
+  "author": "easyrender.ai",
+  "repository": "https://github.com/easyrenderai/easyrender.ai",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "bun run build && EASYRENDER_DESKTOP_APP_URL=${EASYRENDER_DESKTOP_APP_URL:-http://localhost:3000/dashboard} electron dist/main.js",
+    "start": "bun run build && electron dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test src",
+    "pack": "bun run build && electron-builder --dir --publish never",
+    "dist": "bun run build && electron-builder --publish never"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.4",
+    "@types/node": "26.6.6",
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0",
+    "esbuild": "0.28.2",
+    "typescript": "6.0.3"
+  },
+  "build": {
+    "appId": "ai.easyrender.desktop",
+    "productName": "easyrender",
+    "artifactName": "easyrender-${version}-${os}-${arch}.${ext}",
+    "asar": true,
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "dist/main.js"
+    },
+    "protocols": [
+      {
+        "name": "easyrender",
+        "schemes": [
+          "easyrender"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "hardenedRuntime": true
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Graphics"
+    }
+  }
+}

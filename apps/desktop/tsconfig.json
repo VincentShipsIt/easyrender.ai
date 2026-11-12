@@ -1,0 +1,9 @@
+{
+  "extends": "../../packages/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": ["esnext"],
+    "types": ["node", "bun"],
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "scripts/**/*.mjs"]
+}
