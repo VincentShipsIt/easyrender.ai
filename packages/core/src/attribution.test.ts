@@ -38,7 +38,7 @@ describe('country and consent policy', () => {
     expect(classifyCountry('US').consent_region).toBe('standard');
   });
   it('gates optional tools, respects rejection and GPC, and defaults new tools conservatively', () => {
-    for (const tool of ['posthog', 'ga4']) {
+    for (const tool of ['ga4']) {
       expect(CONSENT_CONFIG[tool]).toEqual({ strict: 'consent', standard: 'allow_unless_optout' });
       expect(isToolAllowed(tool, 'strict', null, false)).toBe(false);
       expect(isToolAllowed(tool, 'strict', true, false)).toBe(true);
@@ -47,6 +47,10 @@ describe('country and consent policy', () => {
       expect(isToolAllowed(tool, 'standard', null, true)).toBe(false);
       expect(isToolAllowed(tool, 'standard', false, false)).toBe(false);
     }
+    // PostHog is cookieless and starts on load everywhere: no region, choice or GPC turns it off.
+    expect(CONSENT_CONFIG.posthog).toEqual({ strict: 'always', standard: 'always' });
+    expect(isToolAllowed('posthog', 'strict', null, false)).toBe(true);
+    expect(isToolAllowed('posthog', 'strict', false, true)).toBe(true);
     expect(toolPolicy('new', 'strict')).toBe('consent');
     expect(toolPolicy('new', 'standard')).toBe('off');
     expect(isToolAllowed('serverEvents', 'strict', false, true)).toBe(true);

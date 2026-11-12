@@ -98,10 +98,8 @@ export function Analytics() {
   }, []);
   useEffect(() => {
     // Always after paint, outside the critical rendering path. Cancel pending imports on rejection.
-    const ph =
-      isResolved &&
-      hasPosthog &&
-      isToolAllowed('posthog', region.consent_region, choice, region.gpc);
+    // PostHog starts on load: it does not wait for the privacy region or a consent choice.
+    const ph = hasPosthog && isToolAllowed('posthog', region.consent_region, choice, region.gpc);
     const ga =
       isResolved &&
       Boolean(gaId) &&
@@ -111,7 +109,7 @@ export function Analytics() {
       return;
     }
     const timer = setTimeout(() => {
-      void setBrowserTools(ph, ga);
+      void setBrowserTools(ph, ga, !ga && (choice === false || region.gpc));
     }, 100);
     return () => clearTimeout(timer);
   }, [region, choice, isResolved]);
