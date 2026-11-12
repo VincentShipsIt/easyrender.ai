@@ -15,8 +15,6 @@ const flag = (rollout = 100): PricingFlag => ({
     },
   },
 });
-const visits = vi.hoisted(() => ({ check: vi.fn(async () => true) }));
-vi.mock('./pricing-visits', () => ({ hasPricingVisit: visits.check }));
 const records = new Map<string, string>();
 vi.mock('@easyrender/db', () => ({
   db: () => ({
@@ -35,7 +33,6 @@ afterEach(() => {
 });
 beforeEach(() => {
   records.clear();
-  visits.check.mockReset().mockResolvedValue(true);
   vi.resetModules();
 });
 
@@ -125,44 +122,4 @@ describe('deterministic local assignment', () => {
     vi.advanceTimersByTime(30_001);
     expect(await assignedPricing(null, 'visitor')).toBe('control');
   });
-});
-
-it('fails closed for a reached cap, a failed read or a failed enrolment, including previous test visitors', async () => {
-  vi.stubEnv('PRICING_AB_ENABLED', '1');
-  vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'public-local');
-  vi.stubEnv('POSTHOG_PERSONAL_API_KEY', 'local-read-only');
-  vi.stubEnv('POSTHOG_PROJECT_ID', '347125');
-  vi.stubGlobal(
-    'fetch',
-    vi.fn(async () => Response.json({ results: [flag()] })),
-  );
-  const { assignedPricing, pricingDecision } = await import('./pricing-experiment');
-  expect(await assignedPricing(null, 'visitor-0')).toBe('test');
-  visits.check.mockResolvedValue(false);
-  expect(await pricingDecision(null, 'visitor-0')).toEqual({
-    variant: 'control',
-    isExperimentActive: false,
-  });
-  visits.check.mockRejectedValue(new Error('counter unavailable'));
-  expect(await assignedPricing(null, 'visitor-0')).toBe('control');
-  expect(await pricingDecision(null, 'new-visitor', true)).toEqual({
-    variant: 'control',
-    isExperimentActive: false,
-  });
-});
-it('does not enrol or measure when the flag is disabled or malformed', async () => {
-  vi.stubEnv('PRICING_AB_ENABLED', '1');
-  vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'public-local');
-  vi.stubEnv('POSTHOG_PERSONAL_API_KEY', 'local-read-only');
-  vi.stubEnv('POSTHOG_PROJECT_ID', '347125');
-  vi.stubGlobal(
-    'fetch',
-    vi.fn(async () => Response.json({ results: [{ ...flag(), active: false }] })),
-  );
-  const { pricingDecision } = await import('./pricing-experiment');
-  expect(await pricingDecision(null, 'visitor', true)).toEqual({
-    variant: 'control',
-    isExperimentActive: false,
-  });
-  expect(visits.check).not.toHaveBeenCalled();
 });

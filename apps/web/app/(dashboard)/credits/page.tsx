@@ -160,11 +160,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
   return (
     <div className="space-y-8">
       <PurchaseConversion />
-      <PricingExposure
-        variant={pricing.variant}
-        subject={pricing.subject}
-        isExperimentActive={pricing.isExperimentActive}
-      />
+      <PricingExposure variant={pricing.variant} subject={pricing.subject} />
       <JsonLd
         graph={[
           breadcrumbList([

@@ -1,7 +1,6 @@
 import { createHash } from 'node:crypto';
 import { db } from '@easyrender/db';
 import { PRICING_FLAG, type PricingVariant } from '@easyrender/harness';
-import { hasPricingVisit } from './pricing-visits';
 
 // Deliberately supports only a single, property-free rollout. Unsupported targeting fails closed.
 export type PricingFlag = {
@@ -20,11 +19,16 @@ const hash = (identity: string, salt = '') =>
     16,
   ) / Number('0xfffffffffffffff');
 
-function isValidPricingFlag(flag: PricingFlag | null): flag is PricingFlag {
-  if (!flag || flag.key !== PRICING_FLAG || !flag.active || flag.deleted) return false;
+/** Matches PostHog's property-free percentage and multivariate hash; never sends an identity. */
+export function evaluatePricingFlag(
+  flag: PricingFlag | null,
+  identity: string | null,
+): PricingVariant {
+  if (!flag || !identity || flag.key !== PRICING_FLAG || !flag.active || flag.deleted)
+    return 'control';
   const filters = flag.filters;
   if (!filters || filters.aggregation_group_type_index != null || filters.groups?.length !== 1)
-    return false;
+    return 'control';
   const group = filters.groups[0];
   const variants = filters.multivariate?.variants;
   if (
@@ -47,18 +51,7 @@ function isValidPricingFlag(flag: PricingFlag | null): flag is PricingFlag {
     ) ||
     variants.reduce((total, v) => total + v.rollout_percentage, 0) !== 100
   )
-    return false;
-  return true;
-}
-
-/** Matches PostHog's property-free percentage and multivariate hash; never sends an identity. */
-export function evaluatePricingFlag(
-  flag: PricingFlag | null,
-  identity: string | null,
-): PricingVariant {
-  if (!isValidPricingFlag(flag) || !identity) return 'control';
-  const group = flag.filters.groups[0];
-  const variants = flag.filters.multivariate.variants;
+    return 'control';
   if (hash(identity) >= group.rollout_percentage / 100) return 'control';
   const bucket = hash(identity, 'variant');
   let end = 0;
@@ -141,32 +134,18 @@ export async function pricingIdentity(
   return stored.value;
 }
 
-export type PricingDecision = { variant: PricingVariant; isExperimentActive: boolean };
-const control: PricingDecision = { variant: 'control', isExperimentActive: false };
-
-export async function pricingDecision(
-  userId: string | null,
-  anonId: string | null = null,
-  isPricingPage = false,
-): Promise<PricingDecision> {
-  if (!isPricingExperimentConfigured()) return control;
-  const flag = await pricingFlag();
-  if (!isValidPricingFlag(flag)) return control;
-  try {
-    const identity = await pricingIdentity(userId, anonId);
-    if (!identity || !(await hasPricingVisit(identity, isPricingPage))) return control;
-    return { variant: evaluatePricingFlag(flag, identity), isExperimentActive: true };
-  } catch {
-    // Missing/unreadable/corrupt counter, write or transaction failure: never reuse a test arm.
-    return control;
-  }
-}
-
 export async function assignedPricing(
   userId: string | null,
   anonId: string | null = null,
 ): Promise<PricingVariant> {
-  return (await pricingDecision(userId, anonId)).variant;
+  if (!isPricingExperimentConfigured()) return 'control';
+  const flag = await pricingFlag();
+  if (!flag?.active) return 'control';
+  try {
+    return evaluatePricingFlag(flag, await pricingIdentity(userId, anonId));
+  } catch {
+    return 'control';
+  }
 }
 
 // Legacy purchases retain their original pack id. New test purchases snapshot the variant without a migration.

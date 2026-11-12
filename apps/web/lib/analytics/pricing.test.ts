@@ -3,16 +3,12 @@ import { afterEach, expect, it, vi } from 'vitest';
 const sdk = vi.hoisted(() => ({ init: vi.fn(), capture: vi.fn() }));
 vi.mock('posthog-js', () => ({ default: sdk }));
 afterEach(() => {
+  vi.clearAllMocks();
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
 });
 it('uses the server variant, captures exposure after consent, and stops on withdrawal', async () => {
   vi.resetModules();
-  vi.clearAllMocks();
-  vi.stubGlobal(
-    'fetch',
-    vi.fn(async () => Response.json({ variant: 'test', isExperimentActive: true })),
-  );
   vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_localtest');
   const location = new URL('https://easyrender.ai/credits');
   vi.stubGlobal('location', location);
@@ -31,9 +27,6 @@ it('uses the server variant, captures exposure after consent, and stops on withd
   expect(sdk.capture).not.toHaveBeenCalled();
   await api.setBrowserTools(true, false);
   api.observePricing('test');
-  await vi.waitFor(() =>
-    expect(sdk.capture.mock.calls.some(([event]) => event === 'pricing_viewed')).toBe(true),
-  );
   const exposures = sdk.capture.mock.calls.filter(([event]) => event === 'pricing_viewed');
   expect(exposures).toHaveLength(1);
   expect(exposures[0][1]).toMatchObject({
@@ -57,30 +50,6 @@ it('uses the server variant, captures exposure after consent, and stops on withd
     advanced_disable_feature_flags: true,
   });
 });
-
-it.each(['closed', 'unavailable', 'changed'])(
-  'does not measure a stale page when the server is %s',
-  async (status) => {
-    vi.resetModules();
-    vi.clearAllMocks();
-    vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_localtest');
-    const location = new URL('https://easyrender.ai/credits');
-    vi.stubGlobal('location', location);
-    vi.stubGlobal('window', { location });
-    vi.stubGlobal('document', { cookie: '', referrer: '', querySelector: () => null });
-    const fetcher = vi.fn(async () => {
-      if (status === 'unavailable') throw new Error('offline');
-      return Response.json({ variant: 'control', isExperimentActive: status === 'changed' });
-    });
-    vi.stubGlobal('fetch', fetcher);
-    const api = await import('./browser');
-    api.observePricing('test');
-    await api.setBrowserTools(true, false);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(fetcher).toHaveBeenCalledTimes(1);
-    expect(sdk.capture.mock.calls.filter(([event]) => event === 'pricing_viewed')).toHaveLength(0);
-  },
-);
 
 it('initializes one SDK when consent effects race', async () => {
   vi.resetModules();

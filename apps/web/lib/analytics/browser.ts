@@ -181,7 +181,7 @@ export async function setBrowserTools(
       before_send: (event) => (event && isPosthogAllowed ? beforeSend(event) : null),
     });
   }
-  void capturePricingView();
+  capturePricingView();
   if (!hasLanding) {
     hasLanding = true;
     const a = attribution();
@@ -236,44 +236,20 @@ let visiblePricing: PricingVariant | null = null;
 const pricingViews = new Set<string>();
 export function observePricing(variant: PricingVariant) {
   visiblePricing = variant;
-  void capturePricingView();
+  capturePricingView();
 }
 export function stopObservingPricing() {
   visiblePricing = null;
 }
-const pendingPricingViews = new Set<string>();
-async function capturePricingView() {
+function capturePricingView() {
   if (!isPosthogAllowed || !posthog || !visiblePricing) return;
-  const variant = visiblePricing;
-  const key = `${location.pathname}:${variant}`;
-  if (pricingViews.has(key) || pendingPricingViews.has(key)) return;
-  pendingPricingViews.add(key);
-  try {
-    // Recheck at emission, including consent granted on a page opened before the cap.
-    // No client flag evaluation and no analytics call for declined consent.
-    const response = await fetch('/api/pricing', {
-      cache: 'no-store',
-      signal: AbortSignal.timeout(3000),
-    });
-    const current = response.ok ? await response.json() : null;
-    if (
-      !current?.isExperimentActive ||
-      current.variant !== variant ||
-      !isPosthogAllowed ||
-      visiblePricing !== variant ||
-      key !== `${location.pathname}:${visiblePricing}`
-    )
-      return;
-    pricingViews.add(key);
-    captureBrowser('pricing_viewed', {
-      pricing_variant: variant,
-      [`$feature/${PRICING_FLAG}`]: variant,
-    });
-  } catch {
-    // A failed live cutoff check must never measure another exposure.
-  } finally {
-    pendingPricingViews.delete(key);
-  }
+  const key = `${location.pathname}:${visiblePricing}`;
+  if (pricingViews.has(key)) return;
+  pricingViews.add(key);
+  captureBrowser('pricing_viewed', {
+    pricing_variant: visiblePricing,
+    [`$feature/${PRICING_FLAG}`]: visiblePricing,
+  });
 }
 
 function browserPricingSubject(): string | null {
