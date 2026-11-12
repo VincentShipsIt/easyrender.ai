@@ -1,0 +1,51 @@
+import { afterEach, expect, it, vi } from 'vitest';
+
+const sdk = vi.hoisted(() => ({ init: vi.fn(), capture: vi.fn() }));
+vi.mock('posthog-js', () => ({ default: sdk }));
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+});
+it('uses the server variant, captures exposure after consent, and stops on withdrawal', async () => {
+  vi.resetModules();
+  vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_localtest');
+  const location = new URL('https://easyrender.ai/credits');
+  vi.stubGlobal('location', location);
+  vi.stubGlobal('window', { location });
+  vi.stubGlobal('document', {
+    cookie: '',
+    referrer: '',
+    documentElement: { dataset: { pricingVariant: 'test', pricingSubject: 'hashed-subject' } },
+    querySelector: () => null,
+  });
+  const api = await import('./browser');
+  api.observePricing('test');
+  await api.setBrowserTools(false, false);
+  api.captureBrowser('checkout_started');
+  expect(sdk.init).not.toHaveBeenCalled();
+  expect(sdk.capture).not.toHaveBeenCalled();
+  await api.setBrowserTools(true, false);
+  api.observePricing('test');
+  const exposures = sdk.capture.mock.calls.filter(([event]) => event === 'pricing_viewed');
+  expect(exposures).toHaveLength(1);
+  expect(exposures[0][1]).toMatchObject({
+    pricing_variant: 'test',
+    pricing_subject: 'hashed-subject',
+    '$feature/pricing-test-2026-11': 'test',
+  });
+  api.captureBrowser('checkout_started', { value: 10, currency: 'USD' });
+  expect(sdk.capture.mock.lastCall).toEqual([
+    'checkout_started',
+    expect.objectContaining({ pricing_variant: 'test', value: 10, currency: 'USD' }),
+  ]);
+  const calls = sdk.capture.mock.calls.length;
+  await api.setBrowserTools(false, false, true);
+  api.captureBrowser('checkout_started');
+  expect(sdk.capture).toHaveBeenCalledTimes(calls);
+  expect(sdk.init).toHaveBeenCalledTimes(1);
+  expect(sdk.init.mock.calls[0][1]).toMatchObject({
+    cookieless_mode: 'always',
+    persistence: 'memory',
+    advanced_disable_feature_flags: true,
+  });
+});

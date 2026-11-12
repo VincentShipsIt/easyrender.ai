@@ -1,16 +1,9 @@
-import {
-  CREDIT_USD,
-  ENTERPRISE_BOOKING_URL,
-  PAYG,
-  PLAN_IDS,
-  RENDER_CREDITS,
-  rendersFor,
-  SUBSCRIPTION_PLANS,
-} from '@easyrender/harness';
+import { ENTERPRISE_BOOKING_URL, PLAN_IDS, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
 import { ArrowRight, Check, ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
+import { PricingExposure } from '@/components/pricing-exposure';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -53,6 +46,9 @@ export function Section({
 }
 
 export async function Pricing() {
+  const { currentPricing } = await import('@/lib/pricing');
+  const pricing = await currentPricing();
+  const { plans: SUBSCRIPTION_PLANS, payg: PAYG } = pricing;
   const [t, locale] = await Promise.all([getTranslations('Landing.pricing'), getLocale()]);
   const usd = (cents: number) =>
     formatUsd(locale, cents / 100, { minimumFractionDigits: cents % 100 === 0 ? 0 : 2 });
@@ -67,10 +63,13 @@ export async function Pricing() {
     },
     {
       name: t('payg.name'),
-      price: usd(1),
+      price: usd(pricing.creditUsd * 100),
       note: t('payg.note'),
       features: [
-        t('payg.features.min', { credits: formatCount(locale, PAYG.min) }),
+        t('payg.features.min', {
+          credits: formatCount(locale, PAYG.min),
+          price: usd(PAYG.min * pricing.creditUsd * 100),
+        }),
         t('payg.features.downloads'),
         t('payg.features.ar'),
         t('payg.features.api'),
@@ -115,13 +114,17 @@ export async function Pricing() {
     <Section
       id="pricing"
       title={t('title')}
-      description={t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
+      description={t('description', {
+        credits: RENDER_CREDITS,
+        price: usd(RENDER_CREDITS * pricing.creditUsd * 100),
+      })}
       action={
         <Link className="link" href="/credits">
           {t('seeAll')} <ArrowRight />
         </Link>
       }
     >
+      <PricingExposure variant={pricing.variant} subject={pricing.subject} />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {plans.map((plan) => (
           <Card key={plan.name} className={cn(plan.featured && 'border-primary shadow-md')}>
@@ -170,10 +173,12 @@ export type FaqItem = { question: string; answer: string };
  * one list and cannot drift apart.
  */
 export async function faqItems(): Promise<FaqItem[]> {
+  const { currentPricing } = await import('@/lib/pricing');
+  const { creditUsd } = await currentPricing();
   const [t, locale] = await Promise.all([getTranslations('Landing.faq'), getLocale()]);
   const usd = (value: number) => formatUsd(locale, value);
-  const price = usd(RENDER_CREDITS * CREDIT_USD);
-  const unit = usd(CREDIT_USD);
+  const price = usd(RENDER_CREDITS * creditUsd);
+  const unit = usd(creditUsd);
   return FAQ_KEYS.map((key) => ({
     question: t(`items.${key}.q`),
     answer: t(`items.${key}.a`, { credits: RENDER_CREDITS, price, unit }),

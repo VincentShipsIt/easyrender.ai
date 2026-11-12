@@ -21,6 +21,9 @@ it('before_send retains the public SDK project key required for ingestion and st
     },
   });
   expect(event.properties).toEqual({
+    pricing_subject: null,
+    pricing_variant: 'control',
+    '$feature/pricing-test-2026-11': 'control',
     token: 'phc_localtest',
     $current_url: 'https://example.test/?utm_source=test',
     $referrer: 'https://ref.test/',
@@ -78,6 +81,7 @@ it('reuses the bootstrap queue and sole loader, sanitizes GA URLs and routes con
       'event',
       'purchase',
       {
+        pricing_variant: 'control',
         transaction_id: 'invoice-1',
         send_to: 'G-TEST000000',
         page_location: 'https://easyrender.ai/credits',

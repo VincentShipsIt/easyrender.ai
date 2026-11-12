@@ -9,6 +9,7 @@ import { HTML_LANG, type Locale, PATH_HEADER } from '@/i18n/config';
 import { pickClientMessages } from '@/lib/client-messages';
 import { geistMono, geistSans } from '@/lib/fonts';
 import { GOOGLE_TAG_BOOTSTRAP } from '@/lib/google-tag';
+import { currentPricing } from '@/lib/pricing';
 import { SITE_URL } from '@/lib/seo/site';
 import './globals.css';
 
@@ -30,10 +31,13 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     headers(),
   ]);
   // The Shopify app's page runs inside the Shopify admin, which needs App Bridge loaded first in the head.
+  const pricing = await currentPricing();
   const isShopifyApp = requestHeaders.get(PATH_HEADER) === '/shopify';
   return (
     <html
       lang={HTML_LANG[locale as Locale]}
+      data-pricing-variant={pricing.variant}
+      data-pricing-subject={pricing.subject ?? undefined}
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <head>

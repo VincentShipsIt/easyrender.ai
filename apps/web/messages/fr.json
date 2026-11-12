@@ -108,7 +108,7 @@
         "name": "Paiement à l'usage",
         "note": "par crédit",
         "features": {
-          "min": "À partir de {credits} crédits",
+          "min": "À partir de {credits} crédits ({price})",
           "downloads": "Téléchargements GLB et USDZ",
           "ar": "Bientôt : l'objet chez toi, en réalité augmentée",
           "api": "Serveur MCP et API REST"
@@ -625,7 +625,7 @@
     "bestValue": "Best value",
     "payg": {
       "title": "Pay as you go",
-      "description": "Buy exactly what you need, one cent per credit.",
+      "description": "Achète les crédits dont tu as besoin, à partir de {price}.",
       "note": "per credit",
       "features": {
         "downloads": "GLB and USDZ downloads",
@@ -666,7 +666,8 @@
     "buy": "Buy credits"
   },
   "BuyButton": {
-    "failed": "Checkout failed"
+    "failed": "Checkout failed",
+    "pricingChanged": "Les prix ont changé. Actualise la page et réessaie."
   },
   "Auth": {
     "signUp": "Sign up",
@@ -1145,13 +1146,13 @@
     "details": "Détails des cookies",
     "intro": "Voici ce que ton navigateur conserve et comment tu peux gérer les statistiques facultatives.",
     "anonTitle": "er_anon",
-    "anon": "Ce cookie interne identifie tes aperçus anonymes, applique la limite quotidienne gratuite et te permet de les consulter et de les associer à ton compte. Il est actuellement créé dès ta première visite et dure un an. Il ne sert pas à l’attribution.",
+    "anon": "Ce cookie interne identifie tes aperçus anonymes, applique la limite gratuite quotidienne et te permet de les associer à ton compte. Il garde aussi tes prix cohérents pendant un test de prix, même si tu refuses les statistiques. Il est créé à ta première visite et dure un an.",
     "consentTitle": "er_consent",
     "consent": "Mémorise ton choix, sa date et sa version pendant un an. Il est créé uniquement quand tu choisis.",
     "gaTitle": "Google Analytics 4 : _ga et _ga_<id>",
     "ga": "Ces cookies mesurent les visites et durent jusqu’à deux ans. Dans les régions strictes, ils sont créés uniquement après ton accord. Ailleurs, les statistiques sont actives sauf si tu refuses ou envoies Global Privacy Control (GPC). Le consentement publicitaire reste toujours refusé.",
     "posthogTitle": "PostHog (UE), sans cookies",
-    "posthog": "PostHog n’utilise ni cookies ni stockage persistant dans ton navigateur. Dans les régions strictes, il se charge uniquement après ton accord ; ailleurs, il respecte ton refus et GPC.",
+    "posthog": "PostHog n’utilise ni cookies ni stockage persistant dans ton navigateur. Dans les régions strictes, il se charge uniquement après ton accord ; ailleurs, il respecte ton refus et GPC. Si tu autorises les statistiques, un identifiant de prix haché relie les visites des tarifs aux inscriptions et aux achats pour mesurer le test.",
     "attributionTitle": "Attribution du premier contact",
     "attribution": "Les paramètres de campagne et la page d’origine restent en mémoire jusqu’à la création d’un aperçu ou d’un compte, puis sont enregistrés avec celui-ci. Aucun identifiant de clic n’est conservé. Les événements serveur ne dépendent pas de ton choix de statistiques navigateur.",
     "change": "Change ton choix",

@@ -54,7 +54,7 @@ export function eventProperties(eventId: string, context: EventContext): Propert
 }
 /** Everything, including DB lookups and network flush, runs after the response. Fail closed. */
 export function captureServer(
-  event: FunnelEvent,
+  event: FunnelEvent | 'purchase_completed',
   identity: string,
   context: EventContext,
   properties: Properties,

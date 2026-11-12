@@ -6,6 +6,7 @@ export * from './config';
 export * from './credits';
 export * from './errors';
 export * from './oauth';
+export * from './pricing-experiment';
 export * from './remote-image';
 export * from './render-materials';
 export * from './render-quality';

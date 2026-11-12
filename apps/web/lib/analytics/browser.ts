@@ -6,6 +6,7 @@ import {
   sanitizeProperties,
   UTM_KEYS,
 } from '@easyrender/core/attribution';
+import { PRICING_FLAG, type PricingVariant } from '@easyrender/harness/pricing';
 import type { PostHog } from 'posthog-js';
 
 declare global {
@@ -47,7 +48,12 @@ export function attributionHeaders(): Record<string, string> {
   return testCountry !== null ? { 'x-test-country': testCountry } : {};
 }
 export function beforeSend<T extends { properties: Record<string, unknown> }>(event: T): T {
-  const properties = sanitizeProperties(event.properties);
+  const properties = sanitizeProperties({
+    pricing_subject: browserPricingSubject(),
+    pricing_variant: browserPricingVariant(),
+    [`$feature/${PRICING_FLAG}`]: browserPricingVariant(),
+    ...event.properties,
+  });
   // PostHog requires its PUBLIC project write key in this SDK field. It is not a URL/auth token.
   if (event.properties.token === process.env.NEXT_PUBLIC_POSTHOG_KEY)
     properties.token = event.properties.token;
@@ -104,6 +110,7 @@ export function gaEvent(
   if (key && conversions.has(key)) return;
   if (key) conversions.add(key);
   window.gtag('event', event, {
+    pricing_variant: browserPricingVariant(),
     ...properties,
     send_to: gaId,
     page_location: googleUrl(window.location.href),
@@ -173,6 +180,7 @@ export async function setBrowserTools(
       before_send: (event) => (event && isPosthogAllowed ? beforeSend(event) : null),
     });
   }
+  capturePricingView();
   if (!hasLanding) {
     hasLanding = true;
     const a = attribution();
@@ -204,4 +212,52 @@ export async function setBrowserTools(
       });
     }
   }
+}
+
+export function browserPricingVariant(): PricingVariant {
+  if (typeof document === 'undefined') return 'control';
+  const value =
+    document
+      .querySelector?.('[data-pricing-variant]:not(html)')
+      ?.getAttribute('data-pricing-variant') ?? document.documentElement?.dataset.pricingVariant;
+  return value === 'test' ? 'test' : 'control';
+}
+export function captureBrowser(event: string, properties: Record<string, unknown> = {}) {
+  if (!isPosthogAllowed || !posthog) return;
+  posthog.capture(event, {
+    pricing_subject: browserPricingSubject(),
+    pricing_variant: browserPricingVariant(),
+    [`$feature/${PRICING_FLAG}`]: browserPricingVariant(),
+    ...properties,
+  });
+}
+let visiblePricing: PricingVariant | null = null;
+const pricingViews = new Set<string>();
+export function observePricing(variant: PricingVariant) {
+  visiblePricing = variant;
+  capturePricingView();
+}
+export function stopObservingPricing() {
+  visiblePricing = null;
+}
+function capturePricingView() {
+  if (!isPosthogAllowed || !posthog || !visiblePricing) return;
+  const key = `${location.pathname}:${visiblePricing}`;
+  if (pricingViews.has(key)) return;
+  pricingViews.add(key);
+  captureBrowser('pricing_viewed', {
+    pricing_variant: visiblePricing,
+    [`$feature/${PRICING_FLAG}`]: visiblePricing,
+  });
+}
+
+function browserPricingSubject(): string | null {
+  if (typeof document === 'undefined') return null;
+  return (
+    document
+      .querySelector?.('[data-pricing-subject]:not(html)')
+      ?.getAttribute('data-pricing-subject') ??
+    document.documentElement?.dataset.pricingSubject ??
+    null
+  );
 }

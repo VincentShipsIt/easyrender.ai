@@ -1,6 +1,5 @@
 import {
   BUILD_MODEL,
-  CREDIT_USD,
   FINAL_SHEET_MODEL,
   RENDER_CREDITS,
   SHEET_CREDITS,
@@ -22,6 +21,7 @@ import {
 } from '@/components/ui/table';
 import type { Locale } from '@/i18n/config';
 import { formatCount, formatUsd } from '@/lib/price-format';
+import { currentPricing } from '@/lib/pricing';
 import { ROUTES } from '@/lib/seo/routes';
 
 // The model ids come from the harness, so this page cannot name a model the pipeline does not run.
@@ -31,6 +31,7 @@ const modelId = (path: string) => path.replace('/models/', '').replace('/predict
 /** The models page of one language: the two steps, their settings and what each costs. */
 export async function ModelsView({ locale }: { locale: Locale }) {
   const t = await getTranslations('Models');
+  const { creditUsd } = await currentPricing();
   const buildCredits = RENDER_CREDITS - SHEET_CREDITS;
 
   const rows = [
@@ -118,14 +119,14 @@ export async function ModelsView({ locale }: { locale: Locale }) {
                   {formatCount(locale, row.credits)}
                 </TableCell>
                 <TableCell className="text-right tabular-nums">
-                  {formatUsd(locale, row.credits * CREDIT_USD)}
+                  {formatUsd(locale, row.credits * creditUsd)}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
         <p className="text-sm text-muted-foreground text-pretty">
-          {t('pricing.note', { unit: formatUsd(locale, CREDIT_USD) })}
+          {t('pricing.note', { unit: formatUsd(locale, creditUsd) })}
         </p>
       </section>
 

@@ -108,7 +108,7 @@
         "name": "Pay as you go",
         "note": "per credit",
         "features": {
-          "min": "From {credits} credits",
+          "min": "From {credits} credits ({price})",
           "downloads": "GLB and USDZ downloads",
           "ar": "Coming soon: see it in your room from your phone",
           "api": "MCP server and REST API"
@@ -625,7 +625,7 @@
     "bestValue": "Best value",
     "payg": {
       "title": "Pay as you go",
-      "description": "Buy exactly what you need, one cent per credit.",
+      "description": "Buy the credits you need, from {price}.",
       "note": "per credit",
       "features": {
         "downloads": "GLB and USDZ downloads",
@@ -666,7 +666,8 @@
     "buy": "Buy credits"
   },
   "BuyButton": {
-    "failed": "Checkout failed"
+    "failed": "Checkout failed",
+    "pricingChanged": "Pricing changed. Refresh the page and try again."
   },
   "Auth": {
     "signUp": "Sign up",
@@ -1145,13 +1146,13 @@
     "details": "Cookie details",
     "intro": "Here is what your browser stores and how you can control optional analytics.",
     "anonTitle": "er_anon",
-    "anon": "This first-party cookie identifies your anonymous previews, applies the daily free-preview allowance and lets you access and associate previews with your account. It is currently set on your first visit and lasts one year. It is not used for attribution.",
+    "anon": "This first-party cookie identifies your anonymous previews, applies the daily free-preview allowance and lets you associate previews with your account. It also keeps your prices consistent during a pricing test, even if you decline analytics. It is set on your first visit and lasts one year.",
     "consentTitle": "er_consent",
     "consent": "Remembers your analytics choice, its date and version for one year. It is set only when you choose.",
     "gaTitle": "Google Analytics 4: _ga and _ga_<id>",
     "ga": "These cookies measure visits and last up to two years. In strict regions they are only set after you accept. Elsewhere analytics is enabled unless you reject or send Global Privacy Control (GPC). Advertising consent always stays denied.",
     "posthogTitle": "PostHog (EU), without cookies",
-    "posthog": "PostHog uses no cookies or persistent browser storage. In strict regions it loads only after you accept; elsewhere it respects your rejection and GPC.",
+    "posthog": "PostHog uses no cookies or persistent browser storage. In strict regions it loads only after you accept; elsewhere it respects your rejection and GPC. With analytics allowed, a hashed pricing identifier links pricing visits to signup and purchase events for experiment reporting.",
     "attributionTitle": "First-touch attribution",
     "attribution": "Campaign parameters and the referring page stay in memory until you create a preview or account, then are stored with that record. No click identifiers are stored. Server funnel events do not depend on your browser analytics choice.",
     "change": "Change your choice",

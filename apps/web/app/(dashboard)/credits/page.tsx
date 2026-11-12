@@ -1,12 +1,10 @@
 import { getBalance, getBillingStatus } from '@easyrender/core';
 import {
-  CREDIT_USD,
   ENTERPRISE_BOOKING_URL,
   PLAN_IDS,
   type PlanId,
   RENDER_CREDITS,
   rendersFor,
-  SUBSCRIPTION_PLANS,
 } from '@easyrender/harness';
 import { Check, CircleCheck } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -15,6 +13,7 @@ import { getFormatter, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { BuyButton } from '@/components/buy-button';
 import { PaygPicker } from '@/components/payg-picker';
+import { PricingExposure } from '@/components/pricing-exposure';
 import { PurchaseConversion } from '@/components/purchase-conversion';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -28,6 +27,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { currentUser } from '@/lib/actor';
+import { currentPricing } from '@/lib/pricing';
 import { breadcrumbList, JsonLd } from '@/lib/seo/jsonld';
 import { pageMetadata } from '@/lib/seo/metadata';
 import { livePaths, ROUTES } from '@/lib/seo/routes';
@@ -38,6 +38,7 @@ export const dynamic = 'force-dynamic';
 // The public pricing page, and the only indexable route in the dashboard group: it overrides the
 // layout's noindex. /es/precios and the rest arrive with their own copy.
 export async function generateMetadata(): Promise<Metadata> {
+  const { creditUsd, plans: SUBSCRIPTION_PLANS } = await currentPricing();
   const [t, format] = await Promise.all([getTranslations('Credits'), getFormatter()]);
   const metadata = pageMetadata({
     locale: 'en',
@@ -45,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t('metaTitle'),
     description: t('metaDescription', {
       credits: RENDER_CREDITS,
-      price: format.number(RENDER_CREDITS * CREDIT_USD, { style: 'currency', currency: 'USD' }),
+      price: format.number(RENDER_CREDITS * creditUsd, { style: 'currency', currency: 'USD' }),
       proCredits: format.number(SUBSCRIPTION_PLANS.pro.monthlyCredits),
     }),
     alternates: livePaths('pricing'),
@@ -105,6 +106,8 @@ function PlanCard({
 }
 
 export default async function CreditsPage({ searchParams }: PageProps<'/credits'>) {
+  const pricing = await currentPricing();
+  const { plans: SUBSCRIPTION_PLANS } = pricing;
   const { status, next } = await searchParams;
   const user = await currentUser();
   const [balance, billing] = user
@@ -133,6 +136,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
         <BuyButton
           label={t('subscribe', { plan: SUBSCRIPTION_PLANS[id].label })}
           body={{ plan: id }}
+          pricingVariant={pricing.variant}
         />
       );
     }
@@ -156,6 +160,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
   return (
     <div className="space-y-8">
       <PurchaseConversion />
+      <PricingExposure variant={pricing.variant} subject={pricing.subject} />
       <JsonLd
         graph={[
           breadcrumbList([
@@ -171,7 +176,10 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
             <Badge variant="outline">{t('eyebrow')}</Badge>
             <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
             <p className="text-muted-foreground">
-              {t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
+              {t('description', {
+                credits: RENDER_CREDITS,
+                price: usd(RENDER_CREDITS * pricing.creditUsd * 100),
+              })}
             </p>
           </>
         )}
@@ -200,11 +208,13 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
       <div className="grid gap-4 lg:grid-cols-3">
         <PlanCard
           title={t('payg.title')}
-          description={t('payg.description')}
-          price={usd(1)}
+          description={t('payg.description', {
+            price: usd(pricing.payg.min * pricing.creditUsd * 100),
+          })}
+          price={usd(pricing.creditUsd * 100)}
           note={t('payg.note')}
           features={[t('payg.features.downloads'), t('payg.features.ar'), t('payg.features.api')]}
-          footer={user ? <PaygPicker /> : signUp}
+          footer={user ? <PaygPicker pricingVariant={pricing.variant} /> : signUp}
         />
         {PLAN_IDS.map((id) => {
           const plan = SUBSCRIPTION_PLANS[id];

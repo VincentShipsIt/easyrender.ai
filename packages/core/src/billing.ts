@@ -5,8 +5,10 @@ import {
   PAYG,
   PLAN_IDS,
   type PlanId,
+  PRICING_FLAG,
+  type PricingVariant,
   paygPriceCents,
-  SUBSCRIPTION_PLANS,
+  pricingFor,
 } from '@easyrender/harness';
 import Stripe from 'stripe';
 import { captureServer, deferAnalytics } from './analytics';
@@ -14,6 +16,12 @@ import { pickAttribution } from './attribution';
 import { config } from './config';
 import { grantCredits } from './credits';
 import { AppError } from './errors';
+import {
+  assignedPricing,
+  pricingSubject,
+  purchasedVariant,
+  purchasePackId,
+} from './pricing-experiment';
 
 let stripeClient: Stripe | null = null;
 const stripe = () => {
@@ -28,11 +36,14 @@ export const devCheckoutEnabled = () => !process.env.STRIPE_SECRET_KEY && !confi
 
 export type CheckoutRequest = { plan: 'payg'; credits: number } | { plan: PlanId };
 
-export function parseCheckout(body: { plan?: unknown; credits?: unknown }): CheckoutRequest {
+export function parseCheckout(
+  body: { plan?: unknown; credits?: unknown },
+  variant: PricingVariant = 'control',
+): CheckoutRequest {
   if (isPlanId(body.plan)) return { plan: body.plan };
   if (body.plan === 'payg') {
     const credits = Number(body.credits);
-    if (!isValidPaygCredits(credits)) {
+    if (!isValidPaygCredits(credits, variant)) {
       throw new AppError(
         `Buy between ${PAYG.min.toLocaleString('en-US')} and ${PAYG.max.toLocaleString('en-US')} credits`,
         400,
@@ -45,8 +56,9 @@ export function parseCheckout(body: { plan?: unknown; credits?: unknown }): Chec
 }
 
 // One Stripe price per product, named STRIPE_PRICE_PAYG, STRIPE_PRICE_CREATOR, STRIPE_PRICE_PRO...
-const priceId = (product: 'payg' | PlanId) => {
-  const id = process.env[`STRIPE_PRICE_${product.toUpperCase()}`];
+const priceId = (product: 'payg' | PlanId, variant: PricingVariant) => {
+  const id =
+    process.env[`STRIPE_PRICE_${product.toUpperCase()}${variant === 'test' ? '_TEST' : ''}`];
   if (!id) throw new AppError('Payments are not configured', 503, 'no_stripe');
   return id;
 };
@@ -56,7 +68,26 @@ const devCheckoutUrl = (request: CheckoutRequest) =>
     ? `${config.appUrl()}/api/dev/checkout?plan=payg&credits=${request.credits}`
     : `${config.appUrl()}/api/dev/checkout?plan=${request.plan}`;
 
-export async function createCheckout(userId: string, request: CheckoutRequest): Promise<string> {
+export async function createCheckout(
+  userId: string,
+  input: { plan?: unknown; credits?: unknown },
+  context: { anonId?: string | null; expectedVariant?: string | null } = {},
+): Promise<string> {
+  // The caller supplies only a plan/quantity. Resolve again here, even for non-HTTP callers.
+  const variant = await assignedPricing(userId, context.anonId);
+  if (context.expectedVariant && context.expectedVariant !== variant)
+    throw new AppError(
+      'Pricing changed. Refresh the page before checking out.',
+      409,
+      'pricing_changed',
+    );
+  const request = parseCheckout(input, variant);
+  const metadata = {
+    userId,
+    plan: request.plan,
+    pricing_variant: variant,
+    pricing_flag: PRICING_FLAG,
+  };
   const client = stripe();
   if (!client) {
     if (devCheckoutEnabled()) return devCheckoutUrl(request);
@@ -70,6 +101,8 @@ export async function createCheckout(userId: string, request: CheckoutRequest): 
   const customer = user.stripeCustomerId
     ? { customer: user.stripeCustomerId }
     : { customer_email: user.email };
+  const selectedPrice = await client.prices.retrieve(priceId(request.plan, variant));
+  validateCheckoutPrice(selectedPrice, request.plan, variant);
   const urls = {
     success_url: `${config.appUrl()}/credits?status=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${config.appUrl()}/credits?status=canceled`,
@@ -87,9 +120,10 @@ export async function createCheckout(userId: string, request: CheckoutRequest): 
       mode: 'subscription',
       client_reference_id: userId,
       ...customer,
-      line_items: [{ price: priceId(request.plan), quantity: 1 }],
-      metadata: { userId, plan: request.plan },
-      subscription_data: { metadata: { userId, plan: request.plan } },
+      line_items: [{ price: selectedPrice.id, quantity: 1 }],
+      metadata,
+      subscription_data: { metadata },
+      adaptive_pricing: { enabled: false },
       ...urls,
     });
     if (!session.url) throw new AppError('Stripe did not return a checkout URL', 502, 'upstream');
@@ -101,21 +135,46 @@ export async function createCheckout(userId: string, request: CheckoutRequest): 
     client_reference_id: userId,
     ...customer,
     ...(user.stripeCustomerId ? {} : { customer_creation: 'always' as const }),
-    line_items: [{ price: priceId('payg'), quantity: request.credits }],
-    metadata: { userId, plan: 'payg' },
+    line_items: [{ price: selectedPrice.id, quantity: request.credits }],
+    metadata,
+    adaptive_pricing: { enabled: false },
     ...urls,
   });
   await db().purchase.create({
     data: {
       userId,
       stripeSessionId: session.id,
-      packId: 'payg',
+      packId: purchasePackId('payg', variant),
       credits: request.credits,
-      amountCents: paygPriceCents(request.credits),
+      amountCents: paygPriceCents(request.credits, variant),
     },
   });
   if (!session.url) throw new AppError('Stripe did not return a checkout URL', 502, 'upstream');
   return session.url;
+}
+
+export function validateCheckoutPrice(
+  price: Stripe.Price,
+  plan: 'payg' | PlanId,
+  variant: PricingVariant,
+) {
+  const pricing = pricingFor(variant);
+  const amount = plan === 'payg' ? paygPriceCents(1, variant) : pricing.plans[plan].priceCents;
+  const isRecurring = plan !== 'payg';
+  if (
+    !price.active ||
+    price.currency !== 'usd' ||
+    price.unit_amount !== amount ||
+    price.billing_scheme !== 'per_unit' ||
+    price.transform_quantity ||
+    (isRecurring
+      ? price.recurring?.interval !== 'month' ||
+        price.recurring?.interval_count !== 1 ||
+        price.recurring?.usage_type !== 'licensed'
+      : price.recurring !== null)
+  ) {
+    throw new AppError('Payments are not configured for this price', 503, 'price_mismatch');
+  }
 }
 
 export const isActiveSubscription = (status: string | null | undefined) =>
@@ -138,7 +197,13 @@ export async function createBillingPortal(userId: string): Promise<string> {
   return session.url;
 }
 
-export async function devGrant(userId: string, request: CheckoutRequest) {
+export async function devGrant(
+  userId: string,
+  input: CheckoutRequest,
+  anonId: string | null = null,
+) {
+  const variant = await assignedPricing(userId, anonId);
+  const request = parseCheckout(input, variant);
   if (!devCheckoutEnabled()) throw new AppError('Not available', 404, 'not_found');
   const isPayg = request.plan === 'payg';
   if (!isPayg) {
@@ -149,7 +214,7 @@ export async function devGrant(userId: string, request: CheckoutRequest) {
   }
   await grantCredits({
     userId,
-    amount: isPayg ? request.credits : SUBSCRIPTION_PLANS[request.plan].monthlyCredits,
+    amount: isPayg ? request.credits : pricingFor(variant).plans[request.plan].monthlyCredits,
     key: `dev:${userId}:${Date.now()}`,
     reason: isPayg ? 'dev_purchase' : 'dev_subscription',
   });
@@ -165,7 +230,13 @@ export function planForPrice(price: string | { id: string } | null | undefined):
   const priceId = id(price);
   if (!priceId) return null;
   return (
-    PLAN_IDS.find((plan) => process.env[`STRIPE_PRICE_${plan.toUpperCase()}`] === priceId) ?? null
+    PLAN_IDS.find((plan) =>
+      ['control', 'test'].some(
+        (variant) =>
+          process.env[`STRIPE_PRICE_${plan.toUpperCase()}${variant === 'test' ? '_TEST' : ''}`] ===
+          priceId,
+      ),
+    ) ?? null
   );
 }
 
@@ -181,6 +252,30 @@ export function planFromInvoice(invoice: Stripe.Invoice): PlanId | null {
     if (plan) return plan;
   }
   return planTag(invoice.parent?.subscription_details?.metadata);
+}
+
+// Price IDs survive flag shutdown and portal changes; never re-evaluate a paid subscription.
+export function variantFromInvoice(invoice: Stripe.Invoice): PricingVariant {
+  for (const line of invoice.lines?.data ?? []) {
+    if (!line.parent?.subscription_item_details || line.parent.subscription_item_details.proration)
+      continue;
+    const price = id(line.pricing?.price_details?.price);
+    if (!price) continue;
+    for (const variant of ['control', 'test'] as const) {
+      if (
+        PLAN_IDS.some(
+          (plan) =>
+            process.env[
+              `STRIPE_PRICE_${plan.toUpperCase()}${variant === 'test' ? '_TEST' : ''}`
+            ] === price,
+        )
+      )
+        return variant;
+    }
+  }
+  return invoice.parent?.subscription_details?.metadata?.pricing_variant === 'test'
+    ? 'test'
+    : 'control';
 }
 
 export function planFromSubscription(subscription: Stripe.Subscription): PlanId | null {
@@ -242,6 +337,8 @@ async function onInvoicePaid(invoice: Stripe.Invoice) {
   const userId = details?.metadata?.userId;
   const plan = planFromInvoice(invoice);
   if (!details || !userId || !plan) return;
+  const variant = variantFromInvoice(invoice);
+  const paidPlan = pricingFor(variant).plans[plan];
   const purchase = await db().purchase.upsert({
     where: { stripeSessionId: invoice.id },
     // A nonempty no-op update lets Prisma use a database-native atomic upsert on replays.
@@ -249,14 +346,14 @@ async function onInvoicePaid(invoice: Stripe.Invoice) {
     create: {
       userId,
       stripeSessionId: invoice.id,
-      packId: plan,
-      credits: SUBSCRIPTION_PLANS[plan].monthlyCredits,
-      amountCents: invoice.amount_paid ?? SUBSCRIPTION_PLANS[plan].priceCents,
+      packId: purchasePackId(plan, variant),
+      credits: paidPlan.monthlyCredits,
+      amountCents: invoice.amount_paid ?? paidPlan.priceCents,
     },
   });
   await grantCredits({
     userId,
-    amount: SUBSCRIPTION_PLANS[plan].monthlyCredits,
+    amount: purchase.credits,
     key: `stripe:invoice:${invoice.id}`,
     reason: 'subscription',
     purchaseId: purchase.id,
@@ -311,20 +408,30 @@ async function capturePurchase(
     orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     select: { id: true },
   });
-  captureServer(
-    'purchase',
-    purchase.id,
-    { userId: purchase.userId, previewId: null, source: 'web', attribution: pickAttribution(user) },
-    {
-      order_id: purchase.id,
-      pack_id: purchase.packId,
-      credits: purchase.credits,
-      amount: purchase.amountCents / 100,
-      currency: currency.toUpperCase(),
-      is_first_purchase: first?.id === purchase.id,
-      payment_provider: 'stripe',
-    },
-  );
+  for (const event of ['purchase', 'purchase_completed'] as const)
+    captureServer(
+      event,
+      purchase.id,
+      {
+        userId: purchase.userId,
+        previewId: null,
+        source: 'web',
+        attribution: pickAttribution(user),
+      },
+      {
+        pricing_subject: await pricingSubject(purchase.userId),
+        pricing_variant: purchasedVariant(purchase.packId),
+        [`$feature/${PRICING_FLAG}`]: purchasedVariant(purchase.packId),
+        revenue: purchase.amountCents / 100,
+        order_id: purchase.id,
+        pack_id: purchase.packId,
+        credits: purchase.credits,
+        amount: purchase.amountCents / 100,
+        currency: currency.toUpperCase(),
+        is_first_purchase: first?.id === purchase.id,
+        payment_provider: 'stripe',
+      },
+    );
 }
 
 /** Owner-scoped, DB-confirmed checkout result. Never trust success query parameters. */
@@ -356,6 +463,7 @@ export async function confirmedPurchase(userId: string, sessionId: string) {
   }
   if (!purchase) return null;
   return {
+    pricing_variant: purchasedVariant(purchase.packId),
     transaction_id: purchase.id,
     value: purchase.amountCents / 100,
     currency: 'USD',
