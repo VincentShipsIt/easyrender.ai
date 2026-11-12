@@ -11,5 +11,8 @@ export const APP_NAV = [
 
 export const ACCOUNT_NAV = { href: '/account', key: 'account', icon: UserRound } as const;
 
+// A render's page (/r/{id}) belongs to the Library it was opened from.
 export const isActivePath = (pathname: string, href: string) =>
-  pathname === href || pathname.startsWith(`${href}/`);
+  pathname === href ||
+  pathname.startsWith(`${href}/`) ||
+  (href === '/library' && pathname.startsWith('/r/'));

@@ -193,6 +193,7 @@ export function RenderView({
 
   return (
     <RenderDetail
+      isInApp={signedIn}
       title={title}
       prompt={render.prompt}
       badges={[t(`status.${render.status}`)]}
