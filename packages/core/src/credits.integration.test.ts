@@ -495,6 +495,34 @@ run('credits and generation billing (real database)', () => {
       expect(await balance(scale)).toBe(18_000);
     });
 
+    it('credits the plan the customer pays for after a portal plan switch', async () => {
+      process.env.STRIPE_PRICE_CREATOR = 'price_creator_test';
+      process.env.STRIPE_PRICE_SCALE = 'price_scale_test';
+      const userId = await newUser(0);
+      // Checkout tagged the subscription Scale; the customer downgraded to Creator in the portal.
+      await send({
+        id: `evt_switch_${userId}`,
+        object: 'event',
+        type: 'invoice.paid',
+        data: {
+          object: {
+            id: `in_switch_${userId}`,
+            object: 'invoice',
+            parent: { subscription_details: { metadata: { userId, plan: 'scale' } } },
+            lines: {
+              data: [
+                {
+                  parent: { subscription_item_details: { proration: false } },
+                  pricing: { price_details: { price: 'price_creator_test' } },
+                },
+              ],
+            },
+          },
+        },
+      });
+      expect(await balance(userId)).toBe(2000);
+    });
+
     it('rejects a bad signature', async () => {
       const { handleStripeWebhook } = await import('./billing');
       await expect(handleStripeWebhook('{}', 't=1,v1=bad')).rejects.toThrow();

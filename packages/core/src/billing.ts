@@ -3,6 +3,7 @@ import {
   isPlanId,
   isValidPaygCredits,
   PAYG,
+  PLAN_IDS,
   type PlanId,
   paygPriceCents,
   SUBSCRIPTION_PLANS,
@@ -155,6 +156,39 @@ export async function devGrant(userId: string, request: CheckoutRequest) {
 const id = (value: string | { id: string } | null | undefined) =>
   typeof value === 'string' ? value : (value?.id ?? null);
 
+// The plan a Stripe price belongs to, from the STRIPE_PRICE_* env vars. The price is the truth:
+// the plan tag on the subscription is written once at checkout and stays put when the customer
+// switches plan in the billing portal.
+export function planForPrice(price: string | { id: string } | null | undefined): PlanId | null {
+  const priceId = id(price);
+  if (!priceId) return null;
+  return (
+    PLAN_IDS.find((plan) => process.env[`STRIPE_PRICE_${plan.toUpperCase()}`] === priceId) ?? null
+  );
+}
+
+const planTag = (metadata: Stripe.Metadata | null | undefined): PlanId | null =>
+  isPlanId(metadata?.plan) ? metadata.plan : null;
+
+// The plan this invoice bills for: its regular subscription line, not a proration for the old plan.
+export function planFromInvoice(invoice: Stripe.Invoice): PlanId | null {
+  for (const line of invoice.lines?.data ?? []) {
+    const item = line.parent?.subscription_item_details;
+    if (!item || item.proration) continue;
+    const plan = planForPrice(line.pricing?.price_details?.price);
+    if (plan) return plan;
+  }
+  return planTag(invoice.parent?.subscription_details?.metadata);
+}
+
+export function planFromSubscription(subscription: Stripe.Subscription): PlanId | null {
+  for (const item of subscription.items?.data ?? []) {
+    const plan = planForPrice(item.price);
+    if (plan) return plan;
+  }
+  return planTag(subscription.metadata);
+}
+
 // Verifies the signature, then grants credits once per paid checkout session or monthly-plan invoice.
 export async function handleStripeWebhook(rawBody: string, signature: string | null) {
   const client = stripe();
@@ -199,8 +233,8 @@ async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function onInvoicePaid(invoice: Stripe.Invoice) {
   const details = invoice.parent?.subscription_details;
   const userId = details?.metadata?.userId;
-  const plan = details?.metadata?.plan;
-  if (!details || !userId || !isPlanId(plan)) return;
+  const plan = planFromInvoice(invoice);
+  if (!details || !userId || !plan) return;
   await grantCredits({
     userId,
     amount: SUBSCRIPTION_PLANS[plan].monthlyCredits,
@@ -211,8 +245,8 @@ async function onInvoicePaid(invoice: Stripe.Invoice) {
 
 async function onSubscriptionChanged(subscription: Stripe.Subscription) {
   const userId = subscription.metadata?.userId;
-  const plan = subscription.metadata?.plan;
-  if (!userId || !isPlanId(plan)) return;
+  const plan = planFromSubscription(subscription);
+  if (!userId || !plan) return;
   await db().user.update({
     where: { id: userId },
     data: {
