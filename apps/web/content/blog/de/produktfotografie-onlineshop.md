@@ -8,20 +8,20 @@ updated: 2026-11-11
 author: Jorge Rodríguez
 authorType: person
 keyword: produktfotografie
-cta: Sobald dein nächstes Hauptbild aus Dreiviertelansicht fertig ist, probiere Bild-zu-3D aus und prüfe die verdeckten Seiten kostenlos.
+cta: Erstelle aus deinem nächsten Hauptbild in Dreiviertelansicht ein 3D-Modell und prüfe die nicht fotografierten Seiten vorher kostenlos in der Vorschau.
 ---
 
-Gute Produktfotografie für deinen Onlineshop braucht einen wiederholbaren Aufbau: eine große, weiche Lichtquelle, einen schlichten Hintergrund, die Kamera auf einem Stativ auf halber Produkthöhe und dieselbe Aufnahmeliste für jeden Artikel. Studioblitze sind dafür nicht nötig. Ein Fenster, eine weiße Hartschaumplatte und ein Handy reichen für die meisten kleinen Shops aus.
+Gute Produktfotografie für deinen Onlineshop gelingt mit einem Aufbau, den du jedes Mal gleich nutzt: eine große, weiche Lichtquelle, einen schlichten Hintergrund, die Kamera auf einem Stativ auf halber Produkthöhe und dieselbe Aufnahmeliste für jeden Artikel. Studioblitze sind dafür nicht nötig. Ein Fenster, eine weiße Hartschaumplatte und ein Handy reichen für die meisten kleinen Shops aus.
 
 ![Illustration eines Wasserkessels mit Schwanenhals, halb schwarz emailliert mit Kupfergriff und Knauf, halb mattgrauer Ton mit weißem Drahtgitter, vor dunklem Hintergrund](/blog/illustrations/product-photography-for-ecommerce/hero.webp "Illustration, kein easyrender-Ergebnis: ein Wasserkessel, halb mit seiner Oberfläche und halb als Tonmodell mit Drahtgitter gezeichnet.")
 
 ## Welche Ausrüstung brauchst du für Produktfotografie?
 
-Ein Stativ zählt mehr als die Kamera. Es hält Höhe und Winkel gleich, damit die Bilder auf deinen Kategorieseiten zusammenpassen. Außerdem kannst du bei Fensterlicht mit längeren Belichtungszeiten fotografieren, ohne zu verwackeln.
+Ein Stativ ist wichtiger als die Kamera. Es hält Höhe und Winkel gleich, damit die Bilder auf deinen Kategorieseiten zusammenpassen. Außerdem kannst du bei Fensterlicht mit längeren Belichtungszeiten fotografieren, ohne zu verwackeln.
 
-Ein aktuelles Handy reicht für Produktbilder. Nutze das 2x- oder 3x-Objektiv und geh zurück. Das 1x-Weitwinkel streckt aus kurzer Entfernung alles, was nah an der Linse liegt, sodass die vorderen Beine eines Beistelltischs länger wirken als die hinteren.
+Ein aktuelles Handy reicht für Produktbilder. Nutze das 2x- oder 3x-Objektiv und geh ein paar Schritte zurück. Das 1x-Weitwinkel streckt aus kurzer Entfernung alles, was nah an der Linse liegt, sodass die vorderen Beine eines Beistelltischs länger wirken als die hinteren.
 
-![Derselbe Beistelltisch zweimal gezeichnet: aus kurzer Entfernung mit 1x wirken die vorderen Beine länger; aus größerem Abstand mit 2x oder 3x wirken die Beine gleichmäßig](diagram:lens-distance "Geh zurück und zoome heran: Je näher die Linse steht, desto größer wirken die vorderen Teile. Zeichnung für diese Anleitung.")
+![Derselbe Beistelltisch zweimal gezeichnet: aus kurzer Entfernung mit 1x wirken die vorderen Beine länger; aus größerem Abstand mit 2x oder 3x wirken die Beine gleich lang](diagram:lens-distance "Geh zurück und zoome heran: Je näher die Linse steht, desto größer wirken die vorderen Teile. Zeichnung für diese Anleitung.")
 
 Der Rest der Ausrüstung ist günstig:
 
@@ -35,12 +35,12 @@ Der Rest der Ausrüstung ist günstig:
 
 Ein Handy wählt Belichtung, Fokus und Farbe für jedes Bild neu, jedes Mal etwas anders. Lege diese Einstellungen vor der ersten Aufnahme selbst fest:
 
-1. Wähle Foto statt Porträt. Die künstliche Hintergrundunschärfe im Porträtmodus greift dünne Kanten wie Stuhlbeine und Lampenstangen an.
+1. Wähle Foto statt Porträt. Die künstliche Hintergrundunschärfe im Porträtmodus lässt dünne Konturen wie Stuhlbeine und Lampenstangen ausfransen.
 2. Schalte das Raster ein und richte Tischkante oder Bodenlinie an einer waagerechten Rasterlinie aus.
 3. Sperre Belichtung und Fokus. Halte auf dem iPhone den Finger auf dem Produkt, bis die AE/AF-Sperre erscheint.
-4. Senke die Belichtung etwas, wenn ein cremefarbener Lampenschirm oder ein weißes Sofa seine Struktur verliert. Ausgefressene helle Stellen lassen sich nicht zurückholen.
+4. Senke die Belichtung etwas, wenn ein cremefarbener Lampenschirm oder ein weißes Sofa seine Struktur verliert. Details in überbelichteten Stellen lassen sich später nicht wiederherstellen.
 5. Löse per Timer oder Fernbedienung aus, damit der Druck auf den Auslöser das Handy nicht bewegt.
-6. Fotografiere in voller Auflösung und behalte die Originale. Kleiner exportieren geht immer, größer nicht.
+6. Fotografiere in voller Auflösung und behalte die Originale. Verkleinern geht später immer; zusätzliche Bilddetails bekommst du durch Vergrößern nicht zurück.
 
 Die Sperre spart später am meisten Zeit. Ohne sie entstehen von derselben Eichenbank acht unterschiedlich helle Bilder, die du anschließend von Hand angleichen musst.
 
@@ -48,21 +48,21 @@ Die Sperre spart später am meisten Zeit. Ohne sie entstehen von derselben Eiche
 
 Nutze eine große, weiche Lichtquelle. Ein Fenster ohne direkte Sonne an einem hellen, bedeckten Tag ist die günstigste Softbox.
 
-Stelle das Produkt so, dass das Fenster etwa 45 Grad zu seiner Vorderseite steht, und die weiße Platte gegenüber. Schalte die Deckenbeleuchtung aus. Warmes Kunstlicht zusammen mit Tageslicht macht ein weißes Sofa auf einer Seite blau und auf der anderen gelb.
+Richte das Produkt so aus, dass das Fensterlicht in einem Winkel von etwa 45 Grad auf die Vorderseite fällt, und stelle die weiße Platte gegenüber auf. Schalte die Deckenbeleuchtung aus. Warmes Kunstlicht zusammen mit Tageslicht macht ein weißes Sofa auf einer Seite blau und auf der anderen gelb.
 
 ![Aufbau von oben: Fenster etwa 45 Grad vor dem Produkt, weiße Hartschaumplatte gegenüber, Handy auf Stativ davor und ausgeschaltetes Deckenlicht](diagram:window-light-setup "Der Aufbau von oben, für diese Anleitung gezeichnet. Die Platte hellt die Schattenseite auf; ohne Deckenlicht erhalten alle Flächen dasselbe Tageslicht.")
 
 <!-- IMAGE PENDING: echtes Foto dieses Aufbaus beim easyrender-Team: Fenster bei 45 Grad, weiße Hartschaumplatte gegenüber, Handy auf Stativ. Kein Stockfoto. -->
 
-Steuere den Schatten über die Platte, nicht über das Produkt. Nah am Produkt hellt sie die Schattenseite stärker auf, das Stück wirkt flacher. Mit mehr Abstand wird der Schatten tiefer und die Form deutlicher.
+Verändere den Abstand der Platte zum Produkt, um die Schatten aufzuhellen oder zu vertiefen. Nah am Produkt hellt sie die Schattenseite stärker auf, das Stück wirkt flacher. Mit mehr Abstand wird der Schatten tiefer und die Form deutlicher.
 
-Tageslicht verändert sich, also fotografiere die ganze Serie eines Produkts am Stück. Lege für die erste Aufnahme jeder Serie weißes Papier ins Bild. Setze bei der Bearbeitung den Weißabgleich auf dieses Papier und übertrage dieselbe Korrektur auf alle Bilder der Serie.
+Tageslicht verändert sich, also fotografiere die ganze Serie eines Produkts am Stück. Lege für die erste Aufnahme jeder Serie weißes Papier ins Bild. Stelle bei der Bearbeitung den Weißabgleich anhand des Papiers ein und übertrage dieselbe Korrektur auf alle Bilder der Serie.
 
 ## Weißer Hintergrund oder ein anderer?
 
 Nutze für das Hauptbild reines Weiß oder Hellgrau. Das hält deinen Katalog einheitlich; Amazon verlangt beim Hauptbild einen reinweißen Hintergrund.
 
-Ein Handy liefert direkt aus der Kamera kaum reines Weiß, ohne das Produkt überzubelichten. Belichte stattdessen das Produkt richtig und helle später nur den Hintergrund mit einer Maske oder einem Hintergrundwerkzeug auf.
+Ein Handy liefert direkt aus der Kamera kaum reines Weiß, ohne das Produkt überzubelichten. Belichte stattdessen das Produkt richtig und helle später nur den Hintergrund mit einer Maske oder einem Werkzeug zur Hintergrundbearbeitung auf.
 
 Prüfe mit der Pipette: Der Hintergrund sollte 255, 255, 255 anzeigen. Kontrolliere dann die Kanten in voller Größe. Ein unsauberer Freisteller hinterlässt einen grauen oder weißen Saum, der auf farbigen Seiten auffällt.
 
@@ -79,10 +79,10 @@ Behalte für alle Produkte dieselbe Reihenfolge. Käufer finden sich schneller z
 5. Details: Material, Verbindungen, Griffe, Etikett oder Herstellerzeichen.
 6. Im Raum oder neben einem allgemein bekannten Gegenstand.
 
-Das Hauptbild aus Dreiviertelansicht leistet am meisten. Es zeigt vorne und seitlich zugleich, sodass die Form schon im kleinen Vorschaubild erkennbar ist.
+Die Dreiviertelansicht eignet sich besonders gut als Hauptbild. Sie zeigt Vorderseite und Seite zugleich, sodass die Form schon im kleinen Vorschaubild erkennbar ist.
 
 ![Senfgelber Bouclé-Sessel mit Stahlgestell von vorne: die Kissen sind sichtbar, die Sitztiefe nicht](/blog/figures/product-photography-for-ecommerce/armchair-front.jpg "Frontal: Die Kissen sind erkennbar, die Tiefe nicht. Nutze diese Ansicht als Bild 2.")
-![Derselbe Sessel aus Dreiviertelansicht mit Vorderseite, seitlichem Stahlgestell und Sitztiefe](/blog/figures/product-photography-for-ecommerce/armchair-three-quarter.jpg "Dreiviertelansicht: vorne, seitlich und Tiefe in einem Bild. Das ist das Hauptbild. Beide Ansichten sind Felder einer von easyrender aus einem Katalogfoto erzeugten Übersicht, keine Fotos; deshalb ist derselbe Sessel aus beiden Richtungen zu sehen.")
+![Derselbe Sessel aus Dreiviertelansicht mit Vorderseite, seitlichem Stahlgestell und Sitztiefe](/blog/figures/product-photography-for-ecommerce/armchair-three-quarter.jpg "Dreiviertelansicht: Vorderseite, Seite und Tiefe in einem Bild. Das ist das Hauptbild. Beide Ansichten sind Felder eines von easyrender aus einem Katalogfoto erzeugten Ansichtenrasters, keine Fotos; deshalb ist derselbe Sessel aus beiden Richtungen zu sehen.")
 
 Drehe für die Dreiviertelansicht das Produkt, nicht die Kamera. Etwa 30 bis 45 Grad zur Linse zeigen eine Seite deutlich, während die Vorderseite weiterhin im Mittelpunkt steht.
 
@@ -92,8 +92,8 @@ Die Vorgaben beider Plattformen gehen in dieselbe Richtung. Diese Angaben stamme
 
 | Vorgabe                    | Amazon                                      | Shopify                                                                            |
 | -------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Hintergrund des Hauptbilds | Reinweiß, RGB 255, 255, 255, als Empfehlung | Keine Vorgabe; einheitlichen Hintergrund empfohlen                                 |
-| Bildfüllung                | Das Produkt füllt mindestens 85%            | Nicht angegeben                                                                    |
+| Hintergrund des Hauptbilds | Reinweiß, RGB 255, 255, 255, als Empfehlung | Keine Vorgabe; ein einheitlicher Hintergrund wird empfohlen                                 |
+| Bildfüllung                | Das Produkt füllt mindestens 85% des Bilds            | Nicht angegeben                                                                    |
 | Größe                      | Mehr als 1.000 Pixel je Seite zum Zoomen    | 2048 x 2048 meist ideal für quadratische Bilder; bis 5000 x 5000 oder 25 Megapixel |
 | Datei                      | JPEG bevorzugt; TIFF, PNG und GIF möglich   | PNG, danach JPEG empfohlen; unter 20 MB                                            |
 | Einheitlichkeit            | Nicht angegeben                             | Gleiches Seitenverhältnis für alle Hauptbilder für ein gleichmäßiges Produktraster |
@@ -106,35 +106,35 @@ Benenne Dateien nach Produkt und Position, etwa `oak-bench-01-main.jpg` und `oak
 
 ## Was ändert sich bei Möbelfotografie?
 
-Ein Sofa passt nicht auf eine Papierrolle. Fotografiere es vor einer schlichten Wand mit freier Bodenfläche und Platz an allen Seiten. Dann kannst du später unterschiedliche Seitenverhältnisse zuschneiden.
+Ein Sofa passt nicht auf eine Papierrolle. Fotografiere es vor einer schlichten Wand mit freier Bodenfläche und Platz an allen Seiten. Dann kannst du die Bilder später auf unterschiedliche Seitenverhältnisse zuschneiden.
 
 Stelle die Kamera ungefähr auf halbe Höhe des Möbelstücks, bei einem Stuhl etwa auf Sitzhöhe. Aus dem Stand nach unten fotografiert wirkt ein Sideboard kurz und gedrungen.
 
 ![Sideboard in Seitenansicht mit zwei Kamerapositionen: waagerecht auf halber Möbelhöhe und aus Augenhöhe nach unten gerichtet](diagram:camera-height "Auf halber Möbelhöhe bleiben die Proportionen erhalten. Aus Augenhöhe sieht die Kamera mehr von der Oberseite, die Front wirkt kleiner. Zeichnung für diese Anleitung.")
 
-Bei langen Stücken brauchst du mehr Abstand. Geh zurück, bis das Sideboard bei 2x mit Rand ins Bild passt, statt auf 1x umzuschalten. Dann schrumpft das entfernte Ende nicht.
+Bei langen Stücken brauchst du mehr Abstand. Geh zurück, bis das Sideboard bei 2x mit Rand ins Bild passt, statt auf 1x umzuschalten. So wirkt das weiter entfernte Ende nicht kleiner.
 
-Fotografiere bei gebrauchten und Vintage-Möbeln jeden Mangel aus der Nähe bei gutem Licht. Ein klares Kratzerfoto spart später Streit nach der Lieferung. Den Rest erklärt [Vintage-Möbel online verkaufen](/de/ratgeber/vintage-moebel-verkaufen).
+Fotografiere bei gebrauchten und Vintage-Möbeln jeden Mangel aus der Nähe bei gutem Licht. Ein deutliches Foto des Kratzers beugt Streit nach der Lieferung vor. Den Rest erklärt [Vintage-Möbel online verkaufen](/de/ratgeber/vintage-moebel-verkaufen).
 
 ## Woran erkennst du, dass deine Fotos funktionieren?
 
-Beurteile sie dort, wo Käufer sie sehen: Öffne deine Kategorieseite am Handy. Auch im kleinen Raster muss jedes Produkt erkennbar sein. Alle Hauptbilder sollten auf gleicher Höhe sitzen.
+Beurteile sie dort, wo Käufer sie sehen: Öffne deine Kategorieseite am Handy. Auch im kleinen Raster muss jedes Produkt erkennbar sein. Alle Produkte sollten auf den Hauptbildern auf gleicher Höhe stehen.
 
 Zähle danach Rückfragen. Jede Nachricht wie „Wie sieht die Rückseite aus?“ oder „Ist das wirklich die Farbe?“ weist auf ein fehlendes oder irreführendes Foto hin. Die Lösung ist ein zusätzliches Bild, keine längere Antwort.
 
-Rücksendungen zeigen den Rest. Erfasst deine Plattform Rückgabegründe, achte bei einzelnen Produkten auf „nicht wie beschrieben“ oder „andere Farbe“. Häufen sich solche Angaben, versprechen die Fotos meist etwas, das das gelieferte Stück nicht erfüllt.
+Auch Rücksendegründe zeigen, wo deine Fotos falsche Erwartungen wecken. Erfasst deine Plattform Rückgabegründe, achte bei einzelnen Produkten auf „nicht wie beschrieben“ oder „andere Farbe“. Häufen sich solche Angaben, versprechen die Fotos meist etwas, das das gelieferte Stück nicht erfüllt.
 
-Ändere zum Test einer neuen Fotoserie nur die Bilder. Lass Preis, Titel und Text vier Wochen gleich. Vergleiche dann Aufrufe und Warenkorbrate mit den vier Wochen davor.
+Ändere zum Test einer neuen Fotoserie nur die Bilder. Lass Preis, Titel und Text vier Wochen gleich. Vergleiche dann mit den vier Wochen davor, wie oft das Produkt aufgerufen und in den Warenkorb gelegt wurde.
 
 ## Lassen sich dieselben Fotos für ein 3D-Modell nutzen?
 
-Ja, wenn sie dieselben Regeln erfüllen. Ein scharfes Hauptbild aus Dreiviertelansicht vor schlichtem Hintergrund entspricht weitgehend dem Bedarf von Bild-zu-3D-Werkzeugen. Die Schritte erklärt [ein 3D-Modell aus Fotos erstellen](/de/ratgeber/3d-modell-aus-fotos-erstellen), andere Wege [ein 3D-Modell erstellen](/de/ratgeber/3d-modell-erstellen).
+Ja, wenn sie dieselben Regeln erfüllen. Ein scharfes Hauptbild aus Dreiviertelansicht vor schlichtem Hintergrund eignet sich auch gut für KI-Tools, die daraus ein 3D-Modell erstellen. Die Schritte erklärt [ein 3D-Modell aus Fotos erstellen](/de/ratgeber/3d-modell-aus-fotos-erstellen), andere Wege [ein 3D-Modell erstellen](/de/ratgeber/3d-modell-erstellen).
 
 Der Export mit 2048 Pixeln reicht aus. easyrender lehnt Fotos unter 400 Pixeln an der kürzesten Seite ab und warnt unter 800. Eher problematisch ist also ein Lieferanten-Vorschaubild als deine eigene Kamera.
 
 Eine 360-Grad-Ansicht ist etwas anderes: eine Bildserie vom Drehteller, durch die Käufer blättern. Ein 3D-Modell ist eine frei drehbare Datei, die am Handy im Raum erscheinen kann. [360-Grad-Produktfotografie oder 3D-Modell](/compare/360-vs-3d) erklärt Herstellung, Kosten und Auswahl.
 
-easyrender erstellt aus einem solchen Foto ein Modell und zeigt vorher alle Winkel kostenlos als Vorschau. Nutze einzelne Stücke wie eine Stehlampe oder einen Sessel, kein eingerichtetes Zimmer. [Lade ein Foto hoch](/de)
+easyrender erstellt aus einem solchen Foto ein Modell und zeigt vorher kostenlos eine Vorschau aus allen Blickwinkeln. Nutze einzelne Stücke wie eine Stehlampe oder einen Sessel, kein eingerichtetes Zimmer. [Lade ein Foto hoch](/de)
 
 ## Welche Fehler sind häufig?
 
@@ -174,4 +174,4 @@ Sechs bis acht reichen meist: Hauptbild, Vorderseite, Seite, Rückseite, zwei od
 
 ### Solltest du Produktfotos bearbeiten?
 
-Behutsam: Richte den Horizont aus, schneide auf dein Standardformat zu, korrigiere den Weißabgleich und entferne Staub vom Hintergrund. Farbe und Mängel des Produkts bleiben erhalten. Das Foto verspricht, was beim Käufer ankommt; fällt eine Bearbeitung erst bei der Lieferung auf, kostet sie mehr Vertrauen, als sie vorher an Wirkung gebracht hat.
+Behutsam: Richte den Horizont aus, schneide auf dein Standardformat zu, korrigiere den Weißabgleich und entferne Staub vom Hintergrund. Farbe und Mängel des Produkts bleiben erhalten. Dein Foto weckt Erwartungen an das gelieferte Stück; eine Bearbeitung, die Käufer erst bei der Lieferung bemerken, schadet deinem Geschäft mehr, als sie beim Verkauf hilft.

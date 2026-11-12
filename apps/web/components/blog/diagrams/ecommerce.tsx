@@ -41,7 +41,7 @@ export const storeFiles = defineDiagram(
       shopify: 'Shopify nimmt beide als Produktmedien an.',
     },
     fr: {
-      model: 'Un modèle produit',
+      model: 'Un modèle 3D de produit',
       files: [
         {
           name: 'GLB',
@@ -69,17 +69,17 @@ export const storeFiles = defineDiagram(
       shopify: 'Shopify accepte les deux fichiers dans la fiche produit.',
     },
     it: {
-      model: 'Un modello del prodotto',
+      model: 'Un modello 3D del prodotto',
       files: [
         {
           name: 'GLB',
           places: [
             {
-              title: 'Pagina prodotto, ogni browser',
+              title: 'Pagina prodotto in ogni browser',
               note: 'Per esempio, model-viewer',
             },
             {
-              title: 'RA su Android',
+              title: 'AR su Android',
               note: 'Google Scene Viewer',
             },
           ],
@@ -88,7 +88,7 @@ export const storeFiles = defineDiagram(
           name: 'USDZ',
           places: [
             {
-              title: 'RA su iPhone e iPad',
+              title: 'AR su iPhone e iPad',
               note: 'Apple AR Quick Look',
             },
           ],
@@ -97,14 +97,14 @@ export const storeFiles = defineDiagram(
       shopify: 'Shopify accetta entrambi i file tra i contenuti del prodotto.',
     },
     pt: {
-      model: 'Um modelo de produto',
+      model: 'Um modelo 3D do produto',
       files: [
         {
           name: 'GLB',
           places: [
             {
-              title: 'Produto no navegador',
-              note: 'Por exemplo, model-viewer',
+              title: 'Página de produto no navegador',
+              note: 'Num visualizador como model-viewer',
             },
             {
               title: 'RA no Android',
@@ -168,7 +168,7 @@ export const sideboardPhotoPick = defineDiagram(
     de: {
       shots: [
         { title: 'Vorne', note: ['Keine Tiefe:', 'auf dem Foto', 'nicht sichtbar'] },
-        { title: 'Dreiviertel', note: ['Vorne und', 'Seitenwand:', 'nimm dieses'] },
+        { title: 'Dreiviertel', note: ['Front und', 'Seitenwand:', 'nimm dieses Foto'] },
         { title: 'Nahaufnahme', note: ['Ein Griff,', 'nicht das', 'ganze Stück'] },
       ],
     },
@@ -176,7 +176,7 @@ export const sideboardPhotoPick = defineDiagram(
       shots: [
         {
           title: 'Face',
-          note: ['Pas de profondeur :', 'non visible', 'sur la photo'],
+          note: ['Profondeur', 'absente de', 'la photo'],
         },
         {
           title: 'Trois quarts',
@@ -192,7 +192,7 @@ export const sideboardPhotoPick = defineDiagram(
       shots: [
         {
           title: 'Fronte',
-          note: ['Niente profondità:', 'assente', 'nella foto'],
+          note: ['La foto', 'non mostra', 'la profondità'],
         },
         {
           title: 'Tre quarti',
@@ -208,11 +208,11 @@ export const sideboardPhotoPick = defineDiagram(
       shots: [
         {
           title: 'Frente',
-          note: ['Sem profundidade:', 'falta na', 'fotografia'],
+          note: ['A foto', 'não mostra a', 'profundidade'],
         },
         {
           title: 'Três quartos',
-          note: ['Frente e', 'painel lateral:', 'usa esta'],
+          note: ['Frente e lado:', 'escolhe', 'esta foto'],
         },
         {
           title: 'Pormenor',

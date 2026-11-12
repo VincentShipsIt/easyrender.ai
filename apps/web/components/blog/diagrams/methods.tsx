@@ -39,7 +39,7 @@ export const methodDecisionTree = defineDiagram(
         software: { title: 'Selbst modellieren', note: 'Oder einen 3D-Profi beauftragen' },
         ai: {
           title: 'KI aus einem Foto',
-          note: 'Prüfe die im Foto fehlende Rückseite. Exakt: Profi',
+          note: 'Prüfe die Rückseite, die im Foto fehlt. Für exakte Modelle: 3D-Profi.',
         },
         lidar: { title: 'LiDAR am Handy', note: 'Sofa, Schrank' },
         photogrammetry: { title: 'Fotogrammetrie', note: '20 bis 100+ Fotos' },
@@ -49,7 +49,7 @@ export const methodDecisionTree = defineDiagram(
       questions: [
         'L’objet existe-t-il déjà ?',
         'Est-il devant toi ?',
-        'Grand et simple, ou détaillé ?',
+        'Forme simple ou surface détaillée ?',
       ],
       no: 'Non',
       yes: 'Oui',
@@ -76,7 +76,7 @@ export const methodDecisionTree = defineDiagram(
       },
     },
     it: {
-      questions: ['L’oggetto esiste già?', 'È davanti a te?', 'Grande e semplice, o dettagliato?'],
+      questions: ['L’oggetto esiste già?', 'È davanti a te?', 'Grande e semplice o dettagliato?'],
       no: 'No',
       yes: 'Sì',
       onlyPhoto: 'No, solo una foto',
@@ -85,7 +85,7 @@ export const methodDecisionTree = defineDiagram(
       methods: {
         software: {
           title: 'Modellalo con un programma',
-          note: 'Oppure incarica un artista 3D',
+          note: 'Oppure incarica un professionista 3D',
         },
         ai: {
           title: 'IA da una foto',
@@ -102,7 +102,11 @@ export const methodDecisionTree = defineDiagram(
       },
     },
     pt: {
-      questions: ['O objeto já existe?', 'Está à tua frente?', 'Grande e simples, ou detalhado?'],
+      questions: [
+        'O objeto já existe?',
+        'Está à tua frente?',
+        'Forma grande e simples ou com detalhe?',
+      ],
       no: 'Não',
       yes: 'Sim',
       onlyPhoto: 'Não, só uma foto',
@@ -111,11 +115,11 @@ export const methodDecisionTree = defineDiagram(
       methods: {
         software: {
           title: 'Modela-o num programa',
-          note: 'Ou contrata um artista 3D',
+          note: 'Ou contrata um profissional 3D',
         },
         ai: {
           title: 'IA a partir de uma foto',
-          note: 'Costas fora da foto: verifica. Exato: profissional.',
+          note: 'Verifica as costas que a foto não mostra. Para um modelo exato, contrata um profissional.',
         },
         lidar: {
           title: 'LiDAR no telemóvel',
@@ -180,19 +184,19 @@ export const photogrammetryRings = defineDiagram(
     },
     de: {
       rings: ['Oben', 'Mitte', 'Unten'],
-      overlap: ['Nächstes Foto: etwa 70%', 'Überlappung der Ansicht'],
+      overlap: ['Benachbarte Fotos:', 'etwa 70% Überlappung'],
     },
     fr: {
       rings: ['Haut', 'Milieu', 'Bas'],
-      overlap: ['Photo suivante : environ 70 %', 'de la vue en commun'],
+      overlap: ['Environ 70 % en commun', 'entre deux photos voisines'],
     },
     it: {
       rings: ['Alto', 'Centro', 'Basso'],
-      overlap: ['Foto successiva: circa il 70%', 'della vista in comune'],
+      overlap: ['Scatti consecutivi:', 'circa il 70% in comune'],
     },
     pt: {
       rings: ['Alto', 'Meio', 'Baixo'],
-      overlap: ['Foto seguinte: cerca de 70%', 'da vista em comum'],
+      overlap: ['Fotos consecutivas:', 'cerca de 70% em comum'],
     },
   },
   function PhotogrammetryRings({ t }) {
@@ -278,7 +282,7 @@ export const blockoutSideTable = defineDiagram(
     },
     fr: {
       stages: [
-        ['Formes de base', 'cubes, cylindres'],
+        ['Volumes', 'cubes, cylindres'],
         ['Biseaute', 'les arêtes'],
         ['Matériaux,', 'export GLB'],
       ],
@@ -292,7 +296,7 @@ export const blockoutSideTable = defineDiagram(
     },
     pt: {
       stages: [
-        ['Formas de base', 'caixas, cilindros'],
+        ['Volumes', 'caixas, cilindros'],
         ['Chanfra', 'as arestas'],
         ['Materiais,', 'exporta GLB'],
       ],

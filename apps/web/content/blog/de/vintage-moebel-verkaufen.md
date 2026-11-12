@@ -2,7 +2,7 @@
 
 group: sell-vintage-furniture-online
 title: "Vintage-Möbel verkaufen: Fotos, Preis und Versand"
-description: "Vintage-Möbel verkaufen: passende Plattform wählen, Preise aus Verkäufen ableiten, Mängel fotografieren, Anzeigen schreiben und sicher versenden."
+description: "Vintage-Möbel verkaufen: So findest du die passende Plattform und einen fairen Preis, fotografierst Mängel und bereitest Anzeige und Versand vor."
 date: 2026-11-14
 updated: 2026-11-11
 author: Jorge Rodríguez
@@ -11,7 +11,7 @@ keyword: vintage möbel verkaufen
 cta: Fotografiere dein Stück bei Tageslicht aus Dreiviertelansicht und sieh dir an, wie daraus ein drehbares Modell für Käufer entsteht.
 ---
 
-Um Vintage-Möbel online zu verkaufen, wählst du eine zum Wert passende Plattform, leitest den Preis aus abgeschlossenen Verkäufen ab und fotografierst alle Seiten sowie Mängel bei Tageslicht. In die Anzeige gehören Hersteller, Epoche, Material und gemessene Abmessungen. Für Designstücke eignen sich kuratierte Plattformen, für günstigere Stücke und lokale Abholung etwa Kleinanzeigen oder eBay.
+Wenn du Vintage-Möbel online verkaufen möchtest, wähle eine Plattform, die zum Wert des Stücks passt, und orientiere den Preis an abgeschlossenen Verkäufen. Fotografiere bei Tageslicht alle Seiten und Mängel; in die Anzeige gehören Hersteller, Epoche, Material und selbst gemessene Maße. Für Designstücke eignen sich kuratierte Plattformen, für günstigere Stücke und lokale Abholung etwa Kleinanzeigen oder eBay.
 
 ![Illustration eines Mid-Century-Sideboards aus Teak mit Schiebetüren und konischen Beinen, links Holz und rechts mattgrauer Ton mit weißem Drahtgitter, vor dunklem Hintergrund](/blog/illustrations/sell-vintage-furniture-online/hero.webp "Illustration, kein easyrender-Ergebnis: ein Sideboard, auf einer Seite als Teakholz und auf der anderen als Tonmodell mit Drahtgitter gezeichnet.")
 
@@ -30,12 +30,12 @@ Drei Fragen entscheiden: Was ist das Stück wert, wer übernimmt den Transport u
 
 | Stück                                  | Erste Plattform                                                              | Warum                                                                                       |
 | -------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Signierter Mid-Century-Sessel          | Chairish oder 1stDibs                                                        | Käufer suchen nach Designern und erwarten einen belegten Ursprung                           |
+| Signierter Mid-Century-Sessel          | Chairish oder 1stDibs                                                        | Käufer suchen nach Designern und legen Wert auf einen Herkunftsnachweis                           |
 | Kiefernkommode aus den 1970ern         | Kleinanzeigen oder Facebook Marketplace, nur Abholung                        | Geringer Wert im Verhältnis zur Größe; ein lokaler Käufer mit Transporter spart Versand     |
 | Zwei kleine Messing-Tischlampen        | Etsy oder eBay                                                               | Paketversand möglich, Reichweite über den eigenen Ort hinaus                                |
-| Großes gebrauchtes Sofa in einer Stadt | Kleinanzeigen mit vorab geklärter Abholung; in bedienten US-Gebieten AptDeco | Der Transport ist die schwierige Aufgabe; AptDeco organisiert ihn innerhalb seines Angebots |
+| Großes gebrauchtes Sofa in einer Stadt | Kleinanzeigen mit vorab geklärter Abholung; im US-Liefergebiet AptDeco | Der Transport ist die schwierige Aufgabe; AptDeco organisiert ihn innerhalb seines Liefergebiets |
 
-Gebühren, Händlerzulassung und Transportregeln unterscheiden sich und ändern sich. Lies vor der ersten Anzeige die Bedingungen für Verkäufer.
+Gebühren, Zulassungsvoraussetzungen für Händler und Transportbedingungen unterscheiden sich je nach Plattform und können sich ändern. Lies vor der ersten Anzeige die Bedingungen für Verkäufer.
 
 ## Wie bestimmst du den Preis eines Vintage-Stücks?
 
@@ -44,41 +44,41 @@ Orientiere dich an Verkäufen, nicht an laufenden Angeboten. So würden wir bei 
 1. Hersteller und Modell über Etikett, Stempel oder Form bestimmen.
 2. Auf eBay die erweiterte Suche öffnen, Hersteller und Modell eingeben und [beendete Angebote](https://www.ebay.com/help/selling/selling/pricing-items?id=4133) auswählen.
 3. Tatsächlich verkaufte Stücke mit gleichem Modell und vergleichbarem Zustand berücksichtigen, unverkaufte aussortieren.
-4. Verkäufe per Preisvorschlag als Obergrenze lesen: Die Anzeige zeigt den Angebotspreis, nicht den angenommenen Betrag.
+4. Den angezeigten Preis bei Verkäufen per Preisvorschlag als Obergrenze betrachten: Die Anzeige zeigt den Angebotspreis, nicht den angenommenen Betrag.
 5. Zustand berücksichtigen: Originalgriffe und intaktes Furnier erhöhen den Wert, ersetzte Platte oder neuer Anstrich senken ihn.
 6. Plattformgebühren und von dir bezahlten Transport abziehen, damit dein Erlös feststeht.
 
 Der Zustand zählt mehr als das Alter. Ein Teak-Sideboard mit Originalgriffen und gutem Furnier erzielt mehr als dasselbe Modell mit ausgetauschter Platte.
 
-Ein Herstellername verändert die Suche. „Ercol“ oder „G-Plan“ bei britischen Stücken zieht gezielt suchende Käufer an. Sie finden eine Anzeige mit dem Titel „Vintage-Stuhl“ nicht unbedingt.
+Viele Käufer suchen gezielt nach Herstellern wie „Ercol“ oder „G-Plan“ bei britischen Möbeln. Eine Anzeige mit dem Titel „Vintage-Stuhl“ finden sie dabei womöglich nicht.
 
 ## Wie erkennst du Hersteller und Alter?
 
 Suche an typischen Stellen: unter Schubladen und Sitzflächen, auf der Rückwand und unter Tischplatten. Papieretiketten verblassen oder fallen ab. Achte deshalb auch auf eingeprägte Stempel und Spuren verlorener Etiketten.
 
-Die Konstruktion liefert Hinweise, keine Beweise. Handgeschnittene Schwalbenschwanzverbindungen sind ungleichmäßig, maschinelle wiederholen sich exakt. Eine Rückwand aus massiven Brettern deutet meist auf ein älteres Stück als eine dünne Platte; beschreibe deinen Fund statt einer Vermutung.
+Die Konstruktion liefert Hinweise, keine Beweise. Handgeschnittene Schwalbenschwanzverbindungen sind ungleichmäßig, maschinelle wiederholen sich exakt. Eine Rückwand aus massiven Brettern deutet meist auf ein älteres Stück als eine dünne Platte; beschreibe deshalb nur, was du tatsächlich erkennen kannst.
 
-Fehlt eine Markierung, schreib das dazu. „Ohne Herstellerkennzeichnung, im Stil dänischer Teakmöbel der Jahrhundertmitte“ bleibt ehrlich und auffindbar. Nennst du ohne Beleg einen Hersteller, riskierst du eine Rückgabe und schlechte Bewertung.
+Fehlt eine Markierung, schreib das dazu. „Ohne Herstellerkennzeichnung, im Stil dänischer Mid-Century-Teakmöbel“ ist ehrlich und enthält passende Suchbegriffe. Gibst du einen Hersteller ohne Beleg an, riskierst du eine Rückgabe und eine schlechte Bewertung.
 
 ## Wie fotografierst du Vintage-Möbel?
 
 Fotografiere bei Tageslicht vor schlichter Wand, die Kamera auf halber Möbelhöhe. Nimm die ganze Serie auf: vorne, Dreiviertelansicht, Seite, hinten und das Innere jeder Schublade und jedes Schranks.
 
-Fotografiere danach jeden Mangel aus der Nähe: Wasserrand auf der Platte, Furnierabplatzer, lockere Verbindung. Vintage-Käufer rechnen mit Gebrauchsspuren. Sie stören sich an Spuren, die ihnen nicht gezeigt wurden.
+Fotografiere danach jeden Mangel aus der Nähe: Wasserrand auf der Platte, Furnierabplatzer, lockere Verbindung. Vintage-Käufer rechnen mit Gebrauchsspuren. Ärger gibt es, wenn solche Spuren auf den Fotos nicht zu sehen waren.
 
 ![Acht Aufnahmen für ein Einzelstück als Kacheln: vorne, Dreiviertelansicht, Seite, hinten, Schubladen innen, Herstelleretikett, Verbindungen und Reparaturen sowie hervorgehobene Nahaufnahme jedes Mangels](diagram:vintage-shot-list "Die vollständige Serie in Aufnahmereihenfolge. Zeichnung für diese Anleitung.")
 
 <!-- IMAGE PENDING: echte Nahaufnahme eines Mangels an einem Vintage-Möbel, etwa Wasserrand oder Furnierabplatzer, vom Team bei Tageslicht fotografiert. Kein Stockfoto. -->
 
-Kratzer erscheinen am besten bei Streiflicht. Drehe das Stück so, dass Fensterlicht flach über die Platte fällt; Kratzer und Ränder werfen dann kleine Schatten. Zeige mit einer Bleistiftspitze auf den Mangel, damit der Käufer ihn zuordnen kann.
+Kratzer erkennst du am besten bei Streiflicht. Drehe das Stück so, dass Fensterlicht flach über die Platte fällt; Kratzer und Ränder werfen dann kleine Schatten. Zeige mit einer Bleistiftspitze auf den Mangel, damit der Käufer ihn zuordnen kann.
 
 Behalte eine feste Bildreihenfolge und nummeriere die Fotos. Dann kannst du „Abplatzer am hinteren linken Bein, Foto 7“ schreiben und Missverständnissen vorbeugen. Licht und Aufbau erklärt [Produktfotografie für deinen Onlineshop](/de/ratgeber/produktfotografie-onlineshop).
 
 ## Was gehört in die Anzeige?
 
-Beginne mit Suchbegriffen: Hersteller, Stil, Material und Gegenstand. „Ercol Windsor-Esszimmerstuhl, Ulme, 1960er“ ist hilfreicher als „Schöner alter Stuhl“.
+Beginne mit Suchbegriffen: Hersteller, Stil, Material und Gegenstand. „Ercol Windsor: Esszimmerstuhl aus Ulme, 1960er-Jahre“ ist hilfreicher als „Schöner alter Stuhl“.
 
-![Anzeigentitel Ercol Windsor-Esszimmerstuhl, Ulme, 1960er in Hersteller, Material, Stil, Gegenstand und Epoche zerlegt; darunter Schöner alter Stuhl ohne diese Angaben](diagram:listing-title "Jedes Wort im ersten Titel entspricht einer möglichen Suche. Der zweite bietet kaum Anhaltspunkte.")
+![Anzeigentitel Ercol Windsor: Esszimmerstuhl aus Ulme, 1960er-Jahre in Hersteller, Stil, Gegenstand, Material und Epoche zerlegt; darunter Schöner alter Stuhl ohne diese Angaben](diagram:listing-title "Jedes Wort im ersten Titel entspricht einer möglichen Suche. Der zweite bietet kaum Anhaltspunkte.")
 
 Auch die Beschreibung folgt für jedes Stück derselben Reihenfolge:
 
@@ -94,7 +94,7 @@ Beschreibe den Zustand sachlich. „Leichte Kratzer auf der Platte, kleiner Abpl
 
 ## Wie versendest du Vintage-Möbel?
 
-Entscheide vor dem Inserieren. Nur Abholung ist einfach, beschränkt dich aber auf lokale Käufer. Lieferung erweitert den Markt und verlangt ein Transportangebot vor dem Verkauf.
+Entscheide vor dem Inserieren. Nur Abholung ist einfach, beschränkt dich aber auf lokale Käufer. Mit Lieferung erreichst du mehr Käufer; hole dafür vor dem Verkauf ein Transportangebot ein.
 
 Bereite das Stück für den Transport so vor:
 
@@ -102,16 +102,16 @@ Bereite das Stück für den Transport so vor:
 2. Beine, Glas und lose Griffe soweit möglich abnehmen.
 3. Schrauben eintüten, beschriften und den Beutel innen in einer Schublade befestigen.
 4. Mit Umzugsdecken einwickeln; Klebeband nur auf den Decken befestigen, nie auf der Oberfläche, weil es alten Lack ablösen kann.
-5. Türen und Schubladen durch die Decken hindurch sichern.
+5. Türen und Schubladen mit Klebeband außen auf den Decken geschlossen halten.
 6. Vor dem Verpacken und direkt vor der Übergabe fotografieren, falls später Transportschäden gemeldet werden.
 
 ![Illustration einer transportfertigen Vintage-Kiefernkommode mit Umzugsdecke, abgenommenen verpackten Beinen und Schraubenbeutel in der oberen Schublade](/blog/illustrations/sell-vintage-furniture-online/courier-prep.webp "Illustration, kein Foto und kein easyrender-Ergebnis: Decken um das Stück, Beine abgenommen, Schrauben beschriftet in einer Schublade verstaut.")
 
 ## Antiquitäten verkaufen: Was ändert sich?
 
-Mit dem Alter ändert sich die Käuferschaft. Als Antiquität gilt meist ein Stück über 100 Jahre, auch die Grenze des US-Zolls. Käufer achten ebenso auf Herkunft wie auf Zustand.
+Mit dem Alter ändert sich die Käuferschaft. Als Antiquität gilt meist ein Stück, das über 100 Jahre alt ist; diese Grenze verwendet auch der US-Zoll. Käufer achten ebenso auf Herkunft wie auf Zustand.
 
-Bewahre Rechnungen, Auktionsnachweise und Familiengeschichte auf und nenne sie in der Anzeige. Lass ein wertvolles Stück vor der Preisfestlegung schätzen. Spezialisierte Händler und kuratierte Seiten wie 1stDibs eignen sich dafür eher als allgemeine Marktplätze.
+Bewahre Rechnungen, Auktionsnachweise und Angaben zur Familiengeschichte des Stücks auf und erwähne sie in der Anzeige. Lass ein wertvolles Stück vor der Preisfestlegung schätzen. Spezialisierte Händler und kuratierte Seiten wie 1stDibs eignen sich dafür eher als allgemeine Marktplätze.
 
 Fotos und Anzeige funktionieren gleich. Zeige Rückseite, Verbindungen und Reparaturen. Antiquitätenkäufer beurteilen das Alter auch anhand der Konstruktion, nicht nur des Stils.
 
@@ -124,33 +124,33 @@ Ein 3D-Modell aus einem guten Foto lässt ihn das Stück am Bildschirm drehen. W
 ![Massivholz-Nachttisch mit zwei Schubladen, frontal vor weißem Hintergrund fotografiert](/showcase/bedside-table.jpg "Das Foto eines Nachttischs aus Massivholz.")
 ![Das daraus erstellte 3D-Modell eines Holznachttischs aus Dreiviertelansicht im Betrachter](/showcase/bedside-table.glb "Das von easyrender daraus erstellte Modell. Drehe es und betrachte Seiten und Tiefe, die das Frontalfoto nicht zeigen konnte.")
 
-Beides erfüllt eine andere Aufgabe. Das Modell zeigt Form: Tiefe der Platte, ausgestellte Beine und Seitenansichten. Der Zustand braucht Fotos: Gebrauchsspuren, Reparaturen, Aststellen oder ersetzte Griffe, jeweils bei Tageslicht aus der Nähe aufgenommen.
+Modell und Fotos erfüllen unterschiedliche Aufgaben: Das Modell zeigt die Form, etwa die Tiefe der Platte, ausgestellte Beine und die Seitenansichten. Den Zustand belegst du mit Nahaufnahmen bei Tageslicht, auf denen Gebrauchsspuren, Reparaturen, Aststellen und ersetzte Griffe zu erkennen sind.
 
-Nutze das Modell für Form und Proportionen, Nahaufnahmen als Zustandsnachweis. Bei Vintage steht das Modell neben den Mängelfotos und ersetzt sie nie.
+Nutze das Modell für Form und Proportionen, Nahaufnahmen als Zustandsnachweis. Bei Vintage-Möbeln ergänzt das Modell die Fotos der Mängel und ersetzt sie nie.
 
 Marktplätze regeln 3D-Dateien unterschiedlich. Praktisch schickst du bei Fragen nach weiteren Ansichten einen Link oder lädst die GLB in deinem Shopify-Shop als Produktmedium hoch. Wege zum Modell erklärt [ein 3D-Modell erstellen](/de/ratgeber/3d-modell-erstellen), den Shopeinsatz [3D-Modelle für Onlineshops](/de/ratgeber/3d-modelle-fuer-onlineshops).
 
-Die Entscheidung zwischen Auftrag und Foto behandelt [3D-Profi oder KI](/compare/3d-modeler-vs-ai).
+Ob du einen Profi beauftragst oder mit einem Foto beginnst, erklärt [3D-Profi oder KI](/compare/3d-modeler-vs-ai).
 
-easyrender gibt jedem fertigen Modell in der öffentlichen Galerie eine per Link teilbare Seite. Ergänze diesen Link in deiner Antwort an Käufer. Nahaufnahmen und mit dem Maßband ermittelte Abmessungen bleiben daneben in der Anzeige.
+Jedes fertige Modell in der öffentlichen Galerie von easyrender hat eine eigene Seite, deren Link du teilen kannst. Ergänze diesen Link in deiner Antwort an Käufer. Nahaufnahmen und mit dem Maßband ermittelte Abmessungen bleiben daneben in der Anzeige.
 
 ## Woran erkennst du, dass eine Anzeige funktioniert?
 
 Führe eine einfache Liste mit einer Zeile pro Stück: Plattform, Inseratsdatum, Angebotspreis, herangezogene Verkäufe, Nachrichten, häufigste Frage, Verkaufspreis und Tage bis zum Verkauf. Nach zehn Stücken erkennst du, welche Plattform und Möbelart für dich funktionieren.
 
-Lies Nachrichten als Aufgabenliste. Fragen drei Käufer, ob die Schubladen leicht laufen, fehlen ein Foto der offenen Schublade und ein entsprechender Satz. Eine zweimal beantwortete Frage gehört in die Beschreibung.
+Nutze die Rückfragen, um deine Anzeige zu verbessern. Fragen drei Käufer, ob die Schubladen leicht laufen, fehlen ein Foto der offenen Schublade und ein entsprechender Satz. Eine zweimal beantwortete Frage gehört in die Beschreibung.
 
-Beobachte auch Gebote. Viele weit unter deinem Preis deuten meist darauf hin, dass du dich an laufenden Angeboten statt Verkäufen orientiert hast. Prüfe die verkauften Angebote erneut.
+Achte auch auf Preisangebote. Liegen viele deutlich unter deinem Preis, hast du dich vermutlich an laufenden Angeboten statt an tatsächlichen Verkäufen orientiert. Prüfe die verkauften Angebote erneut.
 
 ## Was geht schief, und wie behebst du es?
 
-Die meisten erfolglosen Anzeigen scheitern an wenigen Punkten. Damit würden wir eine Anzeige ohne Rückmeldungen oder mit Problemen prüfen.
+Bleiben Rückmeldungen aus oder gibt es Ärger mit Käufern, prüfe Titel, Preis, Zustandsfotos und Versandvorbereitung anhand dieser Tabelle.
 
 | Symptom                                    | Ursache                                              | Lösung                                                                    |
 | ------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------- |
 | Nach zwei Wochen keine Nachrichten         | Hersteller, Material oder Gegenstand fehlen im Titel | Titel mit Hersteller, Material, Stil, Gegenstand und Epoche neu schreiben |
 | Nur sehr niedrige Angebote                 | Preis nach Angeboten statt Verkäufen                 | Verkaufte Stücke desselben Modells und Zustands prüfen                    |
-| Käufer bestreitet Zustand nach Ankunft     | Nicht fotografierter Mangel                          | Jeden Mangel nah fotografieren und mit Fotonummer beschreiben             |
+| Käufer beanstandet den Zustand nach der Lieferung     | Nicht fotografierter Mangel                          | Jeden Mangel nah fotografieren und mit Fotonummer beschreiben             |
 | Transportschaden                           | Beine montiert, Klebeband auf Lack oder keine Decken | Beine abnehmen, mit Decken schützen, vor Versand fotografieren            |
 | Jede Nachricht fragt nach der echten Farbe | Mischlicht oder warmer Filter                        | Nur bei Tageslicht mit ausgeschaltetem Raumlicht neu fotografieren        |
 | Käufer sagt nach dem Ausmessen ab          | Maße fehlen oder stammen aus einem Katalog           | Selbst mit Maßband messen, einschließlich Sitzhöhe und Innentiefe         |
@@ -159,7 +159,7 @@ Die meisten erfolglosen Anzeigen scheitern an wenigen Punkten. Damit würden wir
 
 ### Welche Plattform eignet sich, um Vintage-Möbel zu verkaufen?
 
-Für Designstücke und signierte Möbel passen kuratierte Seiten wie Chairish oder 1stDibs, auf denen Käufer nach belegter Herkunft suchen. Alltägliche Vintage-Möbel wie Kiefernkommoden kannst du auf Kleinanzeigen, Facebook Marketplace oder eBay anbieten. Kleine paketfähige Stücke passen zu Etsy; AptDeco organisiert bei größeren Gebrauchtmöbeln Transport innerhalb seines US-Angebots, das du vorher prüfen solltest.
+Für Designstücke und signierte Möbel passen kuratierte Seiten wie Chairish oder 1stDibs, auf denen Käufer nach belegter Herkunft suchen. Alltägliche Vintage-Möbel wie Kiefernkommoden kannst du auf Kleinanzeigen, Facebook Marketplace oder eBay anbieten. Kleine paketfähige Stücke passen zu Etsy; AptDeco organisiert bei größeren Gebrauchtmöbeln den Transport innerhalb seines US-Liefergebiets, das du vorher prüfen solltest.
 
 ### Ab welchem Alter gelten Möbel als Vintage oder antik?
 
@@ -171,7 +171,7 @@ Beginne mit verkauften Stücken desselben Herstellers und Modells, nicht mit Ang
 
 ### Brauchst du professionelle Fotos für den Möbelverkauf?
 
-Nein, ein Handy auf Stativ, Tageslicht vom Fenster und eine schlichte Wand reichen. Entscheidend sind vollständige Ansichten und ehrliche Nahaufnahmen jedes Mangels. Käufer vertrauen klaren Fotos des echten Stücks mehr als dekorierten Bildern, die Rückseite und Gebrauchsspuren verbergen; zeige deshalb auch Stellen, die auf den ersten Blick weniger ansprechend wirken.
+Nein, ein Handy auf einem Stativ, Tageslicht vom Fenster und eine schlichte Wand reichen. Entscheidend sind vollständige Ansichten und aussagekräftige Nahaufnahmen jedes Mangels. Käufer vertrauen klaren Fotos des echten Stücks mehr als dekorierten Bildern, die Rückseite und Gebrauchsspuren verbergen; zeige deshalb auch Stellen, die auf den ersten Blick weniger ansprechend wirken.
 
 ### Sollten Maße in deiner Anzeige stehen?
 

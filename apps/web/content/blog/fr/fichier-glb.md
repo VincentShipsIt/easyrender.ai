@@ -2,18 +2,18 @@
 
 group: glb-file
 title: Fichier GLB : l'ouvrir, le vérifier et l'alléger
-description: Un fichier GLB réunit un modèle 3D et ses textures : regarde son contenu, ouvre-le sur tes appareils et réduis son poids sans perdre la forme.
+description: Un fichier GLB réunit un modèle 3D et ses textures : apprends à l'ouvrir, à vérifier son contenu et à l'alléger pour le web ou Android.
 date: 2026-11-15
 updated: 2026-11-11
 author: Jorge Rodríguez
 authorType: person
 keyword: fichier glb
-cta: Avec une photo nette de lampe ou de chaise, tu peux vérifier tous les angles avant même la construction du GLB.
+cta: Avec une photo nette d'une lampe ou d'une chaise, tu peux vérifier chaque angle avant même de créer le fichier GLB.
 ---
 
-Un fichier GLB contient un modèle 3D dans la version binaire de glTF 2.0, format ouvert du Khronos Group. Il réunit forme, matériaux, textures et éventuelles animations dans un seul fichier .glb, sans dépendances à charger séparément. C'est un format courant pour les fiches produit en 3D et la réalité augmentée sur Android.
+Un fichier GLB contient un modèle 3D dans la version binaire de glTF 2.0, format ouvert du Khronos Group. Il réunit forme, matériaux, textures et éventuelles animations dans un seul fichier .glb, sans fichiers supplémentaires à charger. C'est un format courant pour les fiches produit en 3D et la réalité augmentée sur Android.
 
-![Illustration d'une théière céladon, moitié émaillée et moitié en argile grise mate avec un maillage blanc dont les panneaux UV se détachent, sur fond sombre](/blog/illustrations/glb-file/hero.webp "Illustration, pas un résultat easyrender : une théière dessinée moitié émaillée, moitié en maillage, avec ses panneaux UV dépliés.")
+![Illustration d'une théière céladon, moitié émaillée et moitié en argile grise mate avec un maillage blanc dont des morceaux de surface se détachent pour former le dépliage UV, sur fond sombre](/blog/illustrations/glb-file/hero.webp "Illustration, pas un résultat easyrender : une théière dessinée moitié émaillée, moitié en maillage, avec une partie de sa surface dépliée à plat (dépliage UV).")
 
 ## Que contient un fichier GLB ?
 
@@ -27,7 +27,7 @@ Nous contrôlons ces trois champs sur chaque modèle livré. Un fichier sans sig
 
 Les chiffres s'additionnent exactement. Les 14 590 triangles du vase désignent chacun leurs trois sommets avec 2 octets par référence, soit 87 540 octets d'indices. Ses 8 406 sommets stockent chacun position et coordonnées de texture en 20 octets, soit 168 120 octets.
 
-## Combien pèsent de vrais GLB et que contiennent-ils ?
+## Combien pèsent les GLB et qu'est-ce qui prend de la place ?
 
 Nous avons lu les six modèles de notre galerie de la même façon. Tous contiennent un maillage, un matériau et une texture WebP de 1024 pixels, préparés pour le web avec glTF Transform.
 
@@ -44,19 +44,19 @@ On dit souvent que les textures pèsent le plus dans un GLB : c'est vrai avec de
 
 ## Que décrivent les matériaux d'un GLB ?
 
-Ils suivent le modèle PBR métallique-rugueux. Le PBR, rendu fondé sur les propriétés physiques, décrit une surface par sa couleur de base, son caractère métallique et sa rugosité. Un même GLB garde ainsi un aspect proche dans les visionneuses respectant la norme.
+Ils suivent le modèle PBR fondé sur la métallicité et la rugosité. Le PBR, rendu fondé sur les propriétés physiques, décrit une surface par sa couleur de base, son caractère métallique et sa rugosité. Un même GLB garde ainsi un aspect proche dans les visionneuses respectant la norme.
 
 ![L'image de texture du vase en argile : surface découpée en morceaux à plat, bandes d'argile blanchie, rebord et fond](/blog/figures/glb-file/clay-vase-texture.webp "La texture de couleur de base extraite du GLB sans modification, 1024 x 1024 pixels. Les coordonnées de texture indiquent à la visionneuse où placer chaque morceau sur le vase.")
 
 Toute valeur absente prend celle prévue par la spécification. Attention au caractère métallique : sans valeur explicite, il vaut 1, soit entièrement métallique. Un matériau qui ne définit que sa couleur de base peut donc donner à l'argile, au bois ou au tissu un aspect plus sombre ou teinté.
 
-Un réglage suffit à vérifier : Metallic à 0 dans Blender, puis nouvel export. Nous ferions ce contrôle sur tout GLB destiné à une fiche produit, quelle que soit son origine.
+Vérifie le réglage Metallic dans Blender : mets-le à 0, puis exporte à nouveau. Nous ferions ce contrôle sur tout GLB destiné à une fiche produit, quelle que soit son origine.
 
 ## Pourquoi un GLB peut-il paraître facetté ?
 
-Les normales de sommets indiquent à la visionneuse comment éclairer chaque coin pour lisser une surface courbe. Elles sont facultatives en glTF : un fichier peut ne contenir que positions et coordonnées de texture.
+Les normales de sommets indiquent à la visionneuse comment calculer l'éclairage à chaque sommet pour donner un aspect lisse aux surfaces courbes. Elles sont facultatives en glTF : un fichier peut ne contenir que positions et coordonnées de texture.
 
-La spécification prévoit alors le calcul de normales plates. Les facettes restent petites sur un maillage dense, mais une lumière latérale basse peut les rendre visibles sur une courbe.
+La spécification prévoit alors le calcul de normales plates. Les facettes restent petites sur un maillage dense, mais une lumière rasante peut les rendre visibles sur une courbe.
 
 Les normales occupent 12 octets par sommet, trois nombres de 4 octets : environ 96 000 octets pour 8 000 sommets. Dans Blender, applique Shade Smooth et coche Normals à l'export. `gltf-transform inspect` indique si le fichier possède un attribut NORMAL.
 
@@ -81,7 +81,7 @@ Pour lire le contenu sans visionneuse, lance `gltf-transform inspect`, fourni pa
 
 Shopify accepte les GLB comme médias produit. Sur ton propre site, le composant libre [model-viewer](https://modelviewer.dev/) de Google affiche un GLB avec quelques lignes de code ; rotation et zoom sont intégrés.
 
-Hors ecommerce, le GLB se retrouve dans la 3D web, les jeux et les applications de réalité augmentée : il est compact, ouvert et lu par de nombreux logiciels. Blender et la plupart des outils de scan ou d'IA l'exportent.
+En dehors de l'e-commerce, le GLB se retrouve dans la 3D web, les jeux et les applications de réalité augmentée : il est compact, ouvert et lu par de nombreux logiciels. Blender et la plupart des outils de scan ou d'IA l'exportent.
 
 Sur Android, respecte les recommandations Scene Viewer : 10 MB, 100 000 triangles et textures de 2048 pixels maximum. Tous les fichiers de notre tableau restent dans ces limites.
 
@@ -110,13 +110,13 @@ Voici notre choix selon la destination :
 
 Dans Blender, choisis File, Export, glTF 2.0, puis glTF Binary (.glb) pour inclure les textures. Coche Normals et UVs sous Mesh ; préfère JPEG sauf si l'objet nécessite de la transparence. Les applications de scan et d'IA proposent généralement le téléchargement GLB.
 
-Les méthodes de création sont comparées dans [comment faire un modèle 3D](/fr/guides/comment-faire-un-modele-3d). Pour un catalogue, [la 3D pour ecommerce](/fr/guides/modeles-3d-e-commerce) associe chaque méthode aux produits concernés.
+Les méthodes de création sont comparées dans [comment faire un modèle 3D](/fr/guides/comment-faire-un-modele-3d). Pour un catalogue, [la 3D pour l'e-commerce](/fr/guides/modeles-3d-e-commerce) associe chaque méthode aux produits concernés.
 
-easyrender fournit par exemple un GLB et un USDZ pour chaque modèle terminé à partir d'une photo. Les étapes figurent dans [la modélisation 3D à partir d'une photo](/fr/guides/creer-un-modele-3d-a-partir-de-photos). Le modèle conserve forme et matières, sans mesures issues de l'objet.
+easyrender fournit par exemple un GLB et un USDZ pour chaque modèle terminé à partir d'une photo. Les étapes figurent dans [la modélisation 3D à partir d'une photo](/fr/guides/creer-un-modele-3d-a-partir-de-photos). Le modèle conserve forme et matières, sans dimensions mesurées sur l'objet.
 
 ## GLB vers USDZ : faut-il garder les deux ?
 
-Oui pour la réalité augmentée sur iPhone et iPad. Reality Converter, application Mac gratuite d'Apple, convertit un GLB au format USDZ ; Blender récent exporte aussi directement des fichiers USDZ. [Le guide du fichier USDZ](/fr/guides/fichier-usdz) explique notamment pourquoi il peut peser davantage que le GLB de départ.
+Oui pour la réalité augmentée sur iPhone et iPad. Reality Converter, application Mac gratuite d'Apple, convertit un GLB au format USDZ ; les versions récentes de Blender exportent aussi directement des fichiers USDZ. [Le guide du fichier USDZ](/fr/guides/fichier-usdz) explique notamment pourquoi il peut peser davantage que le GLB de départ.
 
 | Fichier | Contenu                                                      | Où l'ouvrir                                          | Usage                                             |
 | ------- | ------------------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------- |
@@ -126,7 +126,7 @@ Oui pour la réalité augmentée sur iPhone et iPad. Reality Converter, applicat
 
 ## Quels problèmes avec un GLB et comment les corriger ?
 
-Les problèmes reviennent souvent aux mêmes causes. Pars de ce que tu vois pour trouver le réglage à modifier.
+Les problèmes ont souvent les mêmes causes. Pars de ce que tu vois pour trouver le réglage à modifier.
 
 | Symptôme                                    | Cause                                                            | Correction                                           |
 | ------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------- |
@@ -140,7 +140,7 @@ Les problèmes reviennent souvent aux mêmes causes. Pars de ce que tu vois pour
 
 ## Que ne dit pas un fichier GLB ?
 
-glTF utilise le mètre, mais la taille ne correspond au meuble que si la personne qui l'a créé l'a réglée correctement. Une photo ne fournit pas de dimensions mesurées : garde celles-ci dans le texte produit.
+glTF utilise le mètre, mais la taille ne correspond au meuble que si la personne qui l'a créé l'a réglée correctement. Une photo ne fournit pas de dimensions mesurées : garde celles-ci dans la description du produit.
 
 Le format ne garantit pas non plus la qualité. Un fichier peut passer le [glTF Validator](https://github.khronos.org/glTF-Validator/) tout en contenant un pied déformé ou une texture floue. Seul l'examen dans une visionneuse les révèle.
 
@@ -148,7 +148,7 @@ Le format ne garantit pas non plus la qualité. Un fichier peut passer le [glTF 
 
 ### GLB et glTF sont-ils la même chose ?
 
-C'est le même format sous deux présentations : le glTF peut comprendre un texte .gltf accompagné de fichiers de géométrie et de textures. Le GLB est sa version binaire, qui réunit le tout dans un seul fichier. Tous deux suivent la norme glTF 2.0 du Khronos Group et sont généralement lus par les mêmes outils.
+C'est le même format, organisé de deux façons : le glTF peut comprendre un fichier texte .gltf accompagné de fichiers de géométrie et de textures. Le GLB est sa version binaire, qui réunit le tout dans un seul fichier. Tous deux suivent la norme glTF 2.0 du Khronos Group et sont généralement lus par les mêmes outils.
 
 ### Peut-on ouvrir un fichier GLB sur iPhone ?
 
@@ -156,7 +156,7 @@ Pas directement dans AR Quick Look, qui utilise le fichier USDZ. Tu peux toutefo
 
 ### Comment convertir un GLB dans un autre format ?
 
-Ouvre-le dans Blender, qui importe le GLB et exporte notamment FBX, OBJ, USD et USDZ. Certaines informations peuvent disparaître : OBJ ne décrit pas les matériaux métallique-rugueux et une poignée en laiton peut paraître plus plate. Contrôle toujours le fichier converti dans une visionneuse avant de le montrer à un client.
+Ouvre-le dans Blender, qui importe le GLB et exporte notamment FBX, OBJ, USD et USDZ. Certaines informations peuvent disparaître : OBJ ne décrit pas la métallicité et la rugosité des matériaux ; une poignée en laiton peut alors perdre son relief visuel. Contrôle toujours le fichier converti dans une visionneuse avant de le montrer à un client.
 
 ### Pourquoi mon fichier GLB est-il si lourd ?
 

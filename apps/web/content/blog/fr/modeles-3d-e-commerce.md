@@ -8,10 +8,10 @@ updated: 2026-11-11
 author: Jorge Rodríguez
 authorType: person
 keyword: modèle 3d pour ecommerce
-cta: Choisis un meuble avec de la profondeur, fauteuil ou buffet, et vérifie tous les angles avant de décider si la 3D vaut le coup pour ta boutique.
+cta: Choisis un fauteuil ou un buffet dont la profondeur mérite d'être montrée, puis vérifie chaque angle pour juger de l'intérêt de la 3D pour ta boutique.
 ---
 
-Un modèle 3D pour ecommerce est généralement un fichier GLB ou USDZ que l'acheteur peut faire tourner à l'écran et placer dans sa pièce en réalité augmentée sur téléphone. Pour l'obtenir, ta boutique dispose de quatre méthodes : un artiste 3D, les fichiers CAO du fabricant, un scan du produit ou l'IA à partir d'une photo.
+Un modèle 3D pour l'e-commerce est généralement un fichier GLB ou USDZ que l'acheteur peut faire tourner à l'écran et placer dans sa pièce en réalité augmentée sur téléphone. Pour l'obtenir, ta boutique dispose de quatre méthodes : un artiste 3D, les fichiers CAO du fabricant, un scan du produit ou l'IA à partir d'une photo.
 
 ![Illustration d'un mocassin en cuir brun près de sa boîte, l'avant en cuir et le talon en argile grise mate avec un maillage blanc, sur fond sombre](/blog/illustrations/3d-models-for-ecommerce/hero.webp "Illustration, pas un résultat easyrender : un mocassin dessiné moitié en cuir, moitié en argile avec un maillage blanc, à côté de sa boîte.")
 
@@ -24,23 +24,23 @@ Une photo montre l'angle que tu as choisi. Un modèle 3D laisse l'acheteur chois
 
 Sur iPhone et iPad, un fichier USDZ s'ouvre dans [AR Quick Look](https://developer.apple.com/augmented-reality/quick-look/) et place l'objet dans la pièce via l'appareil photo. Sur Android, [Scene Viewer de Google](https://developers.google.com/ar/develop/scene-viewer) fait de même avec un GLB.
 
-La réalité augmentée montre l'aspect d'un meuble dans une pièce. Sa taille vient du fichier, pas d'une mesure : Scene Viewer lit une unité comme un mètre, et un modèle issu d'une photo utilise la valeur inscrite dans son fichier. Les dimensions doivent donc figurer dans le texte produit.
+La réalité augmentée montre l'aspect d'un meuble dans une pièce. Sa taille vient du fichier, pas d'une mesure : Scene Viewer lit une unité comme un mètre, et un modèle issu d'une photo utilise la valeur inscrite dans son fichier. Les dimensions doivent donc figurer dans la description du produit.
 
 ## Comment mesurer l'intérêt de la 3D ?
 
-Décide de ton objectif avant de payer un modèle. Pour une boutique de meubles, c'est souvent réduire les questions sur le dos et la profondeur, augmenter les ajouts au panier sur les fiches équipées ou diminuer les retours liés à l'aspect du meuble.
+Décide de ton objectif avant de payer un modèle. Pour une boutique de meubles, c'est souvent réduire les questions sur le dos et la profondeur, augmenter les ajouts au panier sur les fiches dotées d'un modèle ou diminuer les retours liés à l'aspect du meuble.
 
 Nous ne publions pas de chiffres de conversion ou de retours liés à la 3D : nous n'en avons pas mesuré que nous puissions garantir. Considère tout chiffre lu ailleurs comme une hypothèse à tester sur ton catalogue.
 
-Choisis cinq à dix produits avec modèle et un groupe comparable sans modèle. Garde prix, photos et textes inchangés dans les deux groupes pendant quatre à six semaines. Compare ensuite les ajouts au panier par vue produit et lis les motifs de retour.
+Choisis cinq à dix produits avec modèle et un groupe comparable sans modèle. Garde prix, photos et textes inchangés dans les deux groupes pendant quatre à six semaines. Compare ensuite le taux d'ajout au panier par consultation de fiche produit et lis les motifs de retour.
 
 Sur ton site, [model-viewer](https://github.com/google/model-viewer/blob/master/packages/model-viewer/src/features/ar.ts) émet des événements utilisables dans tes statistiques. `camera-change` avec la source `user-interaction` indique que l'acheteur a tourné le modèle ; `ar-status` signale le démarrage ou l'échec d'une session de réalité augmentée. `quick-look-button-tapped` indique le passage d'un iPhone à Quick Look.
 
 ## Quels fichiers 3D faut-il à une boutique ?
 
-Le GLB pour le web et Android, le fichier USDZ pour la réalité augmentée sur les appareils Apple. Les plateformes compatibles 3D acceptent généralement l'un ou les deux.
+Le GLB pour le web et Android, le fichier USDZ pour la réalité augmentée (RA) sur les appareils Apple. Les plateformes compatibles 3D acceptent généralement l'un ou les deux.
 
-![Un modèle produit donne deux fichiers : GLB pour une fiche produit dans le navigateur et Scene Viewer sur Android, USDZ pour AR Quick Look sur iPhone et iPad](diagram:store-files "Un modèle, deux fichiers, trois points de consultation. Un site développé sur mesure peut fournir les deux avec model-viewer.")
+![Un modèle 3D de produit donne deux fichiers : GLB pour une fiche produit dans le navigateur et Scene Viewer sur Android, USDZ pour AR Quick Look sur iPhone et iPad](diagram:store-files "Un modèle, deux fichiers, trois façons de le consulter. Un site développé sur mesure peut fournir les deux avec model-viewer.")
 
 ### Les modèles 3D sur Shopify
 
@@ -50,9 +50,9 @@ Le GLB pour le web et Android, le fichier USDZ pour la réalité augmentée sur 
 
 Une boutique WooCommerce ajoute la 3D via une extension, comme [Arty 3D Viewer](https://woocommerce.com/products/arty-3d-viewer/). Sur un site sur mesure, le composant libre [model-viewer](https://modelviewer.dev/) de Google affiche le GLB ; `ar-modes="webxr scene-viewer quick-look"` dirige chaque téléphone vers sa visionneuse de réalité augmentée.
 
-### Quelles limites de poids fixer à un modèle produit ?
+### Quelles limites techniques fixer à un modèle 3D de produit ?
 
-Shopify accepte les gros fichiers, mais le téléphone de l'acheteur préfère les petits. Les recommandations Scene Viewer sont les plus précises que nous connaissions ; nous les comparons donc à nos propres fichiers.
+Shopify accepte les gros fichiers, mais les plus légers se chargent plus vite sur le téléphone de l'acheteur. Les recommandations Scene Viewer sont les plus précises que nous connaissions ; nous les comparons donc à nos propres fichiers.
 
 | Critère   | Recommandation Scene Viewer                    | Les six modèles de notre galerie  |
 | --------- | ---------------------------------------------- | --------------------------------- |
@@ -61,23 +61,23 @@ Shopify accepte les gros fichiers, mais le téléphone de l'acheteur préfère l
 | Matériaux | Jusqu'à 10                                     | Un chacun                         |
 | Poids     | 10 MB ; au-delà, l'expérience peut se dégrader | 308 448 à 1 287 432 octets        |
 
-Scene Viewer liste aussi les extensions glTF prises en charge. Un fichier utilisant une extension absente, comme les textures WebP, peut ne pas s'ouvrir : pour Android, préfère des textures PNG ou JPEG. Ouvre-le sur un vrai téléphone Android avant de le relier à une fiche produit.
+Scene Viewer liste aussi les extensions glTF prises en charge. Un fichier utilisant une extension absente, comme les textures WebP, peut ne pas s'ouvrir : pour Android, préfère des textures PNG ou JPEG. Ouvre-le sur un vrai téléphone Android avant d'ajouter son lien à une fiche produit.
 
 ## Comment créer des modèles 3D de produits ?
 
-Nous comparons quatre méthodes selon quatre critères : accès au produit, temps que tu dois y consacrer, fidélité des faces cachées et cas qui posent problème.
+Nous comparons quatre méthodes selon quatre critères : accès au produit, temps que tu dois y consacrer, fidélité des côtés hors champ et cas qui posent problème.
 
 ### Faire appel à un artiste 3D
 
 L'artiste construit le modèle à partir de tes photos, dessins et mesures, sans avoir besoin du produit sur place. Cette méthode demande le plus de préparation et d'attente, mais donne le résultat le plus fidèle, puisque rien n'est deviné. Les devis Fiverr ou Upwork varient selon la complexité.
 
-Notre choix : pour un modèle qui doit être exact, comme un canapé vendu en trois largeurs, ou un produit vedette de campagne.
+Notre choix : pour un modèle qui doit être exact, comme un canapé vendu en trois largeurs, ou un produit phare pour une campagne publicitaire.
 
 ### Utiliser les fichiers CAO du fabricant
 
 Si tu vends tes propres créations, l'usine possède peut-être déjà des fichiers CAO ou SketchUp. Leur forme est précise, mais ils sont rarement prêts pour le web : il faut généralement ajouter les textures et réduire fortement les triangles pour un affichage fluide sur téléphone.
 
-Notre choix : demande-les d'abord si tu possèdes les dessins. Prévois le nettoyage : un fichier d'usine peut dépasser largement les 100 000 triangles de Scene Viewer.
+Notre choix : demande-les d'abord si tu es à l'origine du design. Prévois du temps pour les alléger : un fichier d'usine peut dépasser largement les 100 000 triangles de Scene Viewer.
 
 ### Scanner le produit
 
@@ -91,7 +91,7 @@ Les outils image-vers-3D, comme Meshy, Tripo et easyrender, partent d'une image.
 
 ![Neuf vues d'un vase en grès mat dessinées à partir d'une photo produit](/showcase/vase-angles.jpg "Une planche de vues dessinée par easyrender à partir d'une photo de vase en grès, sans retouche. Un objet rond et mat représente un cas simple.")
 
-Notre choix : pour un catalogue reposant sur des photos fournisseur. Petits logos, tissages ajourés et faces hors champ sont difficiles à lire sur une seule photo. [Comment faire un modèle 3D](/fr/guides/comment-faire-un-modele-3d) détaille chaque méthode, ses besoins et ses difficultés.
+Notre choix : pour un catalogue reposant sur des photos de fournisseurs. Petits logos, tissages ajourés et côtés hors champ sont difficiles à lire sur une seule photo. [Comment faire un modèle 3D](/fr/guides/comment-faire-un-modele-3d) détaille chaque méthode, ses besoins et ses difficultés.
 
 Le comparatif [artiste 3D ou IA](/compare/3d-modeler-vs-ai) oppose ces deux approches. Les pages [Meshy](/compare/meshy) et [Tripo](/compare/tripo) examinent deux outils plus précisément.
 
@@ -101,7 +101,7 @@ Classe tes produits avant de créer un modèle. Pose quatre questions pour chacu
 
 Commence par les cinq produits les mieux placés. Ce sont souvent un fauteuil, un buffet ou un lampadaire à abat-jour travaillé. Une affiche encadrée ou un tapis gagne peu à passer en 3D.
 
-Teste ensuite deux méthodes sur un produit, par exemple un scan au téléphone et un modèle image-vers-3D de la même lampe. Compare-les sur un téléphone : ce sera plus instructif qu'une liste de fonctionnalités.
+Teste ensuite deux méthodes sur un produit, par exemple un scan au téléphone et un modèle de la même lampe créé par image-vers-3D. Compare-les sur un téléphone : ce sera plus instructif qu'une liste de fonctionnalités.
 
 Pour un grand catalogue, regarde le traitement par lot et le coût par modèle. easyrender permet de déposer plusieurs photos dans une bibliothèque, de vérifier gratuitement chaque prévisualisation et de ne construire que les modèles qui te conviennent.
 
@@ -119,11 +119,11 @@ Voici l'ordre que nous suivrions pour un premier lot :
 
 ## Exemple : un buffet en noyer
 
-Imagine trois photos fournisseur d'un buffet en noyer : face, trois quarts et gros plan des poignées en laiton. Pour l'image-vers-3D, choisis celle de trois quarts : elle montre la profondeur et un panneau latéral.
+Tu disposes de trois photos d'un buffet en noyer fournies par le fabricant : face, trois quarts et gros plan des poignées en laiton. Pour l'image-vers-3D, choisis celle de trois quarts : elle montre la profondeur et un panneau latéral.
 
-![Trois photos fournisseur dessinées : face sans profondeur, trois quarts montrant la façade et un côté, signalée comme le choix à faire, et gros plan d'une poignée](diagram:sideboard-photo-pick "Seule la vue de trois quarts montre le panneau latéral : la photo laisse donc moins de profondeur à déduire. Dessin pour cet exemple, pas une vraie annonce.")
+![Trois photos d'un fournisseur représentées par des dessins : face sans profondeur, trois quarts montrant la façade et un côté, signalée comme le choix à faire, et gros plan d'une poignée](diagram:sideboard-photo-pick "Seule la vue de trois quarts montre le panneau latéral : la photo laisse donc moins de profondeur à déduire. Dessin pour cet exemple, pas une vraie annonce.")
 
-Portes, pieds et fil du bois doivent rester lisibles. Compare les poignées au gros plan, car la petite quincaillerie perd d'abord du détail, quelle que soit la méthode. Vérifie particulièrement le dos, absent de la photo.
+Portes, pieds et fil du bois doivent rester lisibles. Compare les poignées au gros plan : les détails de la petite quincaillerie sont souvent difficiles à distinguer sur la photo. Vérifie particulièrement le dos, absent de la photo.
 
 Envoie ensuite le GLB avec les outils de ta plateforme et ouvre la page sur iPhone et Android avant publication. Sur Shopify, le fichier USDZ pour iPhone est créé à partir de ce même envoi.
 
@@ -141,9 +141,9 @@ Beaucoup ne se voient que sur un vrai téléphone, d'où l'étape 6. Voici les s
 | Modèle sombre ou sale en réalité augmentée          | Ombres inscrites dans la texture, déconseillées par Scene Viewer | Utilise une texture sans ombres intégrées et Metallic à 0 si non défini                                                                                                   |
 | GLB impossible à ouvrir dans Scene Viewer           | Extension glTF absente de sa liste, comme les textures WebP      | Exporte une version simple avec des textures PNG ou JPEG                                                                                                                  |
 
-## Quelles limites connaître pour la 3D en ecommerce ?
+## Quelles limites connaître pour la 3D en e-commerce ?
 
-Un modèle issu d'une photo représente forme et matières, sans dimensions mesurées. Garde celles-ci dans le texte produit et ne demande pas à la réalité augmentée de remplacer les mesures prises chez l'acheteur.
+Un modèle issu d'une photo représente forme et matières, sans dimensions mesurées. Garde celles-ci dans la description du produit et ne demande pas à la réalité augmentée de remplacer les mesures prises chez l'acheteur.
 
 Les objets transparents ou réfléchissants, comme un vase en verre ou une lampe chromée, sont difficiles à saisir par toutes les méthodes. Petits textes et logos sont aussi difficiles à lire sur une seule photo.
 
@@ -159,11 +159,11 @@ Pas pour tous les produits : la 3D aide surtout quand l'acheteur veut voir la pr
 
 Deux, généralement : le GLB pour le web et la réalité augmentée sur Android, le fichier USDZ pour AR Quick Look sur iPhone et iPad. Shopify accepte les deux et crée la version manquante. Si ton outil n'en fournit qu'une, Reality Converter d'Apple sur Mac ou Blender peut produire l'autre ; vérifie ensuite les matériaux.
 
-### Quel poids viser pour un modèle 3D produit ?
+### Quel poids viser pour un modèle 3D de produit ?
 
 Un poids adapté à un téléphone en connexion mobile. Scene Viewer recommande 10 MB maximum, 100 000 triangles et des textures de 2048 pixels ; son idéal est de 30 000 à 50 000 triangles. Shopify accepte jusqu'à 500 MB et optimise au-delà de 15 MB, mais un fichier léger reste plus rapide à charger.
 
-### Combien coûte un modèle 3D pour ecommerce ?
+### Combien coûte un modèle 3D pour l'e-commerce ?
 
 Le coût dépend de la méthode : devis selon la complexité pour un artiste, abonnement pour les applications de scan, paiement au modèle ou au mois pour l'IA. Chez easyrender, la prévisualisation est gratuite et le modèle coûte {{renderCredits}} crédits ({{renderPrice}}), achetés à l'usage ou avec Pro : {{proCredits}} crédits mensuels pour {{proPrice}}.
 

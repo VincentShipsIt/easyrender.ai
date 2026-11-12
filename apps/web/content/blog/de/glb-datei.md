@@ -1,7 +1,7 @@
 ---
 
 group: glb-file
-title: "GLB-Datei: öffnen, prüfen und verwenden"
+title: "Was ist eine GLB-Datei? Öffnen, prüfen und verwenden"
 description: "Eine GLB-Datei enthält ein 3D-Modell im binären glTF-2.0-Format. So öffnest, prüfst und verkleinerst du sie für Web und Android-AR."
 date: 2026-11-15
 updated: 2026-11-11
@@ -11,7 +11,7 @@ keyword: glb datei
 cta: Mit einem scharfen Foto einer Lampe oder eines Stuhls kannst du alle Seiten prüfen, bevor eine GLB entsteht.
 ---
 
-Eine GLB-Datei speichert ein 3D-Modell in der binären Variante von glTF 2.0, einem offenen Format der Khronos Group. Eine einzige .glb enthält Form, Materialien, Texturen und mögliche Animationen, sodass sie im Web ohne Zusatzdateien lädt. Sie ist das übliche Format für 3D auf Produktseiten und AR unter Android.
+Eine GLB-Datei speichert ein 3D-Modell in der binären Variante von glTF 2.0, einem offenen Format der Khronos Group. Eine einzige .glb-Datei enthält Form, Materialien, Texturen und gegebenenfalls Animationen; zusätzliche Dateien zum Laden im Web brauchst du nicht. Sie ist das übliche Format für 3D auf Produktseiten und AR unter Android.
 
 ![Illustration einer seladongrünen Teekanne, links glasiert und rechts aus mattgrauem Ton mit weißem Drahtgitter und abgelösten UV-Flächen, vor dunklem Hintergrund](/blog/illustrations/glb-file/hero.webp "Illustration, kein easyrender-Ergebnis: eine Teekanne, halb glasiert und halb als Drahtgitter mit abgelösten UV-Flächen gezeichnet.")
 
@@ -21,15 +21,15 @@ Ein glTF-Modell kann aus einer .gltf-Textdatei, separaten Texturbildern und eine
 
 Der Aufbau ist übersichtlich: Ein 12-Byte-Dateikopf enthält das Wort glTF, die Versionsnummer 2 und die gesamte Dateilänge. Danach folgen zwei Blöcke: ein JSON-Block mit der Szenenbeschreibung und ein Binärblock mit Geometrie und Bildern.
 
-Diese drei Kopfwerte prüfen wir bei jedem ausgelieferten Modell. Beginnt eine Datei nicht mit glTF, hat sie nicht Version 2 oder stimmt ihre angegebene Länge nicht mit der tatsächlichen überein, lehnen wir sie vor dem Download als beschädigt ab. Dasselbe gilt für Dateien unter 20.000 Bytes.
+Diese drei Angaben im Dateikopf prüfen wir bei jedem ausgelieferten Modell. Beginnt eine Datei nicht mit glTF, hat sie nicht Version 2 oder stimmt ihre angegebene Länge nicht mit der tatsächlichen überein, lehnen wir sie vor dem Download als beschädigt ab. Dasselbe gilt für Dateien unter 20.000 Bytes.
 
 ![Die GLB der Tonvase nach Byte-Anteilen: 1,4 KB JSON, 85 KB Dreiecksindizes, 164 KB Positionen und Texturkoordinaten sowie 50 KB WebP-Textur; darunter dasselbe Modell als getrennte glTF-Dateien](diagram:glb-anatomy "Aus der GLB der Tonvase weiter unten ausgelesen: insgesamt 301 KB. Bei einer WebP-Textur mit 1024 Pixeln entfällt der größte Teil auf Geometrie.")
 
 Die Zahlen im Diagramm gehen genau auf. Die Vase hat 14.590 Dreiecke mit je drei Eckindizes zu jeweils 2 Bytes: 87.540 Bytes für Indizes. Ihre 8.406 Eckpunkte speichern jeweils Position und Texturkoordinate in 20 Bytes, insgesamt 168.120 Bytes.
 
-## Wie groß sind echte GLB-Dateien, und wohin gehen die Bytes?
+## Wie groß sind GLB-Dateien, und was braucht den meisten Platz?
 
-Wir haben alle Modelle unserer Beispielgalerie auf dieselbe Weise ausgelesen. Alle sechs bestehen aus einem Oberflächennetz, einem Material und einer WebP-Textur mit 1024 Pixeln, für das Web mit glTF Transform verpackt.
+Wir haben alle Modelle unserer Beispielgalerie auf dieselbe Weise ausgelesen. Alle sechs bestehen aus einem Mesh, also einem Netz aus Dreiecken, einem Material und einer WebP-Textur mit 1024 Pixeln. Wir haben sie mit glTF Transform für das Web aufbereitet.
 
 | Modell            | Dateigröße (Bytes) | Dreiecke | Textur (Bytes) | Geometrieanteil |
 | ----------------- | ------------------ | -------- | -------------- | --------------- |
@@ -56,38 +56,38 @@ Prüfe in Blender eine Einstellung: Metallic am Material auf 0 setzen und erneut
 
 Vertex-Normalen geben für jeden Eckpunkt die Richtung an, mit der ein Betrachter eine gekrümmte Oberfläche weich schattiert. Sie sind in glTF optional. Eine Datei darf also nur Positionen und Texturkoordinaten enthalten.
 
-Für diesen Fall schreibt die Spezifikation flache Normalen vor. Bei einem dichten Netz sind die einzelnen Flächen klein. Unter flachem Seitenlicht können auf einer Rundung trotzdem feine Facetten sichtbar werden.
+Für diesen Fall schreibt die Spezifikation flache Normalen vor. Bei einem Mesh mit vielen Dreiecken sind die einzelnen Flächen klein. Unter flachem Seitenlicht können auf einer Rundung trotzdem feine Facetten sichtbar werden.
 
-Normalen kosten 12 Bytes pro Eckpunkt, drei Zahlen zu je 4 Bytes; bei 8.000 Eckpunkten sind das etwa 96.000 Bytes. Shade Smooth und ein Export mit aktiviertem Normals schreiben in Blender weiche Normalen. `gltf-transform inspect` zeigt, ob das Attribut NORMAL vorhanden ist.
+Normalen belegen 12 Bytes pro Eckpunkt, drei Zahlen zu je 4 Bytes; bei 8.000 Eckpunkten sind das etwa 96.000 Bytes. Mit Shade Smooth und aktiviertem Normals beim Export speichert Blender Normalen für eine glatte Schattierung. `gltf-transform inspect` zeigt, ob das Attribut NORMAL vorhanden ist.
 
 ## Wie öffnest du eine GLB-Datei?
 
-Du brauchst einen Betrachter, keinen Konverter. Diese Möglichkeiten öffnen GLB ohne zusätzliche Einrichtung:
+Du brauchst einen Betrachter, keinen Konverter. So öffnest du eine GLB ohne zusätzliche Einrichtung:
 
 - Im Browser: Ziehe die Datei in die [Babylon.js Sandbox](https://sandbox.babylonjs.com/) oder den [model-viewer editor](https://modelviewer.dev/editor/).
 - In Blender: [File, Import, glTF 2.0](https://docs.blender.org/manual/en/latest/addons/import_export/scene_gltf2.html) (.glb/.gltf).
 - Im Code: three.js und Babylon.js laden GLB direkt, Unity über das [glTFast-Paket](https://docs.unity3d.com/Packages/com.unity.cloud.gltfast@6.0/manual/index.html).
 - Unter Android: Googles [Scene Viewer](https://developers.google.com/ar/develop/scene-viewer) öffnet eine auf einer Webseite verlinkte GLB in 3D oder AR.
 
-iPhone und iPad öffnen GLB nicht in AR Quick Look. Apples AR verwendet USDZ. Shops, die beide Systeme bedienen wollen, behalten deshalb beide Dateien.
+iPhone und iPad öffnen GLB nicht in AR Quick Look. Apples AR verwendet USDZ. Shops, die beide Systeme bedienen wollen, halten deshalb beide Dateiformate bereit.
 
-![Eine gealterte Tonvase als GLB, in Googles model-viewer geöffnet und drehbar](/showcase/clay-vase.glb "Eine echte easyrender-GLB einer gealterten Tonvase im oben verlinkten model-viewer. Die Datei hat 301 KB: ein Netz mit 14.590 Dreiecken und eine WebP-Textur mit 1024 Pixeln, mit glTF Transform verpackt.")
+![Eine gealterte Tonvase als GLB, in Googles model-viewer geöffnet und drehbar](/showcase/clay-vase.glb "Eine echte easyrender-GLB einer gealterten Tonvase im oben verlinkten model-viewer. Die Datei hat 301 KB: ein Mesh mit 14.590 Dreiecken und eine WebP-Textur mit 1024 Pixeln, mit glTF Transform verpackt.")
 
-Drehe das geöffnete Modell langsam. Schaue darunter, dahinter und nah an feine Details wie Griffe und Nähte heran.
+Drehe das geöffnete Modell langsam. Sieh dir die Unterseite, die Rückseite und feine Details wie Griffe und Nähte aus der Nähe an.
 
-Ohne Betrachter zeigt `gltf-transform inspect` aus [glTF Transform](https://gltf-transform.dev/cli) den Inhalt. Der Befehl listet Netze, Texturen und Erweiterungen samt Eckpunktzahlen und Größen auf. So kannst du die Datei mit der Tabelle oben vergleichen.
+Ohne Betrachter zeigt `gltf-transform inspect` aus [glTF Transform](https://gltf-transform.dev/cli) den Inhalt. Der Befehl listet Meshes, Texturen und Erweiterungen samt Eckpunktzahlen und Größen auf. So kannst du die Datei mit der Tabelle oben vergleichen.
 
 ## Wofür wird eine GLB-Datei verwendet?
 
-Shopify nimmt GLB als Produktmedium an. Auf einer selbst gebauten Website zeigt Googles quelloffenes [model-viewer](https://modelviewer.dev/) eine GLB mit einem kurzen Codeabschnitt an. Drehen und Zoomen sind bereits enthalten.
+Shopify nimmt GLB als Produktmedium an. Auf einer selbst gebauten Website zeigt die quelloffene Komponente [model-viewer](https://modelviewer.dev/) von Google eine GLB mit einem kurzen Codeabschnitt an. Drehen und Zoomen sind bereits enthalten.
 
 Außerhalb des Onlinehandels ist GLB in Web-3D, Spielen und AR-Anwendungen verbreitet, weil es kompakt, offen und mit den meisten 3D-Programmen lesbar ist. Blender exportiert es ebenso wie die meisten Scan- und KI-Werkzeuge.
 
-Für Android-AR muss die Datei in Scene Viewers Vorgaben bleiben: empfohlen sind höchstens 10 MB, 100.000 Dreiecke und Texturen mit 2048 Pixeln. Jede Datei in der Tabelle oben erfüllt diese Werte.
+Für Android-AR muss die Datei die Vorgaben von Scene Viewer erfüllen: empfohlen sind höchstens 10 MB, 100.000 Dreiecke und Texturen mit 2048 Pixeln. Jede Datei in der Tabelle oben erfüllt diese Werte.
 
 ## Wie verkleinerst du eine GLB-Datei?
 
-Wir haben die Befehle mit glTF Transform 4.5 an einer Kopie des Nachttischs ausprobiert, dem Modell mit den meisten Dreiecken in der Tabelle. Die Dreieckszahl bleibt gleich, solange du das Netz nicht vereinfachst.
+Wir haben die Befehle mit glTF Transform 4.5 an einer Kopie des Nachttischs ausprobiert, dem Modell mit den meisten Dreiecken in der Tabelle. Die Dreieckszahl bleibt gleich, solange du das Mesh nicht vereinfachst.
 
 | Variante des Nachttischs                                                       | Größe (Bytes) | Dreiecke |
 | ------------------------------------------------------------------------------ | ------------- | -------- |
@@ -102,7 +102,7 @@ Komprimierung setzt Unterstützung im Betrachter voraus. model-viewer und three.
 
 Unsere Empfehlung nach Einsatzort:
 
-- Eigene Website mit model-viewer: Meshopt oder Draco für die Geometrie und WebP-Texturen, danach Kanten auf Rundungen prüfen.
+- Eigene Website mit model-viewer: Meshopt oder Draco für die Geometrie und WebP-Texturen, danach prüfen, ob Kanten ungewollt abgerundet wurden.
 - Android-AR mit Scene Viewer: eine einfache GLB mit JPEG- oder PNG-Texturen bis 2048 Pixel, erst über 100.000 Dreiecken vereinfachen.
 - Shopify: die unkomprimierte Datei hochladen, weil Shopify Dateien über 15 MB selbst optimiert.
 
@@ -110,13 +110,13 @@ Unsere Empfehlung nach Einsatzort:
 
 Wähle in Blender File, Export, glTF 2.0 und als Format glTF Binary (.glb), damit die Texturen in der Datei bleiben. Aktiviere unter Mesh Normals und UVs und wähle JPEG, sofern das Modell keine Transparenz braucht. Scan- und KI-Werkzeuge bieten GLB meist zum Herunterladen an.
 
-Die Wege zum Modell, vom manuellen Modellieren bis zum einzelnen Foto, vergleicht [ein 3D-Modell erstellen](/de/ratgeber/3d-modell-erstellen). Für dein Sortiment erklärt [3D-Modelle für Onlineshops](/de/ratgeber/3d-modelle-fuer-onlineshops), welcher Weg zu welchem Produkt passt.
+Die Anleitung [ein 3D-Modell erstellen](/de/ratgeber/3d-modell-erstellen) vergleicht die Methoden vom manuellen Modellieren bis zur KI, die ein einzelnes Foto nutzt. Der Ratgeber [3D-Modelle für Onlineshops](/de/ratgeber/3d-modelle-fuer-onlineshops) erklärt, welcher Weg zu welchem Produkt passt.
 
 easyrender liefert beispielsweise GLB und USDZ zu jedem fertigen Modell aus einem Foto, nach den Schritten in [ein 3D-Modell aus Fotos erstellen](/de/ratgeber/3d-modell-aus-fotos-erstellen). Das Modell gibt Form und Materialien wieder, keine gemessenen Abmessungen.
 
 ## GLB zu USDZ: Brauchst du beide?
 
-Für AR auf iPhone und iPad ja. Apples kostenlose Mac-App Reality Converter wandelt GLB in USDZ um, neuere Blender-Versionen exportieren USDZ direkt. Der Ratgeber zur [USDZ-Datei](/de/ratgeber/usdz-datei) erklärt Apples Format und warum die USDZ größer ausfallen kann als ihre GLB.
+Für AR auf iPhone und iPad ja. Apples kostenlose Mac-App Reality Converter wandelt GLB in USDZ um, neuere Blender-Versionen exportieren USDZ direkt. Der Ratgeber zur [USDZ-Datei](/de/ratgeber/usdz-datei) erklärt Apples Format und warum die USDZ größer ausfallen kann als die ursprüngliche GLB.
 
 | Datei | Inhalt                                                  | Öffnet sich in                                          | Geeignet für                             |
 | ----- | ------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------- |
@@ -142,25 +142,25 @@ Die meisten GLB-Probleme haben wenige typische Ursachen. Diese Liste führt vom 
 
 glTF verwendet Meter, aber korrekte Abmessungen entstehen nur, wenn sie beim Erstellen richtig gesetzt wurden. Ein aus einem Foto erzeugtes Modell hat keine gemessenen Abmessungen. Schreibe Maße deshalb in den Produkttext.
 
-GLB sagt außerdem nichts über die Qualität des Modells. Eine Datei kann den [glTF Validator](https://github.khronos.org/glTF-Validator/) bestehen und trotzdem ein verformtes Stuhlbein oder eine unscharfe Textur enthalten. Das erkennst du nur im Betrachter.
+Das Dateiformat GLB sagt außerdem nichts über die Qualität des Modells aus. Eine Datei kann den [glTF Validator](https://github.khronos.org/glTF-Validator/) bestehen und trotzdem ein verformtes Stuhlbein oder eine unscharfe Textur enthalten. Das erkennst du nur im Betrachter.
 
 ## FAQ
 
 ### Sind GLB und glTF dasselbe?
 
-Es ist dasselbe Format in zwei Verpackungen: glTF kann eine .gltf-Textdatei mit getrennten Textur- und Geometriedateien sein, GLB verpackt alles binär in einer Datei. Beide folgen dem glTF-2.0-Standard der Khronos Group. Die meisten Werkzeuge, die eine Variante lesen, öffnen auch die andere, solange bei glTF alle zugehörigen Dateien zusammenbleiben.
+Es sind zwei Varianten desselben Formats: glTF kann eine .gltf-Textdatei mit getrennten Textur- und Geometriedateien sein, GLB verpackt alles binär in einer Datei. Beide folgen dem glTF-2.0-Standard der Khronos Group. Die meisten Werkzeuge, die eine Variante lesen, öffnen auch die andere, solange bei glTF alle zugehörigen Dateien zusammenbleiben.
 
 ### Kannst du eine GLB-Datei auf dem iPhone öffnen?
 
-Nicht direkt in AR Quick Look, das USDZ verwendet. Im iPhone-Browser kannst du eine GLB mit einem Web-Betrachter wie der Babylon.js Sandbox ansehen. Für AR auf Apple-Geräten wandelst du die GLB mit Apples Reality Converter auf einem Mac in USDZ um oder lässt dir beide Dateien von deinem Werkzeug geben.
+Nicht direkt in AR Quick Look, das USDZ verwendet. Im iPhone-Browser kannst du eine GLB mit einem Web-Betrachter wie der Babylon.js Sandbox ansehen. Für AR auf Apple-Geräten wandelst du die GLB mit Apples Reality Converter auf einem Mac in USDZ um oder wählst beim Export in deinem Tool beide Dateiformate.
 
 ### Wie wandelst du eine GLB in ein anderes Format um?
 
-Öffne sie in Blender, das GLB importiert und unter anderem FBX, OBJ, USD und USDZ exportiert. Dabei können Informationen verloren gehen: OBJ kennt beispielsweise keine Metallic-Roughness-Materialien, sodass ein Messinggriff danach flach wirken kann. Prüfe die umgewandelte Datei deshalb in einem Betrachter, bevor du sie an einer für Kunden sichtbaren Stelle verwendest.
+Öffne sie in Blender, das GLB importiert und unter anderem FBX, OBJ, USD und USDZ exportiert. Dabei können Informationen verloren gehen: OBJ kennt beispielsweise keine Metallic-Roughness-Materialien, sodass ein Messinggriff danach flach wirken kann. Prüfe die umgewandelte Datei deshalb in einem Betrachter, bevor du sie deinen Kunden zeigst.
 
 ### Warum ist deine GLB-Datei so groß?
 
-Meist wegen großer Texturen oder unkomprimierter Geometrie, sobald die Texturen klein sind. In unseren Tests verkleinerte Draco ein Modell mit 69.910 Dreiecken von 1.287.432 auf 235.776 Bytes. Reduziere Texturen auf 2048 oder 1024 Pixel und komprimiere die Geometrie mit glTF Transform; prüfe danach die Oberflächen in einem Betrachter.
+Meist nehmen große Texturen den meisten Platz ein; bei kleinen Texturen ist es dagegen oft die unkomprimierte Geometrie. In unseren Tests verkleinerte Draco ein Modell mit 69.910 Dreiecken von 1.287.432 auf 235.776 Bytes. Reduziere Texturen auf 2048 oder 1024 Pixel und komprimiere die Geometrie mit glTF Transform; prüfe danach die Oberflächen in einem Betrachter.
 
 ### Warum ist deine GLB grau oder ohne Textur?
 

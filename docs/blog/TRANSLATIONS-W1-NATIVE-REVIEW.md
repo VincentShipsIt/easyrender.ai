@@ -65,3 +65,49 @@ The two pending French corrections were already on disk: “Dimensions du modèl
 All four languages were checked for register, local terms, claims, SEO limits, paragraph and FAQ word counts, metadata, token counts, technical commands, table figures, asset order, same-language links, original external sources and heading structure. This is an assistant language-QA pass, not human native approval. Remaining English weakness phrases encountered during localisation were logged in the requested external product bug log; English guides were not changed.
 
 Mobile diagram copy has been shortened and reviewed in source. A visual browser review at 375 px in light and dark remains for the native reviewer; automated rendering does not prove text fit.
+
+## Naturalness pass (12 November 2026)
+
+A second, end-to-end naturalness audit was run after the first mechanical QA. Codex used **gpt-6-astra** with **high** reasoning, one dedicated pass per language, then a human editorial review. The guides remain unpublished drafts: do not merge until a native reviewer signs off and Jorge says yes.
+
+Counts below are substantial wording changes recorded in the language change logs, plus a small number of follow-up edits from the editorial review (German *Webstruktur*, the French window-lighting sentence, and SVG labels that overflowed at 375 px).
+
+### German
+
+About **222** wording changes across all seven guides and the German diagram labels.
+
+Terms that replaced earlier calques: *Bild-zu-3D* → **3D aus einem Foto**; *Ansichtenübersicht* → **Ansichtenraster**; *Oberflächennetz* → **Mesh** (explained in the guide). “Fehlerhilfe” was dropped from the meta description. *Dreiviertelansicht* remains in technical contexts; some CTAs now say *schräg von vorne*. FAQ *Webstruktur* was changed to **Gewebe**.
+
+Titles still contain the target keywords. One title is now more question-like: “Was ist eine GLB-Datei? Öffnen, prüfen und verwenden”.
+
+**Still for a German reviewer:** whether *Ansichtenraster* is the clearest word for the nine-view preview; whether *Mesh* needs more explanation for furniture sellers; vintage vocabulary and the Ercol listing order; tightened 375 px labels (*Schaumplatte*, *auf halber Höhe*, *Beine wirken länger*, *2x oder 3x, zurück*).
+
+### French
+
+About **166** wording changes (159 substantial, 7 spelling normalisations).
+
+The photography title is now “Photographie produit : un studio à petit budget” (keyword *photographie produit* kept; *e-commerce* moved out of the title). “assemblage qui bouge” became “assemblage qui a du jeu”. The method name is standardised as **image-vers-3D**. The USDZ package is an *archive*, not an *emballage*. The window-lighting sentence now says explicitly to orient the product **without moving the window**. Tight 375 px labels: *Téléphone, trépied*; block-out step *Volumes*.
+
+**Still for a French reviewer:** reception of *image-vers-3D*; the SEO compromise of *ecommerce* without a hyphen in some titles; *Planche de vues*; terms *débouche les ombres*, *lumière rasante*, *ceinture*, *dépliage UV*, *estampille*, *quincaillerie*; whether *Volumes* is clear in the modelling diagram.
+
+### Italian
+
+About **231** wording changes (213 in the guides, 18 in diagram labels).
+
+Calques cleaned up include “luce morbida e coperta” → “luce morbida di una giornata coperta”, “scansione telefonica” → “scansione con il telefono”, “due confezioni dello stesso formato” → “due modi di salvare lo stesso formato”, “il fondo deve leggere 255, 255, 255” → “sul fondo devi leggere 255, 255, 255”. *Tavola di viste* is used consistently. *Image-to-3D* remains as a method name in some guides, alongside *da una foto*. *Mesh* is kept, not *maglia*. Tight 375 px labels: *Pannello / di schiuma*, *Telefono, treppiede*, *Gambe più lunghe*.
+
+**Still for an Italian reviewer:** whether *fotografia prodotto* (singular, search-oriented) sounds natural; whether *Image-to-3D* should be fully Italianised; *tavola di viste*, *scontorno*, *fascia sottopiano*, *normali smussate*; *di schiuma* for the bounce board.
+
+### European Portuguese
+
+About **249** wording changes (213 in the guides, 36 in diagram labels).
+
+*montagem repetível* → **preparação que podes repetir**; *folha de vistas* → **nove vistas** (or *imagem com nove vistas* in running text); *abat-jour* → **abajur**. Titles now use informal *abres* / *usas*. “lados fora de campo” is often *lados que ficaram fora da foto* or *lados que a foto não mostra*. Tight 375 px labels: *Pernas da frente longas*; block-out step *Volumes*.
+
+**Still for a Portuguese reviewer:** *abajur* vs a more common alternative (*candeeiro*, *abaixador*); whether *nove vistas* is immediately clear; *metalicidade*; *ecommerce* without a hyphen in titles; *Volumes* in the modelling diagram. Register should stay European *tu* (no *você*).
+
+### Mobile diagram check (375 px, light and dark)
+
+A local preview rendered every week-1 diagram in de, fr, it and pt at a 375 px viewport, in light and dark (`prefers-color-scheme`). An automated SVG/HTML overflow check first flagged 11 unique labels (the same set in both themes), mostly in *window-light-setup*, *lens-distance* and *blockout-side-table*. Those labels were shortened as listed above and the check was re-run: **0 overflows** in light or dark. A native reviewer should still glance at the tightened labels on a real phone, because fit is not the same as natural wording.
+
+No visual issues were found with HTML (non-SVG) node labels at this width. English diagram layout was not changed.

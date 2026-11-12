@@ -1,14 +1,14 @@
 ---
 
 group: usdz-file
-title: "Ficheiro USDZ: como usar o AR Quick Look no iPhone"
-description: "O que é um ficheiro USDZ, como o abres e crias para iPhone e iPad, o que contém e porque pode aparecer demasiado grande em RA."
+title: "Ficheiro USDZ: como usas o AR Quick Look no iPhone"
+description: "Ficheiro USDZ: o que contém, como o abres e crias para iPhone e iPad e porque pode mostrar o modelo demasiado grande em realidade aumentada."
 date: 2026-11-17
 updated: 2026-11-11
 author: Jorge Rodríguez
 authorType: person
 keyword: ficheiro usdz
-cta: Escolhe uma fotografia nítida de uma peça, uma mesa de apoio em carvalho ou um candeeiro de pé, e verifica todos os ângulos antes de gastares um crédito.
+cta: Escolhe uma fotografia nítida de uma peça, como uma mesa de apoio em carvalho ou um candeeiro de pé, e verifica todos os ângulos antes de gastares um crédito.
 ---
 
 Um ficheiro USDZ contém um modelo 3D no formato Universal Scene Description da Pixar, USD, dentro de um pacote zip sem compressão. A Apple usa-o no AR Quick Look: podes abri-lo no iPhone ou iPad através do Safari, Ficheiros, Mail ou Mensagens e ver o objeto na divisão pela câmara. O Android não abre USDZ.
@@ -23,11 +23,11 @@ USD é o formato de cena criado pela Pixar para cinema. A [especificação USDZ]
 
 As camadas USD usam duas codificações: .usda é texto legível e .usdc é binário. As texturas são normalmente PNG ou JPEG; a escolha do exportador determina grande parte do tamanho do ficheiro.
 
-A Apple [apresentou o USDZ com o ARKit 2](https://www.apple.com/newsroom/2018/06/apple-unveils-arkit-2/) na WWDC de junho de 2018, para iOS 12, juntamente com o AR Quick Look. Desde então é o formato usado pelos dispositivos Apple para RA a partir de páginas e mensagens.
+A Apple [apresentou o USDZ com o ARKit 2](https://www.apple.com/newsroom/2018/06/apple-unveils-arkit-2/) na WWDC de junho de 2018, para iOS 12, juntamente com o AR Quick Look. Desde então é o formato usado pelos dispositivos Apple para realidade aumentada (RA) a partir de páginas e mensagens.
 
 ## O que determina o tamanho de um USDZ?
 
-Duas escolhas do exportador. A geometria em texto .usda ocupa várias vezes os bytes da mesma malha em binário .usdc, porque escreve cada número por extenso; uma textura fotográfica PNG sem perdas costuma também ocupar várias vezes o espaço da mesma imagem em JPEG.
+Duas escolhas do exportador. A geometria em texto .usda ocupa várias vezes os bytes da mesma malha em binário .usdc, porque guarda cada número como uma sequência de algarismos; uma textura fotográfica PNG sem perdas costuma também ocupar várias vezes o espaço da mesma imagem em JPEG.
 
 A especificação inclui PNG e JPEG, mas não WebP. Ao converter um GLB com texturas WebP para USDZ, as imagens também são convertidas, e o formato escolhido determina quanto crescem.
 
@@ -46,7 +46,7 @@ Como USDZ é um zip, `unzip -l side-table.usdz` lista os ficheiros internos e re
 
 Extrai uma cópia e abre a camada .usda principal num editor de texto. `metersPerUnit` e `upAxis` indicam a dimensão apresentada e a orientação vertical; uma linha de ancoragem diz se o Quick Look coloca o modelo numa superfície horizontal, como o chão, ou vertical, como uma parede.
 
-Procura geometria binária .usdc, texturas JPEG salvo transparências e imagens até 2048 píxeis. Compara o tamanho com o GLB e abre o resultado no Quick Look de um Mac antes de o colocares numa página.
+Escolhe geometria binária .usdc e texturas até 2048 píxeis em JPEG, a menos que precises de transparência. Compara o tamanho com o GLB e abre o resultado no Quick Look de um Mac antes de o colocares numa página.
 
 ## Como abres um ficheiro USDZ?
 
@@ -62,29 +62,29 @@ A [página da Apple sobre Quick Look](https://developer.apple.com/augmented-real
 
 ## Como funciona o AR Quick Look numa página web?
 
-A página liga ao USDZ com `rel="ar"` à volta de uma imagem de pré-visualização, e o Safari acrescenta um pequeno símbolo RA. O [guia WebKit](https://webkit.org/blog/8421/viewing-augmented-reality-assets-in-safari-for-ios/) mostra o código: ao tocar na imagem, abres o modelo na divisão sem instalar uma aplicação.
+A página inclui uma ligação ao USDZ com `rel="ar"` que envolve uma imagem de pré-visualização, e o Safari acrescenta um pequeno símbolo RA. O [guia WebKit](https://webkit.org/blog/8421/viewing-augmented-reality-assets-in-safari-for-ios/) mostra o código: ao tocar na imagem, abres o modelo na divisão sem instalar uma aplicação.
 
 Há quatro detalhes a respeitar:
 
 1. Aloja o USDZ por HTTPS com o tipo de conteúdo `model/vnd.usdz+zip`, esperado pelo Safari.
 2. Coloca a imagem dentro de uma ligação ao ficheiro: `<a rel="ar" href="side-table.usdz"><img src="side-table.jpg"></a>`.
 3. Mantém um único elemento filho, `img` ou `picture`, sem mais conteúdo.
-4. Verifica o suporte com `a.relList.supports("ar")` e apresenta uma ligação normal de descarga quando devolver false.
+4. Verifica o suporte com `a.relList.supports("ar")` e apresenta uma ligação normal para descarregar o ficheiro quando devolver false.
 
-O componente aberto [model-viewer](https://modelviewer.dev/), da Google, trata dos dois sistemas: mostra GLB na página e entrega USDZ aos iPhones para o Quick Look.
+O componente de código aberto [model-viewer](https://modelviewer.dev/), da Google, trata dos dois sistemas: mostra GLB na página e entrega USDZ aos iPhones para o Quick Look.
 
 ![Duas entradas para AR Quick Look no iPhone: imagem com símbolo RA no Safari ou ficheiro aberto em Mensagens, Mail ou Ficheiros, ambas com vistas Objeto e RA](diagram:quick-look-path "Os dois percursos terminam nas mesmas vistas. O modelo usa as dimensões guardadas no ficheiro, que não resultam de medições quando parte de uma fotografia.")
 
-O AR Quick Look usa as dimensões guardadas no ficheiro. Sem medições, a peça pode parecer maior ou menor do que a física; quem a vê pode ainda redimensioná-la com dois dedos.
+O AR Quick Look usa as dimensões guardadas no ficheiro. Sem medições, o modelo pode parecer maior ou menor do que a peça que representa; quem o vê pode ainda redimensioná-lo com dois dedos.
 
 ## Como crias um ficheiro USDZ?
 
-Os quatro caminhos mais comuns diferem no sistema onde funcionam e no trabalho que permitem.
+Os quatro métodos mais comuns diferem nos sistemas onde funcionam e nas tarefas que permitem fazer.
 
 | Ferramenta                  | Onde funciona         | Vantagem                                  | O que verificar                           |
 | --------------------------- | --------------------- | ----------------------------------------- | ----------------------------------------- |
 | Reality Converter da Apple  | Mac                   | Verificar materiais antes de exportar     | Só Mac                                    |
-| Blender 3.5 ou posterior    | Mac, Windows, Linux   | Editar o modelo antes de exportar         | Alguns materiais ficam mais planos em USD |
+| Blender 3.5 ou posterior    | Mac, Windows, Linux   | Editar o modelo antes de exportar         | Alguns materiais perdem detalhe visual em USD |
 | Exportador USDZ do three.js | Qualquer navegador    | Sem servidor e USDZ correspondente ao GLB | Tamanho e materiais no Quick Look         |
 | Shopify                     | Administração da loja | Criar GLB e USDZ de cada modelo carregado | A plataforma decide o resultado           |
 
@@ -98,11 +98,11 @@ O easyrender fornece ambos os ficheiros para cada modelo concluído. A RA está 
 
 ## Um exemplo: uma mesa de apoio em carvalho no iPhone
 
-Envia o USDZ por Mensagens para ti e toca nele. O Quick Look abre a vista Objeto, onde o rodas com um dedo; passa para RA, aponta a câmara ao chão e toca no local pretendido.
+Envia para ti o USDZ através da aplicação Mensagens e toca no ficheiro. O Quick Look abre a vista Objeto, onde o rodas com um dedo; passa para RA, aponta a câmara ao chão e toca no local pretendido.
 
-Anda à volta e observa onde as pernas encontram o chão. Uma base deslocada pode fazer o modelo parecer suspenso.
+Anda à volta e observa onde as pernas tocam no chão. Uma base deslocada pode fazer o modelo parecer suspenso.
 
-![Mesa redonda em madeira maciça como modelo 3D que podes rodar para verificar as pernas de todos os lados](/showcase/coffee-table.glb "Mesa modelada pelo easyrender a partir de uma foto, aqui no GLB: 16.228 triângulos. O USDZ deriva deste mesmo GLB, por isso correspondem. Roda-a e observa o apoio das pernas.")
+![Mesa redonda em madeira maciça como modelo 3D que podes rodar para verificar as pernas de todos os lados](/showcase/coffee-table.glb "Mesa modelada pelo easyrender a partir de uma foto, aqui apresentada em GLB: 16.228 triângulos. O USDZ é criado a partir deste GLB, por isso os dois mostram o mesmo modelo. Roda-a e observa o apoio das pernas.")
 
 Depois verifica o veio sob a tua luz, mais quente do que a iluminação de estúdio da fotografia original.
 
@@ -116,13 +116,13 @@ O problema costuma estar na forma de servir o ficheiro ou no conteúdo escrito p
 | Sem símbolo RA na imagem                | Mais de um filho na ligação ou iOS anterior a 12   | Usa um único filho `img` ou `picture` e testa num iPhone recente  |
 | Peça enorme ou minúscula                | Quick Look usa dimensões guardadas sem medição     | Escreve as medidas; o comprador pode redimensionar com dois dedos |
 | Peça suspensa                           | Base acima da origem                               | Move a origem para a base no Blender e exporta novamente          |
-| Cores mais planas do que no Blender     | Material sem correspondência direta em USD         | Verifica no Quick Look do Mac e simplifica o material             |
+| Cores menos vivas do que no Blender     | Material sem correspondência direta em USD         | Verifica no Quick Look do Mac e simplifica o material             |
 | Curvas facetadas                        | GLB de origem sem normais                          | Acrescenta normais suaves antes da conversão                      |
 | Ficheiro demasiado grande para enviar   | Geometria em texto e texturas PNG                  | Exporta geometria binária e JPEG e compara tamanhos               |
 
 ## GLB para USDZ: deves guardar os dois?
 
-Sim, para uma página de produto. GLB cobre web e Android, USDZ a RA nos dispositivos Apple; a Shopify aceita ambos e cria a versão em falta.
+Sim, para uma página de produto. O GLB serve a web e o Android, e o USDZ serve a RA nos dispositivos Apple; a Shopify aceita ambos e cria a versão em falta.
 
 O guia de [como criar um modelo 3D](/pt/guias/como-criar-um-modelo-3d) explica a origem dos ficheiros em cada método. Para escolher produtos, consulta [modelos 3D para ecommerce](/pt/guias/modelos-3d-para-ecommerce).
 
@@ -142,7 +142,7 @@ O AR Quick Look usa as dimensões guardadas no ficheiro. Se o modelo parte de um
 
 ### Porque é o USDZ maior do que o GLB original?
 
-Depende normalmente do conversor: geometria em texto ocupa várias vezes o espaço do binário e USDZ não inclui WebP nos formatos de imagem. Uma textura WebP pequena pode virar um PNG muito maior; exportar geometria binária .usdc e texturas JPEG reduz o tamanho do ficheiro.
+Depende normalmente do conversor: geometria em texto ocupa várias vezes o espaço do binário e USDZ não inclui WebP nos formatos de imagem. Uma textura WebP pequena pode ser convertida num PNG muito maior; exportar geometria binária .usdc e texturas JPEG reduz o tamanho do ficheiro.
 
 ### USDZ e USD são a mesma coisa?
 

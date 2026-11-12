@@ -217,7 +217,7 @@ export const vintageShotList = defineDiagram(
         },
         {
           picto: 'label',
-          title: 'Etiqueta ou marca',
+          title: 'Etiqueta ou marca do fabricante',
         },
         {
           picto: 'joint',
@@ -225,7 +225,7 @@ export const vintageShotList = defineDiagram(
         },
         {
           picto: 'flaw',
-          title: 'Cada defeito em pormenor',
+          title: 'Cada defeito de perto',
           isKey: true,
         },
       ],
@@ -279,33 +279,33 @@ export const listingTitle = defineDiagram(
     de: {
       good: [
         { word: 'Ercol', part: 'Hersteller' },
-        { word: 'Ulme', part: 'Material' },
-        { word: 'Windsor', part: 'Stil' },
-        { word: 'Esszimmerstuhl,', part: 'Gegenstand' },
-        { word: '1960er', part: 'Epoche' },
+        { word: 'Windsor:', part: 'Stil' },
+        { word: 'Esszimmerstuhl', part: 'Gegenstand' },
+        { word: 'aus Ulme,', part: 'Material' },
+        { word: '1960er-Jahre', part: 'Epoche' },
       ],
       weak: 'Schöner alter Stuhl',
       weakNote: 'Ohne Hersteller, Material, Stil oder Epoche fehlen Suchbegriffe.',
-      goodLabel: 'Gefunden',
-      weakLabel: 'Übersehen',
+      goodLabel: 'Gut auffindbar',
+      weakLabel: 'Schwer auffindbar',
     },
     fr: {
       good: [
         {
-          word: 'Ercol',
-          part: 'Fabricant',
+          word: 'Chaise de salle à manger',
+          part: 'Objet',
         },
         {
-          word: 'orme',
-          part: 'Matériau',
+          word: 'Ercol',
+          part: 'Fabricant',
         },
         {
           word: 'Windsor',
           part: 'Style',
         },
         {
-          word: 'chaise de salle à manger,',
-          part: 'Objet',
+          word: 'en orme,',
+          part: 'Matière',
         },
         {
           word: 'années 1960',
@@ -313,7 +313,7 @@ export const listingTitle = defineDiagram(
         },
       ],
       weak: 'Jolie chaise ancienne',
-      weakNote: 'Sans fabricant, matériau, style ni époque : aucun terme recherché.',
+      weakNote: 'Sans fabricant, matière, style ni époque : aucun mot précis à rechercher.',
       goodLabel: 'Trouvée',
       weakLabel: 'Introuvable',
     },
@@ -326,7 +326,7 @@ export const listingTitle = defineDiagram(
         { word: 'anni 1960', part: 'Epoca' },
       ],
       weak: 'Bella sedia vecchia',
-      weakNote: 'Niente produttore, materiale, stile o epoca: nessun termine cercato.',
+      weakNote: 'Mancano produttore, materiale, stile ed epoca: le parole che cerca chi compra.',
       goodLabel: 'Trovata',
       weakLabel: 'Non trovata',
     },
@@ -340,8 +340,8 @@ export const listingTitle = defineDiagram(
       ],
       weak: 'Cadeira antiga bonita',
       weakNote: 'Sem fabricante, material, estilo ou época: faltam termos de pesquisa.',
-      goodLabel: 'Encontrada',
-      weakLabel: 'Não encontrada',
+      goodLabel: 'Fácil de encontrar',
+      weakLabel: 'Difícil de encontrar',
     },
   },
   function ListingTitle({ t }) {

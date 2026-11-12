@@ -44,7 +44,7 @@ export const glbAnatomy = defineDiagram(
     de: {
       file: 'clay-vase.glb',
       parts: {
-        json: { title: 'JSON-Block', note: 'Szene, Netz, Material: Beschreibung' },
+        json: { title: 'JSON-Block', note: 'Beschreibt Szene, Mesh und Material' },
         indices: { title: 'Dreiecke', note: 'Welche Eckpunkte eine Fläche bilden' },
         vertices: { title: 'Eckpunkte', note: 'Positionen und Texturkoordinaten' },
         texture: { title: 'Textur', note: 'Ein WebP-Bild mit 1024 px' },
@@ -59,7 +59,7 @@ export const glbAnatomy = defineDiagram(
       parts: {
         json: {
           title: 'Bloc JSON',
-          note: 'Scène, maillage, matériau : la description',
+          note: 'Description de la scène, du maillage et du matériau',
         },
         indices: {
           title: 'Triangles',
@@ -84,7 +84,7 @@ export const glbAnatomy = defineDiagram(
       parts: {
         json: {
           title: 'Blocco JSON',
-          note: 'Scena, mesh, materiale: la descrizione',
+          note: 'Descrizione di scena, mesh e materiale',
         },
         indices: {
           title: 'Triangoli',
@@ -109,7 +109,7 @@ export const glbAnatomy = defineDiagram(
       parts: {
         json: {
           title: 'Bloco JSON',
-          note: 'Cena, malha, material: a descrição',
+          note: 'Descrição da cena, malha e material',
         },
         indices: {
           title: 'Triângulos',
@@ -203,9 +203,9 @@ export const usdzAnatomy = defineDiagram(
       zip: 'ZIP-Archiv ohne Kompression',
       layer: {
         title: 'USD-Ebene',
-        note: '.usdc (binär) oder .usda (Text): Netz, Materialien, gespeicherte Größe',
+        note: '.usdc (binär) oder .usda (Text): Mesh, Materialien, gespeicherte Größe',
       },
-      images: { title: 'Texturbilder', note: 'Von der Ebene verknüpfte PNGs oder JPEGs' },
+      images: { title: 'Texturbilder', note: 'PNG- oder JPEG-Bilder, auf die die Ebene verweist' },
       read: 'Kein Entpacken: Das Gerät liest jede Datei direkt aus dem Archiv.',
     },
     fr: {
@@ -219,7 +219,7 @@ export const usdzAnatomy = defineDiagram(
         title: 'Images de texture',
         note: 'Fichiers PNG ou JPEG liés à la couche',
       },
-      read: 'Rien à décompresser : l’appareil lit chaque fichier dans l’archive.',
+      read: 'Aucune extraction : l’appareil lit les fichiers directement dans l’archive.',
     },
     it: {
       file: 'side-table.usdz',
@@ -230,7 +230,7 @@ export const usdzAnatomy = defineDiagram(
       },
       images: {
         title: 'Immagini delle texture',
-        note: 'File PNG o JPEG indicati dal livello',
+        note: 'File PNG o JPEG a cui rimanda il livello',
       },
       read: 'Niente da estrarre: il dispositivo legge ogni file nell’archivio.',
     },
@@ -239,13 +239,13 @@ export const usdzAnatomy = defineDiagram(
       zip: 'Pacote zip sem compressão',
       layer: {
         title: 'Camada USD',
-        note: '.usdc (binário) ou .usda (texto): malha, materiais, tamanho no ficheiro',
+        note: '.usdc (binário) ou .usda (texto): malha, materiais, dimensões no ficheiro',
       },
       images: {
         title: 'Imagens de textura',
         note: 'Ficheiros PNG ou JPEG referidos na camada',
       },
-      read: 'Nada a extrair: o dispositivo lê cada ficheiro dentro do pacote.',
+      read: 'Não é preciso extrair: o dispositivo lê os ficheiros diretamente do pacote.',
     },
   },
   function UsdzAnatomy({ t }) {
@@ -293,7 +293,7 @@ export const quickLookPath = defineDiagram(
       routes: [
         {
           title: 'Eine Webseite in Safari',
-          note: 'Link mit rel="ar" um ein Vorschaubild; Safari ergänzt das AR-Symbol',
+          note: 'Vorschaubild als Link mit rel="ar"; Safari ergänzt das AR-Symbol',
         },
         { title: 'Datei in Nachrichten, Mail oder Dateien', note: 'Tippe den .usdz-Anhang an' },
       ],
@@ -302,7 +302,7 @@ export const quickLookPath = defineDiagram(
         { title: 'Objektansicht', note: 'Mit einem Finger drehen' },
         { title: 'AR-Ansicht', note: 'Kamera an, zum Platzieren auf den Boden tippen' },
       ],
-      size: 'AR nutzt die gespeicherte Größe. Ein Foto liefert keine gemessenen Abmessungen.',
+      size: 'AR nutzt die Größe aus der Datei. Ein Foto liefert keine gemessenen Maße.',
       android: 'Android öffnet keine USDZ, sondern GLB in Scene Viewer.',
     },
     fr: {
@@ -320,7 +320,7 @@ export const quickLookPath = defineDiagram(
       views: [
         {
           title: 'Vue Objet',
-          note: 'Fais-le tourner avec un doigt',
+          note: 'Fais-le tourner d’un doigt',
         },
         {
           title: 'Vue RA',
@@ -334,7 +334,7 @@ export const quickLookPath = defineDiagram(
       routes: [
         {
           title: 'Una pagina web in Safari',
-          note: 'Link rel="ar" intorno a un’immagine; Safari aggiunge il simbolo RA',
+          note: 'Immagine in un link rel="ar"; Safari aggiunge il simbolo AR',
         },
         {
           title: 'Un file in Messaggi, Mail o File',
@@ -348,18 +348,18 @@ export const quickLookPath = defineDiagram(
           note: 'Ruotalo con un dito',
         },
         {
-          title: 'Vista RA',
+          title: 'Vista AR',
           note: 'Fotocamera accesa, tocca il pavimento',
         },
       ],
-      size: 'La RA usa le dimensioni salvate nel file. Un modello da foto non ha dimensioni misurate.',
+      size: 'L’AR usa le dimensioni salvate nel file. Un modello da foto non ha dimensioni misurate.',
       android: 'Android non apre USDZ: mostra il GLB in Scene Viewer.',
     },
     pt: {
       routes: [
         {
           title: 'Uma página web no Safari',
-          note: 'Ligação rel="ar" numa imagem; o Safari acrescenta o símbolo RA',
+          note: 'Imagem com ligação rel="ar"; o Safari acrescenta o símbolo RA',
         },
         {
           title: 'Um ficheiro em Mensagens, Mail ou Ficheiros',
@@ -377,7 +377,7 @@ export const quickLookPath = defineDiagram(
           note: 'Câmara ligada, toca no chão para o colocar',
         },
       ],
-      size: 'A RA usa o tamanho guardado no ficheiro. Um modelo a partir de uma foto não tem dimensões medidas.',
+      size: 'A RA usa as dimensões guardadas no ficheiro. Uma foto não fornece medidas da peça.',
       android: 'O Android não abre USDZ: mostra o GLB no Scene Viewer.',
     },
   },

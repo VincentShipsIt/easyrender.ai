@@ -1,23 +1,23 @@
 ---
 
 group: product-photography-for-ecommerce
-title: Photographie produit e-commerce : ton installation
-description: Photographie produit à petit budget : lumière douce, fond uni, réglages du téléphone, angles à prendre et exigences Amazon et Shopify.
+title: Photographie produit : un studio à petit budget
+description: Photographie produit à petit budget : lumière douce, fond uni, réglages du téléphone, angles de vue et règles Amazon et Shopify.
 date: 2026-11-12
 updated: 2026-11-11
 author: Jorge Rodríguez
 authorType: person
 keyword: photographie produit
-cta: Quand ta prochaine photo principale de trois quarts est prête, essaie l'image-vers-3D et vérifie gratuitement les côtés cachés.
+cta: Une fois ta photo principale de trois quarts prête, essaie l'image-vers-3D et vérifie gratuitement les côtés hors champ.
 ---
 
-Une bonne photographie produit pour le e-commerce repose sur une installation reproductible : une grande lumière douce, un fond uni, un appareil sur trépied à mi-hauteur du produit et les mêmes angles pour chaque article. Pas besoin de flashs de studio : une fenêtre, un panneau blanc et un téléphone suffisent à la plupart des petites boutiques.
+En e-commerce, la photographie produit repose sur une installation facile à reproduire : une grande source de lumière douce, un fond uni, un appareil sur trépied à mi-hauteur du produit et les mêmes angles pour chaque article. Pas besoin de flashs de studio : une fenêtre, un panneau blanc et un téléphone suffisent à la plupart des petites boutiques.
 
 ![Illustration d'une bouilloire à col de cygne, moitié en émail noir avec anse et bouton cuivrés, moitié en argile grise mate avec un maillage blanc, sur fond sombre](/blog/illustrations/product-photography-for-ecommerce/hero.webp "Illustration, pas un résultat easyrender : une bouilloire dessinée moitié dans sa finition d'origine, moitié en argile avec un maillage blanc.")
 
 ## Quel matériel faut-il pour la photographie produit ?
 
-Le trépied compte plus que l'appareil. Il garde la même hauteur et le même angle pour chaque produit, aligne les images de tes pages catégories et permet des poses lentes à la lumière d'une fenêtre sans flou.
+Le trépied compte plus que l'appareil. Il maintient l'appareil à la même hauteur et au même angle pour chaque produit : les images s'alignent ainsi sur tes pages de catégories. Il permet aussi des temps de pose longs à la lumière d'une fenêtre, sans flou.
 
 Un téléphone récent suffit pour les annonces. Utilise l'objectif 2x ou 3x et recule. Le grand-angle 1x, utilisé de près, agrandit les éléments les plus proches : les pieds avant d'une table d'appoint semblent alors plus longs que ceux de derrière.
 
@@ -48,15 +48,15 @@ Le verrouillage évite surtout du travail après la séance. Sans lui, huit vues
 
 Utilise une seule grande source douce. Une fenêtre sans soleil direct, par une journée claire et couverte, remplace une boîte à lumière à moindre coût.
 
-Place le produit pour que la fenêtre soit à environ 45 degrés de sa face avant, puis le panneau blanc du côté opposé. Éteins les plafonniers : mélanger ampoules chaudes et lumière du jour donne un canapé blanc bleu d'un côté et jaune de l'autre.
+Oriente le produit, sans déplacer la fenêtre, pour que sa face avant fasse un angle d'environ 45 degrés avec elle, puis installe le panneau blanc du côté opposé. Éteins les plafonniers : avec des ampoules chaudes et la lumière du jour, un canapé blanc paraît bleu d'un côté et jaune de l'autre.
 
-![Vue du dessus : fenêtre à environ 45 degrés devant le produit, panneau blanc en face pour éclaircir l'ombre, téléphone sur trépied devant et plafonnier éteint](diagram:window-light-setup "L'installation vue du dessus, dessinée pour ce guide. Le panneau débouche les ombres et, plafonniers éteints, toutes les surfaces reçoivent la même lumière du jour.")
+![Vue du dessus : fenêtre à environ 45 degrés devant le produit, panneau blanc du côté opposé pour déboucher les ombres, téléphone sur trépied devant et plafonnier éteint](diagram:window-light-setup "L'installation vue du dessus, dessinée pour ce guide. Le panneau débouche les ombres et, plafonniers éteints, toutes les surfaces reçoivent la même lumière du jour.")
 
 <!-- IMAGE PENDING: a real photo of this setup in the easyrender team's space (window at 45 degrees, white foam board opposite, phone on a tripod). Do not use a stock photo. -->
 
 Déplace le panneau, pas le produit, pour doser l'ombre. Près du meuble, il éclaircit le côté sombre et aplatit le relief. Plus loin, il laisse l'ombre se creuser et la forme ressort davantage.
 
-La lumière du jour change : réalise toute la série d'un produit d'une seule traite. Pour la couleur, place une feuille blanche sur la première image de chaque série. À la retouche, règle la balance des blancs sur cette feuille et copie la correction sur toute la série.
+La lumière du jour change : réalise toute la série d'un produit d'une seule traite. Pour régler la couleur, place une feuille blanche dans le cadre lors de la première photo de chaque série. À la retouche, règle la balance des blancs sur cette feuille et copie la correction sur toute la série.
 
 ## Quel fond choisir : blanc ou autre ?
 
@@ -66,7 +66,7 @@ Un téléphone ne produit pas facilement ce blanc pur sans surexposer l'objet. E
 
 Contrôle le résultat avec une pipette : le fond doit afficher 255, 255, 255. Zoome ensuite sur les contours en plein format ; un détourage imprécis laisse un halo gris ou blanc visible sur une page colorée.
 
-Garde les fonds texturés et les mises en scène pour les photos de contexte, plus loin dans la galerie. La photo d'un canapé en lin devant un papier peint chargé ressemble davantage à une vue de la pièce qu'à une photo produit.
+Garde les fonds texturés et les mises en scène pour les photos en situation, plus loin dans la galerie. La photo d'un canapé en lin devant un papier peint chargé ressemble davantage à une vue de la pièce qu'à une photo produit.
 
 ## Quels angles prévoir pour chaque produit ?
 
@@ -77,11 +77,11 @@ Conserve le même ordre partout. L'acheteur sait où regarder et tu n'oublies pl
 3. Profil, pour montrer la profondeur.
 4. Dos, surtout pour un meuble susceptible d'être placé loin d'un mur.
 5. Détails : matière, assemblages, poignées, étiquette ou marque du fabricant.
-6. Contexte : meuble dans une pièce ou à côté d'un objet familier.
+6. Mise en situation : meuble dans une pièce ou à côté d'un objet familier.
 
 La vue principale de trois quarts est la plus utile. Elle montre l'avant et un côté dans la même image, et rend la forme lisible en miniature.
 
-![Un fauteuil en bouclette moutarde et acier, vu de face : les coussins sont lisibles, mais la profondeur de l'assise reste cachée](/blog/figures/product-photography-for-ecommerce/armchair-front.jpg "De face : les coussins sont lisibles, pas la profondeur. Garde cette vue en image 2.")
+![Un fauteuil en bouclette moutarde et acier, vu de face : on distingue bien les coussins, mais la profondeur de l'assise reste cachée](/blog/figures/product-photography-for-ecommerce/armchair-front.jpg "De face : on distingue bien les coussins, mais pas la profondeur de l'assise. Garde cette vue en image 2.")
 ![Le même fauteuil de trois quarts, montrant l'avant, un côté de la structure et la profondeur de l'assise](/blog/figures/product-photography-for-ecommerce/armchair-three-quarter.jpg "De trois quarts : face, côté et profondeur dans une image principale. Ces deux vues sont des cases de la planche dessinée par easyrender à partir d'une photo de catalogue, pas des photographies.")
 
 Pour une vue de trois quarts, tourne le produit plutôt que l'appareil. Fais-le pivoter d'environ 30 à 45 degrés : un côté doit rester bien visible, sans que l'avant disparaisse.
@@ -108,7 +108,7 @@ Nomme les fichiers par produit et position, par exemple `oak-bench-01-main.jpg` 
 
 Un canapé ne tient pas sur un rouleau de papier. Place-le devant un mur uni, avec le sol dégagé et de la marge de chaque côté pour pouvoir recadrer dans plusieurs formats.
 
-Place l'appareil à mi-hauteur du meuble, vers l'assise pour une chaise. Photographier en plongée depuis ta hauteur debout tasse un buffet et le fait paraître plus court.
+Place l'appareil à mi-hauteur du meuble, vers l'assise pour une chaise. Si tu photographies debout, en plongée, le buffet paraît plus court et plus tassé.
 
 ![Un buffet vu de profil avec deux positions d'appareil : à mi-hauteur face au meuble et à hauteur des yeux, orienté vers son dessus](diagram:camera-height "À mi-hauteur, les proportions se lisent correctement. Depuis la hauteur des yeux, l'appareil voit davantage le dessus et raccourcit la façade. Dessin réalisé pour ce guide.")
 
@@ -118,19 +118,19 @@ Sur un meuble d'occasion ou vintage, photographie chaque défaut de près, avec 
 
 ## Comment savoir si tes photos fonctionnent ?
 
-Juge-les là où l'acheteur les voit : ouvre ta page collection sur un téléphone. En grille, chaque produit doit rester identifiable et chaque image principale doit apparaître à la même hauteur.
+Juge-les là où l'acheteur les voit : ouvre ta page de collection sur un téléphone. En grille, chaque produit doit rester identifiable et chaque image principale doit apparaître à la même hauteur.
 
 Compte ensuite les questions. Chaque message demandant « à quoi ressemble le dos ? » ou « c'est vraiment cette couleur ? » signale une photo manquante ou trompeuse. La correction est une nouvelle vue dans la galerie, pas une réponse plus longue.
 
-Les retours complètent le diagnostic. Si ta plateforme enregistre leurs motifs, surveille « non conforme à la description » ou « couleur différente » pour chaque produit : une concentration peut signaler une promesse visuelle que le colis ne tient pas.
+Les retours complètent le diagnostic. Si ta plateforme enregistre leurs motifs, surveille « non conforme à la description » ou « couleur différente » pour chaque produit : si ces motifs reviennent souvent, les photos donnent probablement une idée fausse du produit reçu.
 
-Pour tester une nouvelle séance, change seulement les photos. Garde prix, titre et texte identiques pendant quatre semaines, puis compare les vues et le taux d'ajout au panier aux quatre semaines précédentes.
+Pour mesurer l'effet d'une nouvelle série, change seulement les photos. Garde prix, titre et texte identiques pendant quatre semaines, puis compare les vues et le taux d'ajout au panier aux quatre semaines précédentes.
 
 ## Ces mêmes photos peuvent-elles devenir un modèle 3D ?
 
-Oui, si elles suivent ces règles. Une photo principale nette de trois quarts sur fond uni correspond bien à l'image-vers-3D. Les étapes figurent dans [la modélisation 3D à partir d'une photo](/fr/guides/creer-un-modele-3d-a-partir-de-photos) ; les autres méthodes dans [comment faire un modèle 3D](/fr/guides/comment-faire-un-modele-3d).
+Oui, si elles suivent ces règles. Une photo principale nette de trois quarts sur fond uni correspond bien à l'image-vers-3D. Suis les étapes du [guide de modélisation 3D à partir d'une photo](/fr/guides/creer-un-modele-3d-a-partir-de-photos) ; les autres méthodes sont présentées dans [comment faire un modèle 3D](/fr/guides/comment-faire-un-modele-3d).
 
-L'export de 2048 pixels ci-dessus suffit largement. easyrender refuse les photos sous 400 pixels sur le petit côté et avertit sous 800 : le risque vient d'une miniature fournisseur, pas de ton appareil.
+L'export de 2048 pixels ci-dessus suffit largement. easyrender refuse les photos de moins de 400 pixels sur le petit côté et affiche un avertissement en dessous de 800 : méfie-toi surtout des miniatures envoyées par un fournisseur.
 
 Une vue à 360 degrés est différente : elle fait défiler des photos prises sur plateau tournant. Un modèle 3D est un fichier que l'acheteur tourne librement et peut placer dans la pièce sur téléphone. [Photographie 360 ou modèle 3D](/compare/360-vs-3d) compare fabrication, coût et usage.
 
@@ -158,11 +158,11 @@ Elles viennent souvent d'un réglage automatique du téléphone ou de deux écla
 
 ### Peut-on photographier ses produits avec un téléphone ?
 
-Oui : un téléphone récent sur trépied, éclairé par une fenêtre à lumière douce, suffit à la plupart des boutiques et places de marché. Utilise le 2x ou le 3x, verrouille exposition et mise au point, et garde les mêmes repères au sol pour chaque produit. La lumière et le fond comptent davantage que l'appareil.
+Oui : un téléphone récent sur trépied, placé dans la lumière douce d'une fenêtre, suffit à la plupart des boutiques et places de marché. Utilise le 2x ou le 3x, verrouille exposition et mise au point, et garde les mêmes repères au sol pour chaque produit. La lumière et le fond comptent davantage que l'appareil.
 
 ### Quel fond choisir pour une photo produit ?
 
-Un blanc uni ou gris clair pour l'image principale : Amazon demande du blanc pur et le catalogue reste cohérent. Pour les meubles, un mur peint uni et un sol propre conviennent mieux qu'un rouleau de papier. Réserve les fonds texturés et les mises en scène aux photos de contexte, plus loin dans la galerie.
+Un blanc uni ou gris clair pour l'image principale : Amazon demande du blanc pur et le catalogue reste cohérent. Pour les meubles, un mur peint uni et un sol propre conviennent mieux qu'un rouleau de papier. Réserve les fonds texturés et les mises en scène aux photos en situation, plus loin dans la galerie.
 
 ### Quelles dimensions pour les photos d'une boutique en ligne ?
 
@@ -170,8 +170,8 @@ Un JPEG carré de 2048 x 2048 pixels en sRGB convient à la plupart des boutique
 
 ### Combien de photos faut-il par produit ?
 
-Six à huit suffisent généralement : vue principale, face, profil, dos, deux ou trois détails et une mise en contexte. Les meubles gagnent à avoir toute la série, puisque l'acheteur ne peut pas les toucher. Un objet simple, comme une bougie cylindrique, peut se contenter de trois ou quatre images si la principale est lisible.
+Six à huit suffisent généralement : vue principale, face, profil, dos, deux ou trois détails et une mise en situation. Les meubles gagnent à avoir toute la série, puisque l'acheteur ne peut pas les toucher. Un objet simple, comme une bougie cylindrique, peut se contenter de trois ou quatre images si la principale est lisible.
 
 ### Faut-il retoucher les photos produit ?
 
-Légèrement : redresse l'horizon, recadre au format choisi, corrige la balance des blancs et enlève la poussière du fond. Garde la couleur du produit et ses défauts. La photo engage sur ce qui arrivera chez l'acheteur ; une retouche qu'il remarque à la livraison coûte plus qu'elle ne rapporte.
+Légèrement : redresse l'horizon, recadre au format choisi, corrige la balance des blancs et enlève la poussière du fond. Ne modifie ni la couleur du produit ni ses défauts. La photo doit correspondre à ce que l'acheteur recevra ; une retouche qu'il remarque à la livraison coûte plus qu'elle ne rapporte.

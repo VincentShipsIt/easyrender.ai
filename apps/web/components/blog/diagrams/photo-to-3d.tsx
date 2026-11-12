@@ -55,13 +55,13 @@ export const photoVsPhotogrammetry = defineDiagram(
           ],
         },
         {
-          heading: 'Bild-zu-3D',
+          heading: '3D aus einem Foto',
           input: 'Ein Foto, auch vom Lieferanten',
           steps: [
             { title: '1 Foto einer Seite', note: 'Scharf, schlichter Hintergrund' },
             {
-              title: 'Verdeckte Seiten aus dem Foto',
-              note: 'Prüfe sie in der Vorschau',
+              title: 'Nicht gezeigte Seiten ableiten',
+              note: 'Dein Foto liefert die Anhaltspunkte',
             },
             { title: 'Prüfe die Rückseite', note: 'Diese Seite fehlt auf dem Foto' },
           ],
@@ -90,7 +90,7 @@ export const photoVsPhotogrammetry = defineDiagram(
           ],
         },
         {
-          heading: 'Photo vers 3D',
+          heading: 'Image-vers-3D',
           input: 'Une photo, même du fournisseur',
           steps: [
             {
@@ -98,7 +98,7 @@ export const photoVsPhotogrammetry = defineDiagram(
               note: 'Nette, fond uni',
             },
             {
-              title: 'Côtés cachés déduits de la photo',
+              title: 'Côtés hors champ déduits de la photo',
               note: 'Vérifie-les dans l’aperçu',
             },
             {
@@ -131,7 +131,7 @@ export const photoVsPhotogrammetry = defineDiagram(
           ],
         },
         {
-          heading: 'Da foto a 3D',
+          heading: 'Image-to-3D',
           input: 'Una foto, anche del fornitore',
           steps: [
             {
@@ -139,7 +139,7 @@ export const photoVsPhotogrammetry = defineDiagram(
               note: 'Nitida, sfondo uniforme',
             },
             {
-              title: 'Lati nascosti ricavati dalla foto',
+              title: 'Lati fuori campo ricavati dalla foto',
               note: 'Controllali nell’anteprima',
             },
             {
@@ -162,7 +162,7 @@ export const photoVsPhotogrammetry = defineDiagram(
               note: 'Tiradas a toda a volta',
             },
             {
-              title: 'O programa liga pontos comuns',
+              title: 'O programa identifica pontos comuns',
               note: 'Cada superfície em 2 ou mais fotos',
             },
             {
@@ -172,15 +172,15 @@ export const photoVsPhotogrammetry = defineDiagram(
           ],
         },
         {
-          heading: 'De foto para 3D',
-          input: 'Uma foto, mesmo do fornecedor',
+          heading: 'Imagem para 3D',
+          input: 'Uma foto tua ou do fornecedor',
           steps: [
             {
               title: '1 foto de um lado',
               note: 'Nítida, fundo liso',
             },
             {
-              title: 'Lados ocultos derivados da foto',
+              title: 'Lados ocultos deduzidos da foto',
               note: 'Verifica-os na pré-visualização',
             },
             {
@@ -246,18 +246,18 @@ export const imageTo3dPipeline = defineDiagram(
     de: {
       steps: [
         { tag: '1', title: 'Ein Foto', note: 'Ganzes Objekt, Dreiviertelansicht' },
-        { tag: '2', title: 'Ansichtenübersicht', note: 'Aus mehreren Richtungen gezeichnet' },
+        { tag: '2', title: 'Ansichtenraster', note: 'Das Objekt aus mehreren Blickwinkeln' },
         {
           tag: '3',
-          title: 'Du prüfst',
-          note: 'Was im Foto fehlt: hinten, seitlich, oben',
+          title: 'Vorschau prüfen',
+          note: 'Im Foto nicht zu sehen: Rückseite, Seiten, Oberseite',
         },
-        { tag: '4', title: 'Modell erstellen', note: 'Texturiertes Netz aus den Ansichten' },
+        { tag: '4', title: 'Modell erstellen', note: 'Mesh mit Textur aus diesen Ansichten' },
         { tag: '5', title: 'GLB und USDZ', note: 'Web und Android, iPhone und iPad' },
       ],
       preview: 'Vorschau',
       build: 'Modell',
-      loop: 'Fehler in Schritt 3: Ändere das Foto statt der Einstellungen.',
+      loop: 'Falsche Vorschau in Schritt 3: Ändere das Foto, nicht die Einstellungen.',
     },
     fr: {
       steps: [
@@ -269,7 +269,7 @@ export const imageTo3dPipeline = defineDiagram(
         {
           tag: '2',
           title: 'Planche de vues',
-          note: 'L’objet dessiné de plusieurs côtés',
+          note: 'L’objet dessiné sous plusieurs angles',
         },
         {
           tag: '3',
@@ -278,7 +278,7 @@ export const imageTo3dPipeline = defineDiagram(
         },
         {
           tag: '4',
-          title: 'Créer le modèle',
+          title: 'Crée le modèle',
           note: 'Maillage texturé à partir des vues',
         },
         {
@@ -300,7 +300,7 @@ export const imageTo3dPipeline = defineDiagram(
         },
         {
           tag: '2',
-          title: 'Tavola delle viste',
+          title: 'Tavola di viste',
           note: 'L’oggetto disegnato da più lati',
         },
         {
@@ -332,13 +332,13 @@ export const imageTo3dPipeline = defineDiagram(
         },
         {
           tag: '2',
-          title: 'Folha de vistas',
-          note: 'O objeto desenhado de vários lados',
+          title: 'Nove vistas',
+          note: 'Uma imagem com vários ângulos',
         },
         {
           tag: '3',
           title: 'Verifica',
-          note: 'Costas, lados e topo ausentes da foto',
+          note: 'Costas, lados e parte de cima que a foto não mostra',
         },
         {
           tag: '4',
