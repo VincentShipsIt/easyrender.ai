@@ -179,7 +179,7 @@ export function periodRange(
     ? (params.granularity as Granularity)
     : duration > DAY * 180
       ? 'month'
-      : duration > DAY * 45
+      : duration > DAY * 90
         ? 'week'
         : 'day';
   return {

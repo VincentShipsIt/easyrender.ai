@@ -2,6 +2,7 @@ import 'server-only';
 import { createHash } from 'node:crypto';
 import {
   attributionColumns,
+  buildOverviewSeries,
   buildReport,
   channel,
   databaseFinance,
@@ -9,6 +10,7 @@ import {
   fetchPosthog,
   fetchStripe,
   loadDatabase,
+  type OverviewSeries,
   periodRange,
   type Range,
   type Section,
@@ -72,6 +74,7 @@ export async function trafficData(range: Range) {
 }
 export type DashboardData = {
   view: View;
+  overview?: OverviewSeries;
   health: Array<SourceHealth & { source: string }>;
   range: Range;
 };
@@ -240,9 +243,21 @@ const reportCached = unstable_cache(
       });
       view.notes.push('healthNotes');
     }
-    return { view, health, range };
+    const overview =
+      section === 'overview'
+        ? buildOverviewSeries({
+            users: s.users,
+            renders: s.renders,
+            payments: finance.payments,
+            posthog,
+            range,
+            currency: view.metrics.find((m) => m.key === 'gross')?.currency ?? 'USD',
+            exclusions: exclusionsFromEnv(),
+          })
+        : undefined;
+    return { view, health, range, overview };
   },
-  ['admin-report-v1'],
+  ['admin-report-v2'],
   { revalidate: 300, tags: [ANALYTICS_TAG] },
 );
 export async function dashboardData(section: Section, range: Range) {

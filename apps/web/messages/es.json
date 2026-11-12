@@ -1338,7 +1338,25 @@
       "storePlatform": "Plataforma de tienda",
       "selfReportedCatalog": "Tamaño declarado del catálogo",
       "isTruncated": "Truncado",
-      "analyticsRowLimit": "Límite de filas superado · no se muestran totales parciales"
+      "analyticsRowLimit": "Límite de filas superado · no se muestran totales parciales",
+      "overviewPerDay": "Visitas, clientes de pago, usos e ingresos por día",
+      "overviewPerWeek": "Visitas, clientes de pago, usos e ingresos por semana",
+      "overviewPerMonth": "Visitas, clientes de pago, usos e ingresos por mes",
+      "overviewScale": "Recuentos: escala de raíz cuadrada a la izquierda para ver las series menores. Ingresos: escala lineal a la derecha. Activa o desactiva series para centrarte.",
+      "seriesToggles": "Series visibles",
+      "payingCustomers": "Clientes de pago",
+      "uses": "Usos (hojas + modelos 3D)",
+      "newSignups": "Nuevos registros",
+      "grossRevenueSeries": "Ingresos brutos",
+      "payingDayHelp": "usuarios únicos que pagaron ese día",
+      "payingWeekHelp": "usuarios únicos que pagaron esa semana",
+      "payingMonthHelp": "usuarios únicos que pagaron ese mes",
+      "models3d": "modelos 3D",
+      "grossRevenueHelp": "Ingresos brutos antes de reembolsos y comisiones",
+      "visitsNotConfigured": "Visitas: PostHog sin configurar",
+      "visitsIncomplete": "Visitas: datos de PostHog incompletos",
+      "visitsError": "Visitas: PostHog no disponible (solicitud fallida)",
+      "sheetCountUnit": "hojas"
     }
   }
 }

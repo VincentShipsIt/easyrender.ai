@@ -214,9 +214,16 @@ export function DashboardView({ view, labels }: { view: View; labels: Record<str
             {label('comparePrevious')}
           </Label>
           <div className="grid min-w-0 gap-4 xl:grid-cols-2">
-            {view.charts.map((chart) => (
-              <AnalyticsChart key={chart.key} chart={chart} labels={labels} compare={hasCompare} />
-            ))}
+            {view.charts
+              .filter((chart) => chart.key !== 'incomeUsage' || hasCompare)
+              .map((chart) => (
+                <AnalyticsChart
+                  key={chart.key}
+                  chart={chart}
+                  labels={labels}
+                  compare={hasCompare}
+                />
+              ))}
           </div>
         </>
       )}

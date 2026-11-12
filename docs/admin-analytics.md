@@ -58,7 +58,8 @@ user signup. A custom inclusive end date becomes the following local midnight, c
 the current rounded endpoint. Custom ranges over ten years or invalid dates revert to 30d.
 The previous period has the same elapsed duration immediately before the selected period.
 Day and month buckets use local dates; weeks start Monday. Auto granularity is daily through
-45 days, weekly through 180 days, then monthly. Range, granularity, and the include-team
+90 days, weekly through 180 days, then monthly. An explicit URL granularity overrides auto.
+The Overview heading says per day/week/month to match the actual buckets. Range, granularity, and the include-team
 toggle are URL parameters; table search, sorting, pagination, and multiselect filters are
 local UI state.
 
@@ -143,6 +144,28 @@ end, split by currency; it is not net lifetime profit. Refunds list Stripe refun
 Currency codes accompany amounts. Tables split currencies; charts and cohort/account
 revenue use the first displayed currency, with a multiple-currency note. DB purchases have
 no currency column; fallback USD follows the existing checkout contract.
+
+## Overview time-series dictionary
+
+The first Overview element after the header/navigation/controls is a fixed-height chart, above
+every KPI card. Each local-calendar bucket in `ANALYTICS_TZ` gets one point; DB-backed gaps are
+zero. Partial first/last buckets are included, and week buckets start Monday.
+
+| Series                    | Definition                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Visits                    | PostHog `landing_view` count, identical to Visits KPI, summed from local daily results. Unconfigured, failed or incomplete PostHog makes **every visit value null**, with no line and an inline legend note. A healthy source fills absent buckets with zero. Cookieless visits cannot exclude team traffic.                                                                           |
+| Paying customers          | Distinct identified users with at least one successful payment in each bucket, across currencies. Repeated payments by the same user count once per bucket. Uses successful captured Stripe charges when usable, otherwise paid PAYG purchases plus subscription grants with a recognized harness plan (inferred invoices). Uses the same team scope as the revenue report.            |
+| Uses (sheets + 3D models) | Renders with a nonempty sheet key plus ready renders with a nonempty GLB key, both grouped by `Render.createdAt`, exactly like the Product section. A render may contribute both outcomes. Tooltip gives the split. Creation time and current outcome are proxies, not immutable completion events. Identified team activity follows the exclusion toggle; anonymous activity remains. |
+| Gross revenue             | Sum of gross payments per bucket in the first displayed currency, with the same Stripe-or-DB source selection as the existing revenue series. Before refunds and fees; tooltip explicitly says gross. Multiple currencies retain the existing first-currency note and separate revenue tables.                                                                                         |
+
+New signups (new user rows in the bucket, same team scope) is available as a fifth series,
+hidden by default. All four mandatory series start enabled. Toggle buttons expose pressed
+state and permit focusing on individual series. Counts share the left **square-root** axis:
+this keeps small customer counts readable alongside visits while preserving zero and showing
+actual count tick labels. The description declares the scale; revenue uses a linear currency
+axis on the right. Tooltips retain all four values even when lines are toggled off. The older
+revenue/signup overlay remains below the KPIs for its previous-period comparison and disappears
+when comparison is disabled. Loading, empty and error states reserve the same chart height.
 
 ## Attribution and weekly reading
 
@@ -251,7 +274,7 @@ The attribution check and earliest signup are cached for five minutes. Refresh i
 the shared admin tag immediately after checking authorization. Private response caching
 and server data caching are distinct: the browser response remains private/no-store.
 
-Overview has independent Suspense boundaries for database-only KPI cards, the external-source
+Overview has independent Suspense boundaries for the leading time-series chart, database-only KPI cards, the external-source
 report, and traffic. Signup, activation, preview, credit, and cost cards can therefore stream
 while optional API requests are pending. Other sections use report-level Suspense; they do
 not yet stream every source/card independently.

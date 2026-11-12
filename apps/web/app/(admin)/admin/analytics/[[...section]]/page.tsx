@@ -2,6 +2,7 @@ import { type Range, SECTIONS, type Section } from '@easyrender/core/admin-analy
 import { notFound } from 'next/navigation';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
+import { OverviewChart } from '@/components/admin-analytics/charts';
 import {
   AdminControls,
   AdminNavigation,
@@ -35,6 +36,29 @@ function Skeleton() {
         </Card>
       ))}
     </div>
+  );
+}
+function OverviewSkeleton() {
+  return (
+    <Card className="h-[560px] sm:h-[460px]" aria-busy="true">
+      <CardContent className="h-full">
+        <div className="h-full animate-pulse motion-reduce:animate-none rounded bg-muted" />
+      </CardContent>
+    </Card>
+  );
+}
+async function Overview({ range, labels }: { range: Range; labels: Record<string, string> }) {
+  const data = await dashboardData('overview', range);
+  return data.overview ? (
+    <OverviewChart
+      data={data.overview}
+      labels={labels}
+      hasMultipleCurrencies={data.view.notes.includes('multipleCurrencies')}
+    />
+  ) : (
+    <Card className="h-[560px] sm:h-[460px]">
+      <CardHeader>{labels[data.view.notes[0] ?? 'postgresUnavailable']}</CardHeader>
+    </Card>
   );
 }
 async function Report({
@@ -154,6 +178,11 @@ export default async function AnalyticsPage({
       </header>
       <AdminNavigation labels={labels} section={section} />
       <AdminControls labels={labels} range={range} />
+      {section === 'overview' && (
+        <Suspense fallback={<OverviewSkeleton />}>
+          <Overview range={range} labels={labels} />
+        </Suspense>
+      )}
       {section === 'overview' && (
         <Suspense fallback={<Skeleton />}>
           <DatabaseCards range={range} labels={labels} />

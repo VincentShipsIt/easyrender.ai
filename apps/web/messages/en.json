@@ -1338,7 +1338,25 @@
       "storePlatform": "Store platform",
       "selfReportedCatalog": "Self-reported catalog size",
       "isTruncated": "Truncated",
-      "analyticsRowLimit": "Analytics row limit exceeded · no partial totals are shown"
+      "analyticsRowLimit": "Analytics row limit exceeded · no partial totals are shown",
+      "overviewPerDay": "Visits, paying customers, uses & revenue per day",
+      "overviewPerWeek": "Visits, paying customers, uses & revenue per week",
+      "overviewPerMonth": "Visits, paying customers, uses & revenue per month",
+      "overviewScale": "Counts: square-root scale on the left to keep smaller series visible. Revenue: linear scale on the right. Toggle series to focus.",
+      "seriesToggles": "Visible series",
+      "payingCustomers": "Paying customers",
+      "uses": "Uses (sheets + 3D models)",
+      "newSignups": "New signups",
+      "grossRevenueSeries": "Gross revenue",
+      "payingDayHelp": "distinct users who paid that day",
+      "payingWeekHelp": "distinct users who paid that week",
+      "payingMonthHelp": "distinct users who paid that month",
+      "models3d": "3D models",
+      "grossRevenueHelp": "Gross revenue before refunds and fees",
+      "visitsNotConfigured": "Visits: PostHog not configured",
+      "visitsIncomplete": "Visits: PostHog data incomplete",
+      "visitsError": "Visits: PostHog unavailable (request failed)",
+      "sheetCountUnit": "sheets"
     }
   }
 }
