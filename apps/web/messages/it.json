@@ -43,7 +43,8 @@
       "signIn": "Accedi",
       "guides": "Guide",
       "models": "Models",
-      "evals": "Evals"
+      "evals": "Evals",
+      "cookies": "Cookie e analisi"
     },
     "copyright": "© 2026 easyrender. Tecnologia Genfeed.",
     "pricesNote": "Prezzi in USD. I crediti non scadono."
@@ -1065,6 +1066,26 @@
       "report": "Full report"
     },
     "cta": "See the models behind a render"
+  },
+  "Analytics": {
+    "title": "Cookie e analisi",
+    "banner": "Usiamo analisi facoltative per capire come usi easyrender. Puoi accettarle o rifiutarle.",
+    "accept": "Accetta",
+    "reject": "Rifiuta",
+    "details": "Dettagli sui cookie",
+    "intro": "Qui trovi cosa conserva il tuo browser e come puoi gestire le analisi facoltative.",
+    "anonTitle": "er_anon",
+    "anon": "Questo cookie proprietario identifica le tue anteprime anonime, applica il limite gratuito giornaliero e ti permette di accedervi e associarle al tuo account. Attualmente viene creato alla prima visita e dura un anno. Non viene usato per l’attribuzione.",
+    "consentTitle": "er_consent",
+    "consent": "Ricorda la tua scelta, la data e la versione per un anno. Viene creato solo quando scegli.",
+    "gaTitle": "Google Analytics 4: _ga e _ga_<id>",
+    "ga": "Questi cookie misurano le visite e durano fino a due anni. Nelle regioni rigorose vengono creati solo dopo il tuo consenso. Altrove le analisi sono attive salvo il tuo rifiuto o il segnale Global Privacy Control (GPC). Il consenso pubblicitario resta sempre negato.",
+    "posthogTitle": "PostHog (UE), senza cookie",
+    "posthog": "PostHog non usa cookie né archiviazione persistente nel tuo browser. Nelle regioni rigorose si carica solo dopo il tuo consenso; altrove rispetta il tuo rifiuto e GPC.",
+    "attributionTitle": "Attribuzione del primo contatto",
+    "attribution": "I parametri della campagna e la pagina di provenienza restano in memoria finché crei un’anteprima o un account, poi vengono salvati con quel record. Non salviamo identificatori di clic. Gli eventi del server non dipendono dalla tua scelta sulle analisi del browser.",
+    "change": "Cambia la tua scelta",
+    "withdraw": "Puoi ritirare il consenso scegliendo Rifiuta. Questo interrompe il tracciamento facoltativo e rimuove i cookie di Google Analytics. GPC blocca sempre le analisi facoltative."
   },
   "Ar": {
     "metaTitle": "Guardalo a casa tua",

@@ -4,6 +4,7 @@ import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
+import { Analytics } from '@/components/analytics';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { HTML_LANG, type Locale, PATH_HEADER } from '@/i18n/config';
@@ -53,6 +54,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
+          <Analytics />
         </NextIntlClientProvider>
       </body>
     </html>

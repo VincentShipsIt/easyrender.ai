@@ -10,6 +10,18 @@ datasource db {
 // ── Better Auth ─────────────────────────────────────────────
 
 model User {
+  // First-touch attribution. Nullable, additive, never overwritten.
+  utm_source String?
+  utm_medium String?
+  utm_campaign String?
+  utm_content String?
+  utm_term String?
+  referrer String?
+  landing_path String?
+  first_seen_at String?
+  geo_country String?
+  consent_region_at_create String?
+
   id            String   @id
   name          String
   email         String   @unique
@@ -93,6 +105,18 @@ enum RenderStatus {
 }
 
 model Render {
+  // First-touch attribution. Nullable, additive, never overwritten.
+  utm_source String?
+  utm_medium String?
+  utm_campaign String?
+  utm_content String?
+  utm_term String?
+  referrer String?
+  landing_path String?
+  first_seen_at String?
+  geo_country String?
+  consent_region_at_create String?
+
   id                String       @id @default(cuid())
   userId            String?
   user              User?        @relation(fields: [userId], references: [id], onDelete: SetNull)

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogIndexView } from '@/components/blog/blog-index-view';
 import { BlogPostView } from '@/components/blog/blog-post-view';
+import { CookiesPage } from '@/components/cookies-page';
 import { EvalsView } from '@/components/evals/evals-view';
 import { ModelsView } from '@/components/models/models-view';
 import { isRoutableLocale, type Locale } from '@/i18n/config';
@@ -73,6 +74,8 @@ export async function generateMetadata({
 export default async function LocalePage({ params }: PageProps<'/[lang]/[...path]'>) {
   const { lang, path } = await params;
   const match = resolve(lang, path);
+  if (isRoutableLocale(lang) && `/${lang}/${path.join('/')}` === ROUTES.cookies.paths[lang])
+    return <CookiesPage />;
 
   if (match.kind === 'blogIndex') {
     return (

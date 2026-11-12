@@ -2,6 +2,7 @@ import 'server-only';
 import { createHash } from 'node:crypto';
 import { type Actor, bearerToken, verifyApiKey } from '@easyrender/core';
 import { headers as nextHeaders } from 'next/headers';
+import { privacyRegion } from '@/lib/analytics/privacy-region';
 import { auth } from './auth';
 
 export const ANON_COOKIE = 'er_anon';
@@ -23,7 +24,11 @@ function ipHash(headers: Headers): string | null {
 // A request is made by an API key holder, a signed-in user, an anonymous visitor, or a mix.
 export async function resolveActor(headers?: Headers): Promise<Actor> {
   const h = headers ?? (await nextHeaders());
-  const base = { anonId: readCookie(h, ANON_COOKIE), ipHash: ipHash(h) };
+  const base = {
+    anonId: readCookie(h, ANON_COOKIE),
+    ipHash: ipHash(h),
+    geoCountry: privacyRegion(h).country,
+  };
   const token = bearerToken(h);
   if (token) return { ...base, userId: await verifyApiKey(token) };
   const session = await auth().api.getSession({ headers: h });

@@ -43,7 +43,8 @@
       "signIn": "Iniciar sesión",
       "guides": "Guías",
       "models": "Modelos",
-      "evals": "Evaluaciones"
+      "evals": "Evaluaciones",
+      "cookies": "Cookies y analítica"
     },
     "copyright": "© 2026 easyrender. Con la tecnología de Genfeed.",
     "pricesNote": "Precios en USD. Los créditos no caducan."
@@ -1065,6 +1066,26 @@
       "report": "Informe completo"
     },
     "cta": "Ver los modelos detrás de un render"
+  },
+  "Analytics": {
+    "title": "Cookies y analítica",
+    "banner": "Usamos analítica opcional para entender cómo usas easyrender. Puedes aceptarla o rechazarla.",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "details": "Detalles de cookies",
+    "intro": "Aquí puedes ver qué guarda tu navegador y controlar la analítica opcional.",
+    "anonTitle": "er_anon",
+    "anon": "Esta cookie propia identifica tus previsualizaciones anónimas, aplica el límite diario gratuito y te permite acceder a ellas y asociarlas a tu cuenta. Actualmente se crea en tu primera visita y dura un año. No se usa para atribución.",
+    "consentTitle": "er_consent",
+    "consent": "Recuerda tu elección de analítica, su fecha y versión durante un año. Solo se crea cuando eliges.",
+    "gaTitle": "Google Analytics 4: _ga y _ga_<id>",
+    "ga": "Estas cookies miden visitas y duran hasta dos años. En regiones estrictas solo se crean después de aceptar. En otras regiones la analítica está activa salvo que la rechaces o envíes Global Privacy Control (GPC). El consentimiento publicitario siempre está denegado.",
+    "posthogTitle": "PostHog (UE), sin cookies",
+    "posthog": "PostHog no usa cookies ni almacenamiento persistente en tu navegador. En regiones estrictas solo carga si aceptas; en las demás respeta tu rechazo y GPC.",
+    "attributionTitle": "Atribución del primer contacto",
+    "attribution": "Los parámetros de campaña y la página de origen permanecen en memoria hasta que creas una previsualización o cuenta y se guardan con ese registro. No guardamos identificadores de clic. Los eventos del servidor no dependen de tu elección de analítica del navegador.",
+    "change": "Cambia tu elección",
+    "withdraw": "Puedes retirarla pulsando Rechazar. Esto detiene el seguimiento opcional y elimina las cookies de Google Analytics. GPC siempre bloquea la analítica opcional."
   },
   "Ar": {
     "metaTitle": "Míralo en tu casa",

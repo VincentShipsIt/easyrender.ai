@@ -1,12 +1,15 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import { type FormEvent, useState } from 'react';
+import { cookiesPath } from '@/components/analytics';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { attribution, attributionHeaders, gaEvent } from '@/lib/analytics/browser';
 import { authClient } from '@/lib/auth-client';
 
 export type AuthMode = 'sign-in' | 'sign-up';
@@ -25,6 +28,8 @@ export function AuthFields({
   callbackURL: () => string | Promise<string>;
 }) {
   const t = useTranslations('Auth');
+  const a = useTranslations('Analytics');
+  const locale = useLocale();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,6 +46,7 @@ export function AuthFields({
             email,
             password,
             name: String(form.get('name') || email.split('@')[0]),
+            fetchOptions: { body: { attribution: attribution() }, headers: attributionHeaders() },
           })
         : await authClient.signIn.email({ email, password });
     if (result.error) {
@@ -48,6 +54,7 @@ export function AuthFields({
       setBusy(false);
       return;
     }
+    if (mode === 'sign-up') gaEvent('sign_up', { method: 'email' });
     await onDone();
   }
 
@@ -57,8 +64,10 @@ export function AuthFields({
     const target = await callbackURL();
     const result = await authClient.signIn.social({
       provider: 'google',
+      additionalData: { attribution: attribution() },
+      fetchOptions: { headers: attributionHeaders() },
       callbackURL: target,
-      newUserCallbackURL: target,
+      newUserCallbackURL: `${target}${target.includes('?') ? '&' : '?'}__signup=google`,
       errorCallbackURL: '/sign-in?error=oauth',
     });
     // On success the browser is already redirecting to Google.
@@ -120,6 +129,9 @@ export function AuthFields({
           {submitLabel ?? (mode === 'sign-up' ? t('createAccount') : t('signIn'))}
         </Button>
       </form>
+      <Link href={cookiesPath(locale)} className="text-center text-xs underline">
+        {a('details')}
+      </Link>
     </div>
   );
 }
