@@ -347,7 +347,7 @@ async function light(tile: HTMLElement, { scope }: ToolsContext) {
   floor.receiveShadow = true;
   view.scene.add(floor);
 
-  const spot = new THREE.SpotLight(0xffffff, 34, 14, 0.86, 0.85, 1.6);
+  const spot = new THREE.SpotLight(0xffffff, 22, 14, 0.86, 0.85, 1.6);
   spot.position.set(0, size.h * 0.7, 0);
   spot.target.position.set(0, 0, 0);
   spot.castShadow = true;

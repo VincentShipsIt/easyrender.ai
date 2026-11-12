@@ -218,7 +218,7 @@ const eachMesh = (root: THREE.Object3D, visit: (mesh: THREE.Mesh) => void) =>
 // The textured model, in model space (metres, origin at the centre of the base).
 export async function makeBeauty(
   id: string,
-  options: { lod?: 0 | 1 | 2; ownMaterials?: boolean; shadows?: boolean } = {},
+  options: { lod?: 0 | 1 | 2; hd?: boolean; ownMaterials?: boolean; shadows?: boolean } = {},
 ) {
   const model = await getModel(id, options);
   if (options.shadows) {
