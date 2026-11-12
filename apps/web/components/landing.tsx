@@ -124,7 +124,11 @@ export async function Pricing() {
         </Link>
       }
     >
-      <PricingExposure variant={pricing.variant} subject={pricing.subject} />
+      <PricingExposure
+        variant={pricing.variant}
+        subject={pricing.subject}
+        isExperimentActive={pricing.isExperimentActive}
+      />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {plans.map((plan) => (
           <Card key={plan.name} className={cn(plan.featured && 'border-primary shadow-md')}>
