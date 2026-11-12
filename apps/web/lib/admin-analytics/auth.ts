@@ -7,8 +7,9 @@ import { auth } from '@/lib/auth';
 export async function requireAdmin() {
   const h = await headers();
   const session = await auth().api.getSession({ headers: h });
-  // Better Auth currently enables passwords without requireEmailVerification.
-  const decision = adminDecision(session?.user ?? null, process.env.ADMIN_EMAILS ?? '', false);
+  // Email/password sign-up does not verify addresses, so anyone could register an allowlisted
+  // address that has no account yet. Only verified emails (Google sign-in) get in.
+  const decision = adminDecision(session?.user ?? null, process.env.ADMIN_EMAILS ?? '', true);
   if (decision === 'signin') {
     const path = h.get('x-admin-return') ?? '/admin/analytics';
     redirect(

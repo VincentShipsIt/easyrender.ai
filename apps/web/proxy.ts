@@ -127,7 +127,7 @@ export function proxy(request: NextRequest) {
 async function adminResponse(request: NextRequest) {
   const { auth } = await import('./lib/auth');
   const session = await auth().api.getSession({ headers: request.headers });
-  const decision = adminDecision(session?.user ?? null, process.env.ADMIN_EMAILS ?? '', false);
+  const decision = adminDecision(session?.user ?? null, process.env.ADMIN_EMAILS ?? '', true);
   const headers = new Headers(request.headers);
   headers.set(LOCALE_HEADER, 'en');
   headers.set(PATH_HEADER, request.nextUrl.pathname);
