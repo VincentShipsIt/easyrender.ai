@@ -59,6 +59,15 @@ Keys never go in the repo: the workflow writes them to git-ignored files on the 
 
 Test builds without the stores: `bunx eas-cli build --platform all --profile preview`.
 
+## Error monitoring (Sentry)
+
+`lib/sentry.ts` starts `@sentry/react-native` from the root layout and wraps it with `Sentry.wrap`.
+It is off until `EXPO_PUBLIC_SENTRY_DSN` is set for the build (EAS env var, `eas env:create`; the DSN
+is public). Use a separate Sentry project from `easyrender-web`. The SDK is native code, so it
+needs a new EAS build; Expo Go and OTA updates are not enough. Source maps and readable native
+stack traces need the Sentry Expo config plugin and Metro plugin plus `SENTRY_AUTH_TOKEN` as an
+EAS secret; that is not wired yet.
+
 ## Known limits
 
 - Buying credits opens the website. Apple and Google require their own billing for digital goods bought inside an app, so check the store policies before shipping paid credits in the app.
