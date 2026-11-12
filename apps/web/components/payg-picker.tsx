@@ -1,26 +1,35 @@
 'use client';
 
-import { CREDIT_USD, isValidPaygCredits, PAYG, rendersFor } from '@easyrender/harness/pricing';
+import {
+  isValidPaygCredits,
+  type PricingVariant,
+  pricingFor,
+  rendersFor,
+} from '@easyrender/harness/pricing';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { BuyButton } from '@/components/buy-button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-export function PaygPicker() {
+export function PaygPicker({ pricingVariant = 'control' }: { pricingVariant?: PricingVariant }) {
+  const { creditUsd, payg: PAYG } = pricingFor(pricingVariant);
   const t = useTranslations('PaygPicker');
   const format = useFormatter();
   const usd = (credits: number) =>
-    format.number(credits * CREDIT_USD, { style: 'currency', currency: 'USD' });
+    format.number(credits * creditUsd, { style: 'currency', currency: 'USD' });
   const [credits, setCredits] = useState(PAYG.presets[1] ?? PAYG.min);
-  const valid = isValidPaygCredits(credits);
+  const isValid = isValidPaygCredits(credits, pricingVariant);
   return (
     <div className="w-full space-y-3">
       <div className="grid grid-cols-4 gap-2">
         {PAYG.presets.map((preset) => (
-          <button
+          <Button
             key={preset}
             type="button"
+            variant="outline"
+            aria-pressed={credits === preset}
             onClick={() => setCredits(preset)}
             className={cn(
               'rounded-md border px-2 py-1.5 text-sm tabular-nums transition-colors hover:bg-muted',
@@ -28,7 +37,7 @@ export function PaygPicker() {
             )}
           >
             {format.number(preset)}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="space-y-1 text-sm">
@@ -41,20 +50,21 @@ export function PaygPicker() {
           inputMode="numeric"
           min={PAYG.min}
           max={PAYG.max}
-          step={100}
+          step={1}
           value={Number.isFinite(credits) ? credits : ''}
           onChange={(event) => setCredits(Number.parseInt(event.target.value, 10))}
         />
       </div>
       <p className="text-sm text-muted-foreground">
-        {valid
+        {isValid
           ? t('estimate', { price: usd(credits), count: rendersFor(credits) })
           : t('range', { min: format.number(PAYG.min), max: format.number(PAYG.max) })}
       </p>
       <BuyButton
-        label={valid ? t('buyAmount', { credits: format.number(credits) }) : t('buy')}
+        label={isValid ? t('buyAmount', { credits: format.number(credits) }) : t('buy')}
         body={{ plan: 'payg', credits }}
-        disabled={!valid}
+        pricingVariant={pricingVariant}
+        disabled={!isValid}
       />
     </div>
   );

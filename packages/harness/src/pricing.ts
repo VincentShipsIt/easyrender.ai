@@ -43,9 +43,28 @@ export const PRO_PLAN = SUBSCRIPTION_PLANS.pro;
 // Enterprise has no Stripe product: it books a call.
 export const ENTERPRISE_BOOKING_URL = 'https://calendar.app.google/nXsPoPWMDeNfKte29';
 
-export const isValidPaygCredits = (credits: number) =>
-  Number.isInteger(credits) && credits >= PAYG.min && credits <= PAYG.max;
+export const PRICING_FLAG = 'pricing-test-2026-11';
+export type PricingVariant = 'control' | 'test';
+export const pricingFor = (variant: PricingVariant = 'control') => ({
+  variant,
+  creditUsd: variant === 'test' ? 0.02 : CREDIT_USD,
+  payg: PAYG,
+  plans:
+    variant === 'test'
+      ? {
+          creator: { label: 'Creator', priceCents: 2900, monthlyCredits: 1600 },
+          pro: { label: 'Pro', priceCents: 7900, monthlyCredits: 4500 },
+          scale: { label: 'Scale', priceCents: 19900, monthlyCredits: 12_000 },
+        }
+      : SUBSCRIPTION_PLANS,
+});
 
-export const paygPriceCents = (credits: number) => Math.round(credits * CREDIT_USD * 100);
+export const isValidPaygCredits = (credits: number, variant: PricingVariant = 'control') => {
+  const { payg } = pricingFor(variant);
+  return Number.isInteger(credits) && credits >= payg.min && credits <= payg.max;
+};
+
+export const paygPriceCents = (credits: number, variant: PricingVariant = 'control') =>
+  Math.round(credits * pricingFor(variant).creditUsd * 100);
 
 export const rendersFor = (credits: number) => Math.floor(credits / RENDER_CREDITS);

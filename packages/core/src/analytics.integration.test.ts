@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { gunzipSync } from 'node:zlib';
 import { db } from '@easyrender/db';
-import { RENDER_CREDITS, SUBSCRIPTION_PLANS } from '@easyrender/harness';
+import { pricingFor, RENDER_CREDITS, SUBSCRIPTION_PLANS } from '@easyrender/harness';
 import Stripe from 'stripe';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { setAnalyticsScheduler } from './analytics';
@@ -517,6 +517,75 @@ describe.skipIf(!url)('analytics through real server functions and local Postgre
       });
     },
   );
+  it('keeps test renewal credits and revenue after shutdown, once across webhook replays', async () => {
+    process.env.STRIPE_PRICE_PRO_TEST = 'price_pro_test';
+    process.env.PRICING_AB_ENABLED = '0';
+    const userId = await newUser();
+    const invoiceId = `in_test_${crypto.randomUUID()}`;
+    const body = JSON.stringify({
+      id: `evt_${invoiceId}`,
+      type: 'invoice.paid',
+      data: {
+        object: {
+          id: invoiceId,
+          amount_paid: 7900,
+          currency: 'usd',
+          parent: {
+            subscription_details: {
+              metadata: {
+                userId,
+                plan: 'pro',
+                pricing_variant: 'test',
+                pricing_flag: 'pricing-test-2026-11',
+              },
+            },
+          },
+          lines: {
+            data: [
+              {
+                parent: { subscription_item_details: { proration: false } },
+                pricing: { price_details: { price: 'price_pro_test' } },
+              },
+            ],
+          },
+        },
+      },
+    });
+    const signature = new Stripe('sk_test_local').webhooks.generateTestHeaderString({
+      payload: body,
+      secret: 'whsec_local',
+    });
+    await Promise.all([handleStripeWebhook(body, signature), handleStripeWebhook(body, signature)]);
+    await handleStripeWebhook(body, signature);
+    await drain();
+    const purchase = await db().purchase.findUniqueOrThrow({
+      where: { stripeSessionId: invoiceId },
+    });
+    expect(purchase).toMatchObject({
+      status: 'paid',
+      packId: 'pro:test',
+      credits: 4500,
+      amountCents: 7900,
+    });
+    expect((await db().user.findUniqueOrThrow({ where: { id: userId } })).credits).toBe(
+      RENDER_CREDITS * 3 + pricingFor('test').plans.pro.monthlyCredits,
+    );
+    expect(await db().creditLedger.count({ where: { userId } })).toBe(1);
+    const captured = events.filter(
+      (event) => event.event === 'purchase_completed' && event.properties.order_id === purchase.id,
+    );
+    expect(captured).toHaveLength(1);
+    expect(captured[0].properties).toMatchObject({
+      pricing_variant: 'test',
+      revenue: 79,
+      currency: 'USD',
+    });
+    expect(await confirmedPurchase(userId, invoiceId)).toMatchObject({
+      pricing_variant: 'test',
+      value: 79,
+    });
+    expect(await confirmedPurchase('other-user', invoiceId)).toBeNull();
+  });
   it('stores truncated garbage values without rejecting signup and never overwrites direct first touch', async () => {
     const userId = await newUser();
     const attribution = normalizeAttribution(

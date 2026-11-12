@@ -41,6 +41,7 @@ export async function homeMetadata(locale: Locale): Promise<Metadata> {
 
 /** Organization, WebSite, WebPage, SoftwareApplication and the FAQ, cross-referenced by @id. */
 export async function homeGraph(locale: Locale) {
+  const { currentPricing } = await import('@/lib/pricing');
   const [t, items] = await Promise.all([
     getTranslations({ locale, namespace: 'Home.meta' }),
     faqItems(),
@@ -49,7 +50,7 @@ export async function homeGraph(locale: Locale) {
     organization(),
     website(locale),
     webPage(locale, ROUTES.home.paths[locale], t('title'), t('description')),
-    softwareApplication(locale, t('description')),
+    softwareApplication(locale, t('description'), (await currentPricing()).variant),
     faqPage(items),
   ];
 }

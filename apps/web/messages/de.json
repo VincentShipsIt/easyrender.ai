@@ -108,7 +108,7 @@
         "name": "Nach Verbrauch",
         "note": "pro Credit",
         "features": {
-          "min": "Ab {credits} Credits",
+          "min": "Ab {credits} Credits ({price})",
           "downloads": "Download als GLB und USDZ",
           "ar": "Bald: mit dem Smartphone bei dir im Raum ansehen",
           "api": "MCP-Server und REST-API"
@@ -625,7 +625,7 @@
     "bestValue": "Best value",
     "payg": {
       "title": "Pay as you go",
-      "description": "Buy exactly what you need, one cent per credit.",
+      "description": "Kauf die Credits, die du brauchst, ab {price}.",
       "note": "per credit",
       "features": {
         "downloads": "GLB and USDZ downloads",
@@ -666,7 +666,8 @@
     "buy": "Buy credits"
   },
   "BuyButton": {
-    "failed": "Checkout failed"
+    "failed": "Checkout failed",
+    "pricingChanged": "Die Preise haben sich geändert. Lade die Seite neu und versuch es noch einmal."
   },
   "Auth": {
     "signUp": "Sign up",
@@ -1145,13 +1146,13 @@
     "details": "Cookie-Details",
     "intro": "Hier siehst du, was dein Browser speichert und wie du optionale Analysen steuerst.",
     "anonTitle": "er_anon",
-    "anon": "Dieses eigene Cookie erkennt deine anonymen Vorschauen, setzt das tägliche Gratislimit um und ermöglicht dir den Zugriff und die Zuordnung zu deinem Konto. Es wird derzeit beim ersten Besuch gesetzt und gilt ein Jahr. Es dient nicht der Attribution.",
+    "anon": "Dieses eigene Cookie erkennt deine anonymen Vorschauen, wendet das tägliche Gratislimit an und verknüpft Vorschauen mit deinem Konto. Es hält auch deine Preise während eines Preistests gleich, selbst wenn du Analysen ablehnst. Es wird beim ersten Besuch gesetzt und bleibt ein Jahr.",
     "consentTitle": "er_consent",
     "consent": "Speichert deine Analyseentscheidung samt Datum und Version ein Jahr lang. Es wird erst gesetzt, wenn du dich entscheidest.",
     "gaTitle": "Google Analytics 4: _ga und _ga_<id>",
     "ga": "Diese Cookies messen Besuche und gelten bis zu zwei Jahre. In strengen Regionen werden sie erst nach deiner Zustimmung gesetzt. Anderswo ist die Analyse aktiv, sofern du sie nicht ablehnst oder Global Privacy Control (GPC) sendest. Werbung bleibt immer abgelehnt.",
     "posthogTitle": "PostHog (EU), ohne Cookies",
-    "posthog": "PostHog nutzt weder Cookies noch dauerhaften Browserspeicher. In strengen Regionen lädt es erst nach deiner Zustimmung; anderswo respektiert es deine Ablehnung und GPC.",
+    "posthog": "PostHog nutzt weder Cookies noch dauerhaften Browserspeicher. In strengen Regionen lädt es erst nach deiner Zustimmung; anderswo respektiert es deine Ablehnung und GPC. Wenn du Analysen erlaubst, verknüpft eine gehashte Preiskennung Preisaufrufe mit Registrierungen und Käufen, um den Test auszuwerten.",
     "attributionTitle": "Attribution des ersten Kontakts",
     "attribution": "Kampagnenparameter und die Herkunftsseite bleiben im Arbeitsspeicher, bis du eine Vorschau oder ein Konto erstellst. Dann werden sie mit diesem Datensatz gespeichert. Klickkennungen werden nicht gespeichert. Serverereignisse sind unabhängig von deiner Browseranalyseentscheidung.",
     "change": "Ändere deine Entscheidung",

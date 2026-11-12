@@ -1,4 +1,4 @@
-import { CREDIT_USD, PAYG, PLAN_IDS, SUBSCRIPTION_PLANS } from '@easyrender/harness';
+import { PLAN_IDS, type PricingVariant, pricingFor } from '@easyrender/harness';
 import { HTML_LANG, type Locale } from '@/i18n/config';
 import { absoluteUrl, OG_IMAGE, OG_IMAGE_SIZE, SITE_NAME, SITE_URL } from './site';
 
@@ -38,7 +38,12 @@ export function website(locale: Locale): Thing {
  * The product itself. Offers are the two the pricing page publishes: credits by the unit, and
  * the Pro subscription. Both read from the harness, so a price change cannot drift from code.
  */
-export function softwareApplication(locale: Locale, description: string): Thing {
+export function softwareApplication(
+  locale: Locale,
+  description: string,
+  variant: PricingVariant = 'control',
+): Thing {
+  const { creditUsd: CREDIT_USD, payg: PAYG, plans: SUBSCRIPTION_PLANS } = pricingFor(variant);
   return {
     '@type': 'SoftwareApplication',
     '@id': SOFTWARE_ID,

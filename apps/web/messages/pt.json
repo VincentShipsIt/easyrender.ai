@@ -108,7 +108,7 @@
         "name": "Pagamento por uso",
         "note": "por crédito",
         "features": {
-          "min": "A partir de {credits} créditos",
+          "min": "A partir de {credits} créditos ({price})",
           "downloads": "Ficheiros GLB e USDZ para descarregar",
           "ar": "Em breve: ver a peça em casa pelo telemóvel",
           "api": "Servidor MCP e API REST"
@@ -625,7 +625,7 @@
     "bestValue": "Best value",
     "payg": {
       "title": "Pay as you go",
-      "description": "Buy exactly what you need, one cent per credit.",
+      "description": "Compra os créditos de que precisas, a partir de {price}.",
       "note": "per credit",
       "features": {
         "downloads": "GLB and USDZ downloads",
@@ -666,7 +666,8 @@
     "buy": "Buy credits"
   },
   "BuyButton": {
-    "failed": "Checkout failed"
+    "failed": "Checkout failed",
+    "pricingChanged": "Os preços mudaram. Atualiza a página e tenta novamente."
   },
   "Auth": {
     "signUp": "Sign up",
@@ -1145,13 +1146,13 @@
     "details": "Detalhes dos cookies",
     "intro": "Aqui podes ver o que o teu navegador guarda e controlar a análise opcional.",
     "anonTitle": "er_anon",
-    "anon": "Este cookie próprio identifica as tuas pré-visualizações anónimas, aplica o limite diário gratuito e permite-te aceder a elas e associá-las à tua conta. Atualmente é criado na primeira visita e dura um ano. Não é usado para atribuição.",
+    "anon": "Este cookie próprio identifica as tuas pré-visualizações anónimas, aplica o limite diário gratuito e permite associá-las à tua conta. Também mantém os teus preços durante um teste de preços, mesmo que recuses as análises. É criado na primeira visita e dura um ano.",
     "consentTitle": "er_consent",
     "consent": "Guarda a tua escolha de análise, a data e a versão durante um ano. Só é criado quando escolhes.",
     "gaTitle": "Google Analytics 4: _ga e _ga_<id>",
     "ga": "Estes cookies medem visitas e duram até dois anos. Nas regiões estritas, só são criados depois de aceitares. Nas restantes, a análise está ativa salvo se a rejeitares ou enviares Global Privacy Control (GPC). O consentimento publicitário permanece sempre recusado.",
     "posthogTitle": "PostHog (UE), sem cookies",
-    "posthog": "O PostHog não usa cookies nem armazenamento persistente no teu navegador. Nas regiões estritas, só carrega depois de aceitares; nas restantes, respeita a tua rejeição e GPC.",
+    "posthog": "O PostHog não usa cookies nem armazenamento persistente no teu navegador. Nas regiões estritas, só carrega depois de aceitares; nas restantes, respeita a tua rejeição e GPC. Se permitires as análises, um identificador de preços transformado por hash liga as visitas aos preços aos registos e compras para medir o teste.",
     "attributionTitle": "Atribuição do primeiro contacto",
     "attribution": "Os parâmetros de campanha e a página de origem ficam em memória até criares uma pré-visualização ou conta e são depois guardados nesse registo. Não guardamos identificadores de clique. Os eventos do servidor não dependem da tua escolha de análise no navegador.",
     "change": "Altera a tua escolha",

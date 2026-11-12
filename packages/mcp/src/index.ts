@@ -1,6 +1,7 @@
 import {
   type Actor,
   AppError,
+  assignedPricing,
   config,
   createDraft,
   getBalance,
@@ -10,14 +11,7 @@ import {
   startBuild,
   toView,
 } from '@easyrender/core';
-import {
-  CREDIT_USD,
-  ENTERPRISE_BOOKING_URL,
-  PAYG,
-  PLAN_IDS,
-  RENDER_CREDITS,
-  SUBSCRIPTION_PLANS,
-} from '@easyrender/harness';
+import { ENTERPRISE_BOOKING_URL, PLAN_IDS, pricingFor, RENDER_CREDITS } from '@easyrender/harness';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
@@ -136,28 +130,37 @@ export function createMcpServer(actor: Actor & { userId: string }) {
       inputSchema: {},
     },
     () =>
-      run(async () => ({
-        balance: await getBalance(actor.userId),
-        render_credits: RENDER_CREDITS,
-        plans: {
-          pay_as_you_go: {
-            usd_per_credit: CREDIT_USD,
-            min_credits: PAYG.min,
-            max_credits: PAYG.max,
+      run(async () => {
+        const {
+          creditUsd: CREDIT_USD,
+          payg: PAYG,
+          plans: SUBSCRIPTION_PLANS,
+          variant,
+        } = pricingFor(await assignedPricing(actor.userId, actor.anonId));
+        return {
+          pricing_variant: variant,
+          balance: await getBalance(actor.userId),
+          render_credits: RENDER_CREDITS,
+          plans: {
+            pay_as_you_go: {
+              usd_per_credit: CREDIT_USD,
+              min_credits: PAYG.min,
+              max_credits: PAYG.max,
+            },
+            ...Object.fromEntries(
+              PLAN_IDS.map((id) => [
+                id,
+                {
+                  usd_per_month: SUBSCRIPTION_PLANS[id].priceCents / 100,
+                  credits_per_month: SUBSCRIPTION_PLANS[id].monthlyCredits,
+                },
+              ]),
+            ),
+            enterprise: { book_a_call: ENTERPRISE_BOOKING_URL },
           },
-          ...Object.fromEntries(
-            PLAN_IDS.map((id) => [
-              id,
-              {
-                usd_per_month: SUBSCRIPTION_PLANS[id].priceCents / 100,
-                credits_per_month: SUBSCRIPTION_PLANS[id].monthlyCredits,
-              },
-            ]),
-          ),
-          enterprise: { book_a_call: ENTERPRISE_BOOKING_URL },
-        },
-        buy: `${config.appUrl()}/credits`,
-      })),
+          buy: `${config.appUrl()}/credits`,
+        };
+      }),
   );
 
   return server;
