@@ -28,7 +28,7 @@ Scegli la piattaforma in base al pezzo. Una poltrona firmata di metà Novecento 
 
 Contano il valore del pezzo, chi gestisce la consegna e quanto gli acquirenti cercano il nome del produttore. Per questi quattro pezzi partiremmo da qui.
 
-| Pezzo                               | Dove iniziare                                 | Motivo                                                            |
+| Pezzo                               | Dove iniziare                                     | Motivo                                                            |
 | ----------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------- |
 | Poltrona firmata di metà Novecento  | Chairish o 1stDibs, verificando l'accesso         | Acquirenti interessati a designer e provenienza                   |
 | Cassettone in pino degli anni 1970  | Facebook Marketplace, ritiro a mano               | Valore basso rispetto all'ingombro: conviene un acquirente vicino |
@@ -146,14 +146,14 @@ Offerte molto basse e ripetute possono indicare un prezzo basato su altri annunc
 
 Se un annuncio non riceve risposte o dà luogo a contestazioni, spesso la causa è una di queste. Controlla la causa prima di abbassare il prezzo.
 
-| Sintomo                                | Causa                                                 | Rimedio                                                     |
-| -------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------- |
-| Nessun messaggio dopo due settimane    | Titolo senza produttore, materiale o oggetto          | Riscrivi con produttore, materiale, stile, oggetto ed epoca |
-| Solo offerte molto basse               | Prezzo basato su altri annunci, non su vendite concluse             | Confronta vendite dello stesso modello e stato              |
-| Stato contestato alla consegna         | Difetto mai fotografato                               | Mostra ogni difetto e cita il numero della foto             |
-| Danni nel trasporto                    | Gambe montate, nastro sulla finitura o niente coperte | Smonta, proteggi e fotografa prima della partenza           |
-| Domande continue sul colore            | Luce mista o filtro caldo                             | Scatta di nuovo con la sola luce diurna                                 |
-| Acquirente rinuncia dopo aver misurato | Misure assenti o copiate dal catalogo                 | Misura anche seduta e profondità interna                    |
+| Sintomo                                | Causa                                                   | Rimedio                                                     |
+| -------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------- |
+| Nessun messaggio dopo due settimane    | Titolo senza produttore, materiale o oggetto            | Riscrivi con produttore, materiale, stile, oggetto ed epoca |
+| Solo offerte molto basse               | Prezzo basato su altri annunci, non su vendite concluse | Confronta vendite dello stesso modello e stato              |
+| Stato contestato alla consegna         | Difetto mai fotografato                                 | Mostra ogni difetto e cita il numero della foto             |
+| Danni nel trasporto                    | Gambe montate, nastro sulla finitura o niente coperte   | Smonta, proteggi e fotografa prima della partenza           |
+| Domande continue sul colore            | Luce mista o filtro caldo                               | Scatta di nuovo con la sola luce diurna                     |
+| Acquirente rinuncia dopo aver misurato | Misure assenti o copiate dal catalogo                   | Misura anche seduta e profondità interna                    |
 
 ## FAQ
 

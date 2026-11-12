@@ -32,13 +32,13 @@ As contas são verificáveis: o vaso tem 14.590 triângulos, cada um com três �
 Lemos os seis modelos da nossa galeria da mesma forma. Cada um tem uma malha, um material e uma textura WebP de 1024 píxeis, preparados para a web com glTF Transform.
 
 | Modelo                 | Tamanho (bytes) | Triângulos | Textura (bytes) | Espaço ocupado pela geometria |
-| ---------------------- | --------------- | ---------- | --------------- | ------------------ |
-| Vaso de barro          | 308.448         | 14.590     | 51.354          | 83%                |
-| Vaso de grés           | 312.816         | 16.708     | 28.466          | 90%                |
-| Mesa de centro redonda | 322.876         | 16.228     | 34.266          | 89%                |
-| Poltrona giratória     | 519.988         | 24.268     | 57.680          | 89%                |
-| Poltrona em bouclé     | 551.068         | 25.879     | 70.690          | 87%                |
-| Mesa de cabeceira      | 1.287.432       | 69.910     | 40.628          | 97%                |
+| ---------------------- | --------------- | ---------- | --------------- | ----------------------------- |
+| Vaso de barro          | 308.448         | 14.590     | 51.354          | 83%                           |
+| Vaso de grés           | 312.816         | 16.708     | 28.466          | 90%                           |
+| Mesa de centro redonda | 322.876         | 16.228     | 34.266          | 89%                           |
+| Poltrona giratória     | 519.988         | 24.268     | 57.680          | 89%                           |
+| Poltrona em bouclé     | 551.068         | 25.879     | 70.690          | 87%                           |
+| Mesa de cabeceira      | 1.287.432       | 69.910     | 40.628          | 97%                           |
 
 É comum dizer que as texturas ocupam mais espaço, e isso aplica-se a texturas PNG de 4096 píxeis. Com WebP de 1024, como aqui, a geometria sem compressão ocupa 83% a 97% do ficheiro e o número de triângulos determina o tamanho.
 
@@ -118,25 +118,25 @@ O easyrender fornece GLB e USDZ para cada modelo concluído a partir de uma foto
 
 Para RA no iPhone e iPad, sim. O Reality Converter da Apple, gratuito no Mac, converte GLB em USDZ, e versões recentes do Blender exportam USDZ diretamente; o [guia do ficheiro USDZ](/pt/guias/ficheiro-usdz) explica também porque pode ficar maior do que o GLB original.
 
-| Ficheiro | Conteúdo                                     | Onde abre                                  | Utilização                          |
-| -------- | -------------------------------------------- | ------------------------------------------ | ----------------------------------- |
+| Ficheiro | Conteúdo                                     | Onde abre                                  | Utilização                                   |
+| -------- | -------------------------------------------- | ------------------------------------------ | -------------------------------------------- |
 | GLB      | Binário com geometria, materiais e texturas  | Navegadores, Blender, Scene Viewer Android | Páginas de produto, 3D na web, RA no Android |
-| glTF     | JSON .gltf, .bin e imagens separadas         | Mesmos visualizadores, mantendo tudo junto | Edição e inspeção do JSON legível   |
-| USDZ     | Zip sem compressão com camadas USD e imagens | Quick Look no iPhone, iPad e Mac           | RA em dispositivos Apple            |
+| glTF     | JSON .gltf, .bin e imagens separadas         | Mesmos visualizadores, mantendo tudo junto | Edição e inspeção do JSON legível            |
+| USDZ     | Zip sem compressão com camadas USD e imagens | Quick Look no iPhone, iPad e Mac           | RA em dispositivos Apple                     |
 
 ## O que pode correr mal com um GLB e como corriges?
 
 Os problemas mais comuns têm poucas causas. Parte do que vês para encontrar a definição a alterar.
 
-| Sintoma                              | Causa                                            | Correção                                         |
-| ------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| Modelo cinzento                      | .gltf sem texturas ou exportação sem imagens     | Exporta novamente como .glb binário com texturas |
-| Dezenas de megabytes                 | Texturas de 4096 píxeis ou muitas texturas       | Reduz para 2048 ou 1024 e comprime a geometria   |
-| Curvas facetadas                     | Sem normais, calculadas planas pelo visualizador | Shade Smooth no Blender e exportação com normais |
-| Barro ou tecido escuro ou com a cor alterada    | Metallic omisso, logo totalmente metálico        | Define Metallic como 0 e volta a exportar        |
-| Manchas negras ou interior visível   | Faces viradas ao contrário                       | Recalcula as normais para fora no Blender        |
-| Só abre num visualizador             | Extensão não suportada, como Draco ou WebP       | Exporta uma versão simples para o outro          |
-| Carregamento rejeitado como inválido | Descarga interrompida e comprimento incorreto    | Descarrega novamente e compara o tamanho         |
+| Sintoma                                      | Causa                                            | Correção                                         |
+| -------------------------------------------- | ------------------------------------------------ | ------------------------------------------------ |
+| Modelo cinzento                              | .gltf sem texturas ou exportação sem imagens     | Exporta novamente como .glb binário com texturas |
+| Dezenas de megabytes                         | Texturas de 4096 píxeis ou muitas texturas       | Reduz para 2048 ou 1024 e comprime a geometria   |
+| Curvas facetadas                             | Sem normais, calculadas planas pelo visualizador | Shade Smooth no Blender e exportação com normais |
+| Barro ou tecido escuro ou com a cor alterada | Metallic omisso, logo totalmente metálico        | Define Metallic como 0 e volta a exportar        |
+| Manchas negras ou interior visível           | Faces viradas ao contrário                       | Recalcula as normais para fora no Blender        |
+| Só abre num visualizador                     | Extensão não suportada, como Draco ou WebP       | Exporta uma versão simples para o outro          |
+| Carregamento rejeitado como inválido         | Descarga interrompida e comprimento incorreto    | Descarrega novamente e compara o tamanho         |
 
 ## O que não te diz um GLB?
 

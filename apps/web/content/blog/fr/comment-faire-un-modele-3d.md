@@ -149,16 +149,16 @@ Notre choix : l'image-vers-3D si tu n'as que la photo du fournisseur, la photogr
 
 Chaque méthode a ses difficultés et des causes habituelles. Voici comment examiner un résultat incorrect.
 
-| Méthode             | Symptôme                              | Cause                                         | Correction                                                            |
-| ------------------- | ------------------------------------- | --------------------------------------------- | --------------------------------------------------------------------- |
-| Logiciel            | Modèle tourné ou de taille inattendue | Échelle et rotation non appliquées            | Applique toutes les transformations puis réexporte                    |
-| Logiciel            | Fil du bois étiré sur une face        | Mauvais dépliage UV                           | Vérifie avec un damier et déplie cette face à nouveau                 |
-| Photogrammétrie     | Trous dans un plateau blanc uni       | Aucun repère entre les photos                 | Photographie par temps couvert ou choisis une autre méthode           |
-| Photogrammétrie     | Dessous absent ou confondu avec le sol          | Dessous jamais photographié                   | Accepte-le ou fais une seconde séance avec l'objet couché             |
-| LiDAR               | Pieds fins bosselés ou absents        | Détails trop fins pour le capteur             | Choisis la photogrammétrie pour ce meuble                             |
-| IA depuis une photo | Dos différent du vrai meuble          | Cette face était absente de la photo          | Utilise une photo de trois quarts ou ajoute une note sur le dos                    |
-| IA depuis une photo | Logo ou étiquette flous               | Détails difficiles à lire sur une seule photo | Garde le logo dans les photos plutôt que dans le modèle               |
-| Artiste             | Retard ou modèle incorrect            | Brief sans dimensions, formats ou limites     | Fournis photos, mesures, formats et nombre de triangles dès le départ |
+| Méthode             | Symptôme                               | Cause                                         | Correction                                                            |
+| ------------------- | -------------------------------------- | --------------------------------------------- | --------------------------------------------------------------------- |
+| Logiciel            | Modèle tourné ou de taille inattendue  | Échelle et rotation non appliquées            | Applique toutes les transformations puis réexporte                    |
+| Logiciel            | Fil du bois étiré sur une face         | Mauvais dépliage UV                           | Vérifie avec un damier et déplie cette face à nouveau                 |
+| Photogrammétrie     | Trous dans un plateau blanc uni        | Aucun repère entre les photos                 | Photographie par temps couvert ou choisis une autre méthode           |
+| Photogrammétrie     | Dessous absent ou confondu avec le sol | Dessous jamais photographié                   | Accepte-le ou fais une seconde séance avec l'objet couché             |
+| LiDAR               | Pieds fins bosselés ou absents         | Détails trop fins pour le capteur             | Choisis la photogrammétrie pour ce meuble                             |
+| IA depuis une photo | Dos différent du vrai meuble           | Cette face était absente de la photo          | Utilise une photo de trois quarts ou ajoute une note sur le dos       |
+| IA depuis une photo | Logo ou étiquette flous                | Détails difficiles à lire sur une seule photo | Garde le logo dans les photos plutôt que dans le modèle               |
+| Artiste             | Retard ou modèle incorrect             | Brief sans dimensions, formats ou limites     | Fournis photos, mesures, formats et nombre de triangles dès le départ |
 
 ## Quelles limites pour chaque méthode ?
 

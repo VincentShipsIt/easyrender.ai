@@ -36,7 +36,7 @@ Die Spezifikation listet PNG und JPEG als Bildtypen, aber kein WebP. Beim Umwand
 | Geometrie          | Binäre .usdc                        | Text in .usda                     |
 | Texturformat       | JPEG, außer bei nötiger Transparenz | PNG                               |
 | Texturgröße        | 1024 oder 2048 Pixel                | 4096 Pixel                        |
-| Mesh    | Für das Handydisplay vereinfacht    | Jedes Dreieck eines dichten Scans |
+| Mesh               | Für das Handydisplay vereinfacht    | Jedes Dreieck eines dichten Scans |
 
 Keine dieser Varianten ist ein Fehler: Quick Look liest beide Kodierungen und Bildformate. Die Größe zählt trotzdem. Eine Datei mit mehreren Megabyte lässt sich langsamer per Nachricht versenden und über mobile Daten laden.
 
@@ -110,15 +110,15 @@ Prüfe danach die Maserung unter deiner eigenen Lampe. Ihr Licht ist wärmer als
 
 Die meisten USDZ-Probleme entstehen beim Bereitstellen oder Konvertieren. Diese Liste führt vom sichtbaren Fehler zur Änderung.
 
-| Symptom                                 | Ursache                                                 | Lösung                                                                |
-| --------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------- |
-| Tippen lädt herunter statt AR zu öffnen | `rel="ar"` fehlt oder falscher Inhaltstyp               | `rel="ar"` ergänzen, als `model/vnd.usdz+zip` bereitstellen           |
-| Kein AR-Symbol am Vorschaubild          | Mehr als ein Kindelement oder iOS älter als 12          | Genau ein `img` oder `picture` verwenden, auf aktuellem iPhone testen |
+| Symptom                                 | Ursache                                                 | Lösung                                                                                            |
+| --------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Tippen lädt herunter statt AR zu öffnen | `rel="ar"` fehlt oder falscher Inhaltstyp               | `rel="ar"` ergänzen, als `model/vnd.usdz+zip` bereitstellen                                       |
+| Kein AR-Symbol am Vorschaubild          | Mehr als ein Kindelement oder iOS älter als 12          | Genau ein `img` oder `picture` verwenden, auf aktuellem iPhone testen                             |
 | Stück erscheint riesig oder winzig      | Quick Look nutzt hinterlegte, nie gemessene Abmessungen | Maße in den Text schreiben; Käufer können das Modell mit zwei Fingern vergrößern oder verkleinern |
-| Stück schwebt über dem Boden            | Modellbasis liegt über dem Ursprung                     | Ursprung in Blender an die Basis verschieben, erneut exportieren      |
-| Farben flacher als in Blender           | Materialaufbau lässt sich nicht nach USD übertragen     | In Quick Look am Mac prüfen, Material vereinfachen                    |
-| Rundungen wirken kantig                 | Ausgangs-GLB hatte keine Normalen                       | Vor der Umwandlung Normalen für eine glatte Schattierung ergänzen                           |
-| Datei lässt sich schlecht versenden     | Textgeometrie und PNG-Texturen                          | Binäre Geometrie und JPEG exportieren, Größen vergleichen             |
+| Stück schwebt über dem Boden            | Modellbasis liegt über dem Ursprung                     | Ursprung in Blender an die Basis verschieben, erneut exportieren                                  |
+| Farben flacher als in Blender           | Materialaufbau lässt sich nicht nach USD übertragen     | In Quick Look am Mac prüfen, Material vereinfachen                                                |
+| Rundungen wirken kantig                 | Ausgangs-GLB hatte keine Normalen                       | Vor der Umwandlung Normalen für eine glatte Schattierung ergänzen                                 |
+| Datei lässt sich schlecht versenden     | Textgeometrie und PNG-Texturen                          | Binäre Geometrie und JPEG exportieren, Größen vergleichen                                         |
 
 ## GLB zu USDZ: Solltest du beide behalten?
 

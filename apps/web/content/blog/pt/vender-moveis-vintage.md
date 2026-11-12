@@ -31,7 +31,7 @@ A escolha depende do valor, do transporte e da procura pela marca. Para estas qu
 | Peça                                     | Primeira plataforma                                | Motivo                                               |
 | ---------------------------------------- | -------------------------------------------------- | ---------------------------------------------------- |
 | Poltrona assinada de meados do século XX | Chairish ou 1stDibs, verificando o acesso          | Compradores procuram designer e proveniência         |
-| Cómoda em pinho dos anos 1970            | Facebook Marketplace, recolha pelo comprador               | Valor baixo face ao volume: convém comprador próximo |
+| Cómoda em pinho dos anos 1970            | Facebook Marketplace, recolha pelo comprador       | Valor baixo face ao volume: convém comprador próximo |
 | Par de candeeiros pequenos em latão      | Etsy ou eBay                                       | Envio numa caixa e público além da tua cidade        |
 | Sofá usado grande numa cidade            | AptDeco onde disponível; em Portugal recolha local | O transporte é o principal problema a resolver       |
 

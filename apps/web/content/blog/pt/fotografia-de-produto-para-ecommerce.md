@@ -90,13 +90,13 @@ Para obter uma vista de três quartos, mantém a câmara parada e roda o produto
 
 As duas plataformas publicam orientações semelhantes. Estes são os requisitos e conselhos dos respetivos guias.
 
-| Regra              | Amazon                                           | Shopify                                                                  |
-| ------------------ | ------------------------------------------------ | ------------------------------------------------------------------------ |
-| Fundo principal    | Branco puro, RGB 255, 255, 255, como boa prática | Sem regra; recomenda fundo consistente                                   |
-| Ocupação da imagem | Produto ocupa pelo menos 85%                        | Não indicada                                                             |
+| Regra              | Amazon                                           | Shopify                                                                          |
+| ------------------ | ------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Fundo principal    | Branco puro, RGB 255, 255, 255, como boa prática | Sem regra; recomenda fundo consistente                                           |
+| Ocupação da imagem | Produto ocupa pelo menos 85%                     | Não indicada                                                                     |
 | Dimensões          | Mais de 1.000 píxeis por lado para zoom          | 2048 x 2048 recomendado para imagens quadradas; até 5000 x 5000 ou 25 megapíxeis |
-| Formato            | Prefere JPEG; aceita TIFF, PNG e GIF             | Recomenda PNG e depois JPEG; menos de 20 MB                              |
-| Consistência       | Não indicada                                     | Mesma proporção para alinhar grelhas                                     |
+| Formato            | Prefere JPEG; aceita TIFF, PNG e GIF             | Recomenda PNG e depois JPEG; menos de 20 MB                                      |
+| Consistência       | Não indicada                                     | Mesma proporção para alinhar grelhas                                             |
 
 Fontes: [guia Amazon de fotografias de produto](https://sell.amazon.com/blog/product-photos) e [tipos de conteúdo Shopify](https://help.shopify.com/en/manual/products/product-media/product-media-types). Consulta estas páginas antes de uma sessão com muitos produtos, porque as orientações mudam.
 
@@ -142,17 +142,17 @@ O easyrender constrói o modelo a partir de uma foto e mostra primeiro todos os 
 
 Muitos erros vêm das decisões automáticas do telemóvel ou de luzes diferentes na divisão. Verifica a série com esta tabela.
 
-| Sintoma                                        | Causa                                        | Correção                                    |
-| ---------------------------------------------- | -------------------------------------------- | ------------------------------------------- |
-| Sofá branco azul de um lado e amarelo do outro | Luz da janela misturada com lâmpadas quentes        | Apaga as luzes e usa só luz diurna          |
-| Pernas dianteiras maiores                      | 1x de perto                                  | Afasta-te e usa 2x ou 3x                    |
-| Fundo branco parece cinzento                   | Exposição para o produto, fundo sem correção | Aclara o fundo até 255, 255, 255           |
-| Contornos das pernas desfocados e recortados   | Desfoque artificial de Retrato               | Usa Foto                                    |
-| Luminosidade diferente em cada imagem          | Exposição automática recalculada             | Bloqueia exposição e foco antes de começar  |
-| Veludo verde-garrafa com outro verde           | Filtro ou correção excessiva                 | Compara o tecido físico com o ecrã          |
-| Produto pequeno nos resultados                 | Ocupa muito menos de 85%                     | Recorta a imagem principal mais junto ao produto              |
-| Grelha desalinhada                             | Proporções diferentes                        | Usa a mesma proporção, por exemplo quadrada |
-| O teu reflexo num armário lacado               | Superfície brilhante de frente               | Roda a peça alguns graus ou fica na sombra  |
+| Sintoma                                        | Causa                                        | Correção                                         |
+| ---------------------------------------------- | -------------------------------------------- | ------------------------------------------------ |
+| Sofá branco azul de um lado e amarelo do outro | Luz da janela misturada com lâmpadas quentes | Apaga as luzes e usa só luz diurna               |
+| Pernas dianteiras maiores                      | 1x de perto                                  | Afasta-te e usa 2x ou 3x                         |
+| Fundo branco parece cinzento                   | Exposição para o produto, fundo sem correção | Aclara o fundo até 255, 255, 255                 |
+| Contornos das pernas desfocados e recortados   | Desfoque artificial de Retrato               | Usa Foto                                         |
+| Luminosidade diferente em cada imagem          | Exposição automática recalculada             | Bloqueia exposição e foco antes de começar       |
+| Veludo verde-garrafa com outro verde           | Filtro ou correção excessiva                 | Compara o tecido físico com o ecrã               |
+| Produto pequeno nos resultados                 | Ocupa muito menos de 85%                     | Recorta a imagem principal mais junto ao produto |
+| Grelha desalinhada                             | Proporções diferentes                        | Usa a mesma proporção, por exemplo quadrada      |
+| O teu reflexo num armário lacado               | Superfície brilhante de frente               | Roda a peça alguns graus ou fica na sombra       |
 
 ## FAQ
 

@@ -123,16 +123,16 @@ Os guias de [ficheiro GLB](/pt/guias/ficheiro-glb) e [ficheiro USDZ](/pt/guias/f
 
 Muitos erros começam na fotografia. Parte do sintoma e corrige a imagem ou definição indicada.
 
-| Sintoma                               | Causa                                                                                                                    | Correção                                                            |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
-| Foto rejeitada por ser pequena        | Lado curto abaixo de 400 píxeis, normalmente miniatura                                                                   | Usa o original com menos de 4 MB                                         |
-| Foto rejeitada por ser estreita       | Largura superior a quatro vezes a altura                                                                                 | Recorta à volta da peça com margem                                  |
-| Duas pernas tornam-se uma             | Pernas traseiras escondidas atrás das dianteiras                                                                         | Usa uma foto de três quartos com as quatro pernas visíveis                            |
-| Quatro portas tornam-se três          | Juntas com pouco contraste                                                                                               | Usa luz rasante ou acrescenta a nota «quatro portas»                                 |
+| Sintoma                               | Causa                                                                                                                    | Correção                                                                                   |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Foto rejeitada por ser pequena        | Lado curto abaixo de 400 píxeis, normalmente miniatura                                                                   | Usa o original com menos de 4 MB                                                           |
+| Foto rejeitada por ser estreita       | Largura superior a quatro vezes a altura                                                                                 | Recorta à volta da peça com margem                                                         |
+| Duas pernas tornam-se uma             | Pernas traseiras escondidas atrás das dianteiras                                                                         | Usa uma foto de três quartos com as quatro pernas visíveis                                 |
+| Quatro portas tornam-se três          | Juntas com pouco contraste                                                                                               | Usa luz rasante ou acrescenta a nota «quatro portas»                                       |
 | Costas iguais à frente                | A fotografia só mostrou a frente                                                                                         | Acrescenta a nota «costas abertas» ou «costas lisas», ou usa uma foto de um canto traseiro |
-| Entrançado parece padrão impresso     | Uma foto não mostra o que há atrás dos espaços                                                                           | Avalia num visualizador pequeno ou usa fotogrametria                |
-| Tecido mais amarelo ou escuro         | Luz diferente ou Metallic omisso, metálico por predefinição                                                              | Verifica com luz neutra e define Metallic como 0                    |
-| Superfícies facetadas com luz lateral | Sem normais, calculadas planas segundo a [especificação glTF](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) | Usa Shade Smooth no Blender e exporta novamente                     |
+| Entrançado parece padrão impresso     | Uma foto não mostra o que há atrás dos espaços                                                                           | Avalia num visualizador pequeno ou usa fotogrametria                                       |
+| Tecido mais amarelo ou escuro         | Luz diferente ou Metallic omisso, metálico por predefinição                                                              | Verifica com luz neutra e define Metallic como 0                                           |
+| Superfícies facetadas com luz lateral | Sem normais, calculadas planas segundo a [especificação glTF](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) | Usa Shade Smooth no Blender e exporta novamente                                            |
 
 ## Como sabes se está pronto para publicar?
 

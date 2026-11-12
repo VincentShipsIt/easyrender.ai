@@ -92,8 +92,8 @@ Die Vorgaben beider Plattformen gehen in dieselbe Richtung. Diese Angaben stamme
 
 | Vorgabe                    | Amazon                                      | Shopify                                                                            |
 | -------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Hintergrund des Hauptbilds | Reinweiß, RGB 255, 255, 255, als Empfehlung | Keine Vorgabe; ein einheitlicher Hintergrund wird empfohlen                                 |
-| Bildfüllung                | Das Produkt füllt mindestens 85% des Bilds            | Nicht angegeben                                                                    |
+| Hintergrund des Hauptbilds | Reinweiß, RGB 255, 255, 255, als Empfehlung | Keine Vorgabe; ein einheitlicher Hintergrund wird empfohlen                        |
+| Bildfüllung                | Das Produkt füllt mindestens 85% des Bilds  | Nicht angegeben                                                                    |
 | Größe                      | Mehr als 1.000 Pixel je Seite zum Zoomen    | 2048 x 2048 meist ideal für quadratische Bilder; bis 5000 x 5000 oder 25 Megapixel |
 | Datei                      | JPEG bevorzugt; TIFF, PNG und GIF möglich   | PNG, danach JPEG empfohlen; unter 20 MB                                            |
 | Einheitlichkeit            | Nicht angegeben                             | Gleiches Seitenverhältnis für alle Hauptbilder für ein gleichmäßiges Produktraster |

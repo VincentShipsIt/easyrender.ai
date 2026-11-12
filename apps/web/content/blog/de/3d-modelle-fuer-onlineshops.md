@@ -54,11 +54,11 @@ WooCommerce-Shops ergänzen 3D über Erweiterungen wie [Arty 3D Viewer](https://
 
 Shopify akzeptiert große Dateien, doch auf dem Handy laden kleine Dateien schneller. Scene Viewer veröffentlicht die klarsten uns bekannten Vorgaben. Daran messen wir auch unsere Dateien.
 
-| Vorgabe     | Scene Viewer empfiehlt                              | Die sechs Modelle unserer Beispielgalerie |
-| ----------- | --------------------------------------------------- | ----------------------------------------- |
-| Dreiecke    | Bis 100.000, ideal 30.000 bis 50.000                | 14.590 bis 69.910                         |
-| Textur      | Höchstens 2048 x 2048                               | Je eine Textur mit 1024 x 1024            |
-| Materialien | Bis 10                                              | Je eines                                  |
+| Vorgabe     | Scene Viewer empfiehlt                               | Die sechs Modelle unserer Beispielgalerie |
+| ----------- | ---------------------------------------------------- | ----------------------------------------- |
+| Dreiecke    | Bis 100.000, ideal 30.000 bis 50.000                 | 14.590 bis 69.910                         |
+| Textur      | Höchstens 2048 x 2048                                | Je eine Textur mit 1024 x 1024            |
+| Materialien | Bis 10                                               | Je eines                                  |
 | Dateigröße  | 10 MB; größere Modelle können die Nutzung erschweren | 308.448 bis 1.287.432 Bytes               |
 
 Scene Viewer listet auch unterstützte glTF-Erweiterungen. Eine Datei mit anderen Erweiterungen wie WebP-Texturen öffnet sich möglicherweise nicht. Nutze für Android-AR deshalb am besten PNG oder JPEG und öffne die GLB auf einem echten Android-Handy, bevor du sie von einer Produktseite verlinkst.
@@ -133,9 +133,9 @@ Viele Probleme fallen erst am echten Handy auf, deshalb gibt es Schritt 6. Achte
 
 | Symptom                                  | Ursache                                                              | Lösung                                                                                                                                                            |
 | ---------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Kein AR-Button auf Android                | Scene Viewer lädt nur über HTTPS oder das Handy unterstützt es nicht | GLB über HTTPS bereitstellen und auf zweitem Handy testen                                                                                                         |
+| Kein AR-Button auf Android               | Scene Viewer lädt nur über HTTPS oder das Handy unterstützt es nicht | GLB über HTTPS bereitstellen und auf zweitem Handy testen                                                                                                         |
 | Kein AR auf iPhone bei eigener Website   | USDZ fehlt oder falscher Inhaltstyp                                  | USDZ ergänzen und als `model/vnd.usdz+zip` ausliefern, wie [Safari es erwartet](https://webkit.org/blog/8421/viewing-augmented-reality-assets-in-safari-for-ios/) |
-| Stück erscheint riesig oder winzig in AR | AR nutzt gespeicherte, nie gemessene Abmessungen                     | Maße in den Text schreiben; Käufer können das Modell mit zwei Fingern vergrößern oder verkleinern                                                                                             |
+| Stück erscheint riesig oder winzig in AR | AR nutzt gespeicherte, nie gemessene Abmessungen                     | Maße in den Text schreiben; Käufer können das Modell mit zwei Fingern vergrößern oder verkleinern                                                                 |
 | Stück schwebt über dem Boden             | Modellbasis liegt über dem Ursprung                                  | Ursprung vor dem Export in Blender an die Basis verschieben                                                                                                       |
 | Seite lädt langsam über mobile Daten     | Texturen mit 4096 Pixeln oder unkomprimierte Geometrie               | Texturen auf 2048 oder 1024 reduzieren, Draco oder Meshopt nur bei Unterstützung                                                                                  |
 | Modell wirkt in AR dunkel oder schmutzig | Schatten in der Textur, wovon Scene Viewer abrät                     | Textur ohne eingerechnete Schatten nutzen, fehlenden Metallic-Wert auf 0 setzen                                                                                   |

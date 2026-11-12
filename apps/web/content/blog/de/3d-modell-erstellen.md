@@ -23,13 +23,13 @@ Existiert das Objekt noch nicht, modelliere es selbst oder beauftrage einen Prof
 
 Je genauer das Modell sein soll, desto mehr Aufwand musst du meist einplanen. Ein Profi, der nach Maßen arbeitet, liefert das genaueste Modell. Ein Modell aus einem Foto ist am schnellsten verfügbar; die nicht gezeigten Seiten werden aus diesem Bild abgeleitet.
 
-| Methode              | Voraussetzung                              | Deine Arbeitszeit                               | Geeignet für                                      | Darauf achten                                                          |
-| -------------------- | ------------------------------------------ | ----------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
-| Selbst modellieren   | Wochenlange Übung, Referenzfotos, Maße     | Nach der Einarbeitung ein Tag oder mehr pro Stück     | Noch nicht vorhandene Objekte                     | Proportionen, Texturen und UV-Abwicklung                                |
-| Fotogrammetrie       | Objekt vor Ort, 20 bis 100 oder mehr Fotos | Ein bis zwei Stunden Aufnahme plus Verarbeitung | Echte Oberflächendetails                          | Weiß ohne Struktur, Glas, poliertes Metall                             |
-| LiDAR am Handy       | iPhone Pro oder iPad Pro, Objekt vor Ort   | Einige Minuten um das Objekt gehen              | Große einfache Formen wie Sofas                   | Weniger Details bei gedrechselten Beinen und Flechtsitzen              |
-| KI aus einem Foto    | Ein scharfes Foto                          | Vorschau und Modell prüfen                      | Lieferantenfotos ohne Zugriff auf das Stück       | Das Foto zeigt nur eine Seite und liefert keine gemessenen Abmessungen |
-| 3D-Profi beauftragen | Fotos, Maße und Budget                     | Auftrag beschreiben und Entwürfe prüfen         | Exakte Modelle oder ein Modell in mehreren Größen | Zeit für Abstimmung und Beauftragung                                   |
+| Methode              | Voraussetzung                              | Deine Arbeitszeit                                 | Geeignet für                                      | Darauf achten                                                          |
+| -------------------- | ------------------------------------------ | ------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
+| Selbst modellieren   | Wochenlange Übung, Referenzfotos, Maße     | Nach der Einarbeitung ein Tag oder mehr pro Stück | Noch nicht vorhandene Objekte                     | Proportionen, Texturen und UV-Abwicklung                               |
+| Fotogrammetrie       | Objekt vor Ort, 20 bis 100 oder mehr Fotos | Ein bis zwei Stunden Aufnahme plus Verarbeitung   | Echte Oberflächendetails                          | Weiß ohne Struktur, Glas, poliertes Metall                             |
+| LiDAR am Handy       | iPhone Pro oder iPad Pro, Objekt vor Ort   | Einige Minuten um das Objekt gehen                | Große einfache Formen wie Sofas                   | Weniger Details bei gedrechselten Beinen und Flechtsitzen              |
+| KI aus einem Foto    | Ein scharfes Foto                          | Vorschau und Modell prüfen                        | Lieferantenfotos ohne Zugriff auf das Stück       | Das Foto zeigt nur eine Seite und liefert keine gemessenen Abmessungen |
+| 3D-Profi beauftragen | Fotos, Maße und Budget                     | Auftrag beschreiben und Entwürfe prüfen           | Exakte Modelle oder ein Modell in mehreren Größen | Zeit für Abstimmung und Beauftragung                                   |
 
 3D-Druck ist kein Thema dieser Anleitung. Hier geht es um Bildschirmmodelle, Produktseiten und AR. Ein druckbares Bauteil braucht ein CAD-Modell aus echten Messwerten, also eine andere Arbeitsweise.
 
@@ -149,16 +149,16 @@ Unsere Wahl für diese Lampe: 3D aus einem Foto mit KI, wenn nur ein Lieferanten
 
 Jede Methode hat typische Fehler mit üblichen Ursachen. Vergleiche ein misslungenes Ergebnis mit dieser Liste.
 
-| Methode        | Symptom                                     | Ursache                                  | Lösung                                                               |
-| -------------- | ------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------- |
-| Software       | Modell erscheint verdreht oder in falscher Größe     | Skalierung und Drehung nicht angewendet  | Alle Transformationen anwenden und erneut exportieren                |
-| Software       | Holzmaserung auf einer Fläche verzerrt      | Fehlerhafte UV-Abwicklung                | Mit Schachbretttextur prüfen, Fläche neu abwickeln                   |
-| Fotogrammetrie | Löcher in weißer Tischplatte                | Keine Merkmale zum Bildabgleich          | Bei bedecktem Himmel aufnehmen oder andere Methode wählen            |
-| Fotogrammetrie | Unterseite fehlt oder verschmilzt mit Boden | Unterseite nie fotografiert              | Akzeptieren oder zweite Serie mit seitlich liegendem Stück aufnehmen |
-| LiDAR          | Dünne Beine ungleichmäßig oder fehlend      | Feiner als die Sensorauflösung           | Fotogrammetrie nutzen                                                |
-| KI aus Foto    | Rückseite entspricht nicht dem Stück        | Das Foto zeigte diese Seite nicht        | Dreiviertelaufnahme oder Hinweis zur Rückseite verwenden             |
-| KI aus Foto    | Logo oder Etikett unscharf                  | Feine Details in nur einem Foto          | Logo in Produktfotos zeigen statt im Modell                          |
-| Profi          | Modell verspätet oder falsch                | Auftrag ohne Maße, Formate oder Vorgaben | Fotos, Maße, Formate und Dreieckszahl vorab angeben                  |
+| Methode        | Symptom                                          | Ursache                                  | Lösung                                                               |
+| -------------- | ------------------------------------------------ | ---------------------------------------- | -------------------------------------------------------------------- |
+| Software       | Modell erscheint verdreht oder in falscher Größe | Skalierung und Drehung nicht angewendet  | Alle Transformationen anwenden und erneut exportieren                |
+| Software       | Holzmaserung auf einer Fläche verzerrt           | Fehlerhafte UV-Abwicklung                | Mit Schachbretttextur prüfen, Fläche neu abwickeln                   |
+| Fotogrammetrie | Löcher in weißer Tischplatte                     | Keine Merkmale zum Bildabgleich          | Bei bedecktem Himmel aufnehmen oder andere Methode wählen            |
+| Fotogrammetrie | Unterseite fehlt oder verschmilzt mit Boden      | Unterseite nie fotografiert              | Akzeptieren oder zweite Serie mit seitlich liegendem Stück aufnehmen |
+| LiDAR          | Dünne Beine ungleichmäßig oder fehlend           | Feiner als die Sensorauflösung           | Fotogrammetrie nutzen                                                |
+| KI aus Foto    | Rückseite entspricht nicht dem Stück             | Das Foto zeigte diese Seite nicht        | Dreiviertelaufnahme oder Hinweis zur Rückseite verwenden             |
+| KI aus Foto    | Logo oder Etikett unscharf                       | Feine Details in nur einem Foto          | Logo in Produktfotos zeigen statt im Modell                          |
+| Profi          | Modell verspätet oder falsch                     | Auftrag ohne Maße, Formate oder Vorgaben | Fotos, Maße, Formate und Dreieckszahl vorab angeben                  |
 
 ## Wo liegen die Grenzen der Methoden?
 

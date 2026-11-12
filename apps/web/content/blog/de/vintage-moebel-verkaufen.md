@@ -28,11 +28,11 @@ Die Plattform muss zum Stück passen. Ein signierter Mid-Century-Sessel erreicht
 
 Drei Fragen entscheiden: Was ist das Stück wert, wer übernimmt den Transport und suchen Käufer nach seinem Hersteller? Hier würden wir vier typische Stücke zuerst anbieten.
 
-| Stück                                  | Erste Plattform                                                              | Warum                                                                                       |
-| -------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Signierter Mid-Century-Sessel          | Chairish oder 1stDibs                                                        | Käufer suchen nach Designern und legen Wert auf einen Herkunftsnachweis                           |
-| Kiefernkommode aus den 1970ern         | Kleinanzeigen oder Facebook Marketplace, nur Abholung                        | Geringer Wert im Verhältnis zur Größe; ein lokaler Käufer mit Transporter spart Versand     |
-| Zwei kleine Messing-Tischlampen        | Etsy oder eBay                                                               | Paketversand möglich, Reichweite über den eigenen Ort hinaus                                |
+| Stück                                  | Erste Plattform                                                        | Warum                                                                                            |
+| -------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Signierter Mid-Century-Sessel          | Chairish oder 1stDibs                                                  | Käufer suchen nach Designern und legen Wert auf einen Herkunftsnachweis                          |
+| Kiefernkommode aus den 1970ern         | Kleinanzeigen oder Facebook Marketplace, nur Abholung                  | Geringer Wert im Verhältnis zur Größe; ein lokaler Käufer mit Transporter spart Versand          |
+| Zwei kleine Messing-Tischlampen        | Etsy oder eBay                                                         | Paketversand möglich, Reichweite über den eigenen Ort hinaus                                     |
 | Großes gebrauchtes Sofa in einer Stadt | Kleinanzeigen mit vorab geklärter Abholung; im US-Liefergebiet AptDeco | Der Transport ist die schwierige Aufgabe; AptDeco organisiert ihn innerhalb seines Liefergebiets |
 
 Gebühren, Zulassungsvoraussetzungen für Händler und Transportbedingungen unterscheiden sich je nach Plattform und können sich ändern. Lies vor der ersten Anzeige die Bedingungen für Verkäufer.
@@ -146,14 +146,14 @@ Achte auch auf Preisangebote. Liegen viele deutlich unter deinem Preis, hast du 
 
 Bleiben Rückmeldungen aus oder gibt es Ärger mit Käufern, prüfe Titel, Preis, Zustandsfotos und Versandvorbereitung anhand dieser Tabelle.
 
-| Symptom                                    | Ursache                                              | Lösung                                                                    |
-| ------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------------------- |
-| Nach zwei Wochen keine Nachrichten         | Hersteller, Material oder Gegenstand fehlen im Titel | Titel mit Hersteller, Material, Stil, Gegenstand und Epoche neu schreiben |
-| Nur sehr niedrige Angebote                 | Preis nach Angeboten statt Verkäufen                 | Verkaufte Stücke desselben Modells und Zustands prüfen                    |
-| Käufer beanstandet den Zustand nach der Lieferung     | Nicht fotografierter Mangel                          | Jeden Mangel nah fotografieren und mit Fotonummer beschreiben             |
-| Transportschaden                           | Beine montiert, Klebeband auf Lack oder keine Decken | Beine abnehmen, mit Decken schützen, vor Versand fotografieren            |
-| Jede Nachricht fragt nach der echten Farbe | Mischlicht oder warmer Filter                        | Nur bei Tageslicht mit ausgeschaltetem Raumlicht neu fotografieren        |
-| Käufer sagt nach dem Ausmessen ab          | Maße fehlen oder stammen aus einem Katalog           | Selbst mit Maßband messen, einschließlich Sitzhöhe und Innentiefe         |
+| Symptom                                           | Ursache                                              | Lösung                                                                    |
+| ------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------- |
+| Nach zwei Wochen keine Nachrichten                | Hersteller, Material oder Gegenstand fehlen im Titel | Titel mit Hersteller, Material, Stil, Gegenstand und Epoche neu schreiben |
+| Nur sehr niedrige Angebote                        | Preis nach Angeboten statt Verkäufen                 | Verkaufte Stücke desselben Modells und Zustands prüfen                    |
+| Käufer beanstandet den Zustand nach der Lieferung | Nicht fotografierter Mangel                          | Jeden Mangel nah fotografieren und mit Fotonummer beschreiben             |
+| Transportschaden                                  | Beine montiert, Klebeband auf Lack oder keine Decken | Beine abnehmen, mit Decken schützen, vor Versand fotografieren            |
+| Jede Nachricht fragt nach der echten Farbe        | Mischlicht oder warmer Filter                        | Nur bei Tageslicht mit ausgeschaltetem Raumlicht neu fotografieren        |
+| Käufer sagt nach dem Ausmessen ab                 | Maße fehlen oder stammen aus einem Katalog           | Selbst mit Maßband messen, einschließlich Sitzhöhe und Innentiefe         |
 
 ## FAQ
 

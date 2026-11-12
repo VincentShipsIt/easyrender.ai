@@ -90,13 +90,13 @@ Per ottenere i tre quarti, ruota il prodotto, lasciando ferma la fotocamera. Un 
 
 Le due piattaforme pubblicano indicazioni simili. Questi sono i requisiti e i consigli delle rispettive guide.
 
-| Regola                        | Amazon                                             | Shopify                                                                           |
-| ----------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Fondo principale              | Bianco puro, RGB 255, 255, 255, come buona pratica | Nessun obbligo; consiglia un fondo coerente                                       |
-| Spazio nell'inquadratura | Il prodotto occupa almeno l'85%                            | Non indicata                                                                      |
-| Dimensioni                    | Oltre 1.000 pixel per lato per lo zoom             | 2048 x 2048 consigliati per immagini quadrate; massimo 5000 x 5000 o 25 megapixel |
-| Formato                       | JPEG preferito; TIFF, PNG e GIF accettati          | PNG poi JPEG consigliati; meno di 20 MB                                           |
-| Coerenza                      | Non indicata                                       | Stesso rapporto d'aspetto per allineare le griglie                                |
+| Regola                   | Amazon                                             | Shopify                                                                           |
+| ------------------------ | -------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Fondo principale         | Bianco puro, RGB 255, 255, 255, come buona pratica | Nessun obbligo; consiglia un fondo coerente                                       |
+| Spazio nell'inquadratura | Il prodotto occupa almeno l'85%                    | Non indicata                                                                      |
+| Dimensioni               | Oltre 1.000 pixel per lato per lo zoom             | 2048 x 2048 consigliati per immagini quadrate; massimo 5000 x 5000 o 25 megapixel |
+| Formato                  | JPEG preferito; TIFF, PNG e GIF accettati          | PNG poi JPEG consigliati; meno di 20 MB                                           |
+| Coerenza                 | Non indicata                                       | Stesso rapporto d'aspetto per allineare le griglie                                |
 
 Fonti: [guida Amazon alle foto prodotto](https://sell.amazon.com/blog/product-photos) e [tipi di contenuti prodotto Shopify](https://help.shopify.com/en/manual/products/product-media/product-media-types). Controllale prima di una sessione con molti prodotti, perché le indicazioni possono cambiare.
 
@@ -142,17 +142,17 @@ easyrender crea un modello da una foto e ti mostra prima una tavola di viste gra
 
 Molti errori vengono dalle decisioni automatiche del telefono o da luci diverse nella stessa stanza. Controlla la serie con questa tabella.
 
-| Sintomo                                              | Causa                                           | Rimedio                                            |
-| ---------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------- |
-| Divano bianco azzurro da un lato e giallo dall'altro | Luce della finestra e lampadine calde insieme   | Spegni le luci e usa solo luce diurna              |
-| Gambe anteriori più lunghe                           | 1x usato da vicino                              | Arretra e usa 2x o 3x                              |
-| Fondo bianco che sembra grigio                       | Esposizione per il prodotto, fondo non corretto | Schiarisci il fondo fino a 255, 255, 255           |
-| Bordi delle gambe sfocati o cancellati                 | Sfocatura artificiale della modalità Ritratto           | Usa Foto                                           |
-| Luminosità diversa tra scatti                        | Esposizione automatica ricalcolata              | Blocca esposizione e messa a fuoco prima di iniziare       |
-| Verde del velluto diverso dall'originale            | Filtro o correzione eccessiva                   | Confronta il tessuto fisico con lo schermo         |
-| Prodotto piccolo nei risultati                       | Occupa molto meno dell'85%                      | Ritaglia di più la foto principale                 |
-| Griglia disallineata                                 | Rapporti d'aspetto diversi                      | Usa lo stesso rapporto, per esempio quadrato       |
-| Il tuo riflesso sul mobile laccato                   | Superficie lucida rivolta verso la fotocamera      | Ruota il pezzo di qualche grado o mettiti in ombra |
+| Sintomo                                              | Causa                                           | Rimedio                                              |
+| ---------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------- |
+| Divano bianco azzurro da un lato e giallo dall'altro | Luce della finestra e lampadine calde insieme   | Spegni le luci e usa solo luce diurna                |
+| Gambe anteriori più lunghe                           | 1x usato da vicino                              | Arretra e usa 2x o 3x                                |
+| Fondo bianco che sembra grigio                       | Esposizione per il prodotto, fondo non corretto | Schiarisci il fondo fino a 255, 255, 255             |
+| Bordi delle gambe sfocati o cancellati               | Sfocatura artificiale della modalità Ritratto   | Usa Foto                                             |
+| Luminosità diversa tra scatti                        | Esposizione automatica ricalcolata              | Blocca esposizione e messa a fuoco prima di iniziare |
+| Verde del velluto diverso dall'originale             | Filtro o correzione eccessiva                   | Confronta il tessuto fisico con lo schermo           |
+| Prodotto piccolo nei risultati                       | Occupa molto meno dell'85%                      | Ritaglia di più la foto principale                   |
+| Griglia disallineata                                 | Rapporti d'aspetto diversi                      | Usa lo stesso rapporto, per esempio quadrato         |
+| Il tuo riflesso sul mobile laccato                   | Superficie lucida rivolta verso la fotocamera   | Ruota il pezzo di qualche grado o mettiti in ombra   |
 
 ## FAQ
 

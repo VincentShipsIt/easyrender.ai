@@ -81,12 +81,12 @@ O AR Quick Look usa as dimensões guardadas no ficheiro. Sem medições, o model
 
 Os quatro métodos mais comuns diferem nos sistemas onde funcionam e nas tarefas que permitem fazer.
 
-| Ferramenta                  | Onde funciona         | Vantagem                                  | O que verificar                           |
-| --------------------------- | --------------------- | ----------------------------------------- | ----------------------------------------- |
-| Reality Converter da Apple  | Mac                   | Verificar materiais antes de exportar     | Só Mac                                    |
+| Ferramenta                  | Onde funciona         | Vantagem                                  | O que verificar                               |
+| --------------------------- | --------------------- | ----------------------------------------- | --------------------------------------------- |
+| Reality Converter da Apple  | Mac                   | Verificar materiais antes de exportar     | Só Mac                                        |
 | Blender 3.5 ou posterior    | Mac, Windows, Linux   | Editar o modelo antes de exportar         | Alguns materiais perdem detalhe visual em USD |
-| Exportador USDZ do three.js | Qualquer navegador    | Sem servidor e USDZ correspondente ao GLB | Tamanho e materiais no Quick Look         |
-| Shopify                     | Administração da loja | Criar GLB e USDZ de cada modelo carregado | A plataforma decide o resultado           |
+| Exportador USDZ do three.js | Qualquer navegador    | Sem servidor e USDZ correspondente ao GLB | Tamanho e materiais no Quick Look             |
+| Shopify                     | Administração da loja | Criar GLB e USDZ de cada modelo carregado | A plataforma decide o resultado               |
 
 O Reality Converter [converte OBJ, glTF, FBX e USD](https://developer.apple.com/videos/play/wwdc2022/10141/) para USDZ. No Blender escolhe File, Export, Universal Scene Description e dá ao ficheiro a extensão .usdz.
 

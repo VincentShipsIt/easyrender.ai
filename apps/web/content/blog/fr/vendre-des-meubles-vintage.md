@@ -28,12 +28,12 @@ Adapte la plateforme au meuble. Un fauteuil signé du milieu du XXe siècle et u
 
 Pour un retrait près de chez toi en France, regarde aussi [leboncoin, rubrique ameublement](https://www.leboncoin.fr/ck/ameublement/mobilier-et-meubles). Trois critères guident ton choix : valeur du meuble, organisation de la livraison et recherches par nom de fabricant.
 
-| Meuble                             | Premier choix                                           | Pourquoi                                                                                    |
-| ---------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Fauteuil signé du milieu du XXe siècle | Chairish ou 1stDibs, selon l'éligibilité du vendeur     | Les acheteurs recherchent un créateur et accordent de la valeur à la provenance                         |
-| Commode en pin des années 1970     | leboncoin ou Facebook Marketplace, retrait sur place    | Faible valeur par rapport au volume : un acheteur local avec camionnette évite le transport |
-| Paire de petites lampes en laiton  | Etsy ou eBay                                            | Expédition en carton et audience au-delà de ta ville                                        |
-| Grand canapé d'occasion en ville   | leboncoin en France ; AptDeco dans les zones desservies | Le retrait local ou une livraison organisée résout le problème du transport                   |
+| Meuble                                 | Premier choix                                           | Pourquoi                                                                                    |
+| -------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Fauteuil signé du milieu du XXe siècle | Chairish ou 1stDibs, selon l'éligibilité du vendeur     | Les acheteurs recherchent un créateur et accordent de la valeur à la provenance             |
+| Commode en pin des années 1970         | leboncoin ou Facebook Marketplace, retrait sur place    | Faible valeur par rapport au volume : un acheteur local avec camionnette évite le transport |
+| Paire de petites lampes en laiton      | Etsy ou eBay                                            | Expédition en carton et audience au-delà de ta ville                                        |
+| Grand canapé d'occasion en ville       | leboncoin en France ; AptDeco dans les zones desservies | Le retrait local ou une livraison organisée résout le problème du transport                 |
 
 Commissions, sélection des vendeurs et règles de livraison diffèrent et évoluent. Lis les conditions de vente avant de publier ta première annonce.
 
@@ -146,14 +146,14 @@ Surveille aussi les offres. Si elles restent très en dessous du prix demandé, 
 
 Une annonce sans réponse ou une vente qui se passe mal s'explique souvent par les mêmes causes. Voici les points à vérifier.
 
-| Symptôme                            | Cause                                                            | Correction                                                                      |
-| ----------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| Aucun message après deux semaines   | Titre sans fabricant, matière ou objet recherché                 | Réécris avec fabricant, matière, style, objet et époque                         |
-| Seulement des offres très basses    | Prix tiré des annonces et non des ventes                         | Repars des ventes terminées du même modèle dans un état comparable              |
-| État contesté à la livraison        | Défaut jamais photographié                                       | Montre chaque défaut de près et cite son numéro de photo                        |
+| Symptôme                            | Cause                                                                 | Correction                                                                      |
+| ----------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Aucun message après deux semaines   | Titre sans fabricant, matière ou objet recherché                      | Réécris avec fabricant, matière, style, objet et époque                         |
+| Seulement des offres très basses    | Prix tiré des annonces et non des ventes                              | Repars des ventes terminées du même modèle dans un état comparable              |
+| État contesté à la livraison        | Défaut jamais photographié                                            | Montre chaque défaut de près et cite son numéro de photo                        |
 | Dégâts pendant le transport         | Pieds non démontés, adhésif sur la finition ou absence de couvertures | Démonte les pieds, protège avec des couvertures et photographie avant le départ |
-| Questions répétées sur la couleur   | Éclairages mélangés ou filtre chaud                              | Reprends les photos à la lumière du jour, éclairage intérieur éteint            |
-| Annulation après mesure de la pièce | Dimensions absentes ou copiées du catalogue                      | Mesure au mètre ruban, y compris assise et profondeur intérieure                |
+| Questions répétées sur la couleur   | Éclairages mélangés ou filtre chaud                                   | Reprends les photos à la lumière du jour, éclairage intérieur éteint            |
+| Annulation après mesure de la pièce | Dimensions absentes ou copiées du catalogue                           | Mesure au mètre ruban, y compris assise et profondeur intérieure                |
 
 ## FAQ
 

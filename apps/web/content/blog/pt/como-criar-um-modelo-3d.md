@@ -23,13 +23,13 @@ Se o objeto ainda não existe, modela-o num programa ou contrata um profissional
 
 A precisão costuma acompanhar o esforço. Um profissional a trabalhar com medidas consegue o modelo mais exato; partir de uma foto é mais rápido, mas os lados que não aparecem são deduzidos dessa imagem.
 
-| Método               | De que precisas                            | O teu tempo                                          | Adequado a                           | O que verificar                                          |
-| -------------------- | ----------------------------------------- | ---------------------------------------------------- | ------------------------------------ | -------------------------------------------------------- |
-| Modelar num programa | Semanas de prática, fotografias, medidas  | Um dia ou mais por peça, depois de aprenderes        | Objetos que ainda não existem        | Proporções, texturas e mapeamento UV                     |
-| Fotogrametria        | Objeto disponível, 20 a 100 fotos ou mais | Uma ou duas horas de fotografias, mais processamento | Detalhe das superfícies reais        | Branco uniforme, vidro, metal polido                     |
-| LiDAR no telemóvel   | iPhone Pro ou iPad Pro, objeto disponível | Alguns minutos a andar à volta                       | Formas grandes simples, como um sofá | Menos detalhe em pernas torneadas e assentos entrançados |
-| IA a partir de uma foto       | Uma fotografia nítida                     | Verificar pré-visualização e modelo                  | Foto de fornecedor sem acesso à peça | A foto mostra um lado e não contém medidas               |
-| Profissional 3D      | Fotografias, medidas e orçamento          | Preparar instruções e rever versões                  | Modelos exatos ou em vários tamanhos | Tempo para preparar e adjudicar                          |
+| Método                  | De que precisas                           | O teu tempo                                          | Adequado a                           | O que verificar                                          |
+| ----------------------- | ----------------------------------------- | ---------------------------------------------------- | ------------------------------------ | -------------------------------------------------------- |
+| Modelar num programa    | Semanas de prática, fotografias, medidas  | Um dia ou mais por peça, depois de aprenderes        | Objetos que ainda não existem        | Proporções, texturas e mapeamento UV                     |
+| Fotogrametria           | Objeto disponível, 20 a 100 fotos ou mais | Uma ou duas horas de fotografias, mais processamento | Detalhe das superfícies reais        | Branco uniforme, vidro, metal polido                     |
+| LiDAR no telemóvel      | iPhone Pro ou iPad Pro, objeto disponível | Alguns minutos a andar à volta                       | Formas grandes simples, como um sofá | Menos detalhe em pernas torneadas e assentos entrançados |
+| IA a partir de uma foto | Uma fotografia nítida                     | Verificar pré-visualização e modelo                  | Foto de fornecedor sem acesso à peça | A foto mostra um lado e não contém medidas               |
+| Profissional 3D         | Fotografias, medidas e orçamento          | Preparar instruções e rever versões                  | Modelos exatos ou em vários tamanhos | Tempo para preparar e adjudicar                          |
 
 Este guia trata de modelos para ecrãs, páginas de produto e realidade aumentada (RA), não de impressão 3D. Uma peça para fabricar exige CAD construído com medidas, um trabalho diferente.
 
@@ -149,16 +149,16 @@ Para este candeeiro escolhemos IA se só há foto do fornecedor, fotogrametria c
 
 Cada método tem causas de erro habituais. Compara o resultado com a tabela antes de repetir o trabalho.
 
-| Método        | Sintoma                                | Causa                                       | Correção                                                    |
-| ------------- | -------------------------------------- | ------------------------------------------- | ----------------------------------------------------------- |
-| Programa      | Modelo rodado ou com dimensões erradas | Escala e rotação não aplicadas              | Aplica todas as transformações e exporta novamente          |
-| Programa      | Veio esticado numa face                | UV mal desdobradas                              | Verifica com textura axadrezada e refaz essa face           |
-| Fotogrametria | Buracos num tampo branco liso          | Faltam pontos comuns entre fotografias             | Fotografa com céu encoberto ou muda de método               |
-| Fotogrametria | Base ausente ou fundida com o chão     | Parte inferior nunca fotografada            | Aceita ou faz outra sessão com a peça de lado               |
-| LiDAR         | Pernas finas irregulares ou ausentes   | Detalhes menores que a resolução do sensor  | Usa fotogrametria                                           |
-| IA a partir de uma foto    | Costas diferentes da peça              | A foto nunca mostrou esse lado              | Usa três quartos ou uma nota sobre as costas                |
-| IA a partir de uma foto    | Logótipo ou etiqueta pouco legível     | Detalhe demasiado fino na foto              | Mostra o logótipo nas fotografias                           |
-| Profissional  | Modelo atrasado ou errado              | Instruções sem medidas, formatos ou limites | Envia tudo antes de começar, incluindo limite de triângulos |
+| Método                  | Sintoma                                | Causa                                       | Correção                                                    |
+| ----------------------- | -------------------------------------- | ------------------------------------------- | ----------------------------------------------------------- |
+| Programa                | Modelo rodado ou com dimensões erradas | Escala e rotação não aplicadas              | Aplica todas as transformações e exporta novamente          |
+| Programa                | Veio esticado numa face                | UV mal desdobradas                          | Verifica com textura axadrezada e refaz essa face           |
+| Fotogrametria           | Buracos num tampo branco liso          | Faltam pontos comuns entre fotografias      | Fotografa com céu encoberto ou muda de método               |
+| Fotogrametria           | Base ausente ou fundida com o chão     | Parte inferior nunca fotografada            | Aceita ou faz outra sessão com a peça de lado               |
+| LiDAR                   | Pernas finas irregulares ou ausentes   | Detalhes menores que a resolução do sensor  | Usa fotogrametria                                           |
+| IA a partir de uma foto | Costas diferentes da peça              | A foto nunca mostrou esse lado              | Usa três quartos ou uma nota sobre as costas                |
+| IA a partir de uma foto | Logótipo ou etiqueta pouco legível     | Detalhe demasiado fino na foto              | Mostra o logótipo nas fotografias                           |
+| Profissional            | Modelo atrasado ou errado              | Instruções sem medidas, formatos ou limites | Envia tudo antes de começar, incluindo limite de triângulos |
 
 ## Quais são os limites de cada método?
 

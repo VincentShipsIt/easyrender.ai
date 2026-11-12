@@ -23,13 +23,13 @@ Se l'oggetto non esiste ancora, modellalo con un programma o incarica un profess
 
 In genere, un modello più preciso richiede più lavoro. Un professionista che lavora a partire da misure produce il modello più preciso; partire da una foto è più rapido, ma i lati che la foto non mostra vengono ricavati da quell'immagine.
 
-| Metodo                        | Cosa serve                                        | Il tuo tempo                                          | Adatto a                                     | Da controllare                                       |
-| ----------------------------- | ------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------- | ---------------------------------------------------- |
-| Modellazione con un programma | Settimane di pratica, foto di riferimento, misure | Un giorno o più per pezzo, dopo aver imparato         | Oggetti che non esistono ancora              | Proporzioni, texture e mappatura UV                  |
-| Fotogrammetria                | Oggetto disponibile, da 20 a 100 foto o più       | Una o due ore di scatti, più elaborazione             | Dettagli reali delle superfici               | Superfici bianche uniformi, vetro, metallo lucido    |
-| LiDAR sul telefono            | iPhone Pro o iPad Pro, oggetto disponibile        | Qualche minuto per girare intorno al pezzo                        | Grandi forme semplici, come un divano        | Meno dettaglio su gambe tornite e sedute intrecciate |
-| IA da foto                    | Una foto nitida                                   | Verifica di anteprima e modello                       | Foto di un fornitore, senza accesso al pezzo | La foto mostra un solo lato e non contiene misure    |
-| Professionista 3D             | Foto, misure e budget                             | Preparazione delle istruzioni e revisione delle bozze | Modelli esatti o in più dimensioni           | Tempo per preparare le istruzioni e affidare il lavoro                     |
+| Metodo                        | Cosa serve                                        | Il tuo tempo                                          | Adatto a                                     | Da controllare                                         |
+| ----------------------------- | ------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------ |
+| Modellazione con un programma | Settimane di pratica, foto di riferimento, misure | Un giorno o più per pezzo, dopo aver imparato         | Oggetti che non esistono ancora              | Proporzioni, texture e mappatura UV                    |
+| Fotogrammetria                | Oggetto disponibile, da 20 a 100 foto o più       | Una o due ore di scatti, più elaborazione             | Dettagli reali delle superfici               | Superfici bianche uniformi, vetro, metallo lucido      |
+| LiDAR sul telefono            | iPhone Pro o iPad Pro, oggetto disponibile        | Qualche minuto per girare intorno al pezzo            | Grandi forme semplici, come un divano        | Meno dettaglio su gambe tornite e sedute intrecciate   |
+| IA da foto                    | Una foto nitida                                   | Verifica di anteprima e modello                       | Foto di un fornitore, senza accesso al pezzo | La foto mostra un solo lato e non contiene misure      |
+| Professionista 3D             | Foto, misure e budget                             | Preparazione delle istruzioni e revisione delle bozze | Modelli esatti o in più dimensioni           | Tempo per preparare le istruzioni e affidare il lavoro |
 
 Questa guida riguarda modelli per schermi, pagine prodotto e realtà aumentata (AR), non la stampa 3D. Per produrre un pezzo serve un modello CAD costruito da misure: è un lavoro diverso.
 
@@ -149,16 +149,16 @@ Per questa lampada scegliamo IA se c'è solo la foto del fornitore, fotogrammetr
 
 Ogni metodo ha cause ricorrenti di errore. Confronta il risultato con questa tabella per capire cosa correggere.
 
-| Metodo         | Sintomo                                 | Causa                                           | Rimedio                                                                  |
-| -------------- | --------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------ |
-| Programma      | Modello ruotato o con dimensioni errate | Scala e rotazione non applicate                 | Applica tutte le trasformazioni e riesporta                              |
-| Programma      | Venatura allungata su una faccia        | Mappatura UV deformata                                 | Controlla con texture a scacchi e rifai la mappatura di quella faccia               |
-| Fotogrammetria | Buchi in un piano bianco uniforme       | Mancano punti da abbinare                       | Scatta con cielo coperto o cambia metodo                                 |
+| Metodo         | Sintomo                                 | Causa                                           | Rimedio                                                                    |
+| -------------- | --------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------- |
+| Programma      | Modello ruotato o con dimensioni errate | Scala e rotazione non applicate                 | Applica tutte le trasformazioni e riesporta                                |
+| Programma      | Venatura allungata su una faccia        | Mappatura UV deformata                          | Controlla con texture a scacchi e rifai la mappatura di quella faccia      |
+| Fotogrammetria | Buchi in un piano bianco uniforme       | Mancano punti da abbinare                       | Scatta con cielo coperto o cambia metodo                                   |
 | Fotogrammetria | Base assente o unita al pavimento       | Fondo mai fotografato                           | Accettalo oppure fai una seconda serie di scatti con il pezzo su un fianco |
-| LiDAR          | Gambe sottili irregolari o assenti      | Dettagli inferiori alla risoluzione del sensore | Passa alla fotogrammetria                                                |
-| IA da foto     | Retro diverso dal pezzo                 | La foto non mostrava quel lato                  | Usa una vista di tre quarti o una nota sul retro                         |
-| IA da foto     | Logo o etichetta poco leggibile         | Dettaglio troppo fine nella singola foto        | Documenta il logo nelle fotografie                                       |
-| Professionista | Modello in ritardo o errato             | Istruzioni senza misure, formati o limiti       | Fornisci subito foto, misure, formati e limite di triangoli              |
+| LiDAR          | Gambe sottili irregolari o assenti      | Dettagli inferiori alla risoluzione del sensore | Passa alla fotogrammetria                                                  |
+| IA da foto     | Retro diverso dal pezzo                 | La foto non mostrava quel lato                  | Usa una vista di tre quarti o una nota sul retro                           |
+| IA da foto     | Logo o etichetta poco leggibile         | Dettaglio troppo fine nella singola foto        | Documenta il logo nelle fotografie                                         |
+| Professionista | Modello in ritardo o errato             | Istruzioni senza misure, formati o limiti       | Fornisci subito foto, misure, formati e limite di triangoli                |
 
 ## Quali sono i limiti di ciascun metodo?
 

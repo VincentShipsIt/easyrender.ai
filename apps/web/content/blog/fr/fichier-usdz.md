@@ -116,7 +116,7 @@ La plupart viennent de la configuration du serveur ou des choix du convertisseur
 | Pas de badge sur l'image                                 | Plusieurs enfants dans le lien ou iOS antérieur à 12 | Un seul enfant `img` ou `picture`, puis test sur iPhone récent                 |
 | Objet immense ou minuscule                               | Dimensions du modèle jamais mesurées                 | Écris les dimensions dans le texte ; l'acheteur peut redimensionner en pinçant |
 | Objet en suspension                                      | Base au-dessus de l'origine du modèle                | Place l'origine à la base dans Blender et réexporte                            |
-| Couleurs plus plates que dans Blender                    | Réglages du matériau mal transposés en USD                   | Contrôle dans Quick Look sur Mac et simplifie le matériau                      |
+| Couleurs plus plates que dans Blender                    | Réglages du matériau mal transposés en USD           | Contrôle dans Quick Look sur Mac et simplifie le matériau                      |
 | Courbes facettées                                        | GLB source sans normales                             | Ajoute des normales lissées au GLB avant conversion                            |
 | Fichier difficile à envoyer                              | Géométrie texte et textures PNG                      | Exporte en binaire avec textures JPEG et compare le poids                      |
 

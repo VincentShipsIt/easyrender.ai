@@ -118,25 +118,25 @@ easyrender fornisce GLB e USDZ per ogni modello completato da una foto, con i pa
 
 Per AR su iPhone e iPad, sì. Reality Converter di Apple, gratuito su Mac, converte GLB in USDZ e le versioni recenti di Blender esportano USDZ direttamente; la [guida ai file USDZ](/it/guide/file-usdz) spiega anche perché il risultato può pesare più del GLB originale.
 
-| File | Contenuto                                     | Dove si apre                                     | Uso                                     |
-| ---- | --------------------------------------------- | ------------------------------------------------ | --------------------------------------- |
+| File | Contenuto                                          | Dove si apre                                     | Uso                                     |
+| ---- | -------------------------------------------------- | ------------------------------------------------ | --------------------------------------- |
 | GLB  | Un file binario con geometria, materiali e texture | Browser, Blender, Scene Viewer su Android        | Pagine prodotto, web 3D, AR Android     |
-| glTF | JSON .gltf, file .bin e immagini separate     | Stessi visualizzatori, mantenendo i file insieme | Modifica e ispezione del JSON leggibile |
-| USDZ | Zip non compresso di livelli USD e immagini   | Quick Look su iPhone, iPad e Mac                 | AR sui dispositivi Apple                |
+| glTF | JSON .gltf, file .bin e immagini separate          | Stessi visualizzatori, mantenendo i file insieme | Modifica e ispezione del JSON leggibile |
+| USDZ | Zip non compresso di livelli USD e immagini        | Quick Look su iPhone, iPad e Mac                 | AR sui dispositivi Apple                |
 
 ## Cosa può andare storto con un GLB e come lo correggi?
 
 I problemi più comuni hanno poche cause. Parti da ciò che vedi e modifica l'impostazione corrispondente.
 
-| Sintomo                               | Causa                                                    | Rimedio                                                  |
-| ------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
-| Modello tutto grigio                  | .gltf senza texture o immagini escluse dall'esportazione | Riesporta come .glb binario con texture incluse          |
-| File da decine di megabyte            | Texture da 4096 pixel o troppe texture                   | Riduci a 2048 o 1024 e comprimi la geometria             |
-| Curve sfaccettate                     | Normali mancanti, calcolate piatte dal visualizzatore    | Shade Smooth in Blender ed esportazione con normali      |
-| Argilla o tessuto scuri o con colori alterati    | Metallic non impostato, quindi completamente metallico   | Imposta Metallic a 0 e riesporta                         |
-| Macchie nere o interno visibile       | Facce orientate al contrario                             | Ricalcola le normali verso l'esterno in Blender          |
-| Funziona solo in un visualizzatore    | Estensione non supportata, come Draco o WebP             | Esporta una versione semplice per l'altro visualizzatore |
-| Caricamento rifiutato come non valido | Download interrotto, lunghezza dichiarata errata         | Scarica di nuovo e confronta il peso                     |
+| Sintomo                                       | Causa                                                    | Rimedio                                                  |
+| --------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| Modello tutto grigio                          | .gltf senza texture o immagini escluse dall'esportazione | Riesporta come .glb binario con texture incluse          |
+| File da decine di megabyte                    | Texture da 4096 pixel o troppe texture                   | Riduci a 2048 o 1024 e comprimi la geometria             |
+| Curve sfaccettate                             | Normali mancanti, calcolate piatte dal visualizzatore    | Shade Smooth in Blender ed esportazione con normali      |
+| Argilla o tessuto scuri o con colori alterati | Metallic non impostato, quindi completamente metallico   | Imposta Metallic a 0 e riesporta                         |
+| Macchie nere o interno visibile               | Facce orientate al contrario                             | Ricalcola le normali verso l'esterno in Blender          |
+| Funziona solo in un visualizzatore            | Estensione non supportata, come Draco o WebP             | Esporta una versione semplice per l'altro visualizzatore |
+| Caricamento rifiutato come non valido         | Download interrotto, lunghezza dichiarata errata         | Scarica di nuovo e confronta il peso                     |
 
 ## Cosa non ti dice un file GLB?
 
