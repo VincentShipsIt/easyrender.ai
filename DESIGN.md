@@ -137,8 +137,13 @@ chrome accents. Chart series also use labels, legends and dashed previous-period
 
 ## Layout
 
-- Product pages sit in a centred column with the dashboard nav (`dashboard-nav.tsx`) above. Do
-  not choose columns from viewport breakpoints when the page column is what constrains the grid.
+- The signed-in app has its own shell (`components/app-shell`): a thin icon rail, a collapsible
+  sidebar with recents, and the page in one rounded block. It has no marketing header; below `md`
+  the rail becomes a bottom bar. Marketing pages use the site header and footer (`site-chrome.tsx`).
+  Drawers animate their width in 200ms with `cubic-bezier(0.2, 0.7, 0.2, 1)` and a fixed inner
+  width, so content does not reflow, and honour `prefers-reduced-motion`.
+- Product pages sit in a centred column inside that shell. Do not choose columns from viewport
+  breakpoints when the page column is what constrains the grid.
 - Controls snap to 32 / 36 / 40px.
 - Every page works at 375px wide. The mobile web and the Expo app are first-class surfaces
   because shoppers and agents capture products on a phone.

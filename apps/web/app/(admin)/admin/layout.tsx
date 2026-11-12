@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { SiteChrome } from '@/components/site-chrome';
 import { requireAdmin } from '@/lib/admin-analytics/auth';
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -10,5 +11,9 @@ export const metadata: Metadata = {
 };
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   await requireAdmin();
-  return <div className="mx-auto max-w-[90rem] px-4 py-8 sm:px-6">{children}</div>;
+  return (
+    <SiteChrome>
+      <div className="mx-auto max-w-[90rem] px-4 py-8 sm:px-6">{children}</div>
+    </SiteChrome>
+  );
 }
