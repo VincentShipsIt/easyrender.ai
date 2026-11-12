@@ -20,3 +20,4 @@ a line here. Keep this map short.
   [PBR values](context/materials-pbr-reference.md). Code: `packages/harness/src/materials.ts`.
 - **Material edits (owner swaps shine and tint, part pipeline next):** [material edits](context/material-edits.md).
 - **Staged room scenes, lived-in look:** [staging rules](context/staging-lived-in-rooms.md).
+- **Issues, board, priority, status columns:** [project board](context/project-board.md).

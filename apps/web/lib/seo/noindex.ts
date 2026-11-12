@@ -7,6 +7,7 @@
 //  - /lp/* are ad landings. They are noindex but deliberately crawlable, because AdsBot has to
 //    fetch them, which is why none of this is done with a Disallow.
 //  - /sign-in, /sign-up and /oauth are auth.
+//  - /ar/* is the phone page behind a store's QR code, /shopify/* the Shopify app's own pages.
 
 export const NOINDEX_PREFIXES = [
   '/explore',
@@ -16,10 +17,19 @@ export const NOINDEX_PREFIXES = [
   '/sign-in',
   '/sign-up',
   '/oauth',
+  '/ar/',
+  '/shopify',
 ] as const;
 
 /** The same set as next.config.ts route patterns, for the response header. */
-export const NOINDEX_HEADER_PATHS = ['/explore', '/hub', '/r/:id', '/lp/:path*'];
+export const NOINDEX_HEADER_PATHS = [
+  '/explore',
+  '/hub',
+  '/r/:id',
+  '/lp/:path*',
+  '/ar/:id',
+  '/shopify/:path*',
+];
 
 /** True when a path must carry noindex. */
 export const isNoindexPath = (path: string): boolean =>

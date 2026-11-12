@@ -1086,5 +1086,51 @@
     "attribution": "Kampagnenparameter und die Herkunftsseite bleiben im Arbeitsspeicher, bis du eine Vorschau oder ein Konto erstellst. Dann werden sie mit diesem Datensatz gespeichert. Klickkennungen werden nicht gespeichert. Serverereignisse sind unabhängig von deiner Browseranalyseentscheidung.",
     "change": "Ändere deine Entscheidung",
     "withdraw": "Mit Ablehnen widerrufst du deine Zustimmung. Das stoppt optionales Tracking und entfernt Google-Analytics-Cookies. GPC blockiert optionale Analysen immer."
+  },
+  "Ar": {
+    "metaTitle": "In deinem Zuhause ansehen",
+    "title": "{name} in deinem Zuhause",
+    "tapHint": "Tippe auf die Schaltfläche, bewege dein Handy langsam, bis es den Boden erkennt, und tippe dann, um das Stück zu platzieren.",
+    "viewInRoom": "In deinem Zuhause ansehen",
+    "arUnavailable": "AR ist auf diesem Gerät nicht verfügbar. Öffne diese Seite auf deinem Handy, um das Stück in deinem Zuhause zu platzieren.",
+    "scanTitle": "Mit dem Handy scannen",
+    "scanBody": "Richte die Handykamera auf den Code, um dieses Stück in deinem Zuhause zu sehen.",
+    "scanAlt": "QR-Code, der dieses Modell auf dem Handy öffnet",
+    "notReady": "Dieses Modell wird noch erstellt. Schau in ein paar Minuten wieder vorbei.",
+    "notReadyTitle": "Fast fertig",
+    "modelAlt": "3D-Modell von {name}",
+    "madeWith": "3D von easyrender"
+  },
+  "ShopifyApp": {
+    "title": "3D-Modelle für Ihren ganzen Katalog",
+    "intro": "Erstellen Sie mit einem Klick ein 3D-Modell für jedes Produkt. Kunden sehen jedes Stück per Button oder QR-Code auf der Produktseite in ihrem eigenen Raum.",
+    "loading": "Wird geladen…",
+    "notInShopify": "Öffnen Sie diese Seite im Shopify-Admin.",
+    "error": "Etwas ist schiefgelaufen: {message}",
+    "connectBody": "Verbinden Sie Ihr easyrender-Konto. Die Modelle dieses Shops werden mit Guthaben dieses Kontos bezahlt.",
+    "connectButton": "easyrender-Konto verbinden",
+    "connectWaiting": "Fertig? Diese Seite aktualisiert sich selbst.",
+    "generate": "3D für {count} Produkte erstellen ({credits} Credits)",
+    "starting": "Produkte werden gesendet… {count} gesendet",
+    "nothing": "Jedes Produkt mit Foto hat bereits ein 3D-Modell oder ist in Arbeit.",
+    "balance": "Guthaben: {credits} Credits",
+    "missing": "{credits} weitere Credits nötig",
+    "buy": "Credits kaufen",
+    "progress": "{ready} fertig, {running} in Arbeit, {waiting} wartend",
+    "needsCredits": "{count} warten auf Credits und machen weiter, sobald Sie welche hinzufügen.",
+    "needsInfo": "{count} brauchen ein brauchbares Foto.",
+    "failed": "{count} sind fehlgeschlagen und wurden erstattet. Erstellen Sie erneut, um es zu wiederholen.",
+    "noPhoto": "{count} haben kein Foto und werden übersprungen.",
+    "themeTitle": "Auf Ihren Produktseiten anzeigen",
+    "themeBody": "Öffnen Sie den Theme-Editor, gehen Sie zu einer Produktseite, fügen Sie den Block „In deinem Zuhause ansehen“ hinzu und speichern Sie. Produkte mit fertigem Modell zeigen einen Button und einen QR-Code."
+  },
+  "ShopifyConnect": {
+    "title": "{shop} mit easyrender verbinden",
+    "body": "Die Modelle dieses Shops werden mit Guthaben Ihres easyrender-Kontos bezahlt.",
+    "signIn": "Zum Fortfahren anmelden",
+    "button": "Shop verbinden",
+    "done": "Verbunden. Gehen Sie zurück zu Shopify und öffnen Sie die App.",
+    "invalid": "Dieser Link ist abgelaufen. Öffnen Sie die App in Shopify erneut.",
+    "error": "Der Shop konnte nicht verbunden werden."
   }
 }

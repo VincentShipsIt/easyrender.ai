@@ -8,6 +8,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { setAnalyticsScheduler } from './analytics';
 import { classifyCountry, normalizeAttribution } from './attribution';
 import { confirmedPurchase, handleStripeWebhook } from './billing';
+import { listCatalog, submitCatalog, tickCatalog } from './catalog';
 import { advance, createDraft, startBuild } from './renders';
 import { signupAttribution } from './signup-attribution';
 
@@ -37,6 +38,9 @@ vi.mock('@easyrender/harness', async (original) => ({
 vi.mock('./storage', () => ({
   putFile: async (path: string) => `local-mock:${path}`,
   getFile: async () => new Uint8Array([1]),
+}));
+vi.mock('./remote-image', () => ({
+  fetchRemoteImage: async () => ({ bytes: new Uint8Array([1]), contentType: 'image/png' }),
 }));
 
 type Captured = {
@@ -209,6 +213,114 @@ describe.skipIf(!url)('analytics through real server functions and local Postgre
     expect(selected(preview.id, 'preview_')).toEqual(['preview_failed', 'preview_start']);
     expect(selected(model.id, 'render_')).toEqual(['render_failed', 'render_start']);
   });
+  it.each([
+    ['shopify', true],
+    ['woocommerce', true],
+    ['shopify', false],
+    ['woocommerce', false],
+  ] as const)(
+    'catalogue %s with sheets=%s preserves API events and null-safe attribution',
+    async (platform, hasSheet) => {
+      provider.hasFailure = false;
+      process.env.SHEET_ENABLED = String(hasSheet);
+      try {
+        const userId = await newUser();
+        const scope = { userId, platform, store: 'analytics.example.invalid' };
+        await submitCatalog(
+          scope,
+          [{ externalId: 'chair', title: 'Chair', imageUrl: 'https://store.invalid/chair.png' }],
+          RENDER_CREDITS,
+        );
+        const render = await db().render.findFirstOrThrow({ where: { userId } });
+        expect(render).toMatchObject({
+          source: 'api',
+          isLinkShared: true,
+          isPublic: false,
+          utm_source: null,
+          geo_country: null,
+          consent_region_at_create: 'strict',
+        });
+        expect(render.first_seen_at).not.toBeNull();
+        provider.get.mockResolvedValue({
+          status: 'succeeded',
+          output: 'https://provider.invalid/sheet.png',
+        });
+        await Promise.all([tickCatalog(scope), tickCatalog(scope)]);
+        if (hasSheet) await tickCatalog(scope); // final sheet -> 3D
+        provider.get.mockResolvedValue({
+          status: 'succeeded',
+          output: 'https://provider.invalid/model.glb',
+        });
+        await Promise.all([tickCatalog(scope), tickCatalog(scope)]);
+        expect((await listCatalog(scope)).items[0]).toMatchObject({
+          state: 'ready',
+          renderId: render.id,
+        });
+        await drain();
+        expect(selected(render.id, 'preview_')).toEqual(
+          hasSheet ? ['preview_ready', 'preview_start'] : [],
+        );
+        expect(selected(render.id, 'render_')).toEqual(['render_ready', 'render_start']);
+        for (const event of events.filter((event) => event.properties?.preview_id === render.id)) {
+          expect(event.properties).toMatchObject({
+            source_channel: 'api',
+            ft_utm_source: null,
+            geo_country: null,
+            consent_region: 'strict',
+          });
+        }
+        expect(
+          events.find(
+            (event) => event.event === 'render_ready' && event.properties.preview_id === render.id,
+          )?.properties.in_public_gallery,
+        ).toBe(false);
+        expect((await db().user.findUniqueOrThrow({ where: { id: userId } })).credits).toBe(
+          RENDER_CREDITS * 2,
+        );
+      } finally {
+        process.env.SHEET_ENABLED = 'true';
+      }
+    },
+  );
+  it.each(['preview', 'render'] as const)(
+    'catalogue %s failure emits once under concurrent ticks and refunds any spend',
+    async (stage) => {
+      provider.hasFailure = false;
+      const userId = await newUser();
+      const scope = {
+        userId,
+        platform: 'woocommerce' as const,
+        store: 'analytics.example.invalid',
+      };
+      await submitCatalog(
+        scope,
+        [{ externalId: 'chair', title: 'Chair', imageUrl: 'https://store.invalid/chair.png' }],
+        RENDER_CREDITS,
+      );
+      const render = await db().render.findFirstOrThrow({ where: { userId } });
+      if (stage === 'render') {
+        provider.get.mockResolvedValue({
+          status: 'succeeded',
+          output: 'https://provider.invalid/sheet.png',
+        });
+        await tickCatalog(scope);
+        await tickCatalog(scope);
+      }
+      provider.get.mockResolvedValue({ status: 'failed', error: 'forced catalogue failure' });
+      await Promise.all([tickCatalog(scope), tickCatalog(scope)]);
+      expect((await listCatalog(scope)).items[0]?.state).toBe('failed');
+      await drain();
+      expect(selected(render.id, `${stage}_`)).toEqual([`${stage}_failed`, `${stage}_start`]);
+      expect(
+        events.find(
+          (event) => event.event === `${stage}_failed` && event.properties.preview_id === render.id,
+        )?.properties,
+      ).toMatchObject({ source_channel: 'api', failure_reason: 'generation_failed' });
+      expect((await db().user.findUniqueOrThrow({ where: { id: userId } })).credits).toBe(
+        RENDER_CREDITS * 3,
+      );
+    },
+  );
   it('accepts a signed confirmed webhook once, rejects unpaid and bad signatures, scopes the GA return value', async () => {
     const userId = await newUser();
     await signupAttribution({ userId, anonId: null, attribution: ft(), method: 'email' });

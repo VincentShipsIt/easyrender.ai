@@ -1,0 +1,40 @@
+.easyrender-ar {
+  margin: 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.easyrender-ar__button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  background: rgb(var(--color-button, 0 0 0));
+  color: rgb(var(--color-button-text, 255 255 255));
+  border: 1px solid currentColor;
+  font: inherit;
+  text-align: center;
+}
+.easyrender-ar__qr {
+  margin: 0;
+  display: none;
+  text-align: center;
+  font-size: 0.85em;
+  max-width: 160px;
+}
+.easyrender-ar__qr img {
+  background: #fff;
+  padding: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+.easyrender-ar__qr figcaption {
+  margin-top: 0.4em;
+}
+/* A phone opens the AR page straight from the button; the QR code is for screens with a mouse. */
+@media (hover: hover) and (pointer: fine) {
+  .easyrender-ar__qr {
+    display: block;
+  }
+}

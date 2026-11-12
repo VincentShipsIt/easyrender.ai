@@ -62,8 +62,13 @@ export function canAccess(render: Pick<Render, 'userId' | 'anonId'>, actor: Acto
 export const isListed = (render: Pick<Render, 'isPublic' | 'status' | 'glbKey'>) =>
   render.isPublic && render.status === 'ready' && Boolean(render.glbKey);
 
+// A store's product page embeds its models by link, so a finished link-shared render is viewable
+// by anyone who has the link even though it is not in the gallery.
+export const isShared = (render: Pick<Render, 'isLinkShared' | 'status' | 'glbKey'>) =>
+  render.isLinkShared && render.status === 'ready' && Boolean(render.glbKey);
+
 export const canView = (render: Render, actor: Actor) =>
-  canAccess(render, actor) || isListed(render);
+  canAccess(render, actor) || isListed(render) || isShared(render);
 
 // Turns a failed harness check into the API error the caller sees.
 function enforce(check: Awaited<ReturnType<typeof checkPhoto>>, status = 422) {
@@ -119,6 +124,8 @@ export async function createDraft(input: {
   name?: string | null;
   source?: RenderSource;
   attribution?: Attribution;
+  // Viewable by link from a store's product page, without being in the gallery.
+  isLinkShared?: boolean;
 }): Promise<Render> {
   if (!IMAGE_TYPES.has(input.contentType)) {
     throw new AppError('Upload a JPEG, PNG or WebP photo', 415, 'bad_type');
@@ -145,6 +152,8 @@ export async function createDraft(input: {
       prompt,
       name: input.name?.trim().slice(0, 120) || null,
       source: input.source ?? 'web',
+      isLinkShared: input.isLinkShared ?? false,
+      isPublic: input.isLinkShared ? false : undefined,
       sourceKey,
       status: config.sheetEnabled() ? 'drafting' : 'preview_ready',
     },

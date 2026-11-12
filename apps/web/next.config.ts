@@ -25,6 +25,16 @@ const nextConfig: NextConfig = {
         source,
         headers: [{ key: 'x-robots-tag', value: 'noindex, follow' }],
       })),
+      // The Shopify app's page is shown inside the Shopify admin, so only Shopify may frame it.
+      {
+        source: '/shopify',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: 'frame-ancestors https://*.myshopify.com https://admin.shopify.com',
+          },
+        ],
+      },
       // The studio models, photos and showcase files in public/ are served with max-age=0 by
       // default, so every visit revalidated megabytes of GLB. Their names carry no content hash,
       // so they get a day of freshness and a week of stale-while-revalidate, not `immutable`:

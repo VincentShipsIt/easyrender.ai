@@ -127,8 +127,19 @@ cloud sandbox), say so.
 
 ## Tracking
 
-GitHub issues are the backlog. Do not create local task markdown files. Search before opening an
-issue: `gh issue list --state all --search "<keywords>"`.
+GitHub issues are the backlog and [Project #1](https://github.com/orgs/easyrenderai/projects/1) is the
+board, run the same way as genfeed.ai. Do not create local task markdown files. Search before
+opening an issue: `gh issue list --state all --search "<keywords>"`. Full rules:
+`.agents/memory/context/project-board.md`.
+
+- Kind of work is the native issue type (Bug, Feature, Task), set by the issue form. Never a label.
+- Priority is the native org Issue Field `Priority` (P0 to P3), shown on the board. Never a label.
+  Every board item has one, epics included.
+- Status is the project field: Backlog, In Progress, Human Review, Done, Deferred.
+- Parent and child use native sub-issues. An epic moves to In Progress when its first child starts.
+- File with the forms in `.github/ISSUE_TEMPLATE`. Acceptance criteria are EARS (`WHEN ... THE
+  SYSTEM SHALL ...`). No YAML frontmatter in issue bodies.
+- A PR links its issue: `Closes #n` only when it completes the issue, `Refs #n` otherwise.
 
 ## Memory
 
