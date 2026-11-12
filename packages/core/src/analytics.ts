@@ -1,17 +1,11 @@
 import { createHash } from 'node:crypto';
 import { db, type Render } from '@easyrender/db';
 import type { PostHog } from 'posthog-node';
+import type { FunnelEvent } from './analytics-events';
 import { type Attribution, pickAttribution, UTM_KEYS } from './attribution';
 
-export type FunnelEvent =
-  | 'preview_start'
-  | 'preview_ready'
-  | 'preview_failed'
-  | 'signup'
-  | 'render_start'
-  | 'render_ready'
-  | 'render_failed'
-  | 'purchase';
+export type { FunnelEvent } from './analytics-events';
+
 type Properties = Record<string, string | number | boolean | null>;
 type EventContext = {
   userId: string | null;

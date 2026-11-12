@@ -184,7 +184,14 @@ export type RouteKey = keyof typeof ROUTES;
 export const ROUTE_KEYS = Object.keys(ROUTES) as RouteKey[];
 
 /** Paths crawlers should not fetch at all. */
-export const DISALLOWED_PREFIXES = ['/api/', '/account', '/library', '/dashboard', '/connectors'];
+export const DISALLOWED_PREFIXES = [
+  '/admin',
+  '/api/',
+  '/account',
+  '/library',
+  '/dashboard',
+  '/connectors',
+];
 
 export const isPublished = (key: RouteKey, locale: Locale): boolean =>
   (ROUTES[key].published as readonly Locale[]).includes(locale);

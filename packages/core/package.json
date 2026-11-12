@@ -7,6 +7,12 @@
     ".": {
       "default": "./src/index.ts"
     },
+    "./admin-analytics": {
+      "default": "./src/admin-analytics/index.ts"
+    },
+    "./admin-analytics/helpers": {
+      "default": "./src/admin-analytics/helpers.ts"
+    },
     "./attribution": "./src/attribution.ts"
   },
   "scripts": {

@@ -31,6 +31,27 @@ Set these in Vercel and rebuild; public variables are embedded at build time:
 | `POSTHOG_HOST`                  | Optional server-only override for a local capture recorder; leave unset in Vercel                 |
 | `ANALYTICS_LOCAL_TEST`          | `1` only for a local `next start`; never set in Vercel                                            |
 
+The internal `/admin/analytics` dashboard uses the same EU project and the following
+server-only configuration (also declared in `.env.example` and `turbo.json`):
+
+| Variable                   | Purpose                                                               |
+| -------------------------- | --------------------------------------------------------------------- |
+| `ADMIN_EMAILS`             | Comma-separated verified admin emails; empty denies everyone.         |
+| `POSTHOG_PROJECT_ID`       | Numeric ID of the same EU project used by the public write key.       |
+| `POSTHOG_PERSONAL_API_KEY` | Personal API key with only `query:read` for that project.             |
+| `POSTHOG_API_HOST`         | Query API origin, default `https://eu.posthog.com`.                   |
+| `ANALYTICS_EXCLUDE_EMAILS` | Optional team/test emails or `@domain` suffixes to exclude.           |
+| `ANALYTICS_TZ`             | Reporting timezone, default `Europe/Madrid`.                          |
+| `STRIPE_ANALYTICS_KEY`     | Optional restricted read-only key; falls back to `STRIPE_SECRET_KEY`. |
+
+These host names serve distinct APIs: `NEXT_PUBLIC_POSTHOG_HOST` is ingestion,
+`POSTHOG_HOST` overrides server ingestion for local QA, and `POSTHOG_API_HOST` is the
+private query endpoint. They are not aliases. Never put the personal key in a public variable.
+Missing query credentials show a not-configured state while database metrics remain available.
+Anonymous admin requests redirect before initializing auth or querying the database; auth
+failures also deny access. Admin routes stay noindex and excluded from sitemaps.
+See [admin analytics](admin-analytics.md) for metric definitions and limits.
+
 Missing keys disable PostHog or GA4 and their reason to show a banner. The Google Ads base
 tag from #96 remains independent of these keys and uses denied consent.
 Sentry remains configured independently and unchanged.

@@ -1,3 +1,4 @@
+import { adminDecision } from '@easyrender/core/admin-analytics/helpers';
 import { type NextRequest, NextResponse } from 'next/server';
 import { isRoutableLocale, LOCALE_HEADER, PATH_HEADER } from './i18n/config';
 import {
@@ -101,6 +102,9 @@ function localeOf(pathname: string): string {
 // visitor so a free preview can be tied to them before sign up, then the locale of the URL for
 // the layout and next-intl to read.
 export function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname === '/admin' || request.nextUrl.pathname.startsWith('/admin/')) {
+    return adminResponse(request);
+  }
   const redirect = canonicalHostRedirect(request);
   if (redirect) return redirect;
 
@@ -117,6 +121,26 @@ export function proxy(request: NextRequest) {
   if (home.kind === 'stay' && home.cookie) {
     response.cookies.set(HOME_LOCALE_COOKIE, home.cookie, homeCookie(request));
   }
+  return response;
+}
+
+async function adminResponse(request: NextRequest) {
+  const { adminSession } = await import('./lib/admin-analytics/session');
+  const session = await adminSession(request.headers);
+  const decision = adminDecision(session?.user ?? null, process.env.ADMIN_EMAILS ?? '', true);
+  const headers = new Headers(request.headers);
+  headers.set(LOCALE_HEADER, 'en');
+  headers.set(PATH_HEADER, request.nextUrl.pathname);
+  headers.set('x-admin-return', request.nextUrl.pathname + request.nextUrl.search);
+  let response: NextResponse;
+  if (decision === 'signin') {
+    const target = new URL('/sign-in', request.url);
+    target.searchParams.set('next', request.nextUrl.pathname + request.nextUrl.search);
+    response = NextResponse.redirect(target);
+  } else if (decision === 'notFound') response = new NextResponse(null, { status: 404 });
+  else response = NextResponse.next({ request: { headers } });
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  response.headers.set('Cache-Control', 'private, no-store');
   return response;
 }
 
