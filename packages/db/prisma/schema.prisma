@@ -134,6 +134,9 @@ model Render {
   // Material changes made by the owner, as a list of { index, baseColor?, roughness?, metalness? }
   // by glTF material. The stored GLB is never rewritten: the edits are applied when it is served.
   materialEdits     Json?
+  // What the guardrails measured at each stage (photo, draft sheet, final sheet, model), for
+  // comparing quality across renders. Never read to decide anything; see render-quality.ts.
+  quality           Json?
   sheetPredictionId String?      @unique
   buildPredictionId String?      @unique
   // A paid build redraws the sheet with the final model before the 3D build; this is that prediction.

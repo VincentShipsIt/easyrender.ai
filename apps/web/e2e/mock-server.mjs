@@ -2,7 +2,7 @@ import { appendFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { gunzipSync } from 'node:zlib';
 
-const output = process.env.EVIDENCE_DIR || '/Users/jorgeclawd/easyrender/analytics-evidence';
+const output = process.env.EVIDENCE_DIR || '../../.data/analytics-evidence';
 await mkdir(output, { recursive: true });
 createServer(async (request, response) => {
   const chunks = [];

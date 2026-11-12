@@ -10,6 +10,7 @@ import type { PostHog } from 'posthog-js';
 
 declare global {
   interface Window {
+    __erGoogleTagLoaded?: boolean;
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
@@ -22,7 +23,7 @@ let posthog: PostHog | null = null;
 let isPosthogAllowed = false;
 let isGaAllowed = false;
 let gaId = '';
-let hasGaLoaded = false;
+let hasGaConfigured = false;
 let lastGaPage = '';
 const conversions = new Set<string>();
 export function attribution() {
@@ -53,35 +54,44 @@ export function beforeSend<T extends { properties: Record<string, unknown> }>(ev
   return { ...event, properties };
 }
 export function initializeGa(id: string) {
-  if (!id || window.gtag) return;
+  // The beforeInteractive bootstrap owns consent defaults, the queue and the only loader.
+  // Keep its exact production hostname guard; previews and localhost never start Google tags.
+  if (
+    !id ||
+    window.location.hostname !== 'easyrender.ai' ||
+    !window.__erGoogleTagLoaded ||
+    !window.gtag
+  )
+    return;
   gaId = id;
-  window.dataLayer = [];
-  window.gtag = function () {
-    window.dataLayer?.push(arguments);
-  };
-  window.gtag('consent', 'default', {
-    analytics_storage: 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    wait_for_update: 500,
-  });
+}
+function googleUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return url.origin + url.pathname;
+  } catch {
+    return '';
+  }
 }
 export function gaPageview() {
-  if (!isGaAllowed || !window.gtag) return;
-  const url = analyticsUrl(window.location.href);
+  if (!isGaAllowed || !gaId || !window.gtag) return;
+  const url = googleUrl(window.location.href);
   if (lastGaPage === url) return;
   lastGaPage = url;
-  window.gtag('config', gaId, {
-    send_page_view: false,
-    page_location: url,
-    page_referrer: analyticsUrl(document.referrer),
-    allow_google_signals: false,
-    allow_ad_personalization_signals: false,
-  });
+  if (!hasGaConfigured) {
+    hasGaConfigured = true;
+    window.gtag('config', gaId, {
+      send_page_view: false,
+      page_location: url,
+      page_referrer: googleUrl(document.referrer),
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+    });
+  }
   window.gtag('event', 'page_view', {
+    send_to: gaId,
     page_location: url,
-    page_referrer: analyticsUrl(document.referrer),
+    page_referrer: googleUrl(document.referrer),
   });
 }
 export function gaEvent(
@@ -89,14 +99,15 @@ export function gaEvent(
   properties: Record<string, unknown> = {},
   identity?: string,
 ) {
-  if (!isGaAllowed || !window.gtag) return;
+  if (!isGaAllowed || !gaId || !window.gtag) return;
   const key = identity ? `${event}:${identity}` : null;
   if (key && conversions.has(key)) return;
   if (key) conversions.add(key);
   window.gtag('event', event, {
     ...properties,
-    page_location: analyticsUrl(window.location.href),
-    page_referrer: analyticsUrl(document.referrer),
+    send_to: gaId,
+    page_location: googleUrl(window.location.href),
+    page_referrer: googleUrl(document.referrer),
   });
 }
 export function observeRender(render: { id: string; status: string; hasSheet: boolean }) {
@@ -110,11 +121,18 @@ export async function setBrowserTools(
   hasWithdrawal = false,
 ) {
   isPosthogAllowed = allowPosthog;
-  isGaAllowed = allowGa;
+  isGaAllowed = allowGa && Boolean(gaId);
+  if (window.__erGoogleTagLoaded && window.location.hostname === 'easyrender.ai') {
+    // Set the GA kill switch before updating consent; advertising always stays denied.
+    if (gaId) Object.assign(window, { [`ga-disable-${gaId}`]: !isGaAllowed });
+    window.gtag?.('consent', 'update', {
+      analytics_storage: isGaAllowed ? 'granted' : 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+  }
   if (!allowGa && gaId) {
-    // Disable before the consent update, preventing even cookieless pings after withdrawal.
-    Object.assign(window, { [`ga-disable-${gaId}`]: true });
-    window.gtag?.('consent', 'update', { analytics_storage: 'denied' });
     lastGaPage = '';
     for (const cookie of hasWithdrawal ? document.cookie.split(';') : []) {
       const name = cookie.trim().split('=')[0];
@@ -127,16 +145,6 @@ export async function setBrowserTools(
     }
   }
   if (allowGa && gaId) {
-    Object.assign(window, { [`ga-disable-${gaId}`]: false });
-    window.gtag?.('consent', 'update', { analytics_storage: 'granted' });
-    if (!hasGaLoaded) {
-      hasGaLoaded = true;
-      window.gtag?.('js', new Date());
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
-      document.head.append(script);
-    }
     gaPageview();
     if (new URLSearchParams(location.search).get('__signup') === 'google')
       gaEvent('sign_up', { method: 'google' }, 'oauth-return');

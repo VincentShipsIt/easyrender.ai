@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { gunzipSync } from 'node:zlib';
 import { db } from '@easyrender/db';
-import { RENDER_CREDITS } from '@easyrender/harness';
+import { RENDER_CREDITS, SUBSCRIPTION_PLANS } from '@easyrender/harness';
 import Stripe from 'stripe';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { setAnalyticsScheduler } from './analytics';
@@ -21,9 +21,17 @@ if (url) {
 const provider = vi.hoisted(() => ({ hasFailure: false, get: vi.fn(), sequence: 0 }));
 vi.mock('@easyrender/harness', async (original) => ({
   ...(await original<typeof import('@easyrender/harness')>()),
-  checkPhoto: async () => ({ ok: true, warnings: [] }),
-  checkSheet: async () => ({ ok: true, warnings: [] }),
-  checkGlb: () => ({ ok: true, warnings: [] }),
+  checkPhoto: async () => ({
+    ok: true,
+    warnings: [],
+    measures: { width: 1000, height: 1000, spread: 50, sharpness: 10 },
+  }),
+  checkSheet: async () => ({
+    ok: true,
+    warnings: [],
+    measures: { side: 2048, emptyCells: 0, repeatedViews: 0, closestViews: 0.1 },
+  }),
+  checkGlb: () => ({ ok: true, warnings: [], measures: { bytes: 50000 } }),
   download: async () => new Uint8Array([1, 2, 3]),
   cutCells: async () => [new Uint8Array([1])],
   createReplicate: () => ({
@@ -162,6 +170,15 @@ describe.skipIf(!url)('analytics through real server functions and local Postgre
     });
     await Promise.all([advance(preview.id), advance(preview.id)]);
     await drain();
+    expect(
+      (await db().render.findUniqueOrThrow({ where: { id: preview.id } })).quality,
+    ).toMatchObject({
+      photo: { width: 1000 },
+      draftSheet: { side: 2048 },
+      finalSheet: { side: 2048 },
+      isDraftUsed: false,
+      glb: { bytes: 50000 },
+    });
     expect(selected(preview.id, 'preview_')).toEqual(['preview_ready', 'preview_start']);
     expect(selected(preview.id, 'render_')).toEqual(['render_ready', 'render_start']);
     const signup = events.filter((e) => e.event === 'signup' && e.properties.user_id === userId);
@@ -177,6 +194,47 @@ describe.skipIf(!url)('analytics through real server functions and local Postgre
     expect(
       events.some((e) => e.event === '$create_alias' && e.properties.alias === `pv_${preview.id}`),
     ).toBe(true);
+  });
+  it('retains quality and emits one render completion when the final sheet falls back to the draft', async () => {
+    provider.hasFailure = false;
+    const userId = await newUser();
+    const render = await createDraft({
+      actor: { userId },
+      bytes: new Uint8Array([1]),
+      contentType: 'image/png',
+      attribution: ft(),
+    });
+    provider.get.mockResolvedValue({
+      status: 'succeeded',
+      output: 'https://provider.invalid/sheet.png',
+    });
+    await advance(render.id);
+    await startBuild(render.id, { userId });
+    provider.get.mockResolvedValue({ status: 'failed', error: 'forced final sheet failure' });
+    await Promise.all([advance(render.id), advance(render.id)]);
+    expect(await db().render.findUniqueOrThrow({ where: { id: render.id } })).toMatchObject({
+      status: 'rendering',
+      quality: {
+        isDraftUsed: true,
+        finalSheetProblem: 'redraw_failed',
+        photo: { width: 1000 },
+        draftSheet: { side: 2048 },
+      },
+    });
+    provider.get.mockResolvedValue({
+      status: 'succeeded',
+      output: 'https://provider.invalid/model.glb',
+    });
+    await Promise.all([advance(render.id), advance(render.id)]);
+    await drain();
+    expect(await db().render.findUniqueOrThrow({ where: { id: render.id } })).toMatchObject({
+      status: 'ready',
+      quality: { isDraftUsed: true, glb: { bytes: 50000 } },
+    });
+    expect(selected(render.id, 'render_')).toEqual(['render_ready', 'render_start']);
+    expect((await db().user.findUniqueOrThrow({ where: { id: userId } })).credits).toBe(
+      RENDER_CREDITS * 2,
+    );
   });
   it('forced preview and model provider failures each emit exactly one failure and refund the model', async () => {
     const userId = await newUser();
@@ -377,6 +435,88 @@ describe.skipIf(!url)('analytics through real server functions and local Postgre
     expect(await confirmedPurchase('other-user', sessionId)).toBeNull();
     await expect(handleStripeWebhook('{}', 'bad')).rejects.toThrow();
   });
+  it.each([
+    ['scale', 'creator', 1200],
+    ['creator', 'scale', 8500],
+    ['scale', 'creator', 0],
+  ] as const)(
+    'credits and captures the invoice plan after %s to %s portal switch (paid %s cents)',
+    async (checkoutPlan, invoicePlan, amountPaid) => {
+      process.env.STRIPE_PRICE_CREATOR = 'price_creator';
+      process.env.STRIPE_PRICE_SCALE = 'price_scale';
+      const userId = await newUser();
+      const invoiceId = `in_local_${crypto.randomUUID()}`;
+      const body = JSON.stringify({
+        id: `evt_${invoiceId}`,
+        type: 'invoice.paid',
+        data: {
+          object: {
+            id: invoiceId,
+            amount_paid: amountPaid,
+            currency: 'usd',
+            parent: { subscription_details: { metadata: { userId, plan: checkoutPlan } } },
+            lines: {
+              data: [
+                {
+                  parent: { subscription_item_details: { proration: true } },
+                  pricing: { price_details: { price: `price_${checkoutPlan}` } },
+                },
+                {
+                  parent: { subscription_item_details: { proration: false } },
+                  pricing: { price_details: { price: `price_${invoicePlan}` } },
+                },
+              ],
+            },
+          },
+        },
+      });
+      const signature = new Stripe('sk_test_local').webhooks.generateTestHeaderString({
+        payload: body,
+        secret: 'whsec_local',
+      });
+      await Promise.all([
+        handleStripeWebhook(body, signature),
+        handleStripeWebhook(body, signature),
+      ]);
+      await handleStripeWebhook(body, signature);
+      await drain();
+      const purchase = await db().purchase.findUniqueOrThrow({
+        where: { stripeSessionId: invoiceId },
+      });
+      expect(purchase).toMatchObject({
+        status: 'paid',
+        packId: invoicePlan,
+        credits: SUBSCRIPTION_PLANS[invoicePlan].monthlyCredits,
+        amountCents: amountPaid,
+      });
+      expect((await db().user.findUniqueOrThrow({ where: { id: userId } })).credits).toBe(
+        RENDER_CREDITS * 3 + SUBSCRIPTION_PLANS[invoicePlan].monthlyCredits,
+      );
+      const ledger = await db().creditLedger.findMany({ where: { userId } });
+      expect(ledger).toHaveLength(1);
+      expect(ledger[0]).toMatchObject({
+        purchaseId: purchase.id,
+        delta: SUBSCRIPTION_PLANS[invoicePlan].monthlyCredits,
+        reason: 'subscription',
+      });
+      const purchases = events.filter(
+        (event) => event.event === 'purchase' && event.properties.order_id === purchase.id,
+      );
+      expect(purchases).toHaveLength(1);
+      expect(purchases[0].properties).toMatchObject({
+        pack_id: invoicePlan,
+        credits: SUBSCRIPTION_PLANS[invoicePlan].monthlyCredits,
+        amount: amountPaid / 100,
+        currency: 'USD',
+        is_first_purchase: true,
+      });
+      expect(await confirmedPurchase(userId, invoiceId)).toMatchObject({
+        transaction_id: purchase.id,
+        value: amountPaid / 100,
+        items: [{ item_id: invoicePlan, price: amountPaid / 100 }],
+      });
+    },
+  );
   it('stores truncated garbage values without rejecting signup and never overwrites direct first touch', async () => {
     const userId = await newUser();
     const attribution = normalizeAttribution(

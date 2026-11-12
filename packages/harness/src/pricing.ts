@@ -23,13 +23,14 @@ export const RENDER_CREDITS = creditsFor(RENDER_COST_USD);
 // Pay as you go: buy any number of credits at CREDIT_USD each, through one Stripe price of $0.01.
 export const PAYG = { min: 500, max: 100_000, presets: [1000, 2500, 5000, 10_000] };
 
-// Monthly plans: each adds its credits on every paid invoice. Credits never expire. Per credit:
-// Creator $0.0119, Pro $0.0098, Scale $0.0093 (pay as you go is $0.01). The two bigger plans trade
-// a few points of the 70% margin for volume: about 69% on Pro and 68% on Scale.
+// Monthly plans: each adds its credits on every paid invoice. Credits never expire. A plan always
+// has a cheaper credit than pay as you go ($0.01), and a bigger plan a cheaper one still. Per
+// credit: Creator $0.0095 (5% off), Pro $0.0089 (11% off), Scale $0.0083 (17% off), which leaves a
+// margin over provider cost of about 68%, 66% and 64%.
 export const SUBSCRIPTION_PLANS = {
-  creator: { label: 'Creator', priceCents: 1900, monthlyCredits: 1600 },
-  pro: { label: 'Pro', priceCents: 4900, monthlyCredits: 5000 },
-  scale: { label: 'Scale', priceCents: 14900, monthlyCredits: 16_000 },
+  creator: { label: 'Creator', priceCents: 1900, monthlyCredits: 2000 },
+  pro: { label: 'Pro', priceCents: 4900, monthlyCredits: 5500 },
+  scale: { label: 'Scale', priceCents: 14900, monthlyCredits: 18_000 },
 } as const;
 
 export type PlanId = keyof typeof SUBSCRIPTION_PLANS;

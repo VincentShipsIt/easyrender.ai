@@ -31,23 +31,27 @@ Set these in Vercel and rebuild; public variables are embedded at build time:
 | `POSTHOG_HOST`                  | Optional server-only override for a local capture recorder; leave unset in Vercel                 |
 | `ANALYTICS_LOCAL_TEST`          | `1` only for a local `next start`; never set in Vercel                                            |
 
-Missing keys disable the associated vendor, its requests and its reason to show a banner.
+Missing keys disable PostHog or GA4 and their reason to show a banner. The Google Ads base
+tag from #96 remains independent of these keys and uses denied consent.
 Sentry remains configured independently and unchanged.
 
 In PostHog enable **cookieless mode** and **discard IP addresses** in project settings; set the
 billing limit to zero if that is the intended account policy. In GA4 choose data retention,
 disable Google signals and advertising personalization, and disable enhanced-measurement
-history/pageview automation (the app sends sanitized SPA pageviews itself). Do not add Ads tags.
+history/pageview automation (the app sends sanitized SPA pageviews itself). Reuse the existing
+Ads base tag; do not install another Google bootstrap.
 No accounts, remote environments or account settings are changed by this implementation.
 
 The editable policy is `packages/core/src/attribution.ts`: browser PostHog and GA4 start as
 `consent` in strict regions and `allow_unless_optout` elsewhere. GPC blocks both in either
-region. Server attribution/events are always enabled when configured; pixels are off.
+region. Server attribution/events are always enabled when configured. The #96 Ads base tag remains
+loaded on the canonical hostname with advertising consent denied.
 Unknown tools default to consent/off. Change the GA4 policy on its own row.
 
 The privacy endpoint is dynamic, `Cache-Control: private, no-store`, and never varies the HTML
 by analytics region. Missing/unreliable country codes are strict. Failure or a two-second
-timeout loads no optional vendor, including for a previously accepting visitor.
+timeout starts neither PostHog nor GA4, including for a previously accepting visitor. The Ads
+base bootstrap still runs with denied consent.
 
 Only preview or local/test environments honor `?__geo=DE`, `x-test-country: US`, and
 `?__privacy_fail=1`. An explicit local flag enables these on a production-mode local server only
@@ -55,6 +59,38 @@ when it is not running on Vercel. `VERCEL_ENV=production` overrides every test f
 forwards test country headers for signup/uploads; the server ignores them in production.
 Whether Vercel overwrites a client-supplied **real** `x-vercel-ip-country` header has not been
 verified against Vercel. The app follows the documented platform-header contract.
+
+## Shared Google bootstrap (#96)
+
+`layout.tsx` keeps `easyrender-google-tag` with `beforeInteractive`. The unchanged
+`lib/google-tag.ts` is the sole application-owned loader and sole Consent Mode v2 `default`
+call: all four consent categories are denied before any external script. Its exact hostname
+guard remains `easyrender.ai`; localhost, preview hosts and lookalikes load no Google tag.
+The analytics client preserves the bootstrap's `dataLayer` and `gtag` and sends only consent
+`update` commands. Strict EU/UK/CH/unknown regions stay denied until acceptance; US analytics
+is granted unless rejected or GPC is present. Advertising storage, user data and personalization
+always stay denied; `ads_data_redaction=true` and `url_passthrough=false` remain in force.
+GA4 is configured once per document, only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set and analytics is allowed.
+GA URLs use the bootstrap's origin + pathname sanitization (no query or fragment, including
+UTMs); PostHog still keeps allowlisted UTMs. Analytics events use `send_to` with the GA ID so
+that they do not become Ads conversions through the shared queue.
+
+**Loader exception verified with the real vendor runtime:** the existing
+`gtm.js?id=AW-18570382360` processes `gtag('config', 'G-…', …)` by dynamically fetching one
+`gtag/js?id=G-…&cx=c…` destination implementation. GA4 needs that destination code to collect;
+the Ads-only runtime does not contain it. We do not inject a fallback or a second bootstrap.
+Google's runtime deduplicates that destination fetch; the browser regression checks exactly one
+Ads bootstrap and one GA destination fetch across repeated SPA pageviews, withdrawal and
+reacceptance, with exactly one consent default. Thus there is one **application-owned loader**,
+but two vendor script elements after GA is allowed. A literal one-script total is not claimed
+for these separate destinations. Combining destinations would require Google account changes,
+which this work does not perform. This follows Google's
+[existing-tag configuration API](https://developers.google.com/tag-platform/gtagjs/configure).
+
+The Ads base may make cookieless Ads requests under denied consent, independently of GA4.
+Tests intercept these too; the earlier “no Google requests before choice/unset keys” assertions
+now assert no PostHog/GA collection, no GA config or cookies, and the denied base tag instead.
+`lib/google-tag.test.ts` is unchanged. No second `consent default` or `gtag('js')` is added.
 
 ## Events and payment truth
 
@@ -79,7 +115,12 @@ because ingestion requires it. Browser imports happen after paint, outside the c
 
 A purchase is emitted only on a confirmed signed Stripe webhook, after granting credits and
 claiming the pending→paid transition. Replays do not emit another event. Subscription invoices
-are also recorded as purchases. Both synchronous and asynchronous checkout success are handled.
+are also recorded as purchases. Subscription `pack_id` and credits follow `planFromInvoice`
+(the regular invoice line price, ignoring old-plan prorations, then main's metadata fallback);
+amount comes from `invoice.amount_paid`, including zero, then the plan's current catalog price.
+The purchase upsert uses a nonempty no-op update for a database-native atomic upsert during
+concurrent deliveries. The existing ledger key and pending→paid claim still deduplicate credits
+and the server event. Both synchronous and asynchronous checkout success are handled.
 There is no refund webhook in this repository, so `purchase_refunded` is not invented.
 
 GA mirrors `sign_up`, `preview_ready`, `render_ready`, `begin_checkout`, and confirmed `purchase`.
@@ -128,27 +169,35 @@ local failure mechanism; there is no public paid-provider failure switch. Signed
 use synthetic Stripe credentials and make no Stripe API calls. Live Stripe here is live-only;
 never use a live checkout as a supposedly free test.
 
-For browser proof, fetch the public gtag script once to `/tmp/er-analytics-gtag.js`:
+For browser proof, from the repository root fetch the public vendor runtimes once:
 
 ```sh
-curl -fsSL 'https://www.googletagmanager.com/gtag/js?id=G-TEST000000' -o /tmp/er-analytics-gtag.js
-node apps/web/e2e/mock-server.mjs
+mkdir -p .data/analytics-merge2
+curl -fsSL 'https://www.googletagmanager.com/gtm.js?id=AW-18570382360' -o .data/analytics-merge2/google-ads.js
+curl -fsSL 'https://www.googletagmanager.com/gtag/js?id=G-TEST000000' -o .data/analytics-merge2/gtag.js
+EVIDENCE_DIR="$PWD/.data/analytics-merge2" node apps/web/e2e/mock-server.mjs
 ```
 
 Build/start on port 3100 with the local DB, an explicitly local test auth secret,
-`BETTER_AUTH_URL=http://localhost:3100`, `APP_URL=http://localhost:3100`,
+`BETTER_AUTH_URL=https://easyrender.ai`, `APP_URL=https://easyrender.ai`,
 `NEXT_PUBLIC_POSTHOG_KEY=phc_localtest`, `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-TEST000000`,
 `POSTHOG_HOST=http://127.0.0.1:3901`, `ANALYTICS_LOCAL_TEST=1`. Then:
 
 ```sh
 cd apps/web
-node node_modules/@playwright/test/cli.js test --config e2e/playwright.config.ts analytics.spec.ts
+EVIDENCE_DIR="$PWD/../../.data/analytics-merge2" node node_modules/@playwright/test/cli.js test --config e2e/playwright.config.ts analytics.spec.ts
 ```
 
-Playwright intercepts **all** vendor requests. The npm PostHog bundle and fetched real gtag run;
-only their config/collection endpoints are fulfilled locally. Automation detection is suppressed
-only in the test browser, not in production SDK settings. Evidence defaults to the external
-`analytics-evidence` directory; set `EVIDENCE_DIR` for the scripts where supported.
+`local-browser.ts` intercepts the canonical browser origin and proxies app requests only to
+`127.0.0.1:3100` (or a loopback `ANALYTICS_BASE_URL`). No production app request is made; this
+exercises the exact hostname guard without changing it. Vendor requests are intercepted and
+fulfilled locally, including Ads endpoints; any other external request is aborted. The real
+Ads and GA runtimes and npm PostHog SDK run. Automation detection is suppressed only in the
+test browser. `GTAG_FIXTURE` and `GOOGLE_ADS_FIXTURE` can override the downloaded fixture paths.
+Evidence defaults inside this worktree's ignored `.data/analytics-evidence`; `EVIDENCE_DIR`
+overrides it. Stop the local server, recorder and throwaway Postgres and remove its `/tmp`
+directory when finished.
+
 Vitest's include list excludes Playwright, and database tests skip without `TEST_DATABASE_URL`.
 Turbo's default test environment does not forward the scratch URL: run the per-package commands
 above to exercise integration suites, in addition to `bun run test` for the normal CI gate.
@@ -158,6 +207,10 @@ Repeat a **separate build** with all three public analytics variables unset, sta
 ```sh
 ANALYTICS_UNSET=1 node node_modules/@playwright/test/cli.js test --config e2e/playwright.config.ts unset.spec.ts
 ```
+
+The unset build retains the denied Ads base on the canonical host but has no GA4 config,
+PostHog loader or consent banner. Localhost and preview hostname suppression also have unit
+regressions.
 
 `e2e/performance.mjs` records five fresh-context samples: LCP and sum of long-task time above
 50 ms over five seconds (a Playwright blocking-time approximation, not a Lighthouse audit).
