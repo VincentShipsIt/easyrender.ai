@@ -81,8 +81,8 @@ describe('the route registry', () => {
     // English comparisons are published; the other locales wait for reviewed copy.
     expect(isPublished('compare', 'en')).toBe(true);
     expect(livePaths('compare')).toEqual({ en: '/compare' });
-    // Pricing exists in English only until the Spanish copy lands.
-    expect(livePaths('pricing')).toEqual({ en: '/credits' });
+    // Pricing is open in English and Spanish; the other four wait for reviewed copy.
+    expect(livePaths('pricing')).toEqual({ en: '/pricing', es: '/es/precios' });
   });
 });
 
@@ -115,7 +115,7 @@ describe('hreflang', () => {
   });
 
   it('is dropped when there is nothing to point at', () => {
-    expect(hreflangFor({ en: '/credits' })).toBeUndefined();
+    expect(hreflangFor({ en: '/compare' })).toBeUndefined();
     expect(hreflangFor({})).toBeUndefined();
   });
 

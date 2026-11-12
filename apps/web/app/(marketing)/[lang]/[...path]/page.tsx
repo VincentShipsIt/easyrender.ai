@@ -5,6 +5,7 @@ import { BlogPostView } from '@/components/blog/blog-post-view';
 import { CookiesPage } from '@/components/cookies-page';
 import { EvalsView } from '@/components/evals/evals-view';
 import { ModelsView } from '@/components/models/models-view';
+import { PricingView } from '@/components/pricing/pricing-view';
 import { isRoutableLocale, type Locale } from '@/i18n/config';
 import { type BlogPost, getPost } from '@/lib/blog/posts';
 import { JsonLd } from '@/lib/seo/jsonld';
@@ -17,6 +18,8 @@ import {
   modelsMetadata,
   postGraph,
   postMetadata,
+  pricingGraph,
+  pricingMetadata,
 } from '@/lib/seo/pages';
 import { isPublished, ROUTES } from '@/lib/seo/routes';
 
@@ -30,6 +33,7 @@ import { isPublished, ROUTES } from '@/lib/seo/routes';
 type Match =
   | { kind: 'blogIndex'; locale: Locale }
   | { kind: 'post'; post: BlogPost }
+  | { kind: 'pricing'; locale: Locale }
   | { kind: 'models'; locale: Locale }
   | { kind: 'evals'; locale: Locale }
   | { kind: 'none' };
@@ -39,6 +43,9 @@ function resolve(lang: string, segments: string[]): Match {
   const locale: Locale = lang;
   const path = `/${[locale, ...segments].join('/')}`;
 
+  if (isPublished('pricing', locale) && path === ROUTES.pricing.paths[locale]) {
+    return { kind: 'pricing', locale };
+  }
   if (isPublished('models', locale) && path === ROUTES.models.paths[locale]) {
     return { kind: 'models', locale };
   }
@@ -66,6 +73,7 @@ export async function generateMetadata({
   const match = resolve(lang, path);
   if (match.kind === 'post') return postMetadata(match.post);
   if (match.kind === 'blogIndex') return blogIndexMetadata(match.locale);
+  if (match.kind === 'pricing') return pricingMetadata(match.locale);
   if (match.kind === 'models') return modelsMetadata(match.locale);
   if (match.kind === 'evals') return evalsMetadata(match.locale);
   return {};
@@ -90,6 +98,14 @@ export default async function LocalePage({ params }: PageProps<'/[lang]/[...path
       <>
         <JsonLd graph={await postGraph(match.post)} />
         <BlogPostView post={match.post} />
+      </>
+    );
+  }
+  if (match.kind === 'pricing') {
+    return (
+      <>
+        <JsonLd graph={await pricingGraph(match.locale)} />
+        <PricingView locale={match.locale} />
       </>
     );
   }

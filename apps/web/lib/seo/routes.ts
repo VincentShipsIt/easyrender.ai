@@ -53,14 +53,14 @@ export const ROUTES = {
   },
   pricing: {
     paths: {
-      en: '/credits',
+      en: '/pricing',
       es: '/es/precios',
       de: '/de/preise',
       fr: '/fr/tarifs',
       it: '/it/prezzi',
       pt: '/pt/precos',
     },
-    published: ['en'],
+    published: ['en', 'es'],
     priority: 0.8,
     changeFrequency: 'monthly',
   },

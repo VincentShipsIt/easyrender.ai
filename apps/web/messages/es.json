@@ -659,6 +659,76 @@
     "metaTitle": "Precios: se paga por modelo 3D · easyrender",
     "metaDescription": "La previsualización es gratis. Un modelo 3D terminado cuesta {credits} créditos ({price}) y los créditos no caducan. Paga por uso o pásate a Pro."
   },
+  "Pricing": {
+    "metaTitle": "Precios: paga por modelo 3D · easyrender",
+    "metaDescription": "Las vistas previas son gratis. Un modelo 3D terminado cuesta {credits} créditos ({price}) y los créditos no caducan. Paga por uso o elige Pro con {proCredits} créditos al mes.",
+    "home": "Inicio",
+    "breadcrumb": "Precios",
+    "eyebrow": "Precios",
+    "title": "Paga por modelo 3D. Las vistas previas son gratis.",
+    "description": "Un modelo 3D terminado cuesta {credits} créditos ({price}). Compra créditos según los necesites o elige un plan mensual con el crédito más barato. Los créditos no caducan.",
+    "note": "Precios en USD. Los créditos no caducan. Si un modelo 3D falla al construirse, se reembolsan sus créditos.",
+    "compare": {
+      "title": "Compara los planes",
+      "description": "El pago por uso son {unit} por crédito. Todos los planes mensuales abaratan el crédito, y un plan mayor lo abarata aún más.",
+      "plan": "Plan",
+      "price": "Precio",
+      "credits": "Créditos",
+      "models": "Modelos 3D",
+      "perCredit": "Por crédito",
+      "from": "Desde {value}",
+      "perMonth": "{value} / mes"
+    },
+    "how": {
+      "title": "Cómo funcionan los créditos",
+      "step": "Paso {number}",
+      "preview": {
+        "title": "Las vistas previas no cuestan nada",
+        "body": "Sube una foto y revisa una hoja gratis que muestra el objeto desde todos los ángulos antes de gastar nada."
+      },
+      "build": {
+        "title": "Un modelo 3D cuesta {credits} créditos",
+        "body": "Son {price}. El botón muestra el coste antes de pulsarlo y descargas el modelo en GLB y USDZ."
+      },
+      "refund": {
+        "title": "Los modelos fallidos se reembolsan",
+        "body": "Si un modelo 3D falla al construirse, los créditos de ese render vuelven a tu saldo automáticamente."
+      }
+    },
+    "faq": {
+      "title": "Preguntas sobre precios",
+      "items": {
+        "cost": {
+          "q": "¿Cuánto cuesta un modelo 3D?",
+          "a": "Las vistas previas son gratis. Un modelo 3D terminado cuesta {credits} créditos. Con el pago por uso cada crédito cuesta {unit}, así que un modelo sale por {price}. Los planes mensuales abaratan cada crédito."
+        },
+        "freePreview": {
+          "q": "¿Por qué es gratis la vista previa?",
+          "a": "Antes de construir el modelo 3D dibujamos el objeto desde todos los ángulos. Revisas esa vista previa sin coste y solo gastas créditos cuando la forma y los detalles te convencen."
+        },
+        "plans": {
+          "q": "¿Pago por uso o plan mensual?",
+          "a": "El pago por uso va bien para un uso ocasional: compras desde {min} créditos ({minPrice}) cuando los necesites. Un plan mensual añade créditos cada mes a un precio menor por crédito. {plan}, por ejemplo, cuesta {planPrice} al mes por {planCredits} créditos, unos {planModels} modelos 3D."
+        },
+        "expire": {
+          "q": "¿Caducan los créditos?",
+          "a": "No. Los créditos no caducan, y los créditos sin usar de un plan mensual se acumulan para el mes siguiente."
+        },
+        "cancel": {
+          "q": "¿Puedo cambiar o cancelar mi plan?",
+          "a": "Sí. Cambia o cancela tu plan cuando quieras desde Créditos en tu cuenta, donde puedes gestionar tu suscripción."
+        },
+        "failed": {
+          "q": "¿Qué pasa si falla un render?",
+          "a": "Si el modelo 3D falla al construirse, los créditos de ese render vuelven a tu saldo automáticamente."
+        },
+        "enterprise": {
+          "q": "¿Ofrecéis precio por volumen o facturas?",
+          "a": "Sí, en Empresa: créditos con precio por volumen, pago con factura, soporte prioritario y una llamada de puesta en marcha. Reserva una llamada y lo preparamos."
+        }
+      }
+    }
+  },
   "PaygPicker": {
     "custom": "O introduce una cantidad",
     "estimate": "{price} para unos {count} renders",

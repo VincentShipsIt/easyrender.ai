@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
  * Links to the same page in the other languages, which is what hreflang promises, behind a
  * compact dropdown (components/locale-menu). Server rendered and crawlable: every option is a
  * plain <a href hreflang> in the HTML even while the list is closed, with no redirect by
- * Accept-Language. A page in one language only (/credits) lists the homes of the others, so the
+ * Accept-Language. A page in one language only lists the homes of the others, so the
  * picker is in every header, signed in or not. A click also stores the choice for the marketing root (components/locale-link).
  */
 export async function LocaleSwitcher({ className }: { className?: string } = {}) {

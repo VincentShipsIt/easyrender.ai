@@ -1,5 +1,6 @@
 import { PLAN_IDS, type PricingVariant, pricingFor } from '@easyrender/harness';
 import { HTML_LANG, type Locale } from '@/i18n/config';
+import { ROUTES } from './routes';
 import { absoluteUrl, OG_IMAGE, OG_IMAGE_SIZE, SITE_NAME, SITE_URL } from './site';
 
 // Structured data, built from what the site actually publishes. Nothing here may carry a rating,
@@ -61,7 +62,7 @@ export function softwareApplication(
         price: (PAYG.min * CREDIT_USD).toFixed(2),
         priceCurrency: 'USD',
         description: `From ${PAYG.min} credits at $${CREDIT_USD.toFixed(2)} each. Credits never expire.`,
-        url: absoluteUrl('/credits'),
+        url: absoluteUrl(ROUTES.pricing.paths.en),
       },
       ...PLAN_IDS.map((id) => ({
         '@type': 'Offer',
@@ -69,7 +70,7 @@ export function softwareApplication(
         price: (SUBSCRIPTION_PLANS[id].priceCents / 100).toFixed(2),
         priceCurrency: 'USD',
         description: `${SUBSCRIPTION_PLANS[id].monthlyCredits} credits every month.`,
-        url: absoluteUrl('/credits'),
+        url: absoluteUrl(ROUTES.pricing.paths.en),
       })),
     ],
   };

@@ -22,7 +22,7 @@ describe('the per-language sitemaps', () => {
       localeEntries(locale, BEFORE_GUIDES).map((entry) => entry.path);
     expect(paths('en')).toEqual([
       '/',
-      '/credits',
+      '/pricing',
       '/models',
       '/compare',
       '/compare/360-vs-3d',
@@ -32,7 +32,7 @@ describe('the per-language sitemaps', () => {
       '/compare/tripo',
       '/cookies',
     ]);
-    expect(paths('es')).toEqual(['/es', '/es/modelos', '/es/cookies']);
+    expect(paths('es')).toEqual(['/es', '/es/precios', '/es/modelos', '/es/cookies']);
     // Homes and cookie information are open; guides and pricing remain unpublished.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
@@ -44,7 +44,7 @@ describe('the per-language sitemaps', () => {
       localeEntries(locale, FIRST_GUIDE_OUT).map((entry) => entry.path);
     expect(paths('en')).toEqual([
       '/',
-      '/credits',
+      '/pricing',
       '/models',
       '/compare',
       '/compare/360-vs-3d',
@@ -109,9 +109,17 @@ describe('the per-language sitemaps', () => {
 
   it('gives a single-language page no hreflang block', () => {
     const xml = localeSitemapXml('en');
-    const start = xml.indexOf('/credits');
+    const start = xml.indexOf('/compare</loc>');
+    const compare = xml.slice(start, xml.indexOf('</url>', start));
+    expect(compare).not.toContain('xhtml:link');
+  });
+
+  it('gives the pricing page its English and Spanish alternates', () => {
+    const xml = localeSitemapXml('en');
+    const start = xml.indexOf('/pricing</loc>');
     const pricing = xml.slice(start, xml.indexOf('</url>', start));
-    expect(pricing).not.toContain('xhtml:link');
+    expect(pricing).toContain(`hreflang="es" href="${SITE_URL}/es/precios"`);
+    expect(pricing).toContain(`hreflang="x-default" href="${SITE_URL}/pricing"`);
   });
 
   // /evals is noindex while it has no run to show, so the sitemap must not offer it. It joins the

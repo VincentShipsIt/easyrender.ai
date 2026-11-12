@@ -25,8 +25,8 @@ export function equivalentPaths(pathname: string, now: Date = new Date()): Equiv
 
 /**
  * What the language picker in the header lists. The page's own equivalents when it has at least
- * two, otherwise the homes, with this page kept for its own language: /credits is English only and
- * is where a signed-in visitor's balance links to, and the picker must not vanish there.
+ * two, otherwise the homes, with this page kept for its own language: /compare is English only, and
+ * the picker must not vanish there.
  */
 export function pickerPaths(pathname: string, now: Date = new Date()): Equivalent[] {
   const own = equivalentPaths(pathname, now);

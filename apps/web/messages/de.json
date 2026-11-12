@@ -659,6 +659,76 @@
     "metaTitle": "Pricing: pay per 3D model · easyrender",
     "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month."
   },
+  "Pricing": {
+    "metaTitle": "Pricing: pay per 3D model · easyrender",
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
+    "home": "Home",
+    "breadcrumb": "Pricing",
+    "eyebrow": "Pricing",
+    "title": "Pay per 3D model. Previews are free.",
+    "description": "A finished 3D model costs {credits} credits ({price}). Buy credits as you go, or pick a monthly plan for a cheaper credit. Credits never expire.",
+    "note": "Prices in USD. Credits never expire. If a 3D build fails, its credits are refunded.",
+    "compare": {
+      "title": "Compare plans",
+      "description": "Pay as you go is {unit} a credit. Every monthly plan makes the credit cheaper, and a bigger plan cheaper still.",
+      "plan": "Plan",
+      "price": "Price",
+      "credits": "Credits",
+      "models": "3D models",
+      "perCredit": "Per credit",
+      "from": "From {value}",
+      "perMonth": "{value} / month"
+    },
+    "how": {
+      "title": "How credits work",
+      "step": "Step {number}",
+      "preview": {
+        "title": "Previews cost nothing",
+        "body": "Upload a photo and check a free sheet that shows the object from every angle before you spend anything."
+      },
+      "build": {
+        "title": "A 3D model costs {credits} credits",
+        "body": "That is {price}. The button shows the cost before you click, and you download the model as GLB and USDZ."
+      },
+      "refund": {
+        "title": "Failed builds are refunded",
+        "body": "If a 3D model fails to build, the credits for that render go back to your balance automatically."
+      }
+    },
+    "faq": {
+      "title": "Pricing questions",
+      "items": {
+        "cost": {
+          "q": "How much does a 3D model cost?",
+          "a": "Previews are free. A finished 3D model costs {credits} credits. On pay as you go a credit costs {unit}, so a model is {price}. Monthly plans make each credit cheaper."
+        },
+        "freePreview": {
+          "q": "Why is the preview free?",
+          "a": "Before the 3D model is built we draw the object from every angle. You check that preview at no cost and only spend credits when the shape and the details look right."
+        },
+        "plans": {
+          "q": "Pay as you go or a monthly plan?",
+          "a": "Pay as you go suits occasional use: buy from {min} credits ({minPrice}) whenever you need them. A monthly plan adds credits every month at a lower price per credit. {plan}, for example, is {planPrice} a month for {planCredits} credits, about {planModels} 3D models."
+        },
+        "expire": {
+          "q": "Do credits expire?",
+          "a": "No. Credits never expire, and unused credits from a monthly plan roll over to the next month."
+        },
+        "cancel": {
+          "q": "Can I change or cancel my plan?",
+          "a": "Yes. Change or cancel your plan at any time from Credits in your account, where you can manage your subscription."
+        },
+        "failed": {
+          "q": "What if a render fails?",
+          "a": "If the 3D model fails to build, the credits for that render go back to your balance automatically."
+        },
+        "enterprise": {
+          "q": "Do you offer volume pricing or invoices?",
+          "a": "Yes, on Enterprise: volume credit pricing, invoice billing, priority support and an onboarding call. Book a call and we will set it up."
+        }
+      }
+    }
+  },
   "PaygPicker": {
     "custom": "Or enter an amount",
     "estimate": "{price} for about {count} renders",

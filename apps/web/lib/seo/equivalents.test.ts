@@ -10,12 +10,20 @@ describe('pickerPaths', () => {
     expect(pickerPaths('/es').map((option) => option.path)).toEqual(homes);
   });
 
+  it('links the pricing page to its Spanish twin and back', () => {
+    expect(equivalentPaths('/pricing').map((option) => option.path)).toEqual([
+      '/pricing',
+      '/es/precios',
+    ]);
+    expect(equivalentPaths('/es/precios').map((option) => option.locale)).toEqual(['en', 'es']);
+  });
+
   it('keeps the picker on a page in one language, linking the other homes', () => {
-    // /credits is English only and is where the signed-in header's balance links to.
-    expect(equivalentPaths('/credits')).toHaveLength(1);
-    const options = pickerPaths('/credits');
+    // /compare is English only.
+    expect(equivalentPaths('/compare')).toHaveLength(1);
+    const options = pickerPaths('/compare');
     expect(options).toHaveLength(LOCALES.length);
-    expect(options.find((option) => option.locale === 'en')?.path).toBe('/credits');
+    expect(options.find((option) => option.locale === 'en')?.path).toBe('/compare');
     expect(options.find((option) => option.locale === 'de')?.path).toBe('/de');
   });
 

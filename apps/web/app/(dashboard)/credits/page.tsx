@@ -28,32 +28,21 @@ import {
 } from '@/components/ui/card';
 import { currentUser } from '@/lib/actor';
 import { currentPricing } from '@/lib/pricing';
-import { breadcrumbList, JsonLd } from '@/lib/seo/jsonld';
-import { pageMetadata } from '@/lib/seo/metadata';
-import { livePaths, ROUTES } from '@/lib/seo/routes';
+import { ROUTES } from '@/lib/seo/routes';
+import { absoluteUrl } from '@/lib/seo/site';
 import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
-// The public pricing page, and the only indexable route in the dashboard group: it overrides the
-// layout's noindex. /es/precios and the rest arrive with their own copy.
+// Where credits and plans are bought. The public, indexed pricing page is /pricing (and
+// /es/precios); this one stays out of the index and names that page as its canonical.
 export async function generateMetadata(): Promise<Metadata> {
-  const { creditUsd, plans: SUBSCRIPTION_PLANS } = await currentPricing();
-  const [t, format] = await Promise.all([getTranslations('Credits'), getFormatter()]);
-  const metadata = pageMetadata({
-    locale: 'en',
-    path: ROUTES.pricing.paths.en,
+  const t = await getTranslations('Credits');
+  return {
     title: t('metaTitle'),
-    description: t('metaDescription', {
-      credits: RENDER_CREDITS,
-      price: format.number(RENDER_CREDITS * creditUsd, { style: 'currency', currency: 'USD' }),
-      proCredits: format.number(SUBSCRIPTION_PLANS.pro.monthlyCredits),
-    }),
-    alternates: livePaths('pricing'),
-  });
-  // The dashboard layout is noindex; metadata merges field by field, so the override has to be
-  // explicit or the public pricing page inherits it.
-  return { ...metadata, robots: { index: true, follow: true } };
+    alternates: { canonical: absoluteUrl(ROUTES.pricing.paths.en) },
+    robots: { index: false, follow: true },
+  };
 }
 
 const SIGN_UP = `/sign-up?next=${encodeURIComponent('/credits')}`;
@@ -161,14 +150,6 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
     <div className="space-y-8">
       <PurchaseConversion />
       <PricingExposure variant={pricing.variant} subject={pricing.subject} />
-      <JsonLd
-        graph={[
-          breadcrumbList([
-            { name: 'easyrender', path: ROUTES.home.paths.en },
-            { name: t('title'), path: ROUTES.pricing.paths.en },
-          ]),
-        ]}
-      />
       <div className="space-y-3">
         {/* Signed in, the breadcrumb names the page. The pricing page keeps its heading for visitors and search. */}
         {!user && (
