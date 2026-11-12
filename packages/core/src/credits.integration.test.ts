@@ -454,7 +454,7 @@ run('credits and generation billing (real database)', () => {
       expect(await balance(userId)).toBe(0);
     });
 
-    it('credits 5,000 on every paid Pro invoice, once each', async () => {
+    it('credits 5,500 on every paid Pro invoice, once each', async () => {
       const userId = await newUser(0);
       const invoice = (id: string) => ({
         id: `evt_${id}`,
@@ -471,7 +471,7 @@ run('credits and generation billing (real database)', () => {
       await send(invoice(`in_a_${userId}`));
       await send(invoice(`in_a_${userId}`));
       await send(invoice(`in_b_${userId}`));
-      expect(await balance(userId)).toBe(10_000);
+      expect(await balance(userId)).toBe(11_000);
     });
 
     it('credits each monthly plan its own amount on a paid invoice', async () => {
@@ -491,8 +491,8 @@ run('credits and generation billing (real database)', () => {
       });
       await send(invoice(`in_c_${creator}`, creator, 'creator'));
       await send(invoice(`in_s_${scale}`, scale, 'scale'));
-      expect(await balance(creator)).toBe(1600);
-      expect(await balance(scale)).toBe(16_000);
+      expect(await balance(creator)).toBe(2000);
+      expect(await balance(scale)).toBe(18_000);
     });
 
     it('rejects a bad signature', async () => {
