@@ -23,7 +23,7 @@ const PRODUCT_EVENTS = [
   ['shopify_account_linked', {}],
 ] as const;
 
-it('product events reach PostHog only after consent, through the consent-gated SDK, with no identity', async () => {
+it('product events reach PostHog only while the client is allowed to capture, with no identity', async () => {
   vi.resetModules();
   vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_localtest');
   const location = new URL('https://easyrender.ai/library');

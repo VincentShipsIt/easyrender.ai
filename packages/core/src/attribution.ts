@@ -39,7 +39,9 @@ export type ToolPolicy = 'always' | 'consent' | 'allow_unless_optout' | 'off';
 export const CONSENT_CONFIG: Record<string, Record<ConsentRegion, ToolPolicy>> = {
   attribution: { strict: 'always', standard: 'always' },
   serverEvents: { strict: 'always', standard: 'always' },
-  posthog: { strict: 'consent', standard: 'allow_unless_optout' },
+  // Vincent's decision (2026-11-12): PostHog starts on load in every region, with no consent gate.
+  // It stays cookieless, memory-only and without person profiles; the banner only governs GA4.
+  posthog: { strict: 'always', standard: 'always' },
   ga4: { strict: 'consent', standard: 'allow_unless_optout' },
   pixels: { strict: 'off', standard: 'off' },
 };

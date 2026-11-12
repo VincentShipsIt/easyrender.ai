@@ -64,15 +64,17 @@ history/pageview automation (the app sends sanitized SPA pageviews itself). Reus
 Ads base tag; do not install another Google bootstrap.
 No accounts, remote environments or account settings are changed by this implementation.
 
-The editable policy is `packages/core/src/attribution.ts`: browser PostHog and GA4 start as
-`consent` in strict regions and `allow_unless_optout` elsewhere. GPC blocks both in either
-region. Server attribution/events are always enabled when configured. The #96 Ads base tag remains
+The editable policy is `packages/core/src/attribution.ts`: browser GA4 starts as `consent` in
+strict regions and `allow_unless_optout` elsewhere, and GPC blocks it in either region. Browser
+PostHog is `always` (Vincent's decision, 2026-11-12): it starts on load in every region, ahead
+of the privacy lookup and the banner, and stays cookieless, memory-only, with no person
+profiles. Rejecting the banner or sending GPC does not stop it. Server attribution/events are always enabled when configured. The #96 Ads base tag remains
 loaded on the canonical hostname with advertising consent denied.
 Unknown tools default to consent/off. Change the GA4 policy on its own row.
 
 The privacy endpoint is dynamic, `Cache-Control: private, no-store`, and never varies the HTML
 by analytics region. Missing/unreliable country codes are strict. Failure or a two-second
-timeout starts neither PostHog nor GA4, including for a previously accepting visitor. The Ads
+timeout starts no GA4, including for a previously accepting visitor; PostHog is unaffected. The Ads
 base bootstrap still runs with denied consent.
 
 Only preview or local/test environments honor `?__geo=DE`, `x-test-country: US`, and
