@@ -283,7 +283,13 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
               onClick={() => loadExample(index)}
             >
               {/* biome-ignore lint/performance/noImgElement: tiny static thumbnail */}
-              <img src={example.photo} alt="" className="size-5 rounded-full object-cover" />
+              <img
+                src={example.photo}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="size-5 rounded-full object-cover"
+              />
               {showcase(`items.${example.slug}.title`)}
             </Button>
           ))}

@@ -94,6 +94,8 @@ export function AgentDemo({ item }: { item: ShowcaseItem }) {
                 <img
                   src={item.photo}
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                   className="size-20 self-center rounded-lg border object-cover sm:size-24"
                 />
                 <div className="relative h-32 sm:h-36">

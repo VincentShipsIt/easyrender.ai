@@ -74,6 +74,10 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
     views[pass] = entry;
   }
 
+  // On a phone each card is a couple of hundred pixels wide: LOD1 is indistinguishable there and
+  // a third of the download.
+  const lod = window.matchMedia('(max-width: 768px)').matches ? 1 : 0;
+
   const built = new Map<string, Promise<PassSet>>();
   const build = (id: string) => {
     let pending = built.get(id);
@@ -81,9 +85,9 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
       const item = itemOf(id);
       pending = Promise.all([
         makeWire(id, { fill: 0x111113 }).then((wire) => wire.object),
-        makeShaded(id, 'depth'),
-        makeShaded(id, 'normal'),
-        makeBeauty(id, { shadows: true }),
+        makeShaded(id, 'depth', { lod }),
+        makeShaded(id, 'normal', { lod }),
+        makeBeauty(id, { lod, shadows: true }),
       ]).then(([wire, depth, normal, beauty]) => ({
         wire: normalized(wire, item),
         depth: normalized(depth, item),
@@ -220,5 +224,5 @@ export async function initHero(root: HTMLElement, { scope, fmt, names }: HeroCon
   scope.on(stack, 'pointerup', release);
   scope.on(stack, 'pointercancel', release);
 
-  preload(ORDER.slice(1, 3));
+  preload(ORDER.slice(1, 3), lod);
 }

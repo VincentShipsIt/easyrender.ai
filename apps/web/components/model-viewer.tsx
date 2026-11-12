@@ -5,6 +5,7 @@ import {
   type DetailedHTMLProps,
   type HTMLAttributes,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { cn } from '@/lib/utils';
@@ -68,16 +69,36 @@ export function ModelViewer({
   rotationSpeed = '24deg',
 }: Props) {
   const [ready, setReady] = useState(false);
+  const host = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let alive = true;
-    loadModelViewer().then(() => alive && setReady(true));
+    const start = () => loadModelViewer().then(() => alive && setReady(true));
+    const element = host.current;
+    // A lazy viewer far down the page does not need the library (or its model) until it is
+    // about to be seen.
+    if (!lazy || !element) {
+      start();
+      return () => {
+        alive = false;
+      };
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        start();
+      },
+      { rootMargin: '600px 0px' },
+    );
+    observer.observe(element);
     return () => {
       alive = false;
+      observer.disconnect();
     };
-  }, []);
+  }, [lazy]);
 
   return (
-    <div className={cn('relative size-full', className)} style={style}>
+    <div ref={host} className={cn('relative size-full', className)} style={style}>
       {ready && (
         <model-viewer
           src={src}

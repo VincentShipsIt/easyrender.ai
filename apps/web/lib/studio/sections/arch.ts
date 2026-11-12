@@ -6,6 +6,7 @@ import { prefersReducedMotion } from '../engine/stage';
 import type { Scope } from '../scope';
 
 const SRC = '/studio/interior.mp4';
+const POSTER = '/studio/interior.jpg';
 const WARM = 2700;
 const COOL = 6500;
 
@@ -15,6 +16,8 @@ export function initArch(panel: HTMLElement, { scope }: { scope: Scope }) {
   const track = part(panel, 'track');
   const pins = parts(panel, 'pin');
   const still = prefersReducedMotion();
+  // Set here, as the section nears the viewport: a poster in the markup is fetched with the page.
+  video.poster = POSTER;
 
   let raf = 0;
   let shown = -1;

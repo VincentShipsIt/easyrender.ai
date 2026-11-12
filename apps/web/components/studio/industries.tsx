@@ -115,14 +115,7 @@ export function StudioIndustries({ salesHref }: { salesHref: string }) {
 
         <article className="use">
           <div ref={arch} className="panel panel--arch" aria-hidden="true">
-            <video
-              data-er="video"
-              muted
-              loop
-              playsInline
-              preload="none"
-              poster="/studio/interior.jpg"
-            />
+            <video data-er="video" muted loop playsInline preload="none" />
             <ul className="pins">
               {PINS.map((pin) => (
                 <li
