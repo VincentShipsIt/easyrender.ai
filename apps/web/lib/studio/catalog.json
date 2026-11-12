@@ -2,69 +2,77 @@
   {
     "id": "swivel-chair",
     "category": "furniture",
-    "engine": "trellis",
-    "dims": [0.76, 0.81, 0.81],
+    "engine": "tripo",
+    "dims": [0.8, 0.81, 0.843],
     "material": "upholstery",
-    "mass": 17.8,
+    "mass": 19.5,
     "friction": 0.82,
     "restitution": 0.08,
     "collider": "hull",
-    "hullVerts": 28,
-    "wireTris": 2398,
+    "hullVerts": 29,
+    "wireTris": 2400,
     "lods": [
       {
         "file": "swivel-chair.glb",
-        "tris": 24268,
-        "verts": 17292,
-        "kb": 311
+        "tris": 39168,
+        "verts": 22173,
+        "kb": 419
       },
       {
         "file": "swivel-chair.lod1.glb",
-        "tris": 5338,
-        "verts": 6071,
-        "kb": 107
+        "tris": 8616,
+        "verts": 6447,
+        "kb": 128
       },
       {
         "file": "swivel-chair.lod2.glb",
-        "tris": 3470,
-        "verts": 4541,
-        "kb": 76
+        "tris": 2154,
+        "verts": 2002,
+        "kb": 46
       }
     ],
+    "hd": {
+      "file": "swivel-chair.hd.glb",
+      "kb": 736
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
     "id": "armchair",
     "category": "furniture",
-    "engine": "trellisSheet",
-    "dims": [0.7, 0.77, 0.85],
+    "engine": "tripo",
+    "dims": [0.723, 0.77, 0.847],
     "material": "upholstery",
-    "mass": 14.1,
+    "mass": 14.5,
     "friction": 0.82,
     "restitution": 0.08,
     "collider": "hull",
-    "hullVerts": 39,
+    "hullVerts": 38,
     "wireTris": 2400,
     "lods": [
       {
         "file": "armchair.glb",
-        "tris": 25879,
-        "verts": 17522,
-        "kb": 330
+        "tris": 37590,
+        "verts": 22948,
+        "kb": 454
       },
       {
         "file": "armchair.lod1.glb",
-        "tris": 5692,
-        "verts": 5871,
-        "kb": 111
+        "tris": 8268,
+        "verts": 7324,
+        "kb": 152
       },
       {
         "file": "armchair.lod2.glb",
-        "tris": 2906,
-        "verts": 3614,
-        "kb": 66
+        "tris": 2066,
+        "verts": 2454,
+        "kb": 58
       }
     ],
+    "hd": {
+      "file": "armchair.hd.glb",
+      "kb": 762
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -172,35 +180,39 @@
   {
     "id": "clay-vase",
     "category": "decor",
-    "engine": "trellis",
-    "dims": [0.35, 0.4, 0.35],
+    "engine": "tripo",
+    "dims": [0.358, 0.4, 0.358],
     "material": "ceramic",
-    "mass": 6.6,
+    "mass": 6.9,
     "friction": 0.48,
     "restitution": 0.12,
     "collider": "hull",
-    "hullVerts": 26,
+    "hullVerts": 25,
     "wireTris": 2400,
     "lods": [
       {
         "file": "clay-vase.glb",
-        "tris": 14590,
-        "verts": 8454,
-        "kb": 183
+        "tris": 29334,
+        "verts": 16489,
+        "kb": 516
       },
       {
         "file": "clay-vase.lod1.glb",
-        "tris": 3208,
-        "verts": 2378,
-        "kb": 57
+        "tris": 6453,
+        "verts": 4806,
+        "kb": 125
       },
       {
         "file": "clay-vase.lod2.glb",
-        "tris": 802,
-        "verts": 760,
-        "kb": 21
+        "tris": 1613,
+        "verts": 1414,
+        "kb": 39
       }
     ],
+    "hd": {
+      "file": "clay-vase.hd.glb",
+      "kb": 1296
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -235,6 +247,10 @@
         "kb": 42
       }
     ],
+    "hd": {
+      "file": "sofa.hd.glb",
+      "kb": 1712
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -269,6 +285,10 @@
         "kb": 38
       }
     ],
+    "hd": {
+      "file": "lamp.hd.glb",
+      "kb": 666
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -303,6 +323,10 @@
         "kb": 92
       }
     ],
+    "hd": {
+      "file": "cactus.hd.glb",
+      "kb": 1124
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -337,6 +361,10 @@
         "kb": 55
       }
     ],
+    "hd": {
+      "file": "sneaker.hd.glb",
+      "kb": 868
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -371,6 +399,10 @@
         "kb": 62
       }
     ],
+    "hd": {
+      "file": "espresso.hd.glb",
+      "kb": 844
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -405,6 +437,10 @@
         "kb": 56
       }
     ],
+    "hd": {
+      "file": "crate.hd.glb",
+      "kb": 2062
+    },
     "formats": ["GLB", "USDZ"]
   },
   {
@@ -439,6 +475,10 @@
         "kb": 31
       }
     ],
+    "hd": {
+      "file": "barrel.hd.glb",
+      "kb": 520
+    },
     "formats": ["GLB", "USDZ"]
   }
 ]

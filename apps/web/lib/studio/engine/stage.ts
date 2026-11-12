@@ -4,7 +4,7 @@
 // dozens of live viewports on a page without hitting the browser's WebGL context limit.
 
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { createStudioEnvironment, disposeStudioEnvironment } from './environment';
 import { disposeTree } from './resources';
 
 export const prefersReducedMotion = () =>
@@ -45,7 +45,9 @@ export class Stage {
     this.renderer = renderer;
 
     const pmrem = new THREE.PMREMGenerator(renderer);
-    this.env = pmrem.fromScene(new RoomEnvironment(), 0.035).texture;
+    const studio = createStudioEnvironment();
+    this.env = pmrem.fromScene(studio, 0.02).texture;
+    disposeStudioEnvironment(studio);
     pmrem.dispose();
 
     this.#io = new IntersectionObserver(

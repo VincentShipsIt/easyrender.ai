@@ -1,10 +1,11 @@
 'use client';
 
-import { Box, Coins, PanelLeft, PanelRight, Plus } from 'lucide-react';
+import { Coins, PanelLeft, PanelRight, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useFormatter, useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useEffect, useState } from 'react';
+import { BrandMark } from '@/components/brand-mark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { AppBreadcrumb } from './app-breadcrumb';
@@ -89,7 +90,7 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
       >
         <Button variant="ghost" size="icon" className="mb-2 size-10" asChild>
           <Link href="/" aria-label={t('home')} title={t('home')}>
-            <Box className="size-5" />
+            <BrandMark className="size-[1.375rem]" />
           </Link>
         </Button>
         {[...APP_NAV, account].map((item) => {
@@ -154,7 +155,7 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
             <PanelLeft />
           </Button>
           <Link href="/dashboard" className="flex items-center gap-2 font-semibold md:hidden">
-            <Box className="size-5" />
+            <BrandMark className="size-[1.375rem]" />
           </Link>
           <AppBreadcrumb />
           <div className="ml-auto flex items-center gap-1">

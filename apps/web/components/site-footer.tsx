@@ -1,6 +1,6 @@
-import { Box } from 'lucide-react';
 import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { BrandMark } from '@/components/brand-mark';
 import { Separator } from '@/components/ui/separator';
 import type { Locale } from '@/i18n/config';
 import { isPublished, ROUTES } from '@/lib/seo/routes';
@@ -58,7 +58,7 @@ export async function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.5fr_repeat(3,1fr)]">
         <div className="space-y-3">
           <Link href={home} className="flex items-center gap-2 font-semibold tracking-tight">
-            <Box className="size-5" />
+            <BrandMark className="size-[1.375rem]" />
             easyrender
           </Link>
           <p className="max-w-xs text-sm text-muted-foreground">{t('tagline')}</p>

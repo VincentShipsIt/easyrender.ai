@@ -48,6 +48,9 @@ export type CatalogItem = {
   hullVerts: number;
   wireTris: number;
   lods: [Lod, Lod, Lod];
+  // LOD0 with its maps at 2048 px, for elements whose source carries that much detail. It is what
+  // the sheet inspects and what the download hands over; the page itself runs on `lods`.
+  hd?: { file: string; kb: number };
   formats: string[];
 };
 
@@ -71,6 +74,9 @@ export function itemOf(id: string): CatalogItem {
   if (!item) throw new Error(`Unknown hub element: ${id}`);
   return item;
 }
+
+// The best file an element has.
+export const fullFile = (item: CatalogItem) => item.hd ?? item.lods[0];
 
 export const modelUrl = (file: string) => `/studio/models/${file}`;
 export const photoUrl = (id: string) => `/studio/photos/${id}.jpg`;

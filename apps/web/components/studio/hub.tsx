@@ -9,6 +9,7 @@ import {
   type CatalogItem,
   type CategoryKey,
   findItem,
+  fullFile,
   modelUrl,
   photoUrl,
 } from '@/lib/studio/catalog';
@@ -322,7 +323,7 @@ function HubSheet({ id, fmt, onClose }: { id: string | null; fmt: Format; onClos
 
   const copyEmbed = async () => {
     if (!item) return;
-    const src = new URL(modelUrl(item.lods[0].file), window.location.href).href;
+    const src = new URL(modelUrl(fullFile(item).file), window.location.href).href;
     const name = catalog(`items.${item.id}.name`);
     const code = [
       '<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>',
@@ -416,7 +417,7 @@ function HubSheet({ id, fmt, onClose }: { id: string | null; fmt: Format; onClos
                 <div>
                   <dt>{t('file')}</dt>
                   <dd>
-                    {fmt.int(item.lods[0].kb)} KB
+                    {fmt.int(fullFile(item).kb)} KB
                     <small>{t('fileNote')}</small>
                   </dd>
                 </div>
@@ -464,7 +465,7 @@ function HubSheet({ id, fmt, onClose }: { id: string | null; fmt: Format; onClos
               <div className="sheet__actions">
                 <a
                   className="btn btn--solid"
-                  href={modelUrl(item.lods[0].file)}
+                  href={modelUrl(fullFile(item).file)}
                   download={`${item.id}.glb`}
                 >
                   <Download />

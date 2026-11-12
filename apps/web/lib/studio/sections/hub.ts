@@ -113,7 +113,7 @@ const SHOWN: Record<HubPass, Piece[]> = {
 };
 
 async function makePiece(id: string, piece: Piece) {
-  if (piece === 'beauty') return makeBeauty(id, { shadows: true });
+  if (piece === 'beauty') return makeBeauty(id, { hd: true, shadows: true });
   if (piece === 'wire') return (await makeWire(id, { fill: 0x111113 })).object;
   if (piece === 'collider') return (await makeCollider(id)).object;
   return makeShaded(id, piece);

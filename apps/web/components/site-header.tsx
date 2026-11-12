@@ -1,8 +1,9 @@
 import { getBalance } from '@easyrender/core';
-import { Box, Coins, LayoutDashboard } from 'lucide-react';
+import { Coins, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { connection } from 'next/server';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
+import { BrandMark } from '@/components/brand-mark';
 import { LocaleSwitcher } from '@/components/locale-switcher';
 import { SiteMenu } from '@/components/site-menu';
 import { Button } from '@/components/ui/button';
@@ -40,7 +41,7 @@ export async function SiteHeader() {
       <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-4">
           <Link href={home} className="flex items-center gap-2 font-semibold tracking-tight">
-            <Box className="size-5" />
+            <BrandMark className="size-[1.375rem]" />
             {/* Icon only on the narrowest phones so the header actions still fit. */}
             <span className="max-[400px]:sr-only">easyrender</span>
           </Link>
