@@ -106,9 +106,13 @@ Postgres in `TEST_DATABASE_URL` and skips without it.
 13. Stripe webhooks verify the signature. The Replicate webhook payload is untrusted: `advance()`
     re-reads the prediction from Replicate itself, so keep it that way.
 14. Schema changes: `packages/db/prisma/schema.prisma`. Prod syncs with `prisma db push` during
-    the Vercel build (`packages/db/scripts/deploy.mjs`). A change Prisma flags as possible data
-    loss stops the deploy; set `DB_ACCEPT_DATA_LOSS=1` for one production build only, then remove
-    it. Never run it against prod from a laptop.
+    the Vercel build (`packages/db/scripts/deploy.mjs`). That script reads the SQL Prisma would
+    run: a purely additive change (new tables, nullable or defaulted columns, indexes, a new
+    unique index) is applied on its own, even though Prisma warns about it. Anything else (a drop,
+    a type change, a rename, a required column with no default) fails the `Schema change` CI job
+    and stops the deploy; review it, and set `DB_ACCEPT_DATA_LOSS=1` for one production build
+    only, then remove it. Check a change locally with `bun run --cwd packages/db db:check`. Never
+    run it against prod from a laptop.
 15. New env var: add it to `.env.example` and `turbo.json` (`build.env`) in the same PR, and say
     in the PR that it has to be set in Vercel. Never commit a value.
 16. Tests: assert what the user or caller sees (returned or stored values), not call order. A

@@ -3,7 +3,8 @@
 First-touch attribution is independent of browser analytics consent. `Render` is the existing
 preview AND model table; its ID serves as both `preview_id` and `model_id`. `Render` and `User`
 receive ten nullable text columns, including an ISO UTC `first_seen_at`. No existing columns,
-constraints or indexes change. `prisma db push` does not require `DB_ACCEPT_DATA_LOSS`.
+constraints or indexes change. The change is additive, so the deploy applies it without
+`DB_ACCEPT_DATA_LOSS`.
 
 The browser holds only normalized campaign/referrer values in module memory. Internal navigation
 preserves them; reloads, new tabs and non-OAuth full navigations reset them. Neither attribution
