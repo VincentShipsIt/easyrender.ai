@@ -22,6 +22,7 @@ vi.mock('@easyrender/core/admin-analytics', async (importOriginal) => ({
           packId: 'pro',
           credits: SUBSCRIPTION_PLANS.pro.monthlyCredits,
           amountCents: 1234,
+          currency: 'usd',
           status: 'paid',
           createdAt: at,
           updatedAt: at,

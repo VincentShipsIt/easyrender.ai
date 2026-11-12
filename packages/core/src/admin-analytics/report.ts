@@ -87,7 +87,7 @@ export function databaseFinance(snapshot: Snapshot): Finance {
       userId: p.userId,
       at: iso(p.createdAt),
       product: p.packId,
-      currency: 'USD',
+      currency: p.currency.toUpperCase(),
       gross: p.amountCents / 100,
       refunds: 0,
       fees: null,

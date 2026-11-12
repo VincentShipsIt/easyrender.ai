@@ -59,6 +59,51 @@ export const pricingFor = (variant: PricingVariant = 'control') => ({
       : SUBSCRIPTION_PLANS,
 });
 
+// Fixed per-currency prices (Stripe `currency_options` on the same price IDs). USD stays the base
+// currency. Buyers in euro-area countries are charged these EUR amounts; Adaptive Pricing stays off.
+export type ChargeCurrency = 'usd' | 'eur';
+export const EURO_AREA_COUNTRIES: ReadonlySet<string> = new Set([
+  'AT',
+  'BE',
+  'BG',
+  'CY',
+  'DE',
+  'EE',
+  'ES',
+  'FI',
+  'FR',
+  'GR',
+  'HR',
+  'IE',
+  'IT',
+  'LT',
+  'LU',
+  'LV',
+  'MT',
+  'NL',
+  'PT',
+  'SI',
+  'SK',
+]);
+export const currencyForCountry = (country: string | null | undefined): ChargeCurrency =>
+  country && EURO_AREA_COUNTRIES.has(country.toUpperCase()) ? 'eur' : 'usd';
+
+export const EUR_PRICING = {
+  control: { creditCents: 1, plans: { creator: 1800, pro: 4600, scale: 13_900 } },
+  test: { creditCents: 2, plans: { creator: 2700, pro: 7400, scale: 18_500 } },
+} as const;
+
+/** The unit amount (in cents) the Stripe price must carry for a plan or one pay-as-you-go credit. */
+export const unitAmountCents = (
+  plan: 'payg' | PlanId,
+  variant: PricingVariant = 'control',
+  currency: ChargeCurrency = 'usd',
+) => {
+  if (currency === 'eur')
+    return plan === 'payg' ? EUR_PRICING[variant].creditCents : EUR_PRICING[variant].plans[plan];
+  return plan === 'payg' ? paygPriceCents(1, variant) : pricingFor(variant).plans[plan].priceCents;
+};
+
 export const isValidPaygCredits = (credits: number, variant: PricingVariant = 'control') => {
   const { payg } = pricingFor(variant);
   return Number.isInteger(credits) && credits >= payg.min && credits <= payg.max;

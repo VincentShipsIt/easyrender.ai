@@ -77,6 +77,7 @@ export async function loadDatabase(
         packId: true,
         credits: true,
         amountCents: true,
+        currency: true,
         status: true,
         createdAt: true,
         updatedAt: true,
