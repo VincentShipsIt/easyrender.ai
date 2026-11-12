@@ -76,6 +76,13 @@ describe('photo guardrail', () => {
     const check = await checkPhoto(await noise(600, 600));
     expect(check.ok && check.warnings).toContain('low_resolution');
   });
+
+  it('measures the photo it checked', async () => {
+    const check = await checkPhoto(await noise(1200, 900));
+    expect(check.ok && check.measures).toMatchObject({ width: 1200, height: 900 });
+    expect(check.ok && check.measures.spread).toBeGreaterThan(6);
+    expect(check.ok && check.measures.sharpness).toBeGreaterThan(0);
+  });
 });
 
 // A 3x3 sheet on white with a dark square in each chosen cell.
@@ -121,7 +128,20 @@ describe('sheet guardrail', () => {
 
   it('accepts a real sheet whose views all differ', async () => {
     const check = await checkSheet(showcase('armchair-angles.jpg'));
-    expect(check).toEqual({ ok: true, warnings: [] });
+    expect(check.ok && check.warnings).toEqual([]);
+  });
+
+  it('measures the sheet it checked, so renders can be compared', async () => {
+    const armchair = await checkSheet(showcase('armchair-angles.jpg'));
+    expect(armchair.ok && armchair.measures.emptyCells).toBe(0);
+    expect(armchair.ok && armchair.measures.repeatedViews).toBe(0);
+    // Distinct turnaround views differ by 0.03 or more.
+    expect(armchair.ok && armchair.measures.closestViews).toBeGreaterThan(0.015);
+    expect(armchair.ok && armchair.measures.side).toBeGreaterThanOrEqual(768);
+
+    const partial = await checkSheet(await sheetWith([0, 1, 2, 3, 4, 5, 6, 7]));
+    expect(partial.ok && partial.measures).toMatchObject({ side: 900, emptyCells: 1 });
+    expect(partial.ok && partial.warnings).toContain('empty_cell');
   });
 
   it('rejects a real sheet that repeats one view', async () => {
@@ -149,6 +169,11 @@ describe('glb guardrail', () => {
 
   it('accepts a well-formed binary glTF', () => {
     expect(checkGlb(glb(50_000)).ok).toBe(true);
+  });
+
+  it('measures the size of the model it checked', () => {
+    const check = checkGlb(glb(50_000));
+    expect(check.ok && check.measures).toEqual({ bytes: 50_000 });
   });
 
   it('rejects empty, wrong-version, truncated and non-glTF files', () => {

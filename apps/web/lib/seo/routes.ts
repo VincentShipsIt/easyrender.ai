@@ -160,7 +160,7 @@ export const ROUTES = {
       it: '/it/cookie',
       pt: '/pt/cookies',
     },
-    published: [],
+    published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 0.3,
     changeFrequency: 'yearly',
   },

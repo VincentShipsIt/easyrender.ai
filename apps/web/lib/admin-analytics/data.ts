@@ -226,7 +226,10 @@ const reportCached = unstable_cache(
         ).length,
         purchase:
           s.purchases.filter((p) => p.status === 'paid' && within(p.createdAt)).length +
-          s.ledger.filter((l) => l.reason === 'subscription' && within(l.createdAt)).length,
+          s.ledger.filter(
+            (l) =>
+              l.reason === 'subscription' && l.delta > 0 && !l.purchaseId && within(l.createdAt),
+          ).length,
       };
       view.tables.push({
         key: 'reconciliation',

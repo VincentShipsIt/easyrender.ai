@@ -2,6 +2,7 @@ import { bearerToken, resourceMetadataUrl, verifyApiKey } from '@easyrender/core
 import { createMcpServer } from '@easyrender/mcp';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { NextResponse } from 'next/server';
+import { privacyRegion } from '@/lib/analytics/privacy-region';
 
 export const maxDuration = 60;
 
@@ -17,7 +18,7 @@ async function serve(request: Request): Promise<Response> {
       },
     );
   }
-  const server = createMcpServer({ userId });
+  const server = createMcpServer({ userId, geoCountry: privacyRegion(request.headers).country });
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
     enableJsonResponse: true,

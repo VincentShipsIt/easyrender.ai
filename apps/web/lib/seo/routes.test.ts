@@ -58,7 +58,7 @@ describe('the route registry', () => {
     expect(livePaths('evals')).toEqual({ en: '/evals', es: '/es/evaluaciones' });
   });
 
-  it('opens the six homes and nothing else in de, fr, it and pt', () => {
+  it('opens the six homes and cookie information in de, fr, it and pt', () => {
     expect(livePaths('home')).toEqual({
       en: '/',
       es: '/es',
@@ -67,10 +67,10 @@ describe('the route registry', () => {
       it: '/it',
       pt: '/pt',
     });
-    // Routable for the home only: every other page in these languages is still a 404.
+    // Home and cookie information are live; other pages still wait for localized copy.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       for (const key of ROUTE_KEYS) {
-        if (key === 'home') continue;
+        if (key === 'home' || key === 'cookies') continue;
         expect(isPublished(key, locale), `${key}/${locale}`).toBe(false);
       }
     }

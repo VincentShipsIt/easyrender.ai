@@ -1,17 +1,7 @@
+export { ATTRIBUTION_KEYS as ATTRIBUTION_COLUMNS } from '../attribution';
+
 export const DAY = 86_400_000;
 export const SIGNAL_MIN_SIGNUPS = 20;
-export const ATTRIBUTION_COLUMNS = [
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_content',
-  'utm_term',
-  'referrer',
-  'landing_path',
-  'first_seen_at',
-  'geo_country',
-  'consent_region_at_create',
-] as const;
 export const SECTIONS = [
   'overview',
   'revenue',

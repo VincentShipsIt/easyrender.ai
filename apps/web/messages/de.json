@@ -43,7 +43,8 @@
       "signIn": "Anmelden",
       "guides": "Ratgeber",
       "models": "Models",
-      "evals": "Evals"
+      "evals": "Evals",
+      "cookies": "Cookies und Analyse"
     },
     "copyright": "© 2026 easyrender. Technologie von Genfeed.",
     "pricesNote": "Preise in USD. Credits verfallen nicht."
@@ -1066,6 +1067,26 @@
     },
     "cta": "See the models behind a render"
   },
+  "Analytics": {
+    "title": "Cookies und Analyse",
+    "banner": "Wir nutzen optionale Analysen, um zu verstehen, wie du easyrender nutzt. Du kannst sie akzeptieren oder ablehnen.",
+    "accept": "Akzeptieren",
+    "reject": "Ablehnen",
+    "details": "Cookie-Details",
+    "intro": "Hier siehst du, was dein Browser speichert und wie du optionale Analysen steuerst.",
+    "anonTitle": "er_anon",
+    "anon": "Dieses eigene Cookie erkennt deine anonymen Vorschauen, setzt das tägliche Gratislimit um und ermöglicht dir den Zugriff und die Zuordnung zu deinem Konto. Es wird derzeit beim ersten Besuch gesetzt und gilt ein Jahr. Es dient nicht der Attribution.",
+    "consentTitle": "er_consent",
+    "consent": "Speichert deine Analyseentscheidung samt Datum und Version ein Jahr lang. Es wird erst gesetzt, wenn du dich entscheidest.",
+    "gaTitle": "Google Analytics 4: _ga und _ga_<id>",
+    "ga": "Diese Cookies messen Besuche und gelten bis zu zwei Jahre. In strengen Regionen werden sie erst nach deiner Zustimmung gesetzt. Anderswo ist die Analyse aktiv, sofern du sie nicht ablehnst oder Global Privacy Control (GPC) sendest. Werbung bleibt immer abgelehnt.",
+    "posthogTitle": "PostHog (EU), ohne Cookies",
+    "posthog": "PostHog nutzt weder Cookies noch dauerhaften Browserspeicher. In strengen Regionen lädt es erst nach deiner Zustimmung; anderswo respektiert es deine Ablehnung und GPC.",
+    "attributionTitle": "Attribution des ersten Kontakts",
+    "attribution": "Kampagnenparameter und die Herkunftsseite bleiben im Arbeitsspeicher, bis du eine Vorschau oder ein Konto erstellst. Dann werden sie mit diesem Datensatz gespeichert. Klickkennungen werden nicht gespeichert. Serverereignisse sind unabhängig von deiner Browseranalyseentscheidung.",
+    "change": "Ändere deine Entscheidung",
+    "withdraw": "Mit Ablehnen widerrufst du deine Zustimmung. Das stoppt optionales Tracking und entfernt Google-Analytics-Cookies. GPC blockiert optionale Analysen immer."
+  },
   "Ar": {
     "metaTitle": "In deinem Zuhause ansehen",
     "title": "{name} in deinem Zuhause",
@@ -1305,7 +1326,7 @@
       "error": "Error",
       "missing": "Missing variables",
       "traffic": "Traffic over time",
-      "attributionMissing": "Attribution columns not deployed yet (PR feat/analytics-posthog-ga4)",
+      "attributionMissing": "Attribution columns not deployed yet",
       "postgresUnavailable": "Postgres unavailable or analytics row limit exceeded",
       "posthogUnavailable": "PostHog unavailable · visits are not measurable",
       "stripeUnavailable": "Stripe unavailable or incomplete · using DB fallback",
@@ -1314,7 +1335,7 @@
       "periodDefinitions": "Activation follows signups in the selected period through its end. Usage follows render creation; revenue follows payments. Previous means the immediately preceding equal-duration window. Current subscriptions have no historical comparison.",
       "mutableRenderTimes": "Render completion and generation times are proxies: updatedAt also changes after completion; no immutable sheet completion timestamp exists. A sheet requires sheetKey; a model requires ready + glbKey.",
       "boundedSnapshot": "Read-only snapshot, capped at 50,000 rows per table. Exceeding a cap stops the report rather than publishing partial totals.",
-      "dbFallback": "DB fallback (no Stripe fees/refunds/MRR from Stripe). PAYG uses paid purchases in USD; subscription revenue estimates list price from invoice credit grants. Net assumes no observable cash refunds. Dev grants are not revenue.",
+      "dbFallback": "DB fallback (no Stripe fees/refunds/MRR from Stripe). Paid purchases use stored USD amounts for PAYG and subscriptions; only legacy subscription grants without a purchase link infer catalog prices. Net assumes no observable cash refunds. Dev grants are not revenue.",
       "anonymousTeamCaveat": "Team exclusions apply to known account emails. Anonymous previews and cookieless traffic cannot reliably exclude the team.",
       "multipleCurrencies": "Tables separate currencies. Charts show the first currency only; no FX conversion or cross-currency total is calculated. Provider margin is USD only.",
       "attributionScope": "First-touch signup cohort and period payment activity. Visit joins use matching dimensions; missing traffic stays unknown. Signals require at least 20 signups.",

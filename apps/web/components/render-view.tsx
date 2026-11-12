@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { observeRender } from '@/lib/analytics/browser';
 
 const RUNNING = new Set(['drafting', 'rendering']);
 
@@ -40,6 +41,10 @@ export function RenderView({
     }, 3000);
     return () => clearInterval(timer);
   }, [render.id, render.status]);
+
+  useEffect(() => {
+    if (owner) observeRender(render);
+  }, [render, owner]);
 
   async function build() {
     setStarting(true);

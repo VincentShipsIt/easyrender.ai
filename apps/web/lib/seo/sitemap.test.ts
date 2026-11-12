@@ -17,7 +17,7 @@ describe('the per-language sitemaps', () => {
     expect(sitemapLocales()).toEqual(['en', 'es', 'de', 'fr', 'it', 'pt']);
   });
 
-  it('lists the English home, pricing and models pages, and each other home alone', () => {
+  it('lists the English home, pricing and models pages, and localized cookie information', () => {
     const paths = (locale: (typeof LOCALES)[number]) =>
       localeEntries(locale, BEFORE_GUIDES).map((entry) => entry.path);
     expect(paths('en')).toEqual([
@@ -30,11 +30,12 @@ describe('the per-language sitemaps', () => {
       '/compare/meshy',
       '/compare/photogrammetry-software',
       '/compare/tripo',
+      '/cookies',
     ]);
-    expect(paths('es')).toEqual(['/es', '/es/modelos']);
-    // Only the home is open in these languages: no guides, pricing or legal URL is listed.
+    expect(paths('es')).toEqual(['/es', '/es/modelos', '/es/cookies']);
+    // Homes and cookie information are open; guides and pricing remain unpublished.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(paths(locale), locale).toEqual([`/${locale}`]);
+      expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
     }
   });
 
@@ -51,10 +52,11 @@ describe('the per-language sitemaps', () => {
       '/compare/meshy',
       '/compare/photogrammetry-software',
       '/compare/tripo',
+      '/cookies',
       '/learn/how-to-make-a-3d-model-from-photos',
     ]);
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(paths(locale), locale).toEqual([`/${locale}`]);
+      expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
     }
   });
 

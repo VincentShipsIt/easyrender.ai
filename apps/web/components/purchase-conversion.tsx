@@ -1,0 +1,34 @@
+'use client';
+import { useEffect } from 'react';
+import { gaEvent } from '@/lib/analytics/browser';
+export function PurchaseConversion() {
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const session = params.get('session_id');
+    if (params.get('status') !== 'success' || !session) return;
+    let isStopped = false;
+    let attempts = 0;
+    const poll = async () => {
+      if (isStopped || attempts++ >= 30) return;
+      try {
+        const response = await fetch(
+          `/api/checkout/confirmed?session_id=${encodeURIComponent(session)}`,
+          { cache: 'no-store' },
+        );
+        if (response.ok) {
+          const result = await response.json();
+          if (result?.transaction_id) gaEvent('purchase', result, result.transaction_id);
+        }
+      } catch {
+        /* Retry while the confirmed webhook arrives. */
+      }
+      if (!isStopped) timer = setTimeout(poll, 2000);
+    };
+    let timer = setTimeout(poll, 1000);
+    return () => {
+      isStopped = true;
+      clearTimeout(timer);
+    };
+  }, []);
+  return null;
+}

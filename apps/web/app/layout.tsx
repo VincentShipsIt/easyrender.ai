@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
+import { Analytics } from '@/components/analytics';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { HTML_LANG, type Locale, PATH_HEADER } from '@/i18n/config';
 import { pickClientMessages } from '@/lib/client-messages';
 import { geistMono, geistSans } from '@/lib/fonts';
+import { GOOGLE_TAG_BOOTSTRAP } from '@/lib/google-tag';
 import { SITE_URL } from '@/lib/seo/site';
 import './globals.css';
 
@@ -35,17 +38,23 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       lang={HTML_LANG[locale as Locale]}
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      {isShopifyApp && (
-        <head>
-          <meta name="shopify-api-key" content={process.env.SHOPIFY_API_KEY ?? ''} />
-          <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js" />
-        </head>
-      )}
+      <head>
+        {isShopifyApp && (
+          <>
+            <meta name="shopify-api-key" content={process.env.SHOPIFY_API_KEY ?? ''} />
+            <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js" />
+          </>
+        )}
+        <Script id="easyrender-google-tag" strategy="beforeInteractive">
+          {GOOGLE_TAG_BOOTSTRAP}
+        </Script>
+      </head>
       <body className="flex min-h-dvh flex-col font-sans antialiased">
         <NextIntlClientProvider messages={pickClientMessages(messages)}>
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
+          <Analytics />
         </NextIntlClientProvider>
       </body>
     </html>

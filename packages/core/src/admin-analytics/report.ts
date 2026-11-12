@@ -95,7 +95,8 @@ export function databaseFinance(snapshot: Snapshot): Finance {
       credits: p.credits,
     }));
   for (const [i, l] of snapshot.ledger.entries()) {
-    if (l.reason !== 'subscription' || l.delta <= 0) continue;
+    // #88 records invoices as purchases; infer only legacy grants without a purchase link.
+    if (l.reason !== 'subscription' || l.delta <= 0 || l.purchaseId) continue;
     const plan = planForGrant(l.delta);
     if (plan)
       payments.push({

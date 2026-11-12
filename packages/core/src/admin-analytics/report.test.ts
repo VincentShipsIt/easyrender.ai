@@ -1,3 +1,4 @@
+import { SUBSCRIPTION_PLANS } from '@easyrender/harness';
 import { describe, expect, it } from 'vitest';
 import type { Snapshot } from './database';
 import { channel, periodRange } from './helpers';
@@ -43,6 +44,52 @@ describe('admin reports observed output', () => {
     expect(report.metrics.find((m) => m.key === 'refunds')?.value).toBeNull();
     expect(report.metrics.find((m) => m.key === 'fees')?.value).toBeNull();
     expect(report.metrics.find((m) => m.key === 'visits')?.value).toBeNull();
+  });
+  it('counts a stored subscription invoice once and preserves its actual paid amount', () => {
+    const at = new Date('2026-11-01T00:00:00Z');
+    const s: Snapshot = {
+      ...snapshot,
+      purchases: [
+        {
+          id: 'invoice',
+          userId: 'u',
+          packId: 'pro',
+          credits: SUBSCRIPTION_PLANS.pro.monthlyCredits,
+          amountCents: 1234,
+          status: 'paid',
+          createdAt: at,
+          updatedAt: at,
+        },
+      ],
+      ledger: [
+        {
+          userId: 'u',
+          delta: SUBSCRIPTION_PLANS.pro.monthlyCredits,
+          reason: 'subscription',
+          purchaseId: 'invoice',
+          createdAt: at,
+        },
+      ],
+    };
+    expect(databaseFinance(s).payments).toMatchObject([{ id: 'invoice', gross: 12.34 }]);
+    expect(databaseFinance(s).payments).toHaveLength(1);
+  });
+  it('retains legacy subscription grants without a Purchase link', () => {
+    const s: Snapshot = {
+      ...snapshot,
+      ledger: [
+        {
+          userId: 'u',
+          delta: SUBSCRIPTION_PLANS.pro.monthlyCredits,
+          reason: 'subscription',
+          purchaseId: null,
+          createdAt: new Date('2026-11-01T00:00:00Z'),
+        },
+      ],
+    };
+    expect(databaseFinance(s).payments).toMatchObject([
+      { product: 'pro', credits: SUBSCRIPTION_PLANS.pro.monthlyCredits },
+    ]);
   });
   it('does not turn unknown Stripe fees into zero', () => {
     const finance: Finance = {
@@ -98,6 +145,7 @@ describe('admin reports observed output', () => {
           userId: 'u',
           delta: 500,
           reason: 'dev_purchase',
+          purchaseId: null,
           createdAt: new Date('2026-11-01T00:00:00Z'),
         },
       ],

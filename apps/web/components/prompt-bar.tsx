@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
+import { attribution, attributionHeaders, observeRender } from '@/lib/analytics/browser';
 import { savePending } from '@/lib/pending-upload';
 import { SHOWCASE } from '@/lib/showcase';
 import { cn } from '@/lib/utils';
@@ -149,11 +150,17 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
     const timer = setInterval(() => setProgress((value) => Math.min(value + 4, 90)), 300);
     try {
       const body = new FormData();
+      body.append('attribution', JSON.stringify(attribution()));
       body.append('image', await prepare(source, t('errors.unreadable')), 'source.jpg');
       body.append('prompt', prompt);
-      const response = await fetch('/api/renders', { method: 'POST', body });
+      const response = await fetch('/api/renders', {
+        method: 'POST',
+        body,
+        headers: attributionHeaders(),
+      });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error ?? t('errors.upload'));
+      observeRender(data);
       setProgress(100);
       router.push(`/r/${data.id}`);
     } catch (err) {

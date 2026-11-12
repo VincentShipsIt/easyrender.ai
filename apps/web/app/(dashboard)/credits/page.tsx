@@ -15,6 +15,7 @@ import { getFormatter, getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { BuyButton } from '@/components/buy-button';
 import { PaygPicker } from '@/components/payg-picker';
+import { PurchaseConversion } from '@/components/purchase-conversion';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -154,6 +155,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
 
   return (
     <div className="space-y-8">
+      <PurchaseConversion />
       <JsonLd
         graph={[
           breadcrumbList([

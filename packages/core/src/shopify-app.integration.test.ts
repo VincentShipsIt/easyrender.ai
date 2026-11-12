@@ -12,7 +12,11 @@ if (url) process.env.DATABASE_URL = url;
 const fake = vi.hoisted(() => ({ start: vi.fn(), upload: vi.fn(), image: vi.fn() }));
 vi.mock('@easyrender/harness', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@easyrender/harness')>()),
-  checkPhoto: async () => ({ ok: true, warnings: [] }),
+  checkPhoto: async () => ({
+    ok: true,
+    warnings: [],
+    measures: { width: 1200, height: 900, spread: 40, sharpness: 120 },
+  }),
   cutCells: async () => Array.from({ length: 9 }, () => new Uint8Array([1])),
   createReplicate: () => ({
     upload: fake.upload,

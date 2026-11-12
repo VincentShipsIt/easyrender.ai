@@ -26,7 +26,7 @@ describe('HogQL query construction', () => {
       "timestamp < toDateTime('2026-11-01 00:00:00', 'UTC')",
     );
     expect(buildHogql('events', range)).toContain("'preview_ready', 'preview_failed', 'signup'");
-    expect(buildHogql('events', range)).toContain("'purchase_refunded'");
+    expect(buildHogql('events', range)).not.toContain("'purchase_refunded'");
     expect(buildHogql('events', range)).toContain('LIMIT 1000');
     expect(buildHogql('landing', range)).toContain('properties.$pathname');
     expect(buildHogql('referrer', range)).toContain('properties.referrer_host');

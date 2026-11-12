@@ -3,6 +3,7 @@ import {
   BUILD_MODEL,
   buildCostUsd,
   buildRequest,
+  type Check,
   checkGlb,
   checkNote,
   checkPhoto,
@@ -16,6 +17,7 @@ import {
   findGlbUrl,
   isSettled,
   loadHarness,
+  type Passed,
   RENDER_CREDITS,
   SHEET_CREDITS,
   SHEET_MODEL,
@@ -24,14 +26,22 @@ import {
   sheetOutputUrl,
   sheetRequest,
 } from '@easyrender/harness';
+import { captureRender, deferAnalytics } from './analytics';
+import { type Attribution, classifyCountry, normalizeAttribution } from './attribution';
 import { config } from './config';
 import { grantCredits, spendCredits } from './credits';
 import { AppError, notFound } from './errors';
+import { type RenderQuality, withQuality } from './render-quality';
 import { reportError } from './report';
 import { getFile, putFile } from './storage';
 
 // Who is asking: a signed-in user, an anonymous visitor (cookie), or both.
-export type Actor = { userId?: string | null; anonId?: string | null; ipHash?: string | null };
+export type Actor = {
+  userId?: string | null;
+  anonId?: string | null;
+  ipHash?: string | null;
+  geoCountry?: string | null;
+};
 
 export type RenderSource = 'web' | 'mcp' | 'api';
 
@@ -64,9 +74,9 @@ export const canView = (render: Render, actor: Actor) =>
   canAccess(render, actor) || isListed(render) || isShared(render);
 
 // Turns a failed harness check into the API error the caller sees.
-function enforce(check: Awaited<ReturnType<typeof checkPhoto>>, status = 422) {
+function enforce<M>(check: Check<M>, status = 422): Passed<M> {
   if (!check.ok) throw new AppError(check.message, status, check.code);
-  return check.warnings;
+  return check;
 }
 
 // Each preview costs a real sheet generation, so visitors get a small daily allowance.
@@ -116,6 +126,7 @@ export async function createDraft(input: {
   prompt?: string | null;
   name?: string | null;
   source?: RenderSource;
+  attribution?: Attribution;
   // Viewable by link from a store's product page, without being in the gallery.
   isLinkShared?: boolean;
 }): Promise<Render> {
@@ -126,9 +137,10 @@ export async function createDraft(input: {
     throw new AppError('Photo is larger than 4 MB', 413, 'too_large');
   }
   // Guardrails first: a bad photo or note is refused before it uses an allowance or a generation.
-  const warnings = enforce(await checkPhoto(input.bytes));
+  const photo = enforce(await checkPhoto(input.bytes));
   enforce(checkNote(input.prompt), 400);
-  if (warnings.length > 0) console.warn(`photo warnings: ${warnings.join(', ')}`);
+  if (photo.warnings.length > 0) console.warn(`photo warnings: ${photo.warnings.join(', ')}`);
+  const quality: RenderQuality = { photo: { ...photo.measures, warnings: photo.warnings } };
   await assertPreviewAllowance(input.actor);
 
   const ext = extension(input.contentType);
@@ -136,6 +148,8 @@ export async function createDraft(input: {
   const prompt = cleanNote(input.prompt) || null;
   const render = await db().render.create({
     data: {
+      ...(input.attribution ??
+        normalizeAttribution(null, config.appUrl(), classifyCountry(input.actor.geoCountry))),
       userId: input.actor.userId ?? null,
       anonId: input.actor.anonId ?? null,
       ipHash: input.actor.ipHash ?? null,
@@ -145,10 +159,16 @@ export async function createDraft(input: {
       isLinkShared: input.isLinkShared ?? false,
       isPublic: input.isLinkShared ? false : undefined,
       sourceKey,
+      quality,
       status: config.sheetEnabled() ? 'drafting' : 'preview_ready',
     },
   });
   if (!config.sheetEnabled()) return render;
+  captureRender('preview_start', render, {
+    input_type: render.source === 'web' ? 'upload' : 'api',
+    entry_path: render.landing_path,
+    is_logged_in: Boolean(render.userId),
+  });
 
   try {
     const client = replicate();
@@ -180,10 +200,13 @@ export async function createDraft(input: {
 async function fail(id: string, error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
   reportError(error, { renderId: id, stage: 'render' });
-  const render = await db().render.update({
-    where: { id },
+  const render = await db().render.findUnique({ where: { id } });
+  if (!render || !['drafting', 'rendering'].includes(render.status)) return;
+  const { count } = await db().render.updateMany({
+    where: { id, status: render.status },
     data: { status: 'failed', error: message.slice(0, 500) },
   });
+  if (!count) return;
   if (render.userId && render.credits > 0) {
     await grantCredits({
       userId: render.userId,
@@ -193,6 +216,24 @@ async function fail(id: string, error: unknown) {
       renderId: render.id,
     });
   }
+  captureRender(
+    render.status === 'drafting' ? 'preview_failed' : 'render_failed',
+    render,
+    render.status === 'drafting'
+      ? {
+          failure_reason: 'generation_failed',
+          duration_ms: Date.now() - render.createdAt.getTime(),
+          input_type: render.source === 'web' ? 'upload' : 'api',
+          free_preview_consumed: false,
+        }
+      : {
+          model_id: render.id,
+          failure_reason: 'generation_failed',
+          duration_ms: Date.now() - render.updatedAt.getTime(),
+          credits_spent: render.credits,
+          credits_refunded: render.userId ? render.credits : 0,
+        },
+  );
 }
 
 // Moves a render forward if its Replicate job finished. Called by polling and by the webhook;
@@ -231,9 +272,34 @@ export async function advance(id: string): Promise<Render | null> {
       const sheetKey = await putFile('sheets/sheet.png', sheet, 'image/png');
       const { count } = await db().render.updateMany({
         where: { id, status: 'drafting' },
-        data: { status: 'preview_ready', sheetKey, costUsd: { increment: SHEET_MODEL.costUsd } },
+        data: {
+          status: 'preview_ready',
+          sheetKey,
+          quality: withQuality(render, {
+            draftSheet: { ...quality.measures, warnings: quality.warnings },
+          }),
+          costUsd: { increment: SHEET_MODEL.costUsd },
+        },
       });
       if (count === 0) return db().render.findUnique({ where: { id } });
+      const duration = Date.now() - render.createdAt.getTime();
+      deferAnalytics(async () => {
+        const used = await db().render.count({
+          where: {
+            createdAt: { gte: new Date(Date.now() - DAY_MS) },
+            status: { not: 'failed' },
+            OR: [
+              ...(render.userId ? [{ userId: render.userId }] : []),
+              ...(render.anonId ? [{ anonId: render.anonId }] : []),
+              ...(render.ipHash ? [{ ipHash: render.ipHash }] : []),
+            ],
+          },
+        });
+        captureRender('preview_ready', render, {
+          duration_ms: duration,
+          free_previews_left_today: Math.max(0, config.freePreviewsPerDay() - used),
+        });
+      });
     }
 
     // A paid build redraws the sheet with the final model first; when it is done, the 3D build starts.
@@ -250,13 +316,19 @@ export async function advance(id: string): Promise<Render | null> {
       // A final sheet that failed or was rejected never fails the build: it carries on from the
       // draft the visitor already saw, and the problem is reported.
       let finalSheet: Uint8Array | null = null;
+      let finalMeasures: RenderQuality['finalSheet'];
+      let finalProblem = 'redraw_failed';
       try {
         const url = prediction.status === 'succeeded' ? sheetOutputUrl(prediction.output) : null;
         if (!url) throw new Error(prediction.error ?? `final sheet ${prediction.status}`);
         const bytes = await download(url);
         const quality = await checkSheet(bytes, (await harness()).limits);
-        if (!quality.ok) throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
+        if (!quality.ok) {
+          finalProblem = quality.code;
+          throw new Error(`sheet rejected (${quality.code}): ${quality.message}`);
+        }
         finalSheet = bytes;
+        finalMeasures = { ...quality.measures, warnings: quality.warnings };
       } catch (error) {
         reportError(error, { renderId: id, stage: 'final_sheet' });
       }
@@ -268,6 +340,12 @@ export async function advance(id: string): Promise<Render | null> {
         where: { id, status: 'rendering', buildPredictionId: null, buildClaimedAt: null },
         data: {
           buildClaimedAt: new Date(),
+          quality: withQuality(
+            render,
+            finalMeasures
+              ? { finalSheet: finalMeasures, isDraftUsed: false }
+              : { isDraftUsed: true, finalSheetProblem: finalProblem },
+          ),
           ...(finalKey
             ? { sheetKey: finalKey, costUsd: { increment: FINAL_SHEET_MODEL.costUsd } }
             : {}),
@@ -292,14 +370,22 @@ export async function advance(id: string): Promise<Render | null> {
       const quality = checkGlb(glb);
       if (!quality.ok) throw new Error(`model rejected (${quality.code}): ${quality.message}`);
       const glbKey = await putFile('models/model.glb', glb, 'model/gltf-binary');
-      await db().render.updateMany({
+      const { count } = await db().render.updateMany({
         where: { id, status: 'rendering' },
         data: {
           status: 'ready',
           glbKey,
+          quality: withQuality(render, { glb: quality.measures }),
           costUsd: { increment: buildCostUsd(prediction.metrics?.predict_time) },
         },
       });
+      if (count)
+        captureRender('render_ready', render, {
+          model_id: id,
+          duration_ms: Date.now() - (render.buildClaimedAt ?? render.updatedAt).getTime(),
+          in_public_gallery: render.isPublic,
+          formats: 'glb,usdz',
+        });
     }
   } catch (error) {
     const current = await db().render.findUnique({ where: { id }, select: { status: true } });
@@ -345,6 +431,11 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     throw error;
   }
 
+  captureRender(
+    'render_start',
+    { ...render, userId: actor.userId, credits: alreadyPaid + owed },
+    { model_id: id, credits_spent: owed },
+  );
   try {
     // A paid build draws the final sheet first (the visitor saw a cheaper draft); the 3D build
     // starts when it is done, in advance(). Without a draft the build runs from the photo alone.
@@ -444,6 +535,15 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
     throw error;
   }
 
+  captureRender(
+    'preview_start',
+    { ...render, userId: actor.userId },
+    {
+      input_type: render.source === 'web' ? 'upload' : 'api',
+      entry_path: render.landing_path,
+      is_logged_in: true,
+    },
+  );
   try {
     const client = replicate();
     const bytes = await getFile(render.sourceKey);

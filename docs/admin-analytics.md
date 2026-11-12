@@ -8,7 +8,8 @@ credits, modify billing, or write to Stripe.
 
 ## Access and configuration
 
-The proxy checks the Better Auth session and allowlist before response streaming, so an
+The proxy rejects missing session cookies without initializing auth or the database. Session
+lookup failures also redirect to sign-in. It checks the Better Auth session and allowlist before response streaming, so an
 unauthorized signed-in request receives a literal HTTP 404. The admin layout, every exported
 data entry point, and the Refresh server action independently check the session before
 entering a cache. `ADMIN_EMAILS` is a comma-separated allowlist,
@@ -43,6 +44,10 @@ control or a `NEXT_PUBLIC_` variable.
 | `POSTHOG_API_HOST`                      | Optional query API origin, default `https://eu.posthog.com`; the local fixture uses its local mock origin.                                                                                                                                                 |
 | `STRIPE_ANALYTICS_KEY`                  | Preferred optional override: create a restricted read-only Stripe key. Allow reads for charges, payment intents, balance transactions, refunds, invoices, subscriptions, and customers, including expanded related objects. No write permission is needed. |
 | `STRIPE_SECRET_KEY`                     | Existing billing key, used for analytics only when the analytics override is absent. Prefer the restricted override rather than reusing this broader key.                                                                                                  |
+
+PostHog ingestion uses `NEXT_PUBLIC_POSTHOG_KEY` / `NEXT_PUBLIC_POSTHOG_HOST`;
+`POSTHOG_HOST` overrides server ingestion for local QA only. These are separate from the
+query API host and credentials above; see [analytics configuration](analytics.md#configuration).
 
 The analytics Stripe client is separate from checkout so its restricted key cannot change
 checkout behavior. It shares the existing SDK and key convention, with an eight-second
@@ -87,7 +92,7 @@ differences matter when reading conversion and reconciliation.
 | Angle sheet          | Non-null `Render.sheetKey`                                       | `preview_ready` alone is insufficient: when automatic sheets are disabled the initial upload can already have that status without a sheet. First sheet time is approximated by the render's `createdAt`. |
 | 3D model             | `Render.status = 'ready'` and non-null `glbKey`                  | First model time is approximated by `updatedAt`; a USDZ download is not another generated model.                                                                                                         |
 | PAYG purchase        | `Purchase.status = 'paid'`                                       | Uses `createdAt`, `packId`, `credits`, `amountCents`. Current checkout uses variable-credit `payg`, not a fixed pack catalog.                                                                            |
-| Subscription payment | Positive `CreditLedger.delta` with reason `subscription`         | `invoice.paid` grants the plan's monthly credits. DB revenue infers the matching plan from grant size and uses its current code price.                                                                   |
+| Subscription payment | Paid `Purchase`, or legacy unlinked subscription grant           | `invoice.paid` stores the actual paid amount in a Purchase row. Only legacy grants without `purchaseId` infer the current catalog price; linked grants are never counted twice.                          |
 | Current subscriber   | `user.subscriptionStatus` in `active`, `trialing`, `past_due`    | Uses `subscriptionPlan`; unknown legacy active plans follow billing's `pro` fallback. Stripe, when usable, supplies its current subscription records instead.                                            |
 
 Lifecycle: an upload creates a `drafting` or `preview_ready` Render; a successful sheet
@@ -114,7 +119,7 @@ period and converted before its end. These populations must not be interchanged.
 | Signups                   | New user rows; measured.                                                                                                                                                                                                                                                                           |
 | Sheet / model activation  | Signup-cohort users with a first sheet / ready GLB before the range end; activation percentage divides by signups. Stored ownership is measured, completion timing is proxy.                                                                                                                       |
 | Paying customers          | Distinct identified users with a payment in the period. New payers have their earliest observed payment in the period; total payers have one before range end. Refunds do not erase payer status.                                                                                                  |
-| Gross revenue             | Stripe successful captured charges by charge date, or paid DB purchases plus inferred subscription invoices; measured with Stripe, proxy in fallback.                                                                                                                                              |
+| Gross revenue             | Stripe successful captured charges by charge date, or paid DB purchases plus inferred legacy unlinked subscription invoices; measured with Stripe, proxy in fallback.                                                                                                                              |
 | Cash refunds              | Successful Stripe refunds by refund date, including refunds for earlier charges. DB does not record reliable cash refunds; unavailable in fallback.                                                                                                                                                |
 | Net revenue               | Gross minus period cash refunds. DB fallback assumes no observable refunds, so its net is a proxy, not verified net cash.                                                                                                                                                                          |
 | Stripe fees               | Expanded balance-transaction fees when every selected charge has a fee in the charge currency; otherwise unavailable. Fees are separate from net and the margin estimate.                                                                                                                          |
@@ -151,12 +156,12 @@ The first Overview element after the header/navigation/controls is a fixed-heigh
 every KPI card. Each local-calendar bucket in `ANALYTICS_TZ` gets one point; DB-backed gaps are
 zero. Partial first/last buckets are included, and week buckets start Monday.
 
-| Series                    | Definition                                                                                                                                                                                                                                                                                                                                                                             |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Visits                    | PostHog `landing_view` count, identical to Visits KPI, summed from local daily results. Unconfigured, failed or incomplete PostHog makes **every visit value null**, with no line and an inline legend note. A healthy source fills absent buckets with zero. Cookieless visits cannot exclude team traffic.                                                                           |
-| Paying customers          | Distinct identified users with at least one successful payment in each bucket, across currencies. Repeated payments by the same user count once per bucket. Uses successful captured Stripe charges when usable, otherwise paid PAYG purchases plus subscription grants with a recognized harness plan (inferred invoices). Uses the same team scope as the revenue report.            |
-| Uses (sheets + 3D models) | Renders with a nonempty sheet key plus ready renders with a nonempty GLB key, both grouped by `Render.createdAt`, exactly like the Product section. A render may contribute both outcomes. Tooltip gives the split. Creation time and current outcome are proxies, not immutable completion events. Identified team activity follows the exclusion toggle; anonymous activity remains. |
-| Gross revenue             | Sum of gross payments per bucket in the first displayed currency, with the same Stripe-or-DB source selection as the existing revenue series. Before refunds and fees; tooltip explicitly says gross. Multiple currencies retain the existing first-currency note and separate revenue tables.                                                                                         |
+| Series                    | Definition                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Visits                    | PostHog `landing_view` count, identical to Visits KPI, summed from local daily results. Unconfigured, failed or incomplete PostHog makes **every visit value null**, with no line and an inline legend note. A healthy source fills absent buckets with zero. Cookieless visits cannot exclude team traffic.                                                                                |
+| Paying customers          | Distinct identified users with at least one successful payment in each bucket, across currencies. Repeated payments by the same user count once per bucket. Uses successful captured Stripe charges when usable, otherwise paid purchases (PAYG and subscriptions) plus legacy unlinked subscription grants with a recognized harness plan. Uses the same team scope as the revenue report. |
+| Uses (sheets + 3D models) | Renders with a nonempty sheet key plus ready renders with a nonempty GLB key, both grouped by `Render.createdAt`, exactly like the Product section. A render may contribute both outcomes. Tooltip gives the split. Creation time and current outcome are proxies, not immutable completion events. Identified team activity follows the exclusion toggle; anonymous activity remains.      |
+| Gross revenue             | Sum of gross payments per bucket in the first displayed currency, with the same Stripe-or-DB source selection as the existing revenue series. Before refunds and fees; tooltip explicitly says gross. Multiple currencies retain the existing first-currency note and separate revenue tables.                                                                                              |
 
 New signups (new user rows in the bucket, same team scope) is available as a fifth series,
 hidden by default. All four mandatory series start enabled. Toggle buttons expose pressed
@@ -169,13 +174,13 @@ when comparison is disabled. Loading, empty and error states reserve the same ch
 
 ## Attribution and weekly reading
 
-The independent `feat/analytics-posthog-ga4` branch adds ten nullable text columns to both
+Merged PR #88 (`a04a429`) adds ten nullable text columns to both
 `user` and `Render`: `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`,
 `referrer`, `landing_path`, `first_seen_at`, `geo_country`, `consent_region_at_create`.
 Runtime `information_schema.columns` detection requires all ten on each table. Reads of
 these fields use tagged parameterized SQL; existing fields use the typed Prisma client.
 Until both tables are ready, Attribution says:
-**Attribution columns not deployed yet (PR feat/analytics-posthog-ga4)**. Other sections work.
+**Attribution columns not deployed yet**. Other sections work.
 This dashboard does not backfill or rewrite attribution.
 
 Tables group first-touch user attribution by channel, source, medium, campaign, content,
@@ -245,8 +250,9 @@ Health reports configured state, last fetch time, row count, safe error messages
 variable names, truncation, and attribution availability per table. Reconciliation compares
 PostHog server `signup`, `preview_start`, `preview_ready`, `render_ready`, and `purchase`
 counts with DB proxies. The adapter also reads `preview_failed`, `render_start`,
-`render_failed`, and `purchase_refunded`; not all have an immutable DB equivalent. Purchase
-reconciliation counts paid Purchase rows plus subscription grants. A difference can reflect
+`render_failed`; not all have an immutable DB equivalent. Purchase
+reconciliation counts paid Purchase rows plus positive legacy subscription grants without a
+`purchaseId`. #88 emits no `purchase_refunded` event, so the query does not invent one. A difference can reflect
 team filtering, missing historical events, retries, or mutable timestamps; it is not proof
 of data loss. No secret or raw API response is returned to a client.
 

@@ -25,7 +25,9 @@
         "POSTHOG_PERSONAL_API_KEY",
         "POSTHOG_PROJECT_ID",
         "POSTHOG_API_HOST",
-        "STRIPE_ANALYTICS_KEY"
+        "STRIPE_ANALYTICS_KEY",
+        "POSTHOG_HOST",
+        "ANALYTICS_LOCAL_TEST"
       ],
       "outputs": [".next/**", "!.next/cache/**"]
     },

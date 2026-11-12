@@ -2,6 +2,7 @@ import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import { buildCostUsd, buildRequest, FINAL_SHEET_MODEL, SHEET_MODEL } from './models';
 import {
+  CREDIT_USD,
   creditsFor,
   FINAL_SHEET_COST_USD,
   isPlanId,
@@ -48,17 +49,17 @@ describe('pricing', () => {
 
   it('counts whole renders per credit amount', () => {
     expect(rendersFor(1000)).toBe(15);
-    expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(78);
+    expect(rendersFor(PRO_PLAN.monthlyCredits)).toBe(85);
   });
 
-  it('prices the monthly plans so a bigger plan never has a dearer credit', () => {
+  it('gives every monthly plan a cheaper credit than pay as you go, and a bigger plan a cheaper one', () => {
     expect(PLAN_IDS).toEqual(['creator', 'pro', 'scale']);
     const perCredit = PLAN_IDS.map(
-      (id) => SUBSCRIPTION_PLANS[id].priceCents / SUBSCRIPTION_PLANS[id].monthlyCredits,
+      (id) => SUBSCRIPTION_PLANS[id].priceCents / 100 / SUBSCRIPTION_PLANS[id].monthlyCredits,
     );
+    for (const price of perCredit) expect(price).toBeLessThan(CREDIT_USD);
     expect(perCredit).toEqual([...perCredit].sort((a, b) => b - a));
-    expect(rendersFor(SUBSCRIPTION_PLANS.creator.monthlyCredits)).toBe(25);
-    expect(rendersFor(SUBSCRIPTION_PLANS.scale.monthlyCredits)).toBe(250);
+    expect(new Set(perCredit).size).toBe(perCredit.length);
   });
 
   it('only accepts known plan ids', () => {

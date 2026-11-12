@@ -3,11 +3,14 @@ import {
   isPlanId,
   isValidPaygCredits,
   PAYG,
+  PLAN_IDS,
   type PlanId,
   paygPriceCents,
   SUBSCRIPTION_PLANS,
 } from '@easyrender/harness';
 import Stripe from 'stripe';
+import { captureServer, deferAnalytics } from './analytics';
+import { pickAttribution } from './attribution';
 import { config } from './config';
 import { grantCredits } from './credits';
 import { AppError } from './errors';
@@ -68,7 +71,7 @@ export async function createCheckout(userId: string, request: CheckoutRequest): 
     ? { customer: user.stripeCustomerId }
     : { customer_email: user.email };
   const urls = {
-    success_url: `${config.appUrl()}/credits?status=success`,
+    success_url: `${config.appUrl()}/credits?status=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${config.appUrl()}/credits?status=canceled`,
   };
 
@@ -155,15 +158,49 @@ export async function devGrant(userId: string, request: CheckoutRequest) {
 const id = (value: string | { id: string } | null | undefined) =>
   typeof value === 'string' ? value : (value?.id ?? null);
 
+// The plan a Stripe price belongs to, from the STRIPE_PRICE_* env vars. The price is the truth:
+// the plan tag on the subscription is written once at checkout and stays put when the customer
+// switches plan in the billing portal.
+export function planForPrice(price: string | { id: string } | null | undefined): PlanId | null {
+  const priceId = id(price);
+  if (!priceId) return null;
+  return (
+    PLAN_IDS.find((plan) => process.env[`STRIPE_PRICE_${plan.toUpperCase()}`] === priceId) ?? null
+  );
+}
+
+const planTag = (metadata: Stripe.Metadata | null | undefined): PlanId | null =>
+  isPlanId(metadata?.plan) ? metadata.plan : null;
+
+// The plan this invoice bills for: its regular subscription line, not a proration for the old plan.
+export function planFromInvoice(invoice: Stripe.Invoice): PlanId | null {
+  for (const line of invoice.lines?.data ?? []) {
+    const item = line.parent?.subscription_item_details;
+    if (!item || item.proration) continue;
+    const plan = planForPrice(line.pricing?.price_details?.price);
+    if (plan) return plan;
+  }
+  return planTag(invoice.parent?.subscription_details?.metadata);
+}
+
+export function planFromSubscription(subscription: Stripe.Subscription): PlanId | null {
+  for (const item of subscription.items?.data ?? []) {
+    const plan = planForPrice(item.price);
+    if (plan) return plan;
+  }
+  return planTag(subscription.metadata);
+}
+
 // Verifies the signature, then grants credits once per paid checkout session or monthly-plan invoice.
 export async function handleStripeWebhook(rawBody: string, signature: string | null) {
   const client = stripe();
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!client || !secret || !signature)
     throw new AppError('Webhook not configured', 400, 'no_stripe');
-  const event = client.webhooks.constructEvent(rawBody, signature, secret);
+  const event = await client.webhooks.constructEventAsync(rawBody, signature, secret);
 
   switch (event.type) {
+    case 'checkout.session.async_payment_succeeded':
     case 'checkout.session.completed':
       return onCheckoutCompleted(event.data.object);
     case 'invoice.paid':
@@ -193,26 +230,48 @@ async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
     reason: 'purchase',
     purchaseId: purchase.id,
   });
-  await db().purchase.update({ where: { id: purchase.id }, data: { status: 'paid' } });
+  const { count } = await db().purchase.updateMany({
+    where: { id: purchase.id, status: 'pending' },
+    data: { status: 'paid' },
+  });
+  if (count) deferAnalytics(() => capturePurchase(purchase, session.currency ?? 'usd'));
 }
 
 async function onInvoicePaid(invoice: Stripe.Invoice) {
   const details = invoice.parent?.subscription_details;
   const userId = details?.metadata?.userId;
-  const plan = details?.metadata?.plan;
-  if (!details || !userId || !isPlanId(plan)) return;
+  const plan = planFromInvoice(invoice);
+  if (!details || !userId || !plan) return;
+  const purchase = await db().purchase.upsert({
+    where: { stripeSessionId: invoice.id },
+    // A nonempty no-op update lets Prisma use a database-native atomic upsert on replays.
+    update: { stripeSessionId: invoice.id },
+    create: {
+      userId,
+      stripeSessionId: invoice.id,
+      packId: plan,
+      credits: SUBSCRIPTION_PLANS[plan].monthlyCredits,
+      amountCents: invoice.amount_paid ?? SUBSCRIPTION_PLANS[plan].priceCents,
+    },
+  });
   await grantCredits({
     userId,
     amount: SUBSCRIPTION_PLANS[plan].monthlyCredits,
     key: `stripe:invoice:${invoice.id}`,
     reason: 'subscription',
+    purchaseId: purchase.id,
   });
+  const { count } = await db().purchase.updateMany({
+    where: { id: purchase.id, status: 'pending' },
+    data: { status: 'paid' },
+  });
+  if (count) deferAnalytics(() => capturePurchase(purchase, invoice.currency ?? 'usd'));
 }
 
 async function onSubscriptionChanged(subscription: Stripe.Subscription) {
   const userId = subscription.metadata?.userId;
-  const plan = subscription.metadata?.plan;
-  if (!userId || !isPlanId(plan)) return;
+  const plan = planFromSubscription(subscription);
+  if (!userId || !plan) return;
   await db().user.update({
     where: { id: userId },
     data: {
@@ -239,5 +298,67 @@ export async function getBillingStatus(userId: string) {
   return {
     plan,
     canManage: Boolean(user?.stripeCustomerId && process.env.STRIPE_SECRET_KEY),
+  };
+}
+
+async function capturePurchase(
+  purchase: { id: string; userId: string; packId: string; credits: number; amountCents: number },
+  currency: string,
+) {
+  const user = await db().user.findUniqueOrThrow({ where: { id: purchase.userId } });
+  const first = await db().purchase.findFirst({
+    where: { userId: purchase.userId, status: 'paid' },
+    orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+    select: { id: true },
+  });
+  captureServer(
+    'purchase',
+    purchase.id,
+    { userId: purchase.userId, previewId: null, source: 'web', attribution: pickAttribution(user) },
+    {
+      order_id: purchase.id,
+      pack_id: purchase.packId,
+      credits: purchase.credits,
+      amount: purchase.amountCents / 100,
+      currency: currency.toUpperCase(),
+      is_first_purchase: first?.id === purchase.id,
+      payment_provider: 'stripe',
+    },
+  );
+}
+
+/** Owner-scoped, DB-confirmed checkout result. Never trust success query parameters. */
+export async function confirmedPurchase(userId: string, sessionId: string) {
+  let purchase = await db().purchase.findFirst({
+    where: { userId, stripeSessionId: sessionId, status: 'paid' },
+  });
+  if (
+    !purchase &&
+    sessionId.startsWith('cs_') &&
+    stripe() &&
+    !(await db().purchase.findUnique({
+      where: { stripeSessionId: sessionId },
+      select: { id: true },
+    }))
+  ) {
+    const session = await stripe()?.checkout.sessions.retrieve(sessionId);
+    if (
+      session?.client_reference_id === userId &&
+      session.mode === 'subscription' &&
+      session.payment_status === 'paid'
+    ) {
+      const invoiceId = id(session.invoice);
+      if (invoiceId)
+        purchase = await db().purchase.findFirst({
+          where: { userId, stripeSessionId: invoiceId, status: 'paid' },
+        });
+    }
+  }
+  if (!purchase) return null;
+  return {
+    transaction_id: purchase.id,
+    value: purchase.amountCents / 100,
+    currency: 'USD',
+    items: [{ item_id: purchase.packId, quantity: 1, price: purchase.amountCents / 100 }],
   };
 }

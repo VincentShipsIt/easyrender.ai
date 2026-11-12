@@ -1,18 +1,12 @@
 import { db, Prisma } from '@easyrender/db';
+import type { Attribution as FirstTouch } from '../attribution';
 import { ATTRIBUTION_COLUMNS, parseEmails } from './helpers';
 
 export const ROW_LIMIT = 50_000;
-export type Attribution = {
-  id: string;
-  utm_source: string | null;
-  utm_medium: string | null;
-  utm_campaign: string | null;
-  utm_content: string | null;
-  utm_term: string | null;
-  referrer: string | null;
-  landing_path: string | null;
-  geo_country: string | null;
-};
+export type Attribution = { id: string } & Omit<
+  FirstTouch,
+  'first_seen_at' | 'consent_region_at_create'
+>;
 export async function attributionColumns() {
   const columns = await db().$queryRaw<Array<{ table_name: string; column_name: string }>>`
     SELECT table_name, column_name FROM information_schema.columns
@@ -92,7 +86,7 @@ export async function loadDatabase(
       where: { user: userWhere },
       orderBy: { createdAt: 'asc' },
       take: ROW_LIMIT + 1,
-      select: { userId: true, delta: true, reason: true, createdAt: true },
+      select: { userId: true, delta: true, reason: true, purchaseId: true, createdAt: true },
     }),
     client.apiKey.findMany({
       where: { user: userWhere },

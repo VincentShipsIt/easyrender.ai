@@ -1,4 +1,5 @@
 import Stripe from 'stripe';
+import { FUNNEL_EVENTS } from '../analytics-events';
 
 export interface AnalyticsRange {
   start: string;
@@ -17,17 +18,6 @@ export interface SourceHealth {
 const MAX_ROWS = 1000;
 const MAX_PAGES = 10;
 const TIMEOUT_MS = 8000;
-const SERVER_EVENTS = [
-  'preview_start',
-  'preview_ready',
-  'preview_failed',
-  'signup',
-  'render_start',
-  'render_ready',
-  'render_failed',
-  'purchase',
-  'purchase_refunded',
-] as const;
 const DIMENSIONS = {
   source: 'properties.utm_source',
   medium: 'properties.utm_medium',
@@ -68,7 +58,7 @@ export function buildHogql(kind: HogqlKind, range: AnalyticsRange, timezone = 'E
     return `SELECT toString(toDate(timestamp, '${timezone}')) AS date, ${counts}, uniqIf(distinct_id, event = '$pageview') AS uniqueVisitors ${web} GROUP BY date ORDER BY date LIMIT ${MAX_ROWS}`;
   }
   if (kind === 'events') {
-    return `SELECT event, count() AS count FROM events WHERE ${dates} AND event IN (${SERVER_EVENTS.map((name) => `'${name}'`).join(', ')}) GROUP BY event ORDER BY event LIMIT ${MAX_ROWS}`;
+    return `SELECT event, count() AS count FROM events WHERE ${dates} AND event IN (${FUNNEL_EVENTS.map((name) => `'${name}'`).join(', ')}) GROUP BY event ORDER BY event LIMIT ${MAX_ROWS}`;
   }
   if (kind === 'acquisition') {
     return `SELECT coalesce(toString(${DIMENSIONS.source}), '') AS source, coalesce(toString(${DIMENSIONS.medium}), '') AS medium, coalesce(toString(${DIMENSIONS.referrer}), '') AS referrer, ${counts} ${web} GROUP BY source, medium, referrer ORDER BY visits DESC LIMIT ${MAX_ROWS}`;
@@ -212,7 +202,7 @@ export async function fetchPosthog(
         }));
       else if (kind === 'events')
         result.events = rows
-          .filter((row) => SERVER_EVENTS.some((event) => event === row[0]))
+          .filter((row) => FUNNEL_EVENTS.some((event) => event === row[0]))
           .map((row) => ({ event: string(row[0]), count: number(row[1]) }));
       else if (kind === 'acquisition')
         result.acquisition = rows.map((row) => ({
