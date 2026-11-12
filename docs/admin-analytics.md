@@ -14,9 +14,10 @@ data entry point, and the Refresh server action independently check the session 
 entering a cache. `ADMIN_EMAILS` is a comma-separated allowlist,
 trimmed and lowercased; unset or empty grants nobody access. An anonymous request redirects
 to `/sign-in?next=...` with an admin return path; a signed-in user outside the list receives
-404. Better Auth currently enables passwords without `requireEmailVerification`, so this
-guard follows the app and does **not** require `emailVerified`. Revisit that decision if the
-app enables mandatory verification.
+404. Email/password sign-up does not verify addresses, so the guard also requires
+`emailVerified = true`: otherwise anyone could register an allowlisted address that has no
+account yet. In practice admins sign in with Google, which marks the email verified; an
+unverified allowlisted account receives 404.
 
 `/admin` bypasses locale rewriting. Its layout declares `noindex,nofollow`; the proxy supplies
 `X-Robots-Tag: noindex, nofollow` and `Cache-Control: private, no-store`. Robots disallows the
