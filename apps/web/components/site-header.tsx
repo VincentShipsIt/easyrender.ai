@@ -9,7 +9,7 @@ import { SiteMenu } from '@/components/site-menu';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/i18n/config';
 import { currentUser } from '@/lib/actor';
-import { ROUTES } from '@/lib/seo/routes';
+import { isPublished, ROUTES } from '@/lib/seo/routes';
 
 // Anchors are relative to the home of the visitor's language, so nothing here leaves the branch
 // they are reading. /hub is the same page in every language (product, English, noindex).
@@ -18,7 +18,7 @@ const NAV = [
   { href: '/hub', key: 'hub' },
   { hash: '#connect', key: 'connect' },
   { hash: '#try', key: 'try' },
-  { hash: '#pricing', key: 'pricing' },
+  { route: 'pricing', key: 'pricing' },
 ] as const;
 
 export async function SiteHeader() {
@@ -32,8 +32,15 @@ export async function SiteHeader() {
     getLocale(),
   ]);
   const home = ROUTES.home.paths[locale as Locale];
-  const navHref = (item: (typeof NAV)[number]) =>
-    'href' in item ? item.href : `${home}${item.hash}`;
+  // The pricing item is its own page where one is published in this language, else the home anchor.
+  const navHref = (item: (typeof NAV)[number]) => {
+    if ('href' in item) return item.href;
+    if ('route' in item)
+      return isPublished(item.route, locale as Locale)
+        ? ROUTES.pricing.paths[locale as Locale]
+        : `${home}#pricing`;
+    return `${home}${item.hash}`;
+  };
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       {/* One row at every width: section links only from xl, sign-in (or the balance) from sm,

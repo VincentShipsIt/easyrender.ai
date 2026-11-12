@@ -7,12 +7,12 @@ import type { ShellData } from '@/components/app-shell/types';
 import { SiteChrome } from '@/components/site-chrome';
 import { currentUser } from '@/lib/actor';
 
-// The app itself is noindex. /credits overrides this: it is the public pricing page.
+// The app itself is noindex, /credits included: the public pricing page is /pricing.
 export const metadata: Metadata = { robots: { index: false, follow: true } };
 
 const LATEST = 12;
 
-// The signed-in web app: its own shell, no marketing header. Credits is public too, so a visitor
+// The signed-in web app: its own shell, no marketing header. Credits is reachable without an account too, so a visitor
 // who is not signed in gets that page inside the marketing frame instead.
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const user = await currentUser().catch(() => null);

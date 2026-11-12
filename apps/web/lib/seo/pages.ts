@@ -1,3 +1,4 @@
+import { RENDER_CREDITS } from '@easyrender/harness';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { faqItems } from '@/components/landing';
@@ -12,6 +13,7 @@ import {
 } from '@/lib/blog/posts';
 import { COMPARE_INDEX, type ComparePage } from '@/lib/compare/pages';
 import { hasPublishedRuns } from '@/lib/evals';
+import { formatCount, formatUsd } from '@/lib/price-format';
 import {
   article,
   breadcrumbList,
@@ -52,6 +54,57 @@ export async function homeGraph(locale: Locale) {
     webPage(locale, ROUTES.home.paths[locale], t('title'), t('description')),
     softwareApplication(locale, t('description'), (await currentPricing()).variant),
     faqPage(items),
+  ];
+}
+
+/**
+ * The pricing page. Same head in every language it is open in. The description quotes the
+ * current price of one render, so it follows the pricing variant like the page itself.
+ */
+export async function pricingMetadata(locale: Locale): Promise<Metadata> {
+  const { currentPricing } = await import('@/lib/pricing');
+  const [t, pricing] = await Promise.all([
+    getTranslations({ locale, namespace: 'Pricing' }),
+    currentPricing(),
+  ]);
+  return pageMetadata({
+    locale,
+    path: ROUTES.pricing.paths[locale],
+    title: t('metaTitle'),
+    description: t('metaDescription', {
+      credits: RENDER_CREDITS,
+      price: formatUsd(locale, RENDER_CREDITS * pricing.creditUsd),
+      proCredits: formatCount(locale, pricing.plans.pro.monthlyCredits),
+    }),
+    alternates: livePaths('pricing'),
+  });
+}
+
+/** Organization, the page, its breadcrumb, the product with its offers, and the pricing FAQ. */
+export async function pricingGraph(locale: Locale) {
+  const [{ currentPricing }, { pricingFaqItems }] = await Promise.all([
+    import('@/lib/pricing'),
+    import('@/components/pricing/pricing-view'),
+  ]);
+  const [t, items, pricing] = await Promise.all([
+    getTranslations({ locale, namespace: 'Pricing' }),
+    pricingFaqItems(locale),
+    currentPricing(),
+  ]);
+  const description = t('metaDescription', {
+    credits: RENDER_CREDITS,
+    price: formatUsd(locale, RENDER_CREDITS * pricing.creditUsd),
+    proCredits: formatCount(locale, pricing.plans.pro.monthlyCredits),
+  });
+  return [
+    organization(),
+    webPage(locale, ROUTES.pricing.paths[locale], t('metaTitle'), description),
+    softwareApplication(locale, description, pricing.variant),
+    breadcrumbList([
+      { name: t('home'), path: ROUTES.home.paths[locale] },
+      { name: t('breadcrumb'), path: ROUTES.pricing.paths[locale] },
+    ]),
+    faqPage(items, `${absoluteUrl(ROUTES.pricing.paths[locale])}#faq`),
   ];
 }
 

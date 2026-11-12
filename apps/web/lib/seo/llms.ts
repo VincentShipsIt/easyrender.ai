@@ -63,7 +63,11 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
   },
   [ROUTES.pricing.paths.en]: {
     title: 'Pricing',
-    note: 'Credit packs and the Pro plan, as currently charged.',
+    note: 'Pay as you go credits and the monthly plans, as currently charged.',
+  },
+  [ROUTES.pricing.paths.es]: {
+    title: 'Precios',
+    note: 'Créditos de pago por uso y planes mensuales, tal como se cobran hoy.',
   },
   [ROUTES.models.paths.en]: {
     title: 'Models',

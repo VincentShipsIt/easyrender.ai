@@ -71,7 +71,8 @@ describe('llms.txt', () => {
         `${SITE_URL}/fr`,
         `${SITE_URL}/it`,
         `${SITE_URL}/pt`,
-        `${SITE_URL}/credits`,
+        `${SITE_URL}/pricing`,
+        `${SITE_URL}/es/precios`,
       ]),
     );
   });
