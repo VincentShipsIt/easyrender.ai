@@ -9,11 +9,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import posthog from 'posthog-js';
 import { Button } from '@/components/ui/button';
 import { attribution, gaPageview, initializeGa, setBrowserTools } from '@/lib/analytics/browser';
+import { authClient } from '@/lib/auth-client';
 
-const hasPosthog = Boolean(process.env.NEXT_PUBLIC_POSTHOG_KEY);
+const hasPosthog = Boolean(
+  process.env.NEXT_PUBLIC_POSTHOG_KEY && process.env.NEXT_PUBLIC_POSTHOG_HOST,
+);
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+let identifiedUserId: string | null = null;
 const fallback: PrivacyRegion = {
   country: null,
   consent_region: 'strict',
@@ -22,6 +27,21 @@ const fallback: PrivacyRegion = {
 };
 export function cookiesPath(locale: string) {
   return locale === 'en' ? '/cookies' : `/${locale}/${locale === 'it' ? 'cookie' : 'cookies'}`;
+}
+
+export function identifyPosthogUser(user: { id: string; email?: string | null; name?: string | null }) {
+  if (identifiedUserId === user.id) return;
+  if (identifiedUserId) posthog.reset();
+  posthog.identify(user.id, {
+    ...(user.email ? { email: user.email } : {}),
+    ...(user.name ? { name: user.name } : {}),
+  });
+  identifiedUserId = user.id;
+}
+
+export function resetPosthogUser() {
+  posthog.reset();
+  identifiedUserId = null;
 }
 function readChoice(): boolean | null {
   try {
@@ -57,6 +77,7 @@ export function Analytics() {
   const t = useTranslations('Analytics');
   const locale = useLocale();
   const pathname = usePathname();
+  const { data: session } = authClient.useSession();
   const [region, setRegion] = useState<PrivacyRegion>(fallback);
   const [isResolved, setResolved] = useState(false);
   const [choice, setChoice] = useState<boolean | null>(null);
@@ -111,10 +132,12 @@ export function Analytics() {
       return;
     }
     const timer = setTimeout(() => {
-      void setBrowserTools(ph, ga);
+      void setBrowserTools(ph, ga).then(() => {
+        if (ph && session?.user?.id) identifyPosthogUser(session.user);
+      });
     }, 100);
     return () => clearTimeout(timer);
-  }, [region, choice, isResolved]);
+  }, [region, choice, isResolved, session?.user?.id, session?.user?.email, session?.user?.name]);
   useEffect(() => {
     if (pathname) gaPageview();
   }, [pathname]);

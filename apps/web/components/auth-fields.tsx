@@ -3,8 +3,9 @@
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { type FormEvent, useState } from 'react';
-import { cookiesPath } from '@/components/analytics';
+import { cookiesPath, identifyPosthogUser } from '@/components/analytics';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -54,6 +55,11 @@ export function AuthFields({
       setBusy(false);
       return;
     }
+    const session = await authClient.getSession();
+    if (session.data?.user?.id) identifyPosthogUser(session.data.user);
+    posthog.capture(mode === 'sign-up' ? 'sign_up_completed' : 'sign_in_completed', {
+      method: 'email',
+    });
     if (mode === 'sign-up') gaEvent('sign_up', { method: 'email' });
     await onDone();
   }

@@ -2,6 +2,7 @@
 
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { gaEvent } from '@/lib/analytics/browser';
@@ -39,8 +40,10 @@ export function BuyButton({
           });
           const data = await response.json().catch(() => ({}));
           if (response.ok && data.url) {
-            if (endpoint === '/api/checkout')
+            if (endpoint === '/api/checkout') {
               gaEvent('begin_checkout', { items: [{ item_id: body?.plan }] });
+              posthog.capture('checkout_started');
+            }
             window.location.href = data.url;
             return;
           }

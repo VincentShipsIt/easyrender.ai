@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { type FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -161,6 +162,10 @@ export function PromptBar({ signedIn }: { signedIn: boolean }) {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error ?? t('errors.upload'));
       observeRender(data);
+      posthog.capture('render_preview_created', {
+        source: 'home',
+        has_prompt: Boolean(prompt),
+      });
       setProgress(100);
       router.push(`/r/${data.id}`);
     } catch (err) {

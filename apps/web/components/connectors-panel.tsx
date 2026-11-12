@@ -2,6 +2,7 @@
 
 import { KeyRound, Trash2 } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { type FormEvent, useState } from 'react';
 import { McpSetup } from '@/components/mcp-setup';
 import { Badge } from '@/components/ui/badge';
@@ -47,6 +48,7 @@ export function ConnectorsPanel({ initial, mcpUrl }: { initial: KeyRow[]; mcpUrl
         return;
       }
       const { key, ...rest } = await response.json();
+      posthog.capture('api_key_created');
       setCreated(key);
       setKeys((current) => [{ ...rest, lastUsedAt: null }, ...current]);
       form?.reset();
@@ -64,6 +66,7 @@ export function ConnectorsPanel({ initial, mcpUrl }: { initial: KeyRow[]; mcpUrl
       setError(t('errors.revoke'));
       return;
     }
+    posthog.capture('api_key_revoked');
     setKeys((current) => current.filter((key) => key.id !== id));
   }
 

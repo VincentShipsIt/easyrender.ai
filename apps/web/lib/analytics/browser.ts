@@ -6,7 +6,7 @@ import {
   sanitizeProperties,
   UTM_KEYS,
 } from '@easyrender/core/attribution';
-import type { PostHog } from 'posthog-js';
+import posthog from 'posthog-js';
 
 declare global {
   interface Window {
@@ -19,7 +19,6 @@ let firstTouch: Attribution | null = null;
 let landingUrl = '';
 let testCountry: string | null = null;
 let hasLanding = false;
-let posthog: PostHog | null = null;
 let isPosthogAllowed = false;
 let isGaAllowed = false;
 let gaId = '';
@@ -150,29 +149,13 @@ export async function setBrowserTools(
       gaEvent('sign_up', { method: 'google' }, 'oauth-return');
   }
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-  if (!allowPosthog || !key) return;
-  if (!posthog) {
-    const { default: sdk } = await import('posthog-js');
-    if (!isPosthogAllowed) return;
-    posthog = sdk;
-    sdk.init(key, {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
-      cookieless_mode: 'always',
-      persistence: 'memory',
-      autocapture: false,
-      disable_session_recording: true,
-      capture_pageview: 'history_change',
-      capture_pageleave: false,
-      // Only explicit page/landing events: avoid retaining a batch after consent is withdrawn.
-      request_batching: false,
-      person_profiles: 'never',
-      advanced_disable_feature_flags: true,
-      disable_surveys: true,
-      enable_heatmaps: false,
-      capture_exceptions: false,
-      before_send: (event) => (event && isPosthogAllowed ? beforeSend(event) : null),
-    });
+  const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;
+  if (!key || !host) return;
+  if (!allowPosthog) {
+    posthog.opt_out_capturing();
+    return;
   }
+  posthog.opt_in_capturing();
   if (!hasLanding) {
     hasLanding = true;
     const a = attribution();

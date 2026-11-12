@@ -4,6 +4,7 @@ import type { RenderView as View } from '@easyrender/core';
 import { Box, Globe, Grid3x3, Loader2, Lock, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 import { ModelView } from '@/components/model-view';
 import { DATE_FORMAT, RenderDetail } from '@/components/render-detail';
@@ -51,8 +52,10 @@ export function RenderView({
     setError(null);
     const response = await fetch(`/api/renders/${render.id}/render`, { method: 'POST' });
     const data = await response.json();
-    if (response.ok) setRender(data);
-    else setError(data.error ?? t('errors.start'));
+    if (response.ok) {
+      setRender(data);
+      posthog.capture('render_generation_started', { source: 'render_detail', credits: owed });
+    } else setError(data.error ?? t('errors.start'));
     setStarting(false);
   }
 
@@ -61,8 +64,13 @@ export function RenderView({
     setError(null);
     const response = await fetch(`/api/renders/${render.id}/sheet`, { method: 'POST' });
     const data = await response.json().catch(() => ({}));
-    if (response.ok) setRender(data);
-    else setError(data.error ?? t('errors.sheet'));
+    if (response.ok) {
+      setRender(data);
+      posthog.capture('render_sheet_generation_started', {
+        source: 'render_detail',
+        credits: render.sheetCredits,
+      });
+    } else setError(data.error ?? t('errors.sheet'));
     setStarting(false);
   }
 
@@ -73,7 +81,10 @@ export function RenderView({
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ isPublic }),
     });
-    if (response.ok) setRender(await response.json());
+    if (response.ok) {
+      setRender(await response.json());
+      posthog.capture('render_visibility_changed', { is_public: isPublic });
+    }
     setSaving(false);
   }
 

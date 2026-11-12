@@ -2,6 +2,7 @@
 
 import { ExternalLink, Loader2 } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -106,6 +107,11 @@ export function ShopifyApp() {
         setSent(total);
         if (result.remaining === 0 || result.sent === 0) break;
       }
+      if (total > 0)
+        posthog.capture('shopify_generation_started', {
+          item_count: total,
+          credits: approvedCredits,
+        });
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : String(caught));
     }

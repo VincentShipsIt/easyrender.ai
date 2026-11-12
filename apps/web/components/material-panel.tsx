@@ -8,6 +8,7 @@ import {
 } from '@easyrender/harness/glb';
 import { Loader2, RotateCcw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -148,6 +149,9 @@ export function MaterialPanel({ renderId, viewer }: Props) {
     }).catch(() => null);
     if (response?.ok) {
       adopt((await response.json()) as Loaded);
+      posthog.capture(edits.length ? 'material_edits_saved' : 'material_edits_reset', {
+        material_count: edits.length,
+      });
       setMessage({ tone: 'saved', text: edits.length ? t('saved') : t('resetDone') });
     } else {
       setMessage({ tone: 'error', text: t('saveFailed') });

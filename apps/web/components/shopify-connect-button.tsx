@@ -2,6 +2,7 @@
 
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { useState } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,10 @@ export function ShopifyConnectButton({ state }: { state: string }) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ state }),
     });
-    if (response.ok) return setPhase('done');
+    if (response.ok) {
+      posthog.capture('shopify_account_linked');
+      return setPhase('done');
+    }
     setError((await response.json().catch(() => ({}))).error ?? t('error'));
     setPhase('idle');
   }

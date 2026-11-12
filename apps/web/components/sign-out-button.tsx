@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
+import { resetPosthogUser } from '@/components/analytics';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
 
@@ -13,7 +15,11 @@ export function SignOutButton() {
       variant="ghost"
       size="sm"
       onClick={async () => {
-        await authClient.signOut();
+        const result = await authClient.signOut();
+        if (!result.error) {
+          posthog.capture('sign_out_completed');
+          resetPosthogUser();
+        }
         router.push('/');
         router.refresh();
       }}

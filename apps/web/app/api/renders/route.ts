@@ -11,6 +11,7 @@ import { normalizeAttribution } from '@easyrender/core/attribution';
 import { NextResponse } from 'next/server';
 import { resolveActor } from '@/lib/actor';
 import { privacyRegion } from '@/lib/analytics/privacy-region';
+import { logRenderDraftCreated } from '@/lib/analytics/posthog-logs';
 import { handle } from '@/lib/http';
 
 export const maxDuration = 60;
@@ -32,6 +33,7 @@ export const POST = (request: Request) =>
     } catch {
       /* Malformed optional attribution never rejects a photo. */
     }
+    const source = bearerToken(request.headers) ? 'api' : 'web';
     const render = await createDraft({
       actor,
       attribution: normalizeAttribution(
@@ -43,8 +45,9 @@ export const POST = (request: Request) =>
       contentType: image.type,
       prompt: typeof prompt === 'string' ? prompt.slice(0, 500) : null,
       name: typeof name === 'string' ? name : null,
-      source: bearerToken(request.headers) ? 'api' : 'web',
+      source,
     });
+    logRenderDraftCreated(source, typeof prompt === 'string' && prompt.length > 0);
     return NextResponse.json(toView(render), { status: 201 });
   });
 
