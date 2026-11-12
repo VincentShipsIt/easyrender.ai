@@ -165,11 +165,16 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
         ]}
       />
       <div className="space-y-3">
-        <Badge variant="outline">{t('eyebrow')}</Badge>
-        <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
-        <p className="text-muted-foreground">
-          {t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
-        </p>
+        {/* Signed in, the breadcrumb names the page. The pricing page keeps its heading for visitors and search. */}
+        {!user && (
+          <>
+            <Badge variant="outline">{t('eyebrow')}</Badge>
+            <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
+            <p className="text-muted-foreground">
+              {t('description', { credits: RENDER_CREDITS, price: usd(RENDER_CREDITS) })}
+            </p>
+          </>
+        )}
         {user && (
           <p className="text-sm">
             {billing.plan

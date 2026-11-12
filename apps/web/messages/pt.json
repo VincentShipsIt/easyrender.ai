@@ -460,6 +460,53 @@
       "rendering": "Criando o 3D",
       "ready": "Pronto",
       "failed": "Falhou"
+    },
+    "toggleRenders": "Mostrar ou ocultar o painel de renders",
+    "breadcrumb": "Caminho de navegação",
+    "panel": {
+      "title": "Renders",
+      "ready": "Prontos",
+      "inProgress": "Em andamento",
+      "needsAttention": "Precisam de você",
+      "empty": "Seus renders aparecem aqui conforme você os cria."
+    },
+    "preview": {
+      "open": "Abrir",
+      "latest": "Últimos",
+      "keysCaption": "Chaves",
+      "noKeys": "Ainda não há chaves",
+      "neverUsed": "Nunca usada",
+      "signedIn": "Sessão iniciada",
+      "credits": "Créditos",
+      "inProgress": "Em andamento",
+      "ready": "Prontos",
+      "models": "Modelos",
+      "building": "Em criação",
+      "needYou": "Precisam de você",
+      "agents": "Agentes",
+      "keys": "Chaves",
+      "byAgents": "Por agentes",
+      "balance": "Saldo",
+      "sheet": "Folha de ângulos",
+      "build": "Criar 3D"
+    }
+  },
+  "AppHome": {
+    "heading": "O que vamos criar em 3D?",
+    "slot": "Solte uma foto",
+    "hint": "JPG, PNG ou WebP, até 4 MB. Você também pode colar.",
+    "placeholder": "Descreva o produto ou solte uma foto",
+    "dropOverlay": "Solte a foto para anexar",
+    "remove": "Remover a foto",
+    "create": "Criar pré-visualização grátis",
+    "uploading": "Enviando…",
+    "balance": "{credits} créditos",
+    "batch": "Enviar várias fotos",
+    "connect": "Conectar um agente",
+    "errors": {
+      "type": "Use uma foto JPG, PNG ou WebP.",
+      "upload": "O envio falhou. Tente de novo.",
+      "unreadable": "Não foi possível ler esta foto."
     }
   },
   "NotFound": {

@@ -460,6 +460,53 @@
       "rendering": "Création du 3D",
       "ready": "Terminé",
       "failed": "Échec"
+    },
+    "toggleRenders": "Afficher ou masquer le panneau des rendus",
+    "breadcrumb": "Fil d’Ariane",
+    "panel": {
+      "title": "Rendus",
+      "ready": "Prêts",
+      "inProgress": "En cours",
+      "needsAttention": "À traiter",
+      "empty": "Vos rendus apparaîtront ici au fur et à mesure."
+    },
+    "preview": {
+      "open": "Ouvrir",
+      "latest": "Derniers",
+      "keysCaption": "Clés",
+      "noKeys": "Aucune clé pour l’instant",
+      "neverUsed": "Jamais utilisée",
+      "signedIn": "Connecté",
+      "credits": "Crédits",
+      "inProgress": "En cours",
+      "ready": "Prêts",
+      "models": "Modèles",
+      "building": "En cours",
+      "needYou": "À traiter",
+      "agents": "Agents",
+      "keys": "Clés",
+      "byAgents": "Par agents",
+      "balance": "Solde",
+      "sheet": "Planche d’angles",
+      "build": "Créer le 3D"
+    }
+  },
+  "AppHome": {
+    "heading": "Que fait-on en 3D ?",
+    "slot": "Déposez une photo",
+    "hint": "JPG, PNG ou WebP, 4 Mo maximum. Vous pouvez aussi la coller.",
+    "placeholder": "Décrivez le produit ou déposez simplement une photo",
+    "dropOverlay": "Déposez la photo pour l’ajouter",
+    "remove": "Retirer la photo",
+    "create": "Créer un aperçu gratuit",
+    "uploading": "Envoi en cours…",
+    "balance": "{credits} crédits",
+    "batch": "Envoyer plusieurs photos",
+    "connect": "Connecter un agent",
+    "errors": {
+      "type": "Utilisez une photo JPG, PNG ou WebP.",
+      "upload": "L’envoi a échoué. Réessayez.",
+      "unreadable": "Impossible de lire cette photo."
     }
   },
   "NotFound": {
