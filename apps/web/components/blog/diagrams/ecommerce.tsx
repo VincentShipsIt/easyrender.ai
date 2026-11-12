@@ -59,7 +59,7 @@ export const sideboardPhotoPick = defineDiagram(
   {
     en: {
       shots: [
-        { title: 'Front', note: ['No depth:', 'the tool', 'guesses it'] },
+        { title: 'Front', note: ['No depth:', 'none in', 'the photo'] },
         { title: 'Three-quarter', note: ['Front and', 'end panel:', 'use this one'] },
         { title: 'Close-up', note: ['A handle,', 'not the', 'whole piece'] },
       ],

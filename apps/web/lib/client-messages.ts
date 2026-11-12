@@ -9,6 +9,9 @@ type Messages = { [key: string]: string | Messages };
 
 export const CLIENT_NAMESPACES = [
   'AgentDemo',
+  'ShopifyApp',
+  'ShopifyConnect',
+  'Ar',
   'Auth',
   'BuyButton',
   'Catalog',

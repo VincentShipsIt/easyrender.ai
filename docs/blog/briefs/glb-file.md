@@ -80,7 +80,39 @@ Unlinked outside facts: "On product pages, Shopify accepts GLB files as product 
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, US): Sketchfab GLB tag page, convert3d.org converter, Meshy online GLB viewer; positions 1 and 5 missing (likely AI Overview/media). The report says the guide must answer what it is and also how to open, view, convert and keep it small, citing the Khronos spec.
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): a byte-level breakdown of a real GLB (header, chunks, indices, vertices, texture) with the arithmetic; a size table of six real files showing geometry, not texture, dominates once textures are 1024 px WebP; a measured compression comparison (Meshopt, Draco, simplify) with a verdict per destination; the metallic-default pitfall.
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): a byte-level breakdown of a real GLB (header, chunks, indices, vertices, texture) with the arithmetic; a size table of six real files showing geometry, not texture, dominates once textures are 1024 px WebP; a measured compression comparison (Meshopt, Draco, simplify) with a verdict per destination; the metallic-default pitfall.
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch. No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief.
+
+### What currently surfaces
+
+"What is a GLB file" / "how to open a GLB file" still returns format explainers and viewer/converter pages: docs.poly.app, Vectreal, CGHEVEN, 3D Cloud, and similar "open in the browser / Blender / Windows / Mac" posts. Sketchfab tag pages and online viewers (Meshy and others) remain typical neighbours, as on 10-nov. The guide should still answer what it is _and_ how to open, check, convert and keep it small, citing the Khronos glTF 2.0 spec.
+
+### Facts to refresh or confirm
+
+- A GLB is the binary, single-file version of glTF 2.0: geometry, materials, textures and optional animation in one file. Official definition: the Khronos glTF 2.0 specification.
+- Opening it: drag into a browser viewer (Khronos glTF Sample Viewer, Babylon.js Sandbox). Edit in Blender via File > Import > glTF 2.0 (.glb/.gltf). These are stable and should stay in the guide.
+- Microsoft 3D Viewer was removed from the Microsoft Store on 1 July 2026. Existing installs still run; new installs from the Store do not. Microsoft's deprecated-features documentation and contemporary reports (Neowin, Windows Central) point people to Babylon.js Sandbox instead. The guide should not tell a Windows reader to install 3D Viewer from the Store.
+- macOS Preview: some 2026 blog posts say Preview can open GLB. That was not verified on a Mac in this read, and earlier notes in our materials said support arrives in a later macOS, not in current shipping versions. Do not state that Preview opens GLB until someone has checked it on a named macOS version. iPhone still needs USDZ for Quick Look; a raw GLB is not the iPhone path.
+
+### Do not copy from the SERP
+
+Do not recommend a random online converter as the way to "fix" a GLB. Do not claim a measured size or that a GLB is a print file.
+
+### Gaps that still hold
+
+A byte-level breakdown of a real GLB (header, chunks, indices, vertices, texture) with the arithmetic, a size table of real files showing that geometry, not texture, dominates once textures are 1,024 px WebP, a measured compression comparison (Meshopt, Draco, simplify) with a verdict per destination, and the metallic-default pitfall are still the guide's own material.
+
+### Sources opened this read
+
+- https://docs.poly.app/file-extensions/glb
+- https://vectreal.com/news-room/how-to-open-a-glb-file
+- https://cgheven.com/blog/how-to-open-glb-file
+- https://3dcloud.com/glb-files/
+- https://learn.microsoft.com/en-us/windows/whats-new/deprecated-features-resources
+- https://www.neowin.net/news/microsoft-removes-3d-viewer-from-the-store-ending-new-installs/
 
 ## Creatives
 

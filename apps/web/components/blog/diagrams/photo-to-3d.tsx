@@ -14,7 +14,7 @@ import { defineDiagram, FlowArrow, Heading, Node, Tag } from './kit';
 
 // Guide: how-to-make-a-3d-model-from-photos.
 
-/** Photogrammetry measures every side; image-to-3D predicts the sides one photo cannot show. */
+/** Photogrammetry measures every side; image-to-3D works from one photo, so unseen sides come from that picture. */
 export const photoVsPhotogrammetry = defineDiagram(
   {
     en: {
@@ -34,10 +34,10 @@ export const photoVsPhotogrammetry = defineDiagram(
           steps: [
             { title: '1 photo of one side', note: 'Sharp, plain background' },
             {
-              title: 'The tool predicts the hidden sides',
-              note: 'From what similar objects look like',
+              title: 'Sides not in the photo come from it',
+              note: 'Check those sides in the preview',
             },
-            { title: 'The back is an estimate', note: 'Check it before you keep the model' },
+            { title: 'Check the back in the preview', note: 'The photo did not show that side' },
           ],
         },
       ],
@@ -82,7 +82,11 @@ export const imageTo3dPipeline = defineDiagram(
       steps: [
         { tag: '1', title: 'One photo', note: 'The whole object, three-quarter angle' },
         { tag: '2', title: 'Angle sheet', note: 'The object drawn from several sides' },
-        { tag: '3', title: 'You check it', note: 'Back, sides and top, where guesses fail' },
+        {
+          tag: '3',
+          title: 'You check it',
+          note: 'Back, sides and top, which the photo did not show',
+        },
         { tag: '4', title: 'Build the model', note: 'Textured mesh from those views' },
         { tag: '5', title: 'GLB and USDZ', note: 'Web and Android, iPhone and iPad' },
       ],

@@ -12,10 +12,10 @@ import { parseFrontMatter } from './frontmatter';
 //   group: glb-vs-usdz          ties the six translations together for hreflang
 //   title: GLB or USDZ?
 //   description: One sentence for the search result and the card.
-//   date: 2026-11-23            publishes at 00:00 UTC that day; a future date stays invisible
+//   date: 2026-11-23            publishes at 00:00 UTC that day (Jorge, 11-nov-2026); a future date stays invisible
 //   updated: 2026-11-30         optional, the date of the last real change
 //   keyword: glb to usdz        optional, the target query, for the record
-//   author: easyrender team     optional, defaults to the team
+//   author: easyrender team     optional, defaults to the team; week 1 guides name Jorge Rodríguez (person, 11-nov-2026)
 //   authorType: organization    optional, `person` only for a real, agreed author
 //   authorUrl: /about           optional
 //   cta: One sentence above the closing button.   optional
@@ -62,7 +62,7 @@ export type BlogPost = {
   path: string;
 };
 
-/** Until a named person is agreed, guides are signed by the team, as an Organization. */
+/** A file that names no author still defaults to the team, as an Organization. Week 1 guides name Jorge Rodríguez as a Person (11-nov-2026). */
 export const DEFAULT_AUTHOR: BlogAuthor = { name: 'easyrender team', type: 'Organization' };
 
 /** dateModified and lastmod: never earlier than the publication date. */

@@ -60,7 +60,9 @@ All verified against the repo on 2026-11-11.
 | Angle sheet: one square image (1K draft, 2K final), 3×3 grid, eight cells in 45° steps plus top-down                                                       | `packages/harness/src/models.ts` (`SHEET_MODEL`, `aspect_ratio: '1:1'`), `packages/harness/src/sheet.ts` (`VIEWS`, `SHEET_PROMPT`) |
 | Sheet rejected under 768 px, object missing in more than 2 cells, more than 3 of 8 views near copies                                                       | `guardrails.ts` (`minSheetSide`, `maxEmptyCells`, `maxDuplicateViews`)                                                             |
 | Distinct views differ by 3%+, repeated by under 1%                                                                                                         | Comment on `duplicateViewDistance` in `guardrails.ts`                                                                              |
-| Two-stage route picked by an A/B run on real listings                                                                                                      | Comment at the top of `models.ts`                                                                                                  |
+| The build reads the photo plus the nine sheet views                                                                                                        | `packages/core/src/renders.ts` (`build`: source upload, then `cutCells` of the sheet)                                              |
+| Upload: JPEG, PNG or WebP, under 4 MB                                                                                                                      | `packages/core/src/renders.ts` (`MAX_UPLOAD_BYTES`, `IMAGE_TYPES`)                                                                 |
+| Free preview: two a day without credits, watermarked until paid                                                                                            | `packages/core/src/config.ts` (`freePreviewsPerDay`), `packages/harness/src/watermark.ts`                                          |
 | Hidden sides inferred conservatively, no invented logos or text; furniture rules (exact count of legs, arms, cushions, drawers; grain direction and seams) | `packages/harness/src/skills.ts`                                                                                                   |
 | Build asks for a 2048 px texture                                                                                                                           | `models.ts` (`texture_size: 2048`)                                                                                                 |
 | Showcase models 14,590 (clay vase) to 69,910 (bedside table) triangles                                                                                     | `apps/web/public/showcase/*.glb`, read from the accessors                                                                          |
@@ -85,7 +87,37 @@ Links as published in the guide; not re-read on 2026-11-11 unless marked.
 
 From `contenido/AHREFS-W1.md` (10-nov-2026, query "how to make a 3d model from photos", US): top organic returned were neural4d.com (tool page), a YouTube video and a sloyd.ai blog post; positions 1 and 4 missing (likely AI Overview/video). The report reads the SERP as tools and how-tos for image-to-3D and asks the guide to cover one photo vs many, the files you get, limits (no real scale) and printing (no).
 
-Gaps the guide itself targets (SERP content not re-read for this retrospective brief): the two-stage angle-sheet route and how to read the sheet cell by cell; concrete upload limits from a real harness; a symptom/cause/fix table tied to photo choice; a yes/no publish checklist with file budgets.
+Gaps the guide itself targeted when the retrospective brief was written (the SERP was re-read on 11-nov-2026; see the section below): the two-stage angle-sheet route and how to read the sheet cell by cell; concrete upload limits from a real harness; a symptom/cause/fix table tied to photo choice; a yes/no publish checklist with file budgets.
+
+## Live SERP read (11-nov-2026)
+
+Read on 11-nov-2026 (Europe/Madrid) with WebSearch and the pages below. No Ahrefs units were used. This replaces the note above that the SERP had not been re-read for the retrospective brief.
+
+### What currently surfaces
+
+Vendor and tool how-tos dominate the query "how to make a 3d model from photos" / "how to turn a photo into a 3D model": Meshy's 2026 image-to-3D guide and docs, a photogrammetry-versus-AI explainer (ki-heimlabor.de), Meshy's photogrammetry-software round-up, and Adobe Substance's pictures-to-3D page. The shape of the SERP is still tools plus method explainers, as the 10-nov Ahrefs note described, not a shop-owner checklist.
+
+### Facts worth keeping in the brief
+
+- One-photo AI tools (Meshy and similar) ask for a clear, well-lit subject on a plain background, then export GLB / OBJ / STL. Photogrammetry still wants dozens of overlapping shots all the way round the object (guides cite roughly 40–100, or Meshy's photogrammetry round-up's desktop/mobile tools such as Meshroom and RealityScan).
+- The two-route split (many photos that saw every surface vs one photo whose unseen sides come from that picture) is still the gap our guide owns, together with the two-stage angle-sheet check and the "change the photo if the silhouette is wrong" loop.
+- Several competitor pages mention STL or printing as a normal next step. Ours must keep the printing exclusion: models from a photo carry no measured size and are for screens and AR, not STL.
+
+### Do not copy from the SERP
+
+Do not import competitor claims that a one-photo model is "accurate on every side" or ready to print. Do not add unverified tool prices.
+
+### Gaps that still hold
+
+The two-stage angle-sheet route, reading the sheet cell by cell, concrete upload limits from the harness, a symptom/cause/fix table tied to photo choice, and a yes/no publish checklist with file budgets are still rare on the pages opened today.
+
+### Sources opened this read
+
+- https://www.meshy.ai/tutorials/image-to-3d-model-complete-guide
+- https://docs.meshy.ai/en/webapp/image-to-3d
+- https://ki-heimlabor.de/en/guides/3d-modell-aus-fotos/
+- https://www.meshy.ai/blog/free-photogrammetry-software
+- https://www.adobe.com/products/substance3d/discover/pictures-to-3d-models.html
 
 ## Creatives
 
@@ -152,3 +184,7 @@ Items to fix (not applied):
 - 7: read the top 5 for the keyword and name two points they lack.
 - 12: make the armchair GLB caption neutral (drop "look at the fabric under neutral light"), and keep row 7 generic.
 ```
+
+## Fact-check, 2026-11-11
+
+Removed the claim that an A/B run picked the two-stage route and gave a usable model on every test object: the repo holds only a code comment about a run made with the earlier Nano Banana Pro sheet, no results, and `content/evals/latest.json` has no runs. RealityScan "processing" changed to "analysing" (the page says the app analyses after 20 images and processes when you tap Process). The Polycam page could not be read on this date; its figures stay as recorded in `INFORME-SEO-POSTS-W1-2026-11-10.md`. The sample angle sheet (`armchair-angles.jpg`, 1200 px) predates the 1K sheet model.

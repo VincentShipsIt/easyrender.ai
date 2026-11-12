@@ -5,6 +5,8 @@ title: What is a GLB file? How to open, check and use one
 description: "A GLB file is a 3D model in binary glTF 2.0: what is inside it, how to open it on any device, how to make it smaller, and where it is used."
 date: 2026-11-15
 updated: 2026-11-11
+author: Jorge Rodríguez
+authorType: person
 keyword: glb file
 cta: If you have a sharp photo of a lamp or a chair, you can see it from every angle before any GLB is built.
 ---

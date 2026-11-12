@@ -988,7 +988,7 @@
     },
     "build": {
       "title": "3D build",
-      "role": "Rebuilds a textured 3D model from your photo and the eight sheet views. The result downloads as GLB and USDZ.",
+      "role": "Rebuilds a textured 3D model from your photo and the nine sheet views. The result downloads as GLB and USDZ.",
       "settings": {
         "texture": "Texture size: {texture} px",
         "simplify": "Mesh simplification: {simplify}",
@@ -1065,5 +1065,51 @@
       "report": "Full report"
     },
     "cta": "See the models behind a render"
+  },
+  "Ar": {
+    "metaTitle": "Veja na sua casa",
+    "title": "{name} na sua casa",
+    "tapHint": "Toque no botão, mova o telemóvel devagar até encontrar o chão e toque para colocar a peça.",
+    "viewInRoom": "Ver na sua casa",
+    "arUnavailable": "A realidade aumentada não está disponível neste dispositivo. Abra esta página no telemóvel para colocar a peça na sua casa.",
+    "scanTitle": "Leia com o telemóvel",
+    "scanBody": "Aponte a câmara do telemóvel para o código para ver esta peça na sua casa.",
+    "scanAlt": "Código QR que abre este modelo no telemóvel",
+    "notReady": "Este modelo ainda está a ser criado. Volte dentro de alguns minutos.",
+    "notReadyTitle": "Quase pronto",
+    "modelAlt": "Modelo 3D de {name}",
+    "madeWith": "3D por easyrender"
+  },
+  "ShopifyApp": {
+    "title": "Modelos 3D de todo o seu catálogo",
+    "intro": "Gere um modelo 3D de cada produto com um clique. Os clientes veem cada peça na sua própria casa através de um botão ou de um código QR na página do produto.",
+    "loading": "A carregar…",
+    "notInShopify": "Abra esta página a partir da administração da Shopify.",
+    "error": "Algo correu mal: {message}",
+    "connectBody": "Ligue a sua conta easyrender. Os modelos desta loja são pagos com os créditos dessa conta.",
+    "connectButton": "Ligar a sua conta easyrender",
+    "connectWaiting": "Terminou? Esta página atualiza-se sozinha.",
+    "generate": "Gerar 3D de {count} produtos ({credits} créditos)",
+    "starting": "A enviar produtos… {count} enviados",
+    "nothing": "Todos os produtos com foto já têm modelo 3D ou estão a caminho.",
+    "balance": "Saldo: {credits} créditos",
+    "missing": "Faltam {credits} créditos",
+    "buy": "Comprar créditos",
+    "progress": "{ready} prontos, {running} em curso, {waiting} em espera",
+    "needsCredits": "{count} aguardam créditos e continuam quando adicionar mais.",
+    "needsInfo": "{count} precisam de uma foto utilizável.",
+    "failed": "{count} falharam e foram reembolsados. Gere novamente para repetir.",
+    "noPhoto": "{count} não têm foto e são ignorados.",
+    "themeTitle": "Mostre-o nas páginas de produto",
+    "themeBody": "Abra o editor de temas, vá a uma página de produto, adicione o bloco «Ver na sua casa» e guarde. Os produtos com modelo concluído mostram um botão e um código QR."
+  },
+  "ShopifyConnect": {
+    "title": "Ligar {shop} ao easyrender",
+    "body": "Os modelos desta loja serão pagos com os créditos da sua conta easyrender.",
+    "signIn": "Inicie sessão para continuar",
+    "button": "Ligar loja",
+    "done": "Ligada. Volte à Shopify e abra a aplicação.",
+    "invalid": "Esta ligação expirou. Abra novamente a aplicação na Shopify.",
+    "error": "Não foi possível ligar a loja."
   }
 }

@@ -5,6 +5,8 @@ title: "Sell vintage furniture online: platforms, photos, shipping"
 description: "Sell vintage furniture online: where to list it, how to price it from sold listings, how to photograph flaws, what to write and how to ship it."
 date: 2026-11-14
 updated: 2026-11-11
+author: Jorge Rodríguez
+authorType: person
 keyword: sell vintage furniture online
 cta: Take one daylight photo of the piece from three-quarters and see how it turns into a model a buyer can spin.
 ---

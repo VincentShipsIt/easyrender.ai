@@ -21,3 +21,5 @@ Their depth-gate verdicts are retrospective: scored against the current
 [`03-depth-gate.md`](../prompts/03-depth-gate.md) rubric on the published text, without
 rewriting the posts, and recorded as `PASS` or `GAPS` rather than `BACK TO STAGE 2`. The items
 to fix are listed in each brief and have not been applied.
+
+On 11-nov-2026 the seven briefs were updated with a live SERP read (WebSearch and official pages, no Ahrefs units). Each brief now has a `Live SERP read (11-nov-2026)` section under the original SERP gaps.

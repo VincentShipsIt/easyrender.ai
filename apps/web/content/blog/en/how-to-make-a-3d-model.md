@@ -5,6 +5,8 @@ title: "How to make a 3D model: five ways, with or without skills"
 description: "How to make a 3D model five ways, from Blender to one photo: what each method needs, how long it takes, where it fails, and how to pick one."
 date: 2026-11-16
 updated: 2026-11-11
+author: Jorge Rodríguez
+authorType: person
 keyword: how to make a 3d model
 cta: If you have a sharp photo of a chair, a lamp or a sideboard, you can see it from every angle before deciding whether a model is worth making.
 ---
@@ -19,15 +21,15 @@ If the object does not exist yet, model it in software or hire an artist. If it 
 
 ![Decision tree: if the object does not exist yet, model it in software or hire an artist; if it exists but you only have a photo, use AI image-to-3D; if it is in front of you, use LiDAR for large simple shapes and photogrammetry for detailed surfaces](diagram:method-decision-tree "The three questions behind the table below. A 3D artist is also the answer whenever the model has to be exact.")
 
-Accuracy roughly follows effort. An artist working from measurements gives the most exact model. A model generated from one photo is the quickest to get, and its back is an estimate.
+Accuracy roughly follows effort. An artist working from measurements gives the most exact model. A model generated from one photo is the quickest to get, and the sides the photo did not show come from that picture.
 
-| Method               | What you need                                     | Your own time                                          | Best for                                     | Watch for                                      |
-| -------------------- | ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------- |
-| Model it in software | Weeks of practice, reference photos, measurements | A day or more per piece, once you can use the software | Objects that do not exist yet                | Proportions, textures and UV mapping           |
-| Photogrammetry       | The object in hand, 20 to 100 or more photos      | An hour or two of shooting, plus processing            | Real surface detail                          | Plain white surfaces, glass, polished metal    |
-| LiDAR on a phone     | An iPhone Pro or iPad Pro, the object in hand     | A few minutes of walking round it                      | Large, simple shapes like a sofa             | Less detail: turned legs, woven seats          |
-| AI from a photo      | One sharp photo                                   | Checking the preview and the model                     | A supplier photo of a piece you cannot touch | The back is an estimate, with no measured size |
-| Hire a 3D artist     | Photos, measurements and a budget                 | Writing the brief and reviewing drafts                 | Exact models, or one model in several sizes  | Time to brief and commission                   |
+| Method               | What you need                                     | Your own time                                          | Best for                                     | Watch for                                                        |
+| -------------------- | ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------- |
+| Model it in software | Weeks of practice, reference photos, measurements | A day or more per piece, once you can use the software | Objects that do not exist yet                | Proportions, textures and UV mapping                             |
+| Photogrammetry       | The object in hand, 20 to 100 or more photos      | An hour or two of shooting, plus processing            | Real surface detail                          | Plain white surfaces, glass, polished metal                      |
+| LiDAR on a phone     | An iPhone Pro or iPad Pro, the object in hand     | A few minutes of walking round it                      | Large, simple shapes like a sofa             | Less detail: turned legs, woven seats                            |
+| AI from a photo      | One sharp photo                                   | Checking the preview and the model                     | A supplier photo of a piece you cannot touch | The photo only shows one side, and the file has no measured size |
+| Hire a 3D artist     | Photos, measurements and a budget                 | Writing the brief and reviewing drafts                 | Exact models, or one model in several sizes  | Time to brief and commission                                     |
 
 One thing none of this covers is 3D printing. This guide is about models for screens, product pages and AR. A part you want to print needs a CAD model built from real measurements, which is a different job.
 
@@ -154,7 +156,7 @@ Each method fails in its own way, and each failure has a usual cause. This is th
 | Photogrammetry  | Holes in a plain white table top            | Nothing for the software to match between photos  | Shoot it on an overcast day, or pick another method for that piece |
 | Photogrammetry  | The base is missing or fused with the floor | The underside was never photographed              | Accept it, or shoot a second session with the piece on its side    |
 | LiDAR           | Thin legs are lumpy or missing              | The parts are finer than the sensor resolves      | Use photogrammetry for that piece                                  |
-| AI from a photo | The back looks invented                     | The hidden side was inferred from the visible one | Use a three-quarter photo, or add a note about the back            |
+| AI from a photo | The back does not match the piece           | The photo never showed that side                  | Use a three-quarter photo, or add a note about the back            |
 | AI from a photo | A logo or label is a blur                   | Fine detail from one photo                        | Keep the logo in your photos, not in the model                     |
 | Artist          | The model is late or wrong                  | A brief without measurements, formats or a budget | Send photos, measurements, formats and a triangle budget up front  |
 
@@ -176,7 +178,7 @@ It varies by method more than by object: image-to-3D and phone scans take the le
 
 ### Can you make a 3D model from one photo?
 
-Yes, with an image-to-3D tool, which predicts the sides the camera did not see. The result keeps the overall shape and the materials of a real product, while the back and fine details are estimates you need to check. It works best with a sharp three-quarter shot of one object on a plain background.
+Yes, with an image-to-3D tool that starts from one photo, so the sides the camera did not see come from that picture. Check the back and fine details in the preview, especially where the photo did not show them. It works best with a sharp three-quarter shot of one object on a plain background.
 
 ### Is this the same as making a model for 3D printing?
 

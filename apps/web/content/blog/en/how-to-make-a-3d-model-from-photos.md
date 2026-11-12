@@ -5,6 +5,8 @@ title: How to turn a photo into a 3D model
 description: How to turn a photo into a 3D model: which photo to use, how to check the sides the camera never saw, the files you get and the limits.
 date: 2026-11-11
 updated: 2026-11-11
+author: Jorge Rodríguez
+authorType: person
 keyword: how to turn a photo into a 3d model
 cta: Pick one sharp catalogue photo, a chair or a sideboard shot from three-quarters, and check it from every angle before you spend a credit.
 ---
@@ -17,7 +19,7 @@ To turn a photo into a 3D model, take one sharp, evenly lit photo of a single ob
 
 The number of photos follows from one question: is the object in front of you? Photogrammetry and LiDAR scanning need it there. Image-to-3D only needs a picture, which is why it is the route for a supplier's shot of a sideboard you have never touched.
 
-Photogrammetry stitches overlapping photos into a model. [Polycam](https://learn.poly.cam/hc/en-us/articles/27425185907348-How-to-Use-Object-Mode) asks for at least 20, with about 70% overlap, and detailed objects need 100 or more. [RealityScan](https://dev.epicgames.com/documentation/realityscan-mobile/realityscan-step-by-step-guide) starts processing after 20 images, takes up to 300, and asks for circles and arches at several heights.
+Photogrammetry stitches overlapping photos into a model. [Polycam](https://learn.poly.cam/hc/en-us/articles/27425185907348-How-to-Use-Object-Mode) asks for at least 20, with about 70% overlap, and detailed objects need 100 or more. [RealityScan](https://dev.epicgames.com/documentation/realityscan-mobile/realityscan-step-by-step-guide) starts analysing after 20 images, takes up to 300, and asks for circles and arches at several heights.
 
 LiDAR, on an iPhone Pro or iPad Pro, measures depth as you walk round the piece. It is quick on big, plain shapes and loses fine detail such as turned spindles.
 
@@ -36,11 +38,11 @@ The trade-offs between many photos and one photo are in [photogrammetry software
 
 Tools work in one of two ways. Some go straight from the photo to a model. Others first draw the object from several angles and then build the model from those views, which gives the build more to go on for the hidden sides.
 
-easyrender uses the second route. We chose it after an A/B run on real listings, where the two-stage pair gave a usable model on every test object. That run used a larger image model for the sheet; the sheet is now drawn by a cheaper one that we have not yet tested the same way.
+easyrender uses the second route. We chose it after an A/B run on real listings. That run used a larger image model for the sheet; the sheet is now drawn by a cheaper one that we have not yet tested the same way.
 
 The first stage is the angle sheet: one square image, split into a 3 by 3 grid.
 
-Eight cells circle the object in 45-degree steps, from the front round to front-left, and the ninth looks straight down. Every cell is on plain white, in soft light, with the whole object centred. The second stage reads those nine views and builds one textured mesh.
+Eight cells circle the object in 45-degree steps, from the front round to front-left, and the ninth looks straight down. Every cell is on plain white, in soft light, with the whole object centred. The second stage reads your photo and those nine views and builds one textured mesh.
 
 ![Five steps of image-to-3D in two stages: one photo, an angle sheet, your check of the back and sides, then the model build and the GLB and USDZ files, with a wrong preview sending you back to a new photo](diagram:image-to-3d-pipeline "The two-stage route the steps below follow. On easyrender the angle sheet is a free preview, and credits are only spent at step 4, if you decide to build.")
 
@@ -52,11 +54,13 @@ For furniture we add rules of our own, written from testing: keep the exact numb
 
 The best photo shows the whole object, sharp, in soft even light, against a plain background. Nothing should cover it: no cushion over the armrest, no plant in front of a leg.
 
-For furniture, a three-quarter angle beats a straight front shot. From the front, a lounge chair hides its depth and the tool has to guess how deep the seat is. From three-quarters it sees the front and one side at once, so it guesses less.
+For furniture, a three-quarter angle beats a straight front shot. From the front, a lounge chair photo hides the depth of the seat. From three-quarters the photo shows the front and one side at once, so less of the shape is missing.
 
 ![A bouclé lounge armchair with a tubular steel frame, photographed from three-quarters on a white background](/showcase/armchair.jpg "A good input photo: the whole chair, three-quarter angle, plain background.")
 
-Resolution has a floor. Our upload check rejects a photo whose shortest side is under 400 pixels and warns below 800. It also rejects a photo more than four times wider than it is tall, and one so flat in tone that it is probably blank.
+The file has to be a JPEG, PNG or WebP under 4 MB.
+
+Resolution has a floor too. Our upload check rejects a photo whose shortest side is under 400 pixels and warns below 800. It also rejects a photo more than four times wider than it is tall, and one so flat in tone that it is probably blank.
 
 Above that floor, sharpness matters more than pixel count, so we also run a blur check on a small copy of every upload. Test your own photo the same way by eye: zoom to 100% on the edge of a leg. If you cannot see the grain or the weave there, the model will not have it either.
 
@@ -81,7 +85,7 @@ Shadows count as background too. A hard shadow under a coffee table can turn int
 
 ## Step 3: Check the preview from every angle
 
-Good image-to-3D tools show the object from several sides before they build the final model. Look hard at the back and the sides, because that is where the guesses go wrong.
+Good image-to-3D tools show the object from several sides before they build the final model. Look hard at the back and the sides, because that is where the photo did not show the object.
 
 Read the sheet like a contact sheet. Count legs, doors and drawers in every cell, not only in the front one. Then compare opposite cells, such as front-right with back-left: a chair whose arms change shape between them will come out lopsided.
 
@@ -95,7 +99,9 @@ That last check came from testing. On small greyscale copies, two truly differen
 
 Counting is the check that needs a person. Count the doors, drawers and legs in every cell against the real piece before you build. If the preview is wrong, change the photo or add a note to it rather than trying again with the same input.
 
-easyrender takes a short note with each photo, for facts the photo hides: "four doors", "open back", "brass handles". The sheet above is real easyrender output from the photo in step 1, the preview is free, within a small daily allowance, and you only spend credits if you build the model. [Upload a photo](/)
+easyrender takes a short note with each photo, for facts the photo hides: "four doors", "open back", "brass handles". The sheet above is real easyrender output from the photo in step 1, the preview is free, two a day without credits, and you only spend credits if you build the model.
+
+The free preview carries an "easyrender.ai preview" watermark that the sheet above does not. [Upload a photo](/)
 
 ## Step 4: Build the model and download the files
 
@@ -119,11 +125,11 @@ Most bad models trace back to the photo. This is the list we work through, from 
 
 | Symptom                                           | Cause                                                                                                                                                        | Fix                                                                                    |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| Upload rejected as too small                      | The shortest side is under 400 pixels, usually a thumbnail or a screenshot                                                                                   | Use the original file from the camera or the supplier                                  |
+| Upload rejected as too small                      | The shortest side is under 400 pixels, usually a thumbnail or a screenshot                                                                                   | Use the original file from the camera or the supplier, if it is under 4 MB             |
 | Upload rejected as too narrow                     | The image is more than four times wider than tall, such as a banner crop                                                                                     | Crop to the object, with a margin on every side                                        |
 | Two chair legs merge into one                     | From the front, the back legs hide behind the front ones                                                                                                     | Use a three-quarter photo where all four legs stand apart                              |
 | Four doors come back as three                     | Low-contrast seams between the doors                                                                                                                         | Shoot with light raking across the front, or write "four doors" in the note            |
-| The back is a copy of the front                   | Hidden sides are inferred from visible symmetry                                                                                                              | Write "open back" or "plain back" in the note, or use a photo that shows a back corner |
+| The back looks the same as the front              | The photo only showed the front, so the back follows that view                                                                                               | Write "open back" or "plain back" in the note, or use a photo that shows a back corner |
 | Rattan or cane becomes a printed pattern          | One photo cannot see through the gaps                                                                                                                        | Accept it for a small viewer, or scan the piece with photogrammetry                    |
 | Fabric looks yellower or darker than in the photo | The viewer's light differs from the photo's, or the material leaves Metallic unset, so the glTF default of fully metallic applies                            | Check under neutral light, and set Metallic to 0 in Blender before you publish         |
 | Surfaces look faceted under side light            | A file without vertex normals, for which viewers calculate flat ones, as the [glTF spec](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) requires | In Blender, use Shade Smooth and export again                                          |
@@ -160,12 +166,12 @@ At least 800 pixels on the shortest side, and more if you have it. easyrender re
 
 ### Is image-to-3D the same as photogrammetry?
 
-No, photogrammetry measures the object from many real photos, so every surface it shows was seen by the camera. Image-to-3D starts from one photo and predicts the hidden sides, so the back is an estimate. Photogrammetry needs the object in hand; image-to-3D works from a catalogue shot of a piece you have never touched.
+No, photogrammetry measures the object from many real photos, so every surface it shows was seen by the camera. Image-to-3D starts from one photo, so the sides the camera did not see come from that picture. Photogrammetry needs the object in hand; image-to-3D works from a catalogue shot of a piece you have never touched.
 
 ### Is it free to turn a photo into a 3D model?
 
-Trying usually is; the final file usually is not. Most tools offer a free tier or a free preview, then charge per model or by subscription. On easyrender the angle preview is free, up to a small daily allowance, and a finished model costs {{renderCredits}} credits, which is {{renderPrice}} at {{creditPrice}} per credit, as the pricing page lists.
+Trying usually is; the final file usually is not. Most tools offer a free tier or a free preview, then charge per model or by subscription. On easyrender the angle preview is free, two a day without credits, and a finished model costs {{renderCredits}} credits, which is {{renderPrice}} at {{creditPrice}} per credit, as the pricing page lists.
 
 ### Can you 3D print a model made from a photo?
 
-Treat it as a model for screens, not for printing. The hidden sides are estimates and the model carries no measured size, so a print would not match the real piece. easyrender exports GLB and USDZ for the web and AR, not STL or print files. For a printed part, model it in CAD from real measurements.
+Treat it as a model for screens, not for printing. The photo did not show every side, and the model carries no measured size, so a print would not match the real piece. easyrender exports GLB and USDZ for the web and AR, not STL or print files. For a printed part, model it in CAD from real measurements.
