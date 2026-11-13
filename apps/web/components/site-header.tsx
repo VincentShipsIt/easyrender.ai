@@ -37,7 +37,11 @@ export async function SiteHeader() {
   const path = headerList.get(PATH_HEADER);
   const isMcpPage =
     isPublished('mcp', locale as Locale) && path === ROUTES.mcp.paths[locale as Locale];
-  const connectHref = `${isMcpPage ? path : home}#connect`;
+  const isApiPage =
+    isPublished('api', locale as Locale) && path === ROUTES.api.paths[locale as Locale];
+  const apiCta = isApiPage ? (await getTranslations('ApiLanding'))('headerCta') : null;
+  const isIntegrationPage = isMcpPage || isApiPage;
+  const connectHref = `${isIntegrationPage ? path : home}#connect`;
   // The pricing item is its own page where one is published in this language, else the home anchor.
   const navHref = (item: (typeof NAV)[number]) => {
     if ('href' in item) return item.href;
@@ -46,7 +50,7 @@ export async function SiteHeader() {
         ? ROUTES.pricing.paths[locale as Locale]
         : `${home}#pricing`;
     if (item.hash === '#connect') return connectHref;
-    if (isMcpPage && item.hash === '#how-it-works') return `${path}${item.hash}`;
+    if (isIntegrationPage && item.hash === '#how-it-works') return `${path}${item.hash}`;
     return `${home}${item.hash}`;
   };
   return (
@@ -64,7 +68,7 @@ export async function SiteHeader() {
             {NAV.map((item) => (
               <Button key={item.key} variant="ghost" size="sm" asChild>
                 <Link href={navHref(item)} className="text-muted-foreground">
-                  {t(`nav.${item.key}`)}
+                  {isApiPage && item.key === 'connect' ? apiCta : t(`nav.${item.key}`)}
                 </Link>
               </Button>
             ))}
@@ -98,8 +102,8 @@ export async function SiteHeader() {
                 <Link href={connectHref}>
                   {/* One text run, so the button's flex gap does not double the space before the suffix. */}
                   <span>
-                    {t('connect')}
-                    {t('connectSuffix') ? (
+                    {apiCta ?? t('connect')}
+                    {!isApiPage && t('connectSuffix') ? (
                       <span className="hidden sm:inline"> {t('connectSuffix')}</span>
                     ) : null}
                   </span>
@@ -112,7 +116,7 @@ export async function SiteHeader() {
               {NAV.map((item) => (
                 <Button key={item.key} variant="ghost" className="justify-start" asChild>
                   <Link href={navHref(item)} className="text-muted-foreground">
-                    {t(`nav.${item.key}`)}
+                    {isApiPage && item.key === 'connect' ? apiCta : t(`nav.${item.key}`)}
                   </Link>
                 </Button>
               ))}

@@ -44,7 +44,8 @@
       "guides": "Guides",
       "models": "Models",
       "evals": "Evals",
-      "cookies": "Cookies and analytics"
+      "cookies": "Cookies and analytics",
+      "api": "REST API"
     },
     "copyright": "© 2026 easyrender. Powered by Genfeed.",
     "pricesNote": "Prices in USD. Credits never expire."
@@ -1619,6 +1620,135 @@
     "closing": {
       "title": "Bring your next product into the conversation.",
       "cta": "Connect easyrender"
+    }
+  },
+  "ApiLanding": {
+    "meta": {
+      "title": "Image to 3D API for product photos · easyrender",
+      "description": "Add photo-to-3D generation to your app with the easyrender REST API. Upload a product image, review the preview, start the paid build and download a textured GLB."
+    },
+    "hero": {
+      "title": "Photo to 3D. Built into your app.",
+      "subtitle": "Use the easyrender REST API to turn product photos into textured GLBs. Your interface, your workflow, with a preview before the paid build.",
+      "cta": "Get your API key",
+      "note": "REST API · Product photo in. GLB out."
+    },
+    "headerCta": "Get API key",
+    "formatsLabel": "One HTTP workflow",
+    "formats": {
+      "auth": "Bearer authentication",
+      "upload": "Multipart upload",
+      "status": "JSON status",
+      "output": "GLB download"
+    },
+    "intro": {
+      "title": "Make 3D generation part of your product.",
+      "description": "Connect your backend to easyrender and decide how people upload, review and use each model.",
+      "catalog": {
+        "title": "Catalog tools",
+        "body": "Add a photo-to-model step to the tools your team uses to prepare product assets."
+      },
+      "app": {
+        "title": "Your own upload experience",
+        "body": "Let users submit a product photo in your app. Your server creates the preview and starts the build when they approve it."
+      },
+      "web": {
+        "title": "3D product experiences",
+        "body": "Retrieve a GLB to use in your own product viewer, prototype or asset workflow."
+      }
+    },
+    "workflow": {
+      "title": "You own the experience. We generate the model.",
+      "description": "Three stages, with a clear boundary between the preview and the paid build.",
+      "photo": {
+        "title": "Upload and preview",
+        "body": "Send a JPEG, PNG or WebP file as multipart form data. Keep the returned render ID and check progress."
+      },
+      "review": {
+        "title": "Approve the build",
+        "body": "Show the preview and credit cost in your UI. Call the build endpoint only when you are ready to spend credits."
+      },
+      "download": {
+        "title": "Retrieve the GLB",
+        "body": "Poll for completion from your server, handle failures and download the finished model with your API key."
+      }
+    },
+    "connect": {
+      "title": "Start with an API key.",
+      "description": "Create a key in Connectors, then make requests from your backend or terminal.",
+      "accountTitle": "Your account, your credits",
+      "accountBody": "Sign in or create an account to manage API keys, buy credits and find generated models in your library.",
+      "cta": "Get API key",
+      "setupLabel": "Terminal · environment",
+      "setupNote": "Replace er_your_key with your key. Run the examples in the same shell. Keep the key on your server; never put it in browser or mobile client code.",
+      "mcpTitle": "Want to connect an AI agent instead?",
+      "mcpLink": "See the MCP integration"
+    },
+    "examples": {
+      "title": "From the first request to a GLB.",
+      "description": "Copyable cURL examples for the current REST endpoints. Run each stage separately and wait for the required status.",
+      "upload": {
+        "title": "01 · Upload your photo",
+        "body": "Use your own product.jpg. The response includes id, status and renderCredits. The image field is a file, not a JSON image_url.",
+        "label": "POST /api/renders"
+      },
+      "visibility": {
+        "title": "02 · Choose visibility",
+        "body": "Replace EASYRENDER_RENDER_ID with the id from the response. Finished renders are public by default. This request keeps the render out of the public gallery; send it before starting the build.",
+        "label": "PATCH /api/renders/'{'id'}'"
+      },
+      "preview": {
+        "title": "03 · Wait for the preview",
+        "body": "Repeat the first request with a delay until status is preview_ready. Then run the second request and inspect preview.webp. Use renderCredits from the JSON response to show the build cost. Stop if status is failed.",
+        "label": "GET status → GET preview"
+      },
+      "build": {
+        "title": "04 · Start the paid build",
+        "body": "This request spends credits. Run it only after reviewing the preview, confirming the cost and ensuring your account has enough credits. Your application must implement its own approval step.",
+        "label": "POST /api/renders/'{'id'}'/render"
+      },
+      "download": {
+        "title": "05 · Download when ready",
+        "body": "Repeat the status request with a delay until status is ready and hasModel is true. Only then run the download request. A failed status ends the job; failed builds refund their credits.",
+        "label": "GET status → GET model"
+      },
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyError": "Clipboard unavailable. Select the code and copy it manually.",
+      "polling": "Use polling with a delay and a timeout in your application. These examples show individual requests, not an automatic retry loop. For HTTP errors, inspect the JSON error and code fields."
+    },
+    "faq": {
+      "title": "Integration details",
+      "items": {
+        "input": {
+          "q": "What images can I upload?",
+          "a": "Send a JPEG, PNG or WebP file up to 4 MB in the multipart image field. An optional prompt adds notes about the object. Use a clear photo of one product; image quality checks may reject unsuitable inputs."
+        },
+        "auth": {
+          "q": "Where should I use my API key?",
+          "a": "Send it as Authorization: Bearer from your backend. The key authorizes requests for your account, including paid builds. Do not expose it in a frontend bundle, a mobile app or shared example code. Manage and revoke keys in Connectors."
+        },
+        "cost": {
+          "q": "How do I check the cost and my balance?",
+          "a": "Render responses include renderCredits, the total credit cost of a 3D build. GET /api/renders returns your library and balance. The preview has an allowance; a POST to the render endpoint starts the paid build. The pricing section below reflects the current plans."
+        },
+        "errors": {
+          "q": "How should I handle progress and errors?",
+          "a": "Poll GET /api/renders/'{'id'}' with delays and a timeout. Wait for preview_ready before building and ready before downloading; stop on failed. HTTP 402 means insufficient credits, 409 an invalid build state, 413 an oversized image, 415 an unsupported image type and 429 an exhausted preview allowance. Do not blindly repeat upload or payment requests."
+        },
+        "webhooks": {
+          "q": "Can my application receive a completion webhook?",
+          "a": "The public REST flow shown here uses polling. A customer-configurable completion webhook is not exposed by these endpoints. Use the status response to trigger the next step in your application."
+        },
+        "scope": {
+          "q": "What kind of model does the API produce?",
+          "a": "A textured GLB representing the object in your photo. Geometry is approximate, without guaranteed real-world dimensions or manufacturing precision. This is generation from your own images, not a model library or a promise of automatic store publishing."
+        }
+      }
+    },
+    "closing": {
+      "title": "Add the next dimension to your product.",
+      "cta": "Get your API key"
     }
   }
 }

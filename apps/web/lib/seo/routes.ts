@@ -77,6 +77,20 @@ export const ROUTES = {
     priority: 0.8,
     changeFrequency: 'monthly',
   },
+  // Marketing content lives outside /api/, which is reserved for HTTP handlers.
+  api: {
+    paths: {
+      en: '/image-to-3d-api',
+      es: '/es/api-imagen-a-3d',
+      de: '/de/image-to-3d-api',
+      fr: '/fr/image-to-3d-api',
+      it: '/it/image-to-3d-api',
+      pt: '/pt/image-to-3d-api',
+    },
+    published: ['en', 'es'],
+    priority: 0.8,
+    changeFrequency: 'monthly',
+  },
   // What runs under the product, and how it is checked. Open in English and Spanish like the
   // pricing and guides; the other four wait for reviewed copy. /evals stays out of the sitemap
   // until a run is published (see lib/evals.ts), so a page with nothing to measure is never

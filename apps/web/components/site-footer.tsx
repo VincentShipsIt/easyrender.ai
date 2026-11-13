@@ -24,6 +24,7 @@ const COLUMNS = [
     title: 'developers',
     links: [
       { route: 'mcp', key: 'mcp' },
+      { route: 'api', key: 'api' },
       { href: '/connectors', key: 'apiKeys' },
       { route: 'models', key: 'models' },
       { route: 'evals', key: 'evals' },

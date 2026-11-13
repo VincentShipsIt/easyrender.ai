@@ -44,7 +44,8 @@
       "guides": "Guías",
       "models": "Modelos",
       "evals": "Evaluaciones",
-      "cookies": "Cookies y analítica"
+      "cookies": "Cookies y analítica",
+      "api": "API REST"
     },
     "copyright": "© 2026 easyrender. Con la tecnología de Genfeed.",
     "pricesNote": "Precios en USD. Los créditos no caducan."
@@ -1619,6 +1620,135 @@
     "closing": {
       "title": "Lleva tu próximo producto a la conversación.",
       "cta": "Conecta easyrender"
+    }
+  },
+  "ApiLanding": {
+    "meta": {
+      "title": "API de imagen a 3D para fotos de producto · easyrender",
+      "description": "Integra la generación 3D en tu app con la API REST de easyrender. Sube una foto de producto, revisa la vista previa, genera con créditos y descarga un GLB con texturas."
+    },
+    "hero": {
+      "title": "De foto a 3D. Dentro de tu app.",
+      "subtitle": "Convierte fotos de producto en archivos GLB con texturas mediante la API REST de easyrender. Tu interfaz, tu flujo y una vista previa antes de generar el modelo de pago.",
+      "cta": "Obtén tu clave API",
+      "note": "API REST · Entra una foto. Sale un GLB."
+    },
+    "headerCta": "Clave API",
+    "formatsLabel": "Un flujo mediante HTTP",
+    "formats": {
+      "auth": "Autenticación Bearer",
+      "upload": "Subida multipart",
+      "status": "Estado en JSON",
+      "output": "Descarga GLB"
+    },
+    "intro": {
+      "title": "Integra la generación 3D en tu producto.",
+      "description": "Conecta tu backend a easyrender y decide cómo se sube, se revisa y se utiliza cada modelo.",
+      "catalog": {
+        "title": "Herramientas de catálogo",
+        "body": "Añade la generación de modelos a partir de fotos a las herramientas con las que tu equipo prepara los recursos de producto."
+      },
+      "app": {
+        "title": "Tu propia experiencia de subida",
+        "body": "Permite que tus usuarios envíen una foto de producto desde tu app. Tu servidor crea la vista previa e inicia el modelo cuando lo aprueban."
+      },
+      "web": {
+        "title": "Experiencias de producto en 3D",
+        "body": "Obtén un GLB para utilizarlo en tu propio visor de producto, prototipo o flujo de trabajo."
+      }
+    },
+    "workflow": {
+      "title": "Tú controlas la experiencia. Nosotros generamos el modelo.",
+      "description": "Tres etapas, con un paso explícito entre la vista previa y la generación de pago.",
+      "photo": {
+        "title": "Sube la foto y previsualiza",
+        "body": "Envía un archivo JPEG, PNG o WebP como formulario multipart. Guarda el ID del render y consulta su progreso."
+      },
+      "review": {
+        "title": "Aprueba la generación",
+        "body": "Muestra la vista previa y el coste en créditos en tu interfaz. Llama al endpoint de generación cuando decidas gastar los créditos."
+      },
+      "download": {
+        "title": "Obtén el GLB",
+        "body": "Consulta el estado desde tu servidor, gestiona los fallos y descarga el modelo terminado con tu clave API."
+      }
+    },
+    "connect": {
+      "title": "Empieza con una clave API.",
+      "description": "Crea una clave en Conectores y envía las peticiones desde tu backend o terminal.",
+      "accountTitle": "Tu cuenta, tus créditos",
+      "accountBody": "Inicia sesión o crea una cuenta para gestionar las claves API, comprar créditos y encontrar los modelos generados en tu biblioteca.",
+      "cta": "Obtener clave API",
+      "setupLabel": "Terminal · variables de entorno",
+      "setupNote": "Sustituye er_your_key por tu clave. Ejecuta los ejemplos en la misma terminal. Guarda la clave en tu servidor; nunca la incluyas en el código del navegador ni de una app móvil.",
+      "mcpTitle": "¿Quieres conectar un agente de IA?",
+      "mcpLink": "Ver la integración MCP"
+    },
+    "examples": {
+      "title": "De la primera petición al GLB.",
+      "description": "Ejemplos cURL que puedes copiar para los endpoints REST actuales. Ejecuta cada etapa por separado y espera al estado necesario.",
+      "upload": {
+        "title": "01 · Sube tu foto",
+        "body": "Usa tu propio archivo product.jpg. La respuesta incluye id, status y renderCredits. El campo image es un archivo, no un campo image_url en JSON.",
+        "label": "POST /api/renders"
+      },
+      "visibility": {
+        "title": "02 · Elige la visibilidad",
+        "body": "Sustituye EASYRENDER_RENDER_ID por el id de la respuesta. Los renders terminados son públicos por defecto. Esta petición evita que el render aparezca en la galería pública; envíala antes de iniciar la generación.",
+        "label": "PATCH /api/renders/'{'id'}'"
+      },
+      "preview": {
+        "title": "03 · Espera a la vista previa",
+        "body": "Repite la primera petición dejando un intervalo hasta que status sea preview_ready. Después ejecuta la segunda e inspecciona preview.webp. Usa renderCredits del JSON para mostrar el coste. Detén el flujo si status es failed.",
+        "label": "GET estado → GET vista previa"
+      },
+      "build": {
+        "title": "04 · Inicia la generación de pago",
+        "body": "Esta petición gasta créditos. Ejecútala tras revisar la vista previa, confirmar el coste y comprobar que hay saldo suficiente. Tu aplicación debe implementar su propio paso de aprobación.",
+        "label": "POST /api/renders/'{'id'}'/render"
+      },
+      "download": {
+        "title": "05 · Descarga cuando esté listo",
+        "body": "Repite la consulta de estado dejando un intervalo hasta que status sea ready y hasModel sea true. Solo entonces ejecuta la descarga. El estado failed termina el proceso; los modelos fallidos devuelven sus créditos.",
+        "label": "GET estado → GET modelo"
+      },
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "copyError": "No se puede acceder al portapapeles. Selecciona el código y cópialo manualmente.",
+      "polling": "En tu aplicación, consulta el estado con un intervalo y un tiempo máximo de espera. Los ejemplos muestran peticiones individuales, no un bucle automático de reintentos. Ante errores HTTP, consulta los campos error y code del JSON."
+    },
+    "faq": {
+      "title": "Detalles de la integración",
+      "items": {
+        "input": {
+          "q": "¿Qué imágenes puedo subir?",
+          "a": "Envía un archivo JPEG, PNG o WebP de hasta 4 MB en el campo multipart image. El campo opcional prompt permite añadir notas sobre el objeto. Usa una foto clara de un solo producto; los controles de calidad pueden rechazar imágenes no adecuadas."
+        },
+        "auth": {
+          "q": "¿Dónde debo usar mi clave API?",
+          "a": "Envíala como Authorization: Bearer desde tu backend. La clave autoriza peticiones para tu cuenta, incluidas las generaciones de pago. No la expongas en el código del frontend, una app móvil ni ejemplos compartidos. Puedes gestionarla y revocarla desde Conectores."
+        },
+        "cost": {
+          "q": "¿Cómo consulto el coste y el saldo?",
+          "a": "Las respuestas de render incluyen renderCredits, el coste total en créditos de generar el modelo 3D. GET /api/renders devuelve tu biblioteca y balance. La vista previa tiene un límite de uso; una petición POST al endpoint render inicia la generación de pago. La sección de precios muestra los planes actuales."
+        },
+        "errors": {
+          "q": "¿Cómo gestiono el progreso y los errores?",
+          "a": "Consulta GET /api/renders/'{'id'}' con intervalos y un tiempo máximo de espera. Espera a preview_ready antes de generar y a ready antes de descargar; detente si llega a failed. HTTP 402 indica saldo insuficiente, 409 un estado incompatible, 413 una imagen demasiado grande, 415 un formato no admitido y 429 el límite de vistas previas agotado. No repitas a ciegas las peticiones de subida o pago."
+        },
+        "webhooks": {
+          "q": "¿Puede mi aplicación recibir un webhook al terminar?",
+          "a": "El flujo REST público de esta página funciona mediante consultas de estado. Estos endpoints no ofrecen un webhook de finalización configurable por el cliente. Usa la respuesta de estado para iniciar la siguiente etapa en tu aplicación."
+        },
+        "scope": {
+          "q": "¿Qué tipo de modelo produce la API?",
+          "a": "Un GLB con texturas que representa el objeto de tu foto. La geometría es aproximada, sin garantía de medidas reales ni precisión de fabricación. Genera modelos a partir de tus imágenes; no es una biblioteca de modelos ni implica publicación automática en una tienda."
+        }
+      }
+    },
+    "closing": {
+      "title": "Añade otra dimensión a tu producto.",
+      "cta": "Obtén tu clave API"
     }
   }
 }

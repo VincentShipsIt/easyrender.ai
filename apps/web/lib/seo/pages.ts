@@ -160,6 +160,31 @@ export async function mcpGraph(locale: Locale) {
   ];
 }
 
+/** REST API landing: the visible FAQ and schema share their localized content. */
+export async function apiMetadata(locale: Locale): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'ApiLanding.meta' });
+  return pageMetadata({
+    locale,
+    path: ROUTES.api.paths[locale],
+    title: t('title'),
+    description: t('description'),
+    alternates: livePaths('api'),
+  });
+}
+
+export async function apiGraph(locale: Locale) {
+  const { apiFaqItems } = await import('@/components/api-landing/api-view');
+  const [t, items] = await Promise.all([
+    getTranslations({ locale, namespace: 'ApiLanding.meta' }),
+    apiFaqItems(locale),
+  ]);
+  return [
+    organization(),
+    webPage(locale, ROUTES.api.paths[locale], t('title'), t('description')),
+    faqPage(items, `${absoluteUrl(ROUTES.api.paths[locale])}#faq`),
+  ];
+}
+
 /** The models page. Same head and structured data in every language it is open in. */
 export async function modelsMetadata(locale: Locale): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'Models' });
