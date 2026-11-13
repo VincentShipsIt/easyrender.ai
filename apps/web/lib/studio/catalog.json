@@ -54,24 +54,24 @@
         "file": "armchair.glb",
         "tris": 37590,
         "verts": 22948,
-        "kb": 454
+        "kb": 475
       },
       {
         "file": "armchair.lod1.glb",
         "tris": 8268,
         "verts": 7324,
-        "kb": 152
+        "kb": 140
       },
       {
         "file": "armchair.lod2.glb",
         "tris": 2066,
         "verts": 2454,
-        "kb": 58
+        "kb": 52
       }
     ],
     "hd": {
       "file": "armchair.hd.glb",
-      "kb": 762
+      "kb": 871
     },
     "formats": ["GLB", "USDZ"]
   },
