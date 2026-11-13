@@ -1,9 +1,10 @@
 'use client';
 
 import {
+  type ChargeCurrency,
+  displayPricing,
   isValidPaygCredits,
   type PricingVariant,
-  pricingFor,
   rendersFor,
 } from '@easyrender/harness/pricing';
 import { useFormatter, useTranslations } from 'next-intl';
@@ -13,12 +14,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-export function PaygPicker({ pricingVariant = 'control' }: { pricingVariant?: PricingVariant }) {
-  const { creditUsd, payg: PAYG } = pricingFor(pricingVariant);
+export function PaygPicker({
+  pricingVariant = 'control',
+  currency = 'usd',
+}: {
+  pricingVariant?: PricingVariant;
+  currency?: ChargeCurrency;
+}) {
+  const { creditPrice, payg: PAYG } = displayPricing(pricingVariant, currency);
   const t = useTranslations('PaygPicker');
   const format = useFormatter();
   const usd = (credits: number) =>
-    format.number(credits * creditUsd, { style: 'currency', currency: 'USD' });
+    format.number(credits * creditPrice, { style: 'currency', currency: currency.toUpperCase() });
   const [credits, setCredits] = useState(PAYG.presets[1] ?? PAYG.min);
   const isValid = isValidPaygCredits(credits, pricingVariant);
   return (

@@ -66,17 +66,36 @@ const priceId = (product: 'payg' | PlanId, variant: PricingVariant) => {
   return id;
 };
 
-// EUR checkout stays off until the pricing pages show EUR. Set EUR_CHECKOUT_ENABLED=1 to turn it on.
-const isEurCheckoutEnabled = () => process.env.EUR_CHECKOUT_ENABLED === '1';
+// Euro-area visitors see and pay EUR; everyone else USD. EUR_CHECKOUT_DISABLED=1 is the kill switch
+// that puts everyone back on USD. The pricing pages and checkout both ask here, so they agree.
+export const currencyForVisitor = (country: string | null | undefined): ChargeCurrency =>
+  process.env.EUR_CHECKOUT_DISABLED === '1' ? 'usd' : currencyForCountry(country);
+
+/** A returning buyer stays in the currency of their last paid order, whatever country they browse from. */
+export async function buyerCurrency(
+  userId: string | null | undefined,
+  country: string | null | undefined,
+): Promise<ChargeCurrency> {
+  if (userId) {
+    const last = await db().purchase.findFirst({
+      where: { userId, status: 'paid' },
+      orderBy: { createdAt: 'desc' },
+      select: { currency: true },
+    });
+    if (last?.currency === 'usd' || last?.currency === 'eur') return last.currency;
+  }
+  return currencyForVisitor(country);
+}
 
 // A Stripe customer is locked to the currency of its first invoice or subscription. Keep returning
 // buyers in that currency, whatever country they browse from now.
 async function checkoutCurrency(
   client: Stripe,
+  userId: string,
   customerId: string | null,
   country: string | null | undefined,
 ): Promise<ChargeCurrency> {
-  const wanted = isEurCheckoutEnabled() ? currencyForCountry(country) : 'usd';
+  const wanted = await buyerCurrency(userId, country);
   if (!customerId) return wanted;
   const customer = await client.customers.retrieve(customerId);
   if ('deleted' in customer && customer.deleted) return wanted;
@@ -127,7 +146,7 @@ export async function createCheckoutDetails(
   const customer = user.stripeCustomerId
     ? { customer: user.stripeCustomerId }
     : { customer_email: user.email };
-  const currency = await checkoutCurrency(client, user.stripeCustomerId, context.country);
+  const currency = await checkoutCurrency(client, userId, user.stripeCustomerId, context.country);
   const selectedPrice = await client.prices.retrieve(priceId(request.plan, variant), {
     expand: ['currency_options'],
   });

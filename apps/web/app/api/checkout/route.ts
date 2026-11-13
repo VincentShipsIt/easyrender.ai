@@ -12,7 +12,7 @@ import { handle } from '@/lib/http';
 
 export const POST = (request: Request) =>
   handle(async () => {
-    const { userId, anonId } = await resolveActor(request.headers);
+    const { userId, anonId, geoCountry } = await resolveActor(request.headers);
     if (!userId) throw new AppError('Sign in to buy credits', 401, 'unauthorized');
     const body = (await request.json().catch(() => ({}))) as {
       plan?: unknown;
@@ -22,7 +22,8 @@ export const POST = (request: Request) =>
     const details = await createCheckoutDetails(userId, body, {
       anonId,
       expectedVariant: request.headers.get('x-pricing-variant'),
-      country: request.headers.get('x-vercel-ip-country'),
+      // The same country the pricing pages used, so the page and the charge agree.
+      country: geoCountry,
     });
     const context = parseGoogleContext(
       body.googleAnalytics,

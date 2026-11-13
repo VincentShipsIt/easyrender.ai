@@ -5,7 +5,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatCount, formatUsd } from '@/lib/price-format';
+import { formatCount, formatMoney } from '@/lib/price-format';
 import { cn } from '@/lib/utils';
 
 const BUY = `/sign-up?next=${encodeURIComponent('/credits')}`;
@@ -22,7 +22,9 @@ export async function PlanCards() {
   const { plans: SUBSCRIPTION_PLANS, payg: PAYG } = pricing;
   const [t, locale] = await Promise.all([getTranslations('Landing.pricing'), getLocale()]);
   const usd = (cents: number) =>
-    formatUsd(locale, cents / 100, { minimumFractionDigits: cents % 100 === 0 ? 0 : 2 });
+    formatMoney(locale, cents / 100, pricing.currency, {
+      minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
+    });
   const plans = [
     {
       name: t('free.name'),
@@ -34,12 +36,12 @@ export async function PlanCards() {
     },
     {
       name: t('payg.name'),
-      price: usd(pricing.creditUsd * 100),
+      price: usd(pricing.creditPrice * 100),
       note: t('payg.note'),
       features: [
         t('payg.features.min', {
           credits: formatCount(locale, PAYG.min),
-          price: usd(PAYG.min * pricing.creditUsd * 100),
+          price: usd(PAYG.min * pricing.creditPrice * 100),
         }),
         t('payg.features.downloads'),
         t('payg.features.ar'),

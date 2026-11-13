@@ -13,7 +13,7 @@ import {
 } from '@/lib/blog/posts';
 import { COMPARE_INDEX, type ComparePage } from '@/lib/compare/pages';
 import { hasPublishedRuns } from '@/lib/evals';
-import { formatCount, formatUsd } from '@/lib/price-format';
+import { formatCount, formatMoney } from '@/lib/price-format';
 import {
   article,
   breadcrumbList,
@@ -73,7 +73,7 @@ export async function pricingMetadata(locale: Locale): Promise<Metadata> {
     title: t('metaTitle'),
     description: t('metaDescription', {
       credits: RENDER_CREDITS,
-      price: formatUsd(locale, RENDER_CREDITS * pricing.creditUsd),
+      price: formatMoney(locale, RENDER_CREDITS * pricing.creditPrice, pricing.currency),
       proCredits: formatCount(locale, pricing.plans.pro.monthlyCredits),
     }),
     alternates: livePaths('pricing'),
@@ -93,7 +93,7 @@ export async function pricingGraph(locale: Locale) {
   ]);
   const description = t('metaDescription', {
     credits: RENDER_CREDITS,
-    price: formatUsd(locale, RENDER_CREDITS * pricing.creditUsd),
+    price: formatMoney(locale, RENDER_CREDITS * pricing.creditPrice, pricing.currency),
     proCredits: formatCount(locale, pricing.plans.pro.monthlyCredits),
   });
   return [

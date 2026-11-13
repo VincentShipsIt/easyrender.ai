@@ -7,7 +7,7 @@ import { PlanCards } from '@/components/pricing/plan-cards';
 import { PricingExposure } from '@/components/pricing-exposure';
 import type { Locale } from '@/i18n/config';
 import { FAQ_KEYS } from '@/lib/faq';
-import { formatUsd } from '@/lib/price-format';
+import { formatMoney } from '@/lib/price-format';
 import { isPublished, ROUTES } from '@/lib/seo/routes';
 import { cn } from '@/lib/utils';
 
@@ -50,7 +50,9 @@ export async function Pricing() {
   const pricing = await currentPricing();
   const [t, locale] = await Promise.all([getTranslations('Landing.pricing'), getLocale()]);
   const usd = (cents: number) =>
-    formatUsd(locale, cents / 100, { minimumFractionDigits: cents % 100 === 0 ? 0 : 2 });
+    formatMoney(locale, cents / 100, pricing.currency, {
+      minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
+    });
   const pricingPath = isPublished('pricing', locale as Locale)
     ? ROUTES.pricing.paths[locale as Locale]
     : ROUTES.pricing.paths.en;
@@ -61,7 +63,7 @@ export async function Pricing() {
       title={t('title')}
       description={t('description', {
         credits: RENDER_CREDITS,
-        price: usd(RENDER_CREDITS * pricing.creditUsd * 100),
+        price: usd(RENDER_CREDITS * pricing.creditPrice * 100),
       })}
       action={
         <Link className="link" href={pricingPath}>
@@ -83,11 +85,11 @@ export type FaqItem = { question: string; answer: string };
  */
 export async function faqItems(): Promise<FaqItem[]> {
   const { currentPricing } = await import('@/lib/pricing');
-  const { creditUsd } = await currentPricing();
+  const { creditPrice, currency } = await currentPricing();
   const [t, locale] = await Promise.all([getTranslations('Landing.faq'), getLocale()]);
-  const usd = (value: number) => formatUsd(locale, value);
-  const price = usd(RENDER_CREDITS * creditUsd);
-  const unit = usd(creditUsd);
+  const usd = (value: number) => formatMoney(locale, value, currency);
+  const price = usd(RENDER_CREDITS * creditPrice);
+  const unit = usd(creditPrice);
   return FAQ_KEYS.map((key) => ({
     question: t(`items.${key}.q`),
     answer: t(`items.${key}.a`, { credits: RENDER_CREDITS, price, unit }),

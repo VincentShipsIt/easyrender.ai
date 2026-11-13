@@ -14,14 +14,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import type { Locale } from '@/i18n/config';
-import { formatCount, formatUsd } from '@/lib/price-format';
+import { formatCount, formatMoney } from '@/lib/price-format';
 import { currentPricing } from '@/lib/pricing';
 import { FAQ_ITEM_KEYS } from './faq-keys';
 
-/** Money in the visitor's language: whole dollars without cents, the rest with two. */
-function dollars(locale: Locale) {
+/** Money in the visitor's language and currency: whole units without cents, the rest with two. */
+function dollars(locale: Locale, currency: 'usd' | 'eur') {
   return (cents: number) =>
-    formatUsd(locale, cents / 100, { minimumFractionDigits: cents % 100 === 0 ? 0 : 2 });
+    formatMoney(locale, cents / 100, currency, {
+      minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
+    });
 }
 
 /**
@@ -33,14 +35,14 @@ export async function pricingFaqItems(locale: Locale) {
     getTranslations({ locale, namespace: 'Pricing.faq' }),
     currentPricing(),
   ]);
-  const usd = dollars(locale);
-  const { plans, payg, creditUsd } = pricing;
+  const usd = dollars(locale, pricing.currency);
+  const { plans, payg, creditPrice, currency } = pricing;
   const values = {
     credits: RENDER_CREDITS,
-    price: formatUsd(locale, RENDER_CREDITS * creditUsd),
-    unit: formatUsd(locale, creditUsd),
+    price: formatMoney(locale, RENDER_CREDITS * creditPrice, currency),
+    unit: formatMoney(locale, creditPrice, currency),
     min: formatCount(locale, payg.min),
-    minPrice: usd(payg.min * creditUsd * 100),
+    minPrice: usd(payg.min * creditPrice * 100),
     plan: plans.pro.label,
     planCredits: formatCount(locale, plans.pro.monthlyCredits),
     planModels: rendersFor(plans.pro.monthlyCredits),
@@ -64,20 +66,20 @@ export async function PricingView({ locale }: { locale: Locale }) {
     pricingFaqItems(locale),
   ]);
   const tPlans = await getTranslations({ locale, namespace: 'Landing.pricing' });
-  const usd = dollars(locale);
-  const { plans, payg, creditUsd } = pricing;
-  const price = formatUsd(locale, RENDER_CREDITS * creditUsd);
+  const usd = dollars(locale, pricing.currency);
+  const { plans, payg, creditPrice, currency } = pricing;
+  const price = formatMoney(locale, RENDER_CREDITS * creditPrice, currency);
   const perCredit = (value: number) =>
-    formatUsd(locale, value, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+    formatMoney(locale, value, currency, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
 
   const rows = [
     {
       key: 'payg',
       name: tPlans('payg.name'),
-      price: t('compare.from', { value: usd(payg.min * creditUsd * 100) }),
+      price: t('compare.from', { value: usd(payg.min * creditPrice * 100) }),
       credits: t('compare.from', { value: formatCount(locale, payg.min) }),
       models: t('compare.from', { value: rendersFor(payg.min) }),
-      unit: perCredit(creditUsd),
+      unit: perCredit(creditPrice),
     },
     ...PLAN_IDS.map((id) => ({
       key: id,
@@ -123,7 +125,7 @@ export async function PricingView({ locale }: { locale: Locale }) {
             {t('compare.title')}
           </h2>
           <p className="max-w-2xl text-muted-foreground text-pretty">
-            {t('compare.description', { unit: formatUsd(locale, creditUsd) })}
+            {t('compare.description', { unit: formatMoney(locale, creditPrice, currency) })}
           </p>
         </div>
         <Table>
