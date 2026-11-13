@@ -40,6 +40,7 @@ model User {
   renders   Render[]
   ledger    CreditLedger[]
   purchases Purchase[]
+  googleCheckouts GoogleCheckout[]
   apiKeys   ApiKey[]
   catalogItems CatalogItem[]
   shopifyShops ShopifyShop[]
@@ -189,6 +190,7 @@ model Purchase {
   status          String   @default("pending")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  googleDelivery GooglePurchaseDelivery?
 }
 
 model ApiKey {
@@ -243,4 +245,33 @@ model ShopifyShop {
   updatedAt   DateTime @updatedAt
 
   @@index([userId])
+}
+
+// Consent-scoped linkage for a single checkout; never sent to Stripe as metadata.
+model GoogleCheckout {
+  id          String @id
+  userId      String
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId    String
+  sessionId   String
+  invoiceId   String? @unique
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  delivery    GooglePurchaseDelivery?
+  @@index([userId])
+}
+
+// Durable purchase outbox. Its stable transaction ID also deduplicates uncertain network retries.
+model GooglePurchaseDelivery {
+  purchaseId  String @id
+  purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  checkoutId  String @unique
+  checkout    GoogleCheckout @relation(fields: [checkoutId], references: [id], onDelete: Cascade)
+  attempts    Int @default(0)
+  nextAttemptAt DateTime @default(now())
+  leaseUntil  DateTime?
+  deliveredAt DateTime?
+  lastError   String?
+  @@index([deliveredAt, nextAttemptAt])
 }

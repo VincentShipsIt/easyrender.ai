@@ -27,6 +27,7 @@ let gaId = '';
 let hasGaConfigured = false;
 let lastGaPage = '';
 const conversions = new Set<string>();
+const observedRenders = new Map<string, { status: string; hasSheet: boolean }>();
 export function attribution() {
   if (!firstTouch && typeof window !== 'undefined') {
     const url = new URL(window.location.href);
@@ -86,6 +87,14 @@ export function gaPageview() {
   lastGaPage = url;
   if (!hasGaConfigured) {
     hasGaConfigured = true;
+    const touch = attribution();
+    window.gtag('set', {
+      campaign_source: touch?.utm_source ?? undefined,
+      campaign_medium: touch?.utm_medium ?? undefined,
+      campaign_name: touch?.utm_campaign ?? undefined,
+      campaign_content: touch?.utm_content ?? undefined,
+      campaign_term: touch?.utm_term ?? undefined,
+    });
     window.gtag('config', gaId, {
       send_page_view: false,
       page_location: url,
@@ -118,9 +127,13 @@ export function gaEvent(
   });
 }
 export function observeRender(render: { id: string; status: string; hasSheet: boolean }) {
-  if (render.hasSheet && ['preview_ready', 'rendering', 'ready'].includes(render.status))
-    gaEvent('preview_ready', {}, render.id);
-  if (render.status === 'ready') gaEvent('render_ready', {}, render.id);
+  const previous = observedRenders.get(render.id);
+  observedRenders.set(render.id, { status: render.status, hasSheet: render.hasSheet });
+  // A first snapshot establishes the baseline; opening a completed result is not a conversion.
+  if (!previous) return;
+  if (!previous.hasSheet && render.hasSheet) gaEvent('preview_ready', {}, render.id);
+  if (previous.status !== 'ready' && render.status === 'ready')
+    gaEvent('render_ready', {}, render.id);
 }
 export async function setBrowserTools(
   allowPosthog: boolean,
@@ -139,6 +152,14 @@ export async function setBrowserTools(
       ad_personalization: 'denied',
     });
   }
+  if (!allowGa && hasWithdrawal) {
+    void fetch('/api/analytics/revoke', { method: 'POST', keepalive: true }).catch(() => undefined);
+    try {
+      sessionStorage.removeItem('er_campaign');
+    } catch {
+      /* Storage unavailable. */
+    }
+  }
   if (!allowGa && gaId) {
     lastGaPage = '';
     for (const cookie of hasWithdrawal ? document.cookie.split(';') : []) {
@@ -152,9 +173,9 @@ export async function setBrowserTools(
     }
   }
   if (allowGa && gaId) {
+    restoreCampaign();
     gaPageview();
-    if (new URLSearchParams(location.search).get('__signup') === 'google')
-      gaEvent('sign_up', { method: 'google' }, 'oauth-return');
+    void captureSignup();
   }
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
   if (!allowPosthog || !key) return;
@@ -261,4 +282,63 @@ function browserPricingSubject(): string | null {
     document.documentElement?.dataset.pricingSubject ??
     null
   );
+}
+
+/** The backend claims a real account-creation receipt once, regardless of OAuth URL parameters. */
+export async function captureSignup() {
+  if (!isGaAllowed || !gaId) return;
+  try {
+    const response = await fetch('/api/analytics/signup', { method: 'POST' });
+    if (!response.ok || response.status === 204) return;
+    const result: unknown = await response.json();
+    if (
+      result &&
+      typeof result === 'object' &&
+      'method' in result &&
+      (result.method === 'email' || result.method === 'google')
+    )
+      gaEvent('sign_up', { method: result.method });
+  } catch {
+    /* Missing delivery is preferable to inventing a signup. */
+  }
+}
+
+/** Consent-gated session context; never persists click IDs or arbitrary URL parameters. */
+function restoreCampaign() {
+  const current = attribution();
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('er_campaign') ?? 'null');
+    if (
+      saved?.expiresAt > Date.now() &&
+      saved.expiresAt <= Date.now() + 30 * 60 * 1000 &&
+      !UTM_KEYS.some((key) => current?.[key])
+    ) {
+      firstTouch = normalizeAttribution(saved.touch, window.location.origin);
+    }
+    sessionStorage.setItem(
+      'er_campaign',
+      JSON.stringify({
+        touch: firstTouch,
+        expiresAt: Date.now() + 30 * 60 * 1000,
+      }),
+    );
+  } catch {
+    /* Browser storage may be unavailable; keep in-memory attribution. */
+  }
+}
+
+/** Ask the configured Google tag, never parse its evolving cookie format. Timeout cannot block checkout. */
+export async function googleCheckoutContext() {
+  if (!isGaAllowed || !gaId || !window.gtag) return null;
+  const read = (field: string) =>
+    new Promise<unknown>((resolve) => {
+      const timer = setTimeout(() => resolve(null), 1000);
+      window.gtag?.('get', gaId, field, (value: unknown) => {
+        clearTimeout(timer);
+        resolve(value);
+      });
+    });
+  const [clientId, sessionId] = await Promise.all([read('client_id'), read('session_id')]);
+  if (!isGaAllowed || typeof clientId !== 'string' || !sessionId) return null;
+  return { measurementId: gaId, clientId, sessionId: String(sessionId) };
 }

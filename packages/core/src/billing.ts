@@ -18,6 +18,7 @@ import { pickAttribution } from './attribution';
 import { config } from './config';
 import { grantCredits } from './credits';
 import { AppError } from './errors';
+import { enqueueGooglePurchase, linkGoogleCheckout } from './google-outbox';
 import {
   assignedPricing,
   pricingSubject,
@@ -88,7 +89,7 @@ const devCheckoutUrl = (request: CheckoutRequest) =>
     ? `${config.appUrl()}/api/dev/checkout?plan=payg&credits=${request.credits}`
     : `${config.appUrl()}/api/dev/checkout?plan=${request.plan}`;
 
-export async function createCheckout(
+export async function createCheckoutDetails(
   userId: string,
   input: { plan?: unknown; credits?: unknown },
   context: {
@@ -96,7 +97,7 @@ export async function createCheckout(
     expectedVariant?: string | null;
     country?: string | null;
   } = {},
-): Promise<string> {
+) {
   // The caller supplies only a plan/quantity. Resolve again here, even for non-HTTP callers.
   const variant = await assignedPricing(userId, context.anonId);
   if (context.expectedVariant && context.expectedVariant !== variant)
@@ -114,7 +115,8 @@ export async function createCheckout(
   };
   const client = stripe();
   if (!client) {
-    if (devCheckoutEnabled()) return devCheckoutUrl(request);
+    if (devCheckoutEnabled())
+      return { url: devCheckoutUrl(request), sessionId: null, analytics: null };
     throw new AppError('Payments are not configured', 503, 'no_stripe');
   }
   const user = await db().user.findUnique({
@@ -132,6 +134,15 @@ export async function createCheckout(
   validateCheckoutPrice(selectedPrice, request.plan, variant, currency);
   // USD is the price's base currency, so only EUR names its currency explicitly.
   const chargeCurrency = currency === 'usd' ? {} : { currency };
+  const analytics = {
+    pricing_variant: variant,
+    value:
+      (unitAmountCents(request.plan, variant, currency) *
+        (request.plan === 'payg' ? request.credits : 1)) /
+      100,
+    currency: currency.toUpperCase(),
+    items: [{ item_id: request.plan, quantity: request.plan === 'payg' ? request.credits : 1 }],
+  };
   const urls = {
     success_url: `${config.appUrl()}/credits?status=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${config.appUrl()}/credits?status=canceled`,
@@ -157,7 +168,7 @@ export async function createCheckout(
       ...urls,
     });
     if (!session.url) throw new AppError('Stripe did not return a checkout URL', 502, 'upstream');
-    return session.url;
+    return { url: session.url, sessionId: session.id, analytics };
   }
 
   const session = await client.checkout.sessions.create({
@@ -182,7 +193,14 @@ export async function createCheckout(
     },
   });
   if (!session.url) throw new AppError('Stripe did not return a checkout URL', 502, 'upstream');
-  return session.url;
+  return { url: session.url, sessionId: session.id, analytics };
+}
+
+/** Keep the URL-only core API compatible with existing callers. */
+export async function createCheckout(
+  ...args: Parameters<typeof createCheckoutDetails>
+): Promise<string> {
+  return (await createCheckoutDetails(...args)).url;
 }
 
 export function validateCheckoutPrice(
@@ -348,7 +366,9 @@ async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
     await db().user.update({ where: { id: userId }, data: { stripeCustomerId: customerId } });
   }
   // Monthly-plan credits arrive with invoice.paid, once per billing cycle.
-  if (session.mode !== 'payment' || session.payment_status !== 'paid') return;
+  if (session.payment_status !== 'paid') return;
+  await linkGoogleCheckout(session.id, id(session.invoice));
+  if (session.mode !== 'payment') return;
 
   const purchase = await db().purchase.findUnique({ where: { stripeSessionId: session.id } });
   if (!purchase) throw new Error(`unknown checkout session ${session.id}`);
@@ -363,6 +383,7 @@ async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
     where: { id: purchase.id, status: 'pending' },
     data: { status: 'paid' },
   });
+  await enqueueGooglePurchase(purchase.id);
   if (count) deferAnalytics(() => capturePurchase(purchase, session.currency ?? 'usd'));
 }
 
@@ -398,6 +419,7 @@ async function onInvoicePaid(invoice: Stripe.Invoice) {
     where: { id: purchase.id, status: 'pending' },
     data: { status: 'paid' },
   });
+  await enqueueGooglePurchase(purchase.id);
   if (count) deferAnalytics(() => capturePurchase(purchase, invoice.currency ?? 'usd'));
 }
 
@@ -508,6 +530,12 @@ export async function confirmedPurchase(userId: string, sessionId: string) {
   }
   if (!purchase) return null;
   return {
+    server_managed: Boolean(
+      await db().googlePurchaseDelivery.findUnique({
+        where: { purchaseId: purchase.id },
+        select: { purchaseId: true },
+      }),
+    ),
     pricing_variant: purchasedVariant(purchase.packId),
     transaction_id: purchase.id,
     value: purchase.amountCents / 100,

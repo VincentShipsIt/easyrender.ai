@@ -3,6 +3,7 @@ import { PRICING_FLAG } from '@easyrender/harness';
 import { captureServer } from './analytics';
 import { ATTRIBUTION_KEYS, type Attribution, hasFirstTouch, pickAttribution } from './attribution';
 import { assignedPricing, pricingSubject } from './pricing-experiment';
+import { reportError } from './report';
 
 /** The existing anonymous ownership proof authorizes the preview, never stores attribution. */
 export async function signupAttribution(input: {
@@ -29,6 +30,21 @@ export async function signupAttribution(input: {
       data: { userId: input.userId },
     });
   if (result.count) {
+    try {
+      const id = `analytics-signup:${input.userId}`;
+      await db().verification.create({
+        data: {
+          id,
+          identifier: id,
+          value: input.method,
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        },
+      });
+    } catch {
+      reportError(new Error('Unable to record analytics signup receipt'), {
+        component: 'analytics',
+      });
+    }
     const variant = await assignedPricing(input.userId, input.anonId);
     captureServer(
       'signup',

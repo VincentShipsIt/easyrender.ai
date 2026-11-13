@@ -147,8 +147,7 @@ billing country, then Stripe customer country, then deployed user `geo_country`,
 `unknown`. Top LTV is the top 100 users by **gross** observed lifetime payments through range
 end, split by currency; it is not net lifetime profit. Refunds list Stripe refund events only.
 Currency codes accompany amounts. Tables split currencies; charts and cohort/account
-revenue use the first displayed currency, with a multiple-currency note. DB purchases have
-no currency column; fallback USD follows the existing checkout contract.
+revenue use the first displayed currency, with a multiple-currency note. DB purchases preserve their charged currency; legacy unlinked credit grants remain a USD proxy.
 
 ## Overview time-series dictionary
 

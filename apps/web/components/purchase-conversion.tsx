@@ -17,7 +17,13 @@ export function PurchaseConversion() {
         );
         if (response.ok) {
           const result = await response.json();
-          if (result?.transaction_id) gaEvent('purchase', result, result.transaction_id);
+          if (result?.transaction_id) {
+            if (!result.server_managed) {
+              const { server_managed: _managed, ...purchase } = result;
+              gaEvent('purchase', purchase, purchase.transaction_id);
+            }
+            if (result.server_managed) return;
+          }
         }
       } catch {
         /* Retry while the confirmed webhook arrives. */

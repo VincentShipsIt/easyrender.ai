@@ -97,6 +97,10 @@ export function CatalogLibrary({
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    items.forEach(observeRender);
+  }, [items]);
+
+  useEffect(() => {
     import('@google/model-viewer').then(() => setViewerReady(true));
   }, []);
 
