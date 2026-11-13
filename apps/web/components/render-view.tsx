@@ -91,7 +91,7 @@ export function RenderView({
   const owed = Math.max(0, render.renderCredits - render.credits);
   const base = `/api/renders/${render.id}`;
   const next = encodeURIComponent(`/r/${render.id}`);
-  const title = render.prompt || t('untitled');
+  const title = render.name || render.prompt || t('untitled');
 
   const viewer =
     render.status === 'ready' ? (
