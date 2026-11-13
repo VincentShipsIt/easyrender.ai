@@ -132,8 +132,10 @@ export async function createCheckoutDetails(
     expand: ['currency_options'],
   });
   validateCheckoutPrice(selectedPrice, request.plan, variant, currency);
-  // USD is the price's base currency, so only EUR names its currency explicitly.
-  const chargeCurrency = currency === 'usd' ? {} : { currency };
+  // Always name the currency. Without it Stripe Checkout picks one from the buyer's location
+  // whenever the price carries currency_options, so a euro-area buyer was charged in EUR even
+  // with EUR checkout off and the pricing pages showing USD.
+  const chargeCurrency = { currency };
   const analytics = {
     pricing_variant: variant,
     value:
