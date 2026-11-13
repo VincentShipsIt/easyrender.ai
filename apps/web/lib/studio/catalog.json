@@ -384,24 +384,24 @@
         "file": "espresso.glb",
         "tris": 33506,
         "verts": 21046,
-        "kb": 598
+        "kb": 641
       },
       {
         "file": "espresso.lod1.glb",
         "tris": 7370,
         "verts": 6688,
-        "kb": 225
+        "kb": 213
       },
       {
         "file": "espresso.lod2.glb",
         "tris": 1841,
         "verts": 2268,
-        "kb": 79
+        "kb": 74
       }
     ],
     "hd": {
       "file": "espresso.hd.glb",
-      "kb": 1147
+      "kb": 1368
     },
     "formats": ["GLB", "USDZ"]
   },

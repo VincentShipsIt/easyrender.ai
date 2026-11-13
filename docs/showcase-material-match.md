@@ -9,7 +9,7 @@ and after, with the same camera, environment, exposure and shadows within each p
 
 | Object / comparison                                              | Files                             | Correction                                                                                                                                      |
 | ---------------------------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Espresso](showcase-material-comparison/espresso.webp)           | S4                                | Neutral steel F0, binary metal mask, mapped 0.38 roughness and directional micro-grain; black grips, dial and reservoir stay dielectric.        |
+| [Espresso](showcase-material-comparison/espresso.webp)           | S4                                | Neutral steel F0, binary metal mask, mapped 0.37 roughness and fine satin micro-streaks; black grips, dial and reservoir stay dielectric.       |
 | [Bedside table](showcase-material-comparison/bedside-table.webp) | S3 + `showcase/bedside-table.glb` | Less orange walnut, photo-derived grain and a satin dielectric finish.                                                                          |
 | [Swivel chair](showcase-material-comparison/swivel-chair.webp)   | S4 + `showcase/swivel-chair.glb`  | Mid-grey heathered cloth, matte upholstery, dark piping and black base retained.                                                                |
 | [Stoneware vase](showcase-material-comparison/vase.webp)         | S3 + `showcase/vase.glb`          | Warm sandy stone, fine porous detail, reduced broad smears; mouth stays darker.                                                                 |
@@ -35,8 +35,8 @@ normal strengths changed in the first pass. The metal follow-up replaces the esp
 normal images with directional micro-grain; crate wood normals remain unchanged.
 
 All 49 textured variants were updated in the first pass (20,389,280 to 20,201,924 bytes).
-The metal follow-up changes 12 of those variants; the current combined size is 21,947,428
-bytes and the largest individual increase against the original assets is 1.57×. Texture resolutions were retained.
+The metal follow-ups change 12 of those variants; the current combined size is 22,200,156
+bytes and the largest individual increase against the original assets is 1.62×. Texture resolutions were retained.
 Studio catalog sizes and the GLB guide's measured byte/texture table were refreshed.
 The four existing posters for bedside-table, swivel-chair, vase and coffee-table were recaptured
 at their registered `BLOG_MODELS` orbits: `-60deg 75deg auto` for the bedside table and
@@ -63,13 +63,14 @@ The reduced-resolution normal images use higher encoding quality so grain surviv
 
 | Surface            | Median base colour (sRGB) | Median roughness | Metallic |
 | ------------------ | ------------------------- | ---------------- | -------- |
-| Espresso steel     | 195, 197, 199             | 96/255 (0.38)    | 255/255  |
+| Espresso steel     | 195, 197, 199             | 94/255 (0.37)    | 255/255  |
 | Lamp brass         | 195, 173, 128             | 96/255 (0.38)    | 255/255  |
 | Crate exposed iron | 116, 113, 111             | 96/255 (0.38)    | 255/255  |
 
 Values describe the studio base atlases; the evidence manifest contains every resolution.
-Roughness p10–p90 spans at least 16 levels, with finer streaks and raised roughness on existing
-edge ridges. Steel/brass use new tangent-space normal images at scale 0.8. Read-only triangle
+Lamp/crate roughness p10–p90 spans at least 16 levels, with streaks and raised roughness on existing
+edge ridges. Espresso now spans four levels after the finer satin pass below.
+Steel/brass use new tangent-space normal images at scale 0.8. Read-only triangle
 positions and UVs align grain across atlas islands. The metal channel is losslessly encoded
 as 0 or 255, with separate masks for espresso grips/knobs, dial cover and rear reservoir.
 The printed dial and reservoir colour come from the original atlas. Glass remains opaque in
@@ -98,6 +99,31 @@ The original `.data/showcase-material-evidence/` tree is retained.
 - All 12 changed variants load without Chromium page errors in the fixed comparison setup.
 - `python3 scripts/check-armchair-materials.py` and `bun run preflight` pass. Scratch-database
   integration tests retain their expected skips. iPhone Quick Look remains untested.
+
+## Finer espresso satin
+
+The second metal follow-up changes only the four espresso studio GLBs. Compared with
+`0c99bd7`, short, finer directional streaks replace the broad height-correlated bands in
+colour, roughness and normals. Roughness p10/median/p90 is now 92/94/96 in every variant,
+versus 88/96/104 previously. LOD1/LOD2 use lower grain amplitude and frequency than the
+full-resolution maps. The steel retains metallic 1, cool-grey F0 and clear specular highlights;
+the glass/reservoir/rubber masks and dielectric roughness are identical to `0c99bd7`.
+
+All four variants were rendered beside the source photo and both previous revisions using
+the same sheet cameras, default environment, exposure 1 and shadow intensity/softness 1.
+The committed espresso sheet keeps **aaf08a0** as before and uses this finer pass as after.
+The lamp was checked against its photo and left unchanged, along with crate iron, the swivel
+base, armchair and every other public asset. Geometry, UVs, indices and transforms remain
+byte-identical. LOD mesh facets still produce triangular reflections, also visible in a local
+flat-material diagnostic; this texture-only correction does not remove those geometry defects.
+
+Evidence in `.data/showcase-material-evidence-metal-fine/` includes immutable aaf08a0/0c99bd7
+copies, editing/capture scripts, iterations, diagnostic renders, all four final comparisons,
+material/size/SHA-256 measurements and check logs. No evidence directory is committed.
+The regression check rejects `0c99bd7` for excessive roughness variation in all four espresso
+variants, still rejects aaf08a0's plastic response, and passes the finer assets. It bounds broad
+roughness bands and normal amplitude without requiring exaggerated streaks. It also verifies
+unchanged material parameters, metal masks, dielectric roughness and all other public files.
 
 ## Original evidence and verification
 
