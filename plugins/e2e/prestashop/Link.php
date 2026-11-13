@@ -7,9 +7,9 @@
  */
 class Link extends LinkCore
 {
-    public function getImageLink($name, $ids, $type = null)
+    public function getImageLink($name, $ids, $type = null, ...$rest)
     {
-        $url = parent::getImageLink($name, $ids, $type);
+        $url = parent::getImageLink($name, $ids, $type, ...$rest);
         $controller = Context::getContext()->controller;
 
         return $controller instanceof AdminController ? preg_replace('#^http://#', 'https://', (string) $url) : $url;
