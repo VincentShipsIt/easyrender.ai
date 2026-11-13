@@ -1,5 +1,6 @@
 import { getBalance } from '@easyrender/core';
 import { Coins, LayoutDashboard } from 'lucide-react';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import { connection } from 'next/server';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
@@ -7,7 +8,7 @@ import { BrandMark } from '@/components/brand-mark';
 import { LocaleSwitcher } from '@/components/locale-switcher';
 import { SiteMenu } from '@/components/site-menu';
 import { Button } from '@/components/ui/button';
-import type { Locale } from '@/i18n/config';
+import { type Locale, PATH_HEADER } from '@/i18n/config';
 import { currentUser } from '@/lib/actor';
 import { isPublished, ROUTES } from '@/lib/seo/routes';
 
@@ -26,12 +27,17 @@ export async function SiteHeader() {
   await connection();
   const user = await currentUser().catch(() => null);
   const balance = user ? await getBalance(user.id).catch(() => 0) : 0;
-  const [t, format, locale] = await Promise.all([
+  const [t, format, locale, headerList] = await Promise.all([
     getTranslations('Header'),
     getFormatter(),
     getLocale(),
+    headers(),
   ]);
   const home = ROUTES.home.paths[locale as Locale];
+  const path = headerList.get(PATH_HEADER);
+  const isMcpPage =
+    isPublished('mcp', locale as Locale) && path === ROUTES.mcp.paths[locale as Locale];
+  const connectHref = `${isMcpPage ? path : home}#connect`;
   // The pricing item is its own page where one is published in this language, else the home anchor.
   const navHref = (item: (typeof NAV)[number]) => {
     if ('href' in item) return item.href;
@@ -39,6 +45,8 @@ export async function SiteHeader() {
       return isPublished(item.route, locale as Locale)
         ? ROUTES.pricing.paths[locale as Locale]
         : `${home}#pricing`;
+    if (item.hash === '#connect') return connectHref;
+    if (isMcpPage && item.hash === '#how-it-works') return `${path}${item.hash}`;
     return `${home}${item.hash}`;
   };
   return (
@@ -87,7 +95,7 @@ export async function SiteHeader() {
                 <Link href="/sign-in">{t('signIn')}</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href={`${home}#connect`}>
+                <Link href={connectHref}>
                   {/* One text run, so the button's flex gap does not double the space before the suffix. */}
                   <span>
                     {t('connect')}

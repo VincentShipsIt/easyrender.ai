@@ -212,7 +212,7 @@
       "one": "Abre claude.ai → Ajustes → Conectores → Añadir conector personalizado.",
       "two": "Pega esta URL como URL del conector.",
       "three": "Pulsa Conectar, inicia sesión en easyrender y permite el acceso. No hace falta ninguna clave.",
-      "note": "El mismo inicio de sesión sirve para cualquier cliente MCP compatible con OAuth. Cada conexión crea una clave que puedes revocar más abajo."
+      "note": "El mismo inicio de sesión sirve para cualquier cliente MCP compatible con OAuth. Cada conexión crea una clave que puedes revocar desde Conectores."
     }
   },
   "Gallery": {
@@ -1520,6 +1520,105 @@
       "visitsIncomplete": "Visitas: datos de PostHog incompletos",
       "visitsError": "Visitas: PostHog no disponible (solicitud fallida)",
       "sheetCountUnit": "hojas"
+    }
+  },
+  "McpLanding": {
+    "meta": {
+      "title": "Servidor MCP de imagen a 3D para agentes · easyrender",
+      "description": "Conecta Claude, Cursor o VS Code a easyrender. Convierte fotos de producto en modelos 3D mediante MCP: revisa la vista previa, genera con créditos y descarga el GLB."
+    },
+    "hero": {
+      "title": "De foto a 3D. Desde tu agente.",
+      "subtitle": "Conecta easyrender mediante MCP. Dale a tu agente una foto de producto, revisa la vista previa y genera un GLB con texturas sin abrir una herramienta de modelado.",
+      "cta": "Conecta tu agente",
+      "note": "Primero la vista previa. Créditos al generar el 3D."
+    },
+    "clientsLabel": "Guías de configuración para",
+    "intro": {
+      "title": "El modelo de producto que necesita tu próximo proyecto.",
+      "description": "Trabaja con tus propias fotos, dentro de la conversación en la que ya estás construyendo.",
+      "catalog": {
+        "title": "Muebles y decoración",
+        "body": "Convierte la foto de una silla, una lámpara o un objeto decorativo en un modelo que puedas revisar desde todos los ángulos."
+      },
+      "web": {
+        "title": "Fichas de producto y prototipos",
+        "body": "Pide a tu agente de programación que genere un GLB para el visor 3D que estás desarrollando."
+      },
+      "workflow": {
+        "title": "Un flujo que puedes repetir",
+        "body": "Usa las mismas herramientas para crear la vista previa, consultar su estado y obtener el modelo terminado de cada producto."
+      }
+    },
+    "workflow": {
+      "title": "Una foto. Una vista previa. Tu GLB.",
+      "description": "Tu agente llama a las herramientas. Tú decides cuándo gastar créditos.",
+      "photo": {
+        "title": "Envía una foto de producto",
+        "body": "Proporciona una imagen JPEG, PNG o WebP. Tu agente inicia la vista previa y consulta su estado hasta que esté lista."
+      },
+      "review": {
+        "title": "Revisa antes de generar el 3D",
+        "body": "Inspecciona la hoja de ángulos. Pide a tu agente que consulte tu saldo y espere tu aprobación antes de llamar a render_3d."
+      },
+      "download": {
+        "title": "Genera y descarga el modelo",
+        "body": "La generación se ejecuta en segundo plano. Tu agente consulta el estado y descarga el GLB usando tu conexión autenticada."
+      },
+      "exampleLabel": "Ejemplo de petición a tu agente conectado",
+      "prompt": "Convierte esta foto de producto en un modelo 3D. Enséñame primero la vista previa y el coste en créditos. Espera mi aprobación antes de generar el GLB. Cuando esté listo, descarga el modelo.",
+      "exampleNote": "Flujo ilustrativo. Usa tu propia foto; la vista previa y el modelo se generan cuando ejecutas las herramientas.",
+      "toolsLabel": "Cuatro herramientas, un flujo",
+      "tools": {
+        "create_render": "Inicia la hoja de ángulos a partir de una foto.",
+        "get_render": "Consulta el progreso y obtiene los enlaces al resultado.",
+        "get_credits": "Consulta tu saldo y el coste actual de generación.",
+        "render_3d": "Gasta créditos para generar el GLB con texturas."
+      },
+      "limit": "Pensado para objetos individuales. La geometría generada es aproximada, sin garantía de medidas reales ni precisión de fabricación."
+    },
+    "connect": {
+      "title": "Dale a tu agente una herramienta 3D.",
+      "description": "Usa el endpoint MCP de easyrender con tu cuenta. Elige tu cliente para ver sus instrucciones de configuración.",
+      "accountTitle": "Empieza con tu cuenta",
+      "accountBody": "Inicia sesión o crea una cuenta para gestionar tus claves API y créditos. En esa misma cuenta encontrarás los renders de tu agente en tu biblioteca.",
+      "cta": "Abrir conectores",
+      "endpoint": "Endpoint MCP",
+      "security": "Usa el inicio de sesión cuando esté disponible o tu propia clave API. Guarda las claves en la configuración del cliente, nunca en prompts compartidos.",
+      "guide": "Elige tu cliente MCP"
+    },
+    "faq": {
+      "title": "Antes de conectar",
+      "items": {
+        "account": {
+          "q": "¿Necesito una cuenta de easyrender?",
+          "a": "Sí. Las peticiones MCP se autentican y los renders pertenecen a tu cuenta. La configuración del conector incluye instrucciones de inicio de sesión para Claude y configuración con clave API para los demás clientes indicados."
+        },
+        "input": {
+          "q": "¿Puede mi agente usar una foto local?",
+          "a": "create_render acepta una URL HTTPS pública o los datos de la imagen en base64. Para una foto local, tu cliente debe poder leer y enviar el archivo en base64. Se admiten JPEG, PNG y WebP de hasta 4 MB."
+        },
+        "payment": {
+          "q": "¿Cuándo se gastan los créditos?",
+          "a": "La hoja de ángulos es gratuita, sujeta a los límites de previsualización. render_3d inicia la generación de pago. Pide a tu agente que consulte el coste actual con get_credits y solicite tu aprobación antes de generar. Esa instrucción forma parte de tu flujo con el agente; el servidor MCP no impone una pantalla adicional de confirmación. Si falla la generación 3D, se devuelven sus créditos."
+        },
+        "output": {
+          "q": "¿Qué recibe mi agente?",
+          "a": "Las herramientas devuelven un ID de render, su estado y enlaces a la página del render, la vista previa y el GLB. Consulta get_render hasta que el modelo esté listo antes de descargarlo. Los archivos privados requieren autenticación; recibir un enlace no hace público el render."
+        },
+        "scope": {
+          "q": "¿Es una biblioteca de modelos o una herramienta CAD?",
+          "a": "No. Genera un modelo aproximado del objeto de tu foto. No ofrece una biblioteca de recursos descargables, medidas exactas, geometría lista para fabricar ni publicación automática en tu tienda."
+        },
+        "api": {
+          "q": "¿En qué se diferencia MCP de una API REST?",
+          "a": "MCP expone herramientas con nombre que un agente compatible puede descubrir y llamar en una conversación. Conectas el servidor en tu cliente en lugar de programar esas integraciones. Esta página explica el flujo mediante MCP."
+        }
+      }
+    },
+    "closing": {
+      "title": "Lleva tu próximo producto a la conversación.",
+      "cta": "Conecta easyrender"
     }
   }
 }

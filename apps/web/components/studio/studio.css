@@ -292,7 +292,7 @@ body:has(.er-studio) {
     max-width: 26em;
     font-size: clamp(16px, 1.25vw, 19px);
     line-height: 1.5;
-    color: var(--ink-soft);
+    color: var(--ash);
     text-wrap: pretty;
   }
   .hero__cta {

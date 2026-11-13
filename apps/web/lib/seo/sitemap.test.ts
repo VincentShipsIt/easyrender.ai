@@ -23,6 +23,7 @@ describe('the per-language sitemaps', () => {
     expect(paths('en')).toEqual([
       '/',
       '/pricing',
+      '/mcp',
       '/models',
       '/compare',
       '/compare/360-vs-3d',
@@ -32,7 +33,7 @@ describe('the per-language sitemaps', () => {
       '/compare/tripo',
       '/cookies',
     ]);
-    expect(paths('es')).toEqual(['/es', '/es/precios', '/es/modelos', '/es/cookies']);
+    expect(paths('es')).toEqual(['/es', '/es/precios', '/es/mcp', '/es/modelos', '/es/cookies']);
     // Homes and cookie information are open; guides and pricing remain unpublished.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
@@ -45,6 +46,7 @@ describe('the per-language sitemaps', () => {
     expect(paths('en')).toEqual([
       '/',
       '/pricing',
+      '/mcp',
       '/models',
       '/compare',
       '/compare/360-vs-3d',
@@ -112,6 +114,16 @@ describe('the per-language sitemaps', () => {
     const start = xml.indexOf('/compare</loc>');
     const compare = xml.slice(start, xml.indexOf('</url>', start));
     expect(compare).not.toContain('xhtml:link');
+  });
+
+  it('publishes MCP with reciprocal English and Spanish alternates', () => {
+    for (const [locale, path] of [
+      ['en', '/mcp'],
+      ['es', '/es/mcp'],
+    ] as const) {
+      const entry = localeEntries(locale, BEFORE_GUIDES).find((item) => item.path === path);
+      expect(entry?.alternates).toEqual({ en: '/mcp', es: '/es/mcp' });
+    }
   });
 
   it('gives the pricing page its English and Spanish alternates', () => {

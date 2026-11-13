@@ -1521,5 +1521,104 @@
       "visitsError": "Visits: PostHog unavailable (request failed)",
       "sheetCountUnit": "sheets"
     }
+  },
+  "McpLanding": {
+    "meta": {
+      "title": "Image to 3D MCP server for AI agents · easyrender",
+      "description": "Connect Claude, Cursor or VS Code to easyrender. Turn product photos into 3D models through MCP: preview the result, spend credits to build and download a GLB."
+    },
+    "hero": {
+      "title": "Product photos to 3D. From your agent.",
+      "subtitle": "Connect easyrender through MCP. Give your agent a product photo, review the preview and build a textured GLB without switching to a modeling tool.",
+      "cta": "Connect your agent",
+      "note": "Preview first. Credits for the 3D build."
+    },
+    "clientsLabel": "Setup guides included for",
+    "intro": {
+      "title": "The product asset your next project needs.",
+      "description": "Work with your own photos, inside the conversation where you are already building.",
+      "catalog": {
+        "title": "Furniture & decor",
+        "body": "Turn a photo of a chair, lamp or decor object into a model you can inspect from every angle."
+      },
+      "web": {
+        "title": "Product pages & prototypes",
+        "body": "Ask your coding agent to generate a GLB for the 3D viewer you are building."
+      },
+      "workflow": {
+        "title": "Repeatable asset workflows",
+        "body": "Use the same tools to create a preview, check its status and retrieve the finished model for each product."
+      }
+    },
+    "workflow": {
+      "title": "One photo. A preview. Your GLB.",
+      "description": "Your agent calls the tools. You choose when to spend credits.",
+      "photo": {
+        "title": "Send a product photo",
+        "body": "Provide a JPEG, PNG or WebP image. Your agent starts a preview and checks until it is ready."
+      },
+      "review": {
+        "title": "Review before the paid build",
+        "body": "Inspect the angle sheet. Ask your agent to check your balance and wait for your approval before calling render_3d."
+      },
+      "download": {
+        "title": "Build and retrieve the model",
+        "body": "The build runs asynchronously. Your agent checks the status, then retrieves the GLB with your authenticated connection."
+      },
+      "exampleLabel": "Example request to your connected agent",
+      "prompt": "Turn this product photo into a 3D model. Show me the preview and the credit cost first. Wait for my approval before building the GLB. Once it is ready, download the model.",
+      "exampleNote": "Illustrative workflow. Use your own photo; the preview and model are generated when you run the tools.",
+      "toolsLabel": "Four tools, one workflow",
+      "tools": {
+        "create_render": "Start the angle-sheet preview from a photo.",
+        "get_render": "Check progress and retrieve the result links.",
+        "get_credits": "Read your balance and current build cost.",
+        "render_3d": "Spend credits to build the textured GLB."
+      },
+      "limit": "Made for individual objects. Generated geometry is approximate, without guaranteed real-world dimensions or manufacturing precision."
+    },
+    "connect": {
+      "title": "Give your agent a 3D tool.",
+      "description": "Use the easyrender MCP endpoint with your account. Choose your client below for its setup instructions.",
+      "accountTitle": "Start with your account",
+      "accountBody": "Sign in or create an account to manage your API keys and credits. Use the same account to find your agent’s renders in your library.",
+      "cta": "Open connectors",
+      "endpoint": "MCP endpoint",
+      "security": "Use the sign-in flow where supported, or your own API key. Keep keys in your client configuration, never in shared prompts.",
+      "guide": "Choose your MCP client"
+    },
+    "faq": {
+      "title": "Before you connect",
+      "items": {
+        "account": {
+          "q": "Do I need an easyrender account?",
+          "a": "Yes. MCP requests are authenticated and renders belong to your account. The connector setup offers sign-in instructions for Claude and API-key configuration for the other listed clients."
+        },
+        "input": {
+          "q": "Can my agent use a local photo?",
+          "a": "create_render accepts a public HTTPS image URL or base64 image data. For a local photo, your client needs to read and send the file as base64. Supported types are JPEG, PNG and WebP, up to 4 MB."
+        },
+        "payment": {
+          "q": "When are credits spent?",
+          "a": "The angle-sheet preview is free, subject to preview limits. render_3d starts the paid build. Ask your agent to call get_credits for the current cost and to request your approval before building. That instruction is part of your agent workflow, not an extra confirmation screen enforced by the MCP server. Failed 3D builds refund their credits."
+        },
+        "output": {
+          "q": "What does my agent get back?",
+          "a": "The tools return a render ID, status and links to the render page, preview and GLB. Poll get_render until the model is ready before downloading. Private files require authentication; receiving a link does not make a render public."
+        },
+        "scope": {
+          "q": "Is this a model library or a CAD tool?",
+          "a": "Neither. It generates an approximate model of the object in your photo. It does not provide a library of downloadable assets, exact measurements, manufacturing-ready geometry or automatic publication to your store."
+        },
+        "api": {
+          "q": "How is MCP different from a REST API?",
+          "a": "MCP exposes named tools that a compatible agent can discover and call in a conversation. You connect the server in your client instead of writing those tool integrations yourself. This page covers the MCP workflow."
+        }
+      }
+    },
+    "closing": {
+      "title": "Bring your next product into the conversation.",
+      "cta": "Connect easyrender"
+    }
   }
 }

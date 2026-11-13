@@ -12,7 +12,9 @@ const FIRST = itemOf('swivel-chair');
 
 // The same object read five ways at once: input photo, mesh, normals, depth and render.
 // All four live passes turn together, and dragging the stack turns them by hand.
-export function StudioHero({ ctaHref }: { ctaHref: string }) {
+type HeroCopy = { title: string; subtitle: string; cta: string; note: string };
+
+export function StudioHero({ ctaHref, copy }: { ctaHref: string; copy?: HeroCopy }) {
   const t = useTranslations('Studio.hero');
   const locale = useLocale();
   const { names } = useCatalogText();
@@ -31,8 +33,8 @@ export function StudioHero({ ctaHref }: { ctaHref: string }) {
   return (
     <section ref={ref} className="hero" aria-labelledby="studio-hero-title">
       <div className="hero__copy">
-        <h1 id="studio-hero-title">{t('title')}</h1>
-        <p className="hero__lead">{t('subtitle')}</p>
+        <h1 id="studio-hero-title">{copy?.title ?? t('title')}</h1>
+        <p className="hero__lead">{copy?.subtitle ?? t('subtitle')}</p>
       </div>
 
       <div className="stack" data-er="stack" role="img" aria-label={t('stackLabel')}>
@@ -72,9 +74,9 @@ export function StudioHero({ ctaHref }: { ctaHref: string }) {
 
       <div className="hero__cta">
         <Link className="btn btn--xl" href={ctaHref}>
-          {t('cta')}
+          {copy?.cta ?? t('cta')}
         </Link>
-        <p className="hero__note">{t('note')}</p>
+        <p className="hero__note">{copy?.note ?? t('note')}</p>
       </div>
     </section>
   );
