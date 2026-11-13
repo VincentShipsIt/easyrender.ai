@@ -1532,16 +1532,16 @@
     "cookies": "Información y preferencias de cookies",
     "operator": {
       "title": "Service operator / data controller",
-      "name": "Legal name: [LEGAL NAME]",
-      "taxId": "Tax ID: [TAX ID]",
-      "address": "Registered address: [REGISTERED ADDRESS]",
-      "contact": "Contact email: [CONTACT EMAIL]"
+      "name": "Legal name: Smithii LTD (Company Limited by Shares, RAK Digital Assets Oasis, Government of Ras Al Khaimah, UAE)",
+      "taxId": "Company Registration No. 01010192, Business Licence No. 07010192",
+      "address": "Registered address: Office A, RAK DAO Business Centre, RAK BANK ROC Office, Ground Floor, Al Rifaa, Sheikh Mohammed Bin Zayed Road, Ras Al Khaimah, United Arab Emirates, PO Box 30099",
+      "contact": "Contact email: info@smithii.io"
     },
     "privacy": {
       "title": "Política de privacidad",
       "metaTitle": "Política de privacidad · easyrender",
       "metaDescription": "Política de privacidad — easyrender.ai. El texto legal que aparece a continuación está en inglés.",
-      "intro": "This policy explains how easyrender.ai handles personal data when you use our website, apps, API and MCP tools to turn a photo into a 3D model. The controller is the operator identified above. Contact [CONTACT EMAIL] about privacy or your rights.",
+      "intro": "This policy explains how easyrender.ai handles personal data when you use our website, apps, API and MCP tools to turn a photo into a 3D model. Smithii LTD, the UAE company identified above, is the data controller. Applicable data protection laws include the UAE Personal Data Protection Law (PDPL, Federal Decree-Law No. 45 of 2021) and, where applicable to EU/EEA and UK users, the EU GDPR and UK GDPR. Contact info@smithii.io about privacy or your rights.",
       "sections": {
         "collection": {
           "title": "1. Data we collect",
@@ -1549,7 +1549,7 @@
         },
         "purposes": {
           "title": "2. Purposes and legal bases",
-          "body": "We use account, upload and transaction data to provide the service you request, generate and deliver files, manage credits and subscriptions, and answer service requests (performance of a contract or steps requested before entering one). We retain required billing records and respond to valid legal demands to meet legal obligations. We use proportionate security, abuse prevention, diagnostics and cookieless product measurement for our legitimate interests in protecting and improving the service; you may object to processing based on those interests. Optional analytics use consent where required, including in the EEA. Where local law permits analytics without prior consent, we rely on legitimate interests and offer a rejection control. We do not use your data for decisions that produce legal or similarly significant effects solely through automated processing."
+          "body": "The contract, legal obligation, legitimate interests and consent bases described below apply under the EU GDPR and UK GDPR where applicable. Under the UAE PDPL, processing requires consent unless a statutory exception applies, such as processing necessary for a contract or compliance with legal obligations. A GDPR legitimate interest does not itself replace consent required by the UAE PDPL. We use account, upload and transaction data to provide the service you request, generate and deliver files, manage credits and subscriptions, and answer service requests (performance of a contract or steps requested before entering one). We retain required billing records and respond to valid legal demands to meet legal obligations. We use proportionate security, abuse prevention, diagnostics and cookieless product measurement for our legitimate interests in protecting and improving the service; you may object to processing based on those interests. Optional analytics use consent where required, including in the EEA. Where local law permits analytics without prior consent, we rely on legitimate interests and offer a rejection control. We do not use your data for decisions that produce legal or similarly significant effects solely through automated processing."
         },
         "public": {
           "title": "3. Uploads, AI processing and public models",
@@ -1561,7 +1561,7 @@
         },
         "transfers": {
           "title": "5. International transfers",
-          "body": "Some providers or their subprocessors may process data outside the EEA, including in the United States. EU hosting does not exclude overseas support access or onward transfers. Where required, transfers must be covered by an adequacy decision or appropriate safeguards such as the European Commission’s Standard Contractual Clauses, with additional measures where necessary. You can request information about the safeguards applicable to your data and a copy of them, subject to redaction of confidential details, at [CONTACT EMAIL]."
+          "body": "Smithii LTD is based in the United Arab Emirates. Your data may be processed in or accessed from the UAE and other countries where our providers or their subprocessors operate, including the United States, outside the EEA and UK. EU hosting does not exclude overseas support access or onward transfers. Transfers subject to the EU GDPR or UK GDPR require an applicable adequacy decision or appropriate safeguards, unless a permitted statutory exception applies. Safeguards may include the European Commission’s Standard Contractual Clauses for EEA transfers and the UK International Data Transfer Agreement or UK Addendum for UK transfers, with transfer risk assessments and additional measures where required. Transfers from the UAE must also meet applicable UAE PDPL requirements, including its conditions for transfers to countries without an adequate level of protection. You can request details of the safeguards applicable to your data and copies, subject to redaction of confidential details, at info@smithii.io."
         },
         "retention": {
           "title": "6. Retention and deletion",
@@ -1573,7 +1573,7 @@
         },
         "rights": {
           "title": "8. Your rights and complaints",
-          "body": "Subject to GDPR conditions, you can request access, correction, erasure, restriction and portability of your personal data, and object to processing based on legitimate interests. You may withdraw consent at any time without affecting the lawfulness of earlier processing. Contact [CONTACT EMAIL]; we may request proportionate identity verification. We normally respond within one month, and will explain any lawful extension. You may complain to the Spanish Data Protection Agency (AEPD) or the supervisory authority where you live, work or believe an infringement occurred. Providing account and payment information is necessary for paid services; without it we cannot provide those features. Optional analytics consent is not required to use the service."
+          "body": "EU/EEA and UK users retain their rights under the EU GDPR and UK GDPR where applicable, subject to the conditions in those laws: access, correction, erasure, restriction and portability of personal data, and objection to processing based on legitimate interests. Under the UAE PDPL where applicable, you may also request information about processing, correction, erasure, portability, restriction or cessation of processing, and object to automated decisions, subject to its statutory conditions. You may withdraw consent at any time without affecting the lawfulness of earlier processing. Contact info@smithii.io; we may request proportionate identity verification. For GDPR and UK GDPR requests we normally respond within one month and explain any lawful extension; other requests are handled within the applicable statutory time limit. EU/EEA users may complain to the supervisory authority where they live, work or believe an infringement occurred; UK users may complain to the Information Commissioner’s Office (ICO). Where the UAE PDPL applies, you may complain to the UAE Data Office as provided by that law. Providing account and payment information is necessary for paid services; without it we cannot provide those features. Optional analytics consent is not required to use the service."
         },
         "changes": {
           "title": "9. Security, children and policy changes",
@@ -1585,7 +1585,7 @@
       "title": "Términos del servicio",
       "metaTitle": "Términos del servicio · easyrender",
       "metaDescription": "Términos del servicio — easyrender.ai. El texto legal que aparece a continuación está en inglés.",
-      "intro": "These terms govern your use of easyrender.ai, its apps, API and MCP tools, supplied by the operator identified above. By creating an account or using the service, you agree to these terms. Contact [CONTACT EMAIL] for service, billing or legal questions. Mandatory consumer rights remain unaffected.",
+      "intro": "Easy Render is a product operated by Smithii LTD, the company identified above. These terms govern your use of easyrender.ai, its apps, API and MCP tools. By creating an account or using the service, you agree to these terms. Contact info@smithii.io for service, billing or legal questions. Mandatory consumer rights remain unaffected.",
       "sections": {
         "service": {
           "title": "1. The service and its limits",
@@ -1601,7 +1601,7 @@
         },
         "refunds": {
           "title": "4. Failed jobs, refunds and consumer rights",
-          "body": "When a charged rendering job fails, including a failed quality check, the credits charged for that failed job are returned to your credit balance. This is a credit reversal, not an automatic refund to your card. The service does not provide an automatic cash-refund flow. For a payment error, disputed charge, defective service or refund request, contact [CONTACT EMAIL] with your purchase details. Nothing here excludes refunds or remedies required by law. EEA consumers generally have a 14-day withdrawal right for distance contracts, subject to statutory conditions and exceptions. Starting generation does not by itself waive that right: any exception for immediate digital supply requires the legally required express consent, acknowledgement and confirmation. To exercise a statutory withdrawal right, send us a clear statement identifying your account, purchase and decision to withdraw. Where applicable, the law determines any proportionate amount due for services expressly requested during the withdrawal period and the refund owed."
+          "body": "When a charged rendering job fails, including a failed quality check, the credits charged for that failed job are returned to your credit balance. This is a credit reversal, not an automatic refund to your card. The service does not provide an automatic cash-refund flow. For a payment error, disputed charge, defective service or refund request, contact info@smithii.io with your purchase details. Nothing here excludes refunds or remedies required by law. EEA consumers generally have a 14-day withdrawal right for distance contracts, subject to statutory conditions and exceptions. Starting generation does not by itself waive that right: any exception for immediate digital supply requires the legally required express consent, acknowledgement and confirmation. To exercise a statutory withdrawal right, send us a clear statement identifying your account, purchase and decision to withdraw. Where applicable, the law determines any proportionate amount due for services expressly requested during the withdrawal period and the refund owed."
         },
         "ownership": {
           "title": "5. Your content and intellectual property",
@@ -1609,11 +1609,11 @@
         },
         "public": {
           "title": "6. Public models and sharing",
-          "body": "Generated models are public by default. Public model pages, previews and associated imagery may be listed in the gallery, indexed, shared and downloaded by others. Do not upload confidential material or content you lack permission to publish. Available visibility controls can remove public listing, but cannot recall earlier downloads, third-party copies or cached files, and existing file URLs may remain accessible. Contact [CONTACT EMAIL] for removal requests. Publishing a model does not transfer your underlying intellectual property to other visitors or grant them an unrestricted commercial licence."
+          "body": "Generated models are public by default. Public model pages, previews and associated imagery may be listed in the gallery, indexed, shared and downloaded by others. Do not upload confidential material or content you lack permission to publish. Available visibility controls can remove public listing, but cannot recall earlier downloads, third-party copies or cached files, and existing file URLs may remain accessible. Contact info@smithii.io for removal requests. Publishing a model does not transfer your underlying intellectual property to other visitors or grant them an unrestricted commercial licence."
         },
         "use": {
           "title": "7. Acceptable use",
-          "body": "Do not use the service for unlawful, infringing, deceptive, abusive or exploitative content; non-consensual intimate imagery; sexual content involving minors; or activities that violate another person’s privacy or rights. Do not upload malware, attack or overload systems, evade limits or payment, scrape private data, or attempt unauthorized access. You must review outputs and use them lawfully. We may refuse or remove content and suspend access for violations, applying proportionate measures and complying with applicable notice and redress obligations. Report misuse or rights infringements to [CONTACT EMAIL]."
+          "body": "Do not use the service for unlawful, infringing, deceptive, abusive or exploitative content; non-consensual intimate imagery; sexual content involving minors; or activities that violate another person’s privacy or rights. Do not upload malware, attack or overload systems, evade limits or payment, scrape private data, or attempt unauthorized access. You must review outputs and use them lawfully. We may refuse or remove content and suspend access for violations, applying proportionate measures and complying with applicable notice and redress obligations. Report misuse or rights infringements to info@smithii.io."
         },
         "availability": {
           "title": "8. Availability and ending the service",
@@ -1625,7 +1625,7 @@
         },
         "law": {
           "title": "10. Changes, governing law and disputes",
-          "body": "Spanish law governs these terms. If you are a consumer, this does not deprive you of mandatory protections in your country of habitual residence or your right to bring claims before courts available under applicable consumer law. Disputes are subject to the courts competent under applicable law; no exclusive venue is imposed on consumers. Contact [CONTACT EMAIL] first so we can try to resolve a concern. We may revise these terms, publish the new date and give notice of material changes as required. Changes apply prospectively and do not remove accrued rights. If a provision is unenforceable, the remaining provisions continue to apply."
+          "body": "These terms and related non-contractual obligations are governed by UAE federal law as it applies in the Emirate of Ras Al Khaimah, together with applicable RAK Digital Assets Oasis Free Zone regulations. The courts of Ras Al Khaimah, United Arab Emirates, have exclusive jurisdiction over disputes concerning these terms, including their existence, validity, interpretation, performance, breach or termination. Before starting formal proceedings, both parties must seek a resolution through good-faith direct negotiation for at least 30 days after written notice of the dispute; send notices to info@smithii.io. If you are a consumer, these provisions do not deprive you of mandatory protections in your country of habitual residence or your right to bring claims before courts available under applicable consumer law, and do not delay remedies that mandatory law makes available to you. We may revise these terms, publish the new date and give notice of material changes as required. Changes apply prospectively and do not remove accrued rights. If a provision is unenforceable, the remaining provisions continue to apply."
         }
       }
     }
