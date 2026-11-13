@@ -6,11 +6,11 @@
  * untouched.
  */
 add_filter(
-	'wp_get_attachment_image_url',
-	static function ( $url ) {
-		if ( is_admin() || wp_doing_ajax() ) {
-			return preg_replace( '#^http://#', 'https://', (string) $url );
+	'wp_get_attachment_image_src',
+	static function ( $image ) {
+		if ( is_array( $image ) && isset( $image[0] ) && ( is_admin() || wp_doing_ajax() ) ) {
+			$image[0] = preg_replace( '#^http://#', 'https://', (string) $image[0] );
 		}
-		return $url;
+		return $image;
 	}
 );
