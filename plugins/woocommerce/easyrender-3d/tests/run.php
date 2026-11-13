@@ -29,6 +29,7 @@ function plugins_url( $p ) { return 'https://shop.example.com/wp-content/plugins
 function get_the_ID() { return 7; }
 function shortcode_atts( $d, $a ) { return array_merge( $d, (array) $a ); }
 function add_action() {}
+function __( $s ) { return $s; }
 function add_shortcode() {}
 
 require dirname( __DIR__ ) . '/includes/class-easyrender-client.php';
@@ -111,6 +112,12 @@ check( 'the block shows the button and the QR code', false !== strpos( $html, '/
 check( 'the block is empty until the model is ready', '' === Easyrender_Frontend::html( 13 ) );
 update_post_meta( 12, '_easyrender_render_id', 'x"><script>' );
 check( 'a hostile render id cannot break out of the markup', false === strpos( Easyrender_Frontend::html( 12 ), '<script>' ) );
+
+// --- products list column --------------------------------------------------------------------
+check( 'a ready product is labelled 3D ready', '3D ready' === Easyrender_Catalog::state_label( 'ready' ) );
+check( 'queued, drafting and building all read as in progress', 'In progress' === Easyrender_Catalog::state_label( 'queued' ) && 'In progress' === Easyrender_Catalog::state_label( 'drafting' ) && 'In progress' === Easyrender_Catalog::state_label( 'building' ) );
+check( 'stuck states say why', 'Waiting for credits' === Easyrender_Catalog::state_label( 'needs_credits' ) && 'Needs a usable photo' === Easyrender_Catalog::state_label( 'needs_info' ) && 'Failed, will retry' === Easyrender_Catalog::state_label( 'failed' ) );
+check( 'a product never sent has no label', '' === Easyrender_Catalog::state_label( '' ) );
 
 echo $failures ? "\n$failures failed\n" : "\nall passed\n";
 exit( $failures ? 1 : 0 );

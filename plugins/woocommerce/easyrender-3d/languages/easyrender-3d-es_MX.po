@@ -1,0 +1,86 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: easyrender 3D & AR 0.1.0\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "%1$s ready, %2$s in progress, %3$s waiting"
+msgstr "%1$s listos, %2$s en curso, %3$s en espera"
+
+msgid "%s are waiting for credits"
+msgstr "%s esperan créditos"
+
+msgid "%s failed and can be retried"
+msgstr "%s fallaron y se pueden reintentar"
+
+msgid "%s have no https photo and are skipped"
+msgstr "%s no tienen foto https y se omiten"
+
+msgid "%s need a usable photo"
+msgstr "%s necesitan una foto válida"
+
+msgid "3D"
+msgstr "3D"
+
+msgid "3D & AR"
+msgstr "3D y RA"
+
+msgid "3D ready"
+msgstr "3D listo"
+
+msgid "API key"
+msgstr "Clave de API"
+
+msgid "Checking your catalogue…"
+msgstr "Revisando tu catálogo…"
+
+msgid "Create a key at %s and paste it here."
+msgstr "Crea una clave en %s y pégala aquí."
+
+msgid "Every product with a photo already has a 3D model or is on its way."
+msgstr "Todos los productos con foto ya tienen un modelo 3D o están en camino."
+
+msgid "Failed, will retry"
+msgstr "Falló, se reintentará"
+
+msgid "Generate 3D for %1$s products (%2$s credits)"
+msgstr "Generar 3D de %1$s productos (%2$s créditos)"
+
+msgid "In progress"
+msgstr "En curso"
+
+msgid "Needs a usable photo"
+msgstr "Necesita una foto válida"
+
+msgid "QR code: scan with your phone to see this piece in your room"
+msgstr "Código QR: escanéalo con tu móvil para ver esta pieza en tu habitación"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Scan with your phone to see it in your room"
+msgstr "Escanea con tu móvil para verla en tu habitación"
+
+msgid "Something went wrong:"
+msgstr "Algo salió mal:"
+
+msgid "Starting… %s products queued"
+msgstr "Empezando… %s productos en cola"
+
+msgid "The price changed. Reload the page and check it again."
+msgstr "El precio cambió. Recarga la página y revísalo de nuevo."
+
+msgid "Turn your catalogue into 3D models. Shoppers see each piece in their own room from a button or a QR code on the product page."
+msgstr "Convierte tu catálogo en modelos 3D. Tus clientes ven cada pieza en su propia habitación desde un botón o un código QR en la ficha del producto."
+
+msgid "View in your room"
+msgstr "Ver en tu habitación"
+
+msgid "Waiting for credits"
+msgstr "Esperando créditos"
+
+msgid "You are not allowed to do this."
+msgstr "No tienes permiso para hacer esto."

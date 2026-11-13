@@ -22,6 +22,10 @@ in easyrender through the catalogue API (`/api/catalog`, `/api/catalog/quote`).
    that hands over to Android Scene Viewer or iPhone Quick Look. The QR code carries the same page from
    a computer to a phone.
 
+The Products list has a "3D" column with each product's state (3D ready, In progress, Waiting for
+credits, Needs a usable photo, Failed). Spanish is in `languages/` (`es_ES`, `es_MX`; the `.mo` files
+are built from the `.po` files).
+
 Products without an https photo are skipped and counted. Products with an unusable photo show up as
 "need a usable photo"; products that failed are refunded and can be retried by clicking again.
 
