@@ -172,7 +172,7 @@ it('keeps USD for other countries, and for everyone while EUR checkout is off', 
   await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'US' });
   vi.stubEnv('EUR_CHECKOUT_ENABLED', '0');
   await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'ES' });
-  for (const [call] of state.session.mock.calls) expect(call).not.toHaveProperty('currency');
+  for (const [call] of state.session.mock.calls) expect(call).toMatchObject({ currency: 'usd' });
   for (const [call] of state.purchase.mock.calls) expect(call.data.currency).toBe('usd');
 });
 it('refuses EUR when the Stripe price carries a different EUR amount', async () => {
@@ -195,7 +195,7 @@ it('keeps a returning customer in the currency Stripe already locked them to', a
   state.customerId = 'cus_1';
   state.customer.mockResolvedValue({ id: 'cus_1', currency: 'usd' });
   await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'FR' });
-  expect(state.session.mock.calls[0][0]).not.toHaveProperty('currency');
+  expect(state.session.mock.calls[0][0]).toMatchObject({ currency: 'usd' });
   state.customer.mockResolvedValue({ id: 'cus_1', currency: 'eur' });
   await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'US' });
   expect(state.session.mock.calls[1][0]).toMatchObject({ currency: 'eur' });
