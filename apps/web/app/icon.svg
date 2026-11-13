@@ -1,21 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-  <title>easyrender</title>
-  <!-- The easyrender sphere, with a heavier outline than the page logo so it holds at 16 px.
-       It follows the browser theme: lit side solid on dark, shadow side solid on light. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>easyrender.ai</title>
+  <!-- The easyrender mark on a tile. Every coordinate is a multiple of 4 so it stays crisp at 16 and
+       32 px. It follows the browser theme: ink on paper in light, bone on carbon in dark. -->
   <style>
-    .on-dark { display: none; color: #ecebe7; }
-    .on-light { color: #0a0a0b; }
+    .tile { fill: #f3f2ee; }
+    .mark { fill: #0a0a0b; }
     @media (prefers-color-scheme: dark) {
-      .on-dark { display: inline; }
-      .on-light { display: none; }
+      .tile { fill: #0a0a0b; }
+      .mark { fill: #ecebe7; }
     }
   </style>
-  <g class="on-light" transform="rotate(142 24 24)">
-    <circle cx="24" cy="24" r="19.5" stroke="currentColor" stroke-width="3.5"/>
-    <path d="M24 4.5A19.5 19.5 0 0 1 24 43.5A7.5 19.5 0 0 1 24 4.5Z" fill="currentColor"/>
-  </g>
-  <g class="on-dark" transform="rotate(-38 24 24)">
-    <circle cx="24" cy="24" r="19.5" stroke="currentColor" stroke-width="3.5"/>
-    <path d="M24 4.5A19.5 19.5 0 0 1 24 43.5A7.5 19.5 0 0 1 24 4.5Z" fill="currentColor"/>
+  <rect class="tile" width="64" height="64" rx="14"/>
+  <g class="mark">
+    <path fill-rule="evenodd" d="M8 8H44V20H56V56H20V44H8ZM12 12V40H20V20H40V12ZM24 24V52H52V24Z"/>
+    <circle cx="52" cy="12" r="4"/>
   </g>
 </svg>

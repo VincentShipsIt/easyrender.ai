@@ -127,6 +127,14 @@ Admin analytics adds semantic `success` for favorable KPI deltas (paired with ar
 and five muted `chart-*` data-series tokens in `globals.css`. These are data encodings, not
 chrome accents. Chart series also use labels, legends and dashed previous-period lines.
 
+## Brand mark
+
+Two offset frames and a datum dot at the top right: a flat photo gaining depth, anchored at one
+point. It is one colour, so it follows the text colour (`currentColor`) on light, dark and the
+studio. Never add gradients, glows or a second colour. Source: `apps/web/components/brand-mark.tsx`
+and `apps/web/public/brand/mark.svg` (keep the two in step). The favicon, `apple-icon.png`, the
+mobile icons and the desktop icon are the same mark on a paper (light) or carbon (dark) tile.
+
 ## Typography
 
 - Product: Geist Sans, Geist Mono for ids, sizes and credit counts. `text-sm` for body,
