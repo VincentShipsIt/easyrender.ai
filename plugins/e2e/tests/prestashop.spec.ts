@@ -49,6 +49,12 @@ test.describe(`PrestaShop module on a real shop (${VERSION})`, () => {
         });
         return `${url}\n${response.status} ${(await response.text()).slice(0, 1500)}`;
       });
+      const scripts = await page.evaluate(() =>
+        Array.from(document.scripts)
+          .map((el) => `${el.src} ${el.defer ? 'defer' : ''}`)
+          .filter((src) => src.includes('easyrender')),
+      );
+      console.log(`module scripts on the page: ${JSON.stringify(scripts)}`);
       const detail = await page.locator('#easyrender-detail').textContent();
       console.log(`Generate button never left "checking".\nDETAIL: ${detail}\nPROBE: ${probe}`);
       throw error;
