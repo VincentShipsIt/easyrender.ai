@@ -16,7 +16,9 @@ test.describe(`PrestaShop module on a real shop (${VERSION})`, () => {
     console.log(`After login:\n${await describePage(page)}`);
 
     // The module's Configure page. PrestaShop asks before opening a legacy page without its token.
-    await page.goto('/admin/index.php?controller=AdminModules&configure=easyrender3d');
+    // The back office folder is renamed by the installer on some versions, so take it from where login landed.
+    const adminBase = new URL(page.url()).pathname.match(/^(.*?)\/index\.php/)?.[1] ?? '/admin';
+    await page.goto(`${adminBase}/index.php?controller=AdminModules&configure=easyrender3d`);
     const risks = page.getByRole('link', { name: /understand the risks/i });
     if (await risks.isVisible().catch(() => false)) await risks.click();
     try {
