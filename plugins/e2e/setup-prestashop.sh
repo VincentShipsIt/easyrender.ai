@@ -10,16 +10,23 @@ SQL="$C exec -T db mariadb -ups -pps prestashop"
 
 $C up -d db api prestashop
 
-echo "waiting for PrestaShop ${PS_TAG} to install itself (up to 15 minutes)"
-for i in $(seq 1 180); do
-  if curl -fsS -o /dev/null "http://localhost:8080/index.php" 2>/dev/null; then
-    break
-  fi
-  if [ $((i % 12)) -eq 0 ]; then $C logs --tail 3 prestashop || true; fi
+echo "waiting for PrestaShop ${PS_TAG} to install itself (up to 20 minutes)"
+is_ready() {
+  # Installed: settings written, installer folder erased, and the front office answers with a shop page.
+  $C exec -T prestashop test -f /var/www/html/app/config/parameters.php 2>/dev/null \
+    && ! $C exec -T prestashop test -d /var/www/html/install 2>/dev/null \
+    && curl -fsS "http://localhost:8080/index.php" 2>/dev/null | grep -qi "prestashop"
+}
+for i in $(seq 1 240); do
+  if is_ready; then break; fi
+  if [ $((i % 12)) -eq 0 ]; then $C logs --tail 5 prestashop || true; fi
   sleep 5
 done
-curl -fsS -o /dev/null "http://localhost:8080/index.php"
-$C exec -T prestashop test -f /var/www/html/app/config/parameters.php
+if ! is_ready; then
+  echo "PrestaShop did not finish installing"
+  $C logs --tail 80 prestashop || true
+  exit 1
+fi
 
 echo "installing the module"
 $C exec -T prestashop sh -c 'rm -rf /var/www/html/modules/easyrender3d && cp -r /mnt/easyrender3d /var/www/html/modules/easyrender3d && chown -R www-data:www-data /var/www/html/modules/easyrender3d'
