@@ -16,24 +16,24 @@
         "file": "swivel-chair.glb",
         "tris": 39168,
         "verts": 22173,
-        "kb": 419
+        "kb": 611
       },
       {
         "file": "swivel-chair.lod1.glb",
         "tris": 8616,
         "verts": 6447,
-        "kb": 128
+        "kb": 161
       },
       {
         "file": "swivel-chair.lod2.glb",
         "tris": 2154,
         "verts": 2002,
-        "kb": 46
+        "kb": 44
       }
     ],
     "hd": {
       "file": "swivel-chair.hd.glb",
-      "kb": 736
+      "kb": 1151
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -92,19 +92,19 @@
         "file": "coffee-table.glb",
         "tris": 16228,
         "verts": 9591,
-        "kb": 177
+        "kb": 176
       },
       {
         "file": "coffee-table.lod1.glb",
         "tris": 3570,
         "verts": 2704,
-        "kb": 55
+        "kb": 57
       },
       {
         "file": "coffee-table.lod2.glb",
         "tris": 892,
         "verts": 892,
-        "kb": 21
+        "kb": 22
       }
     ],
     "formats": ["GLB", "USDZ"]
@@ -126,19 +126,19 @@
         "file": "bedside-table.glb",
         "tris": 69910,
         "verts": 43424,
-        "kb": 641
+        "kb": 650
       },
       {
         "file": "bedside-table.lod1.glb",
         "tris": 15380,
         "verts": 14157,
-        "kb": 223
+        "kb": 231
       },
       {
         "file": "bedside-table.lod2.glb",
         "tris": 4920,
         "verts": 6382,
-        "kb": 102
+        "kb": 104
       }
     ],
     "formats": ["GLB", "USDZ"]
@@ -160,13 +160,13 @@
         "file": "vase.glb",
         "tris": 16708,
         "verts": 9254,
-        "kb": 166
+        "kb": 252
       },
       {
         "file": "vase.lod1.glb",
         "tris": 3674,
         "verts": 2489,
-        "kb": 49
+        "kb": 64
       },
       {
         "file": "vase.lod2.glb",
@@ -194,24 +194,24 @@
         "file": "clay-vase.glb",
         "tris": 29334,
         "verts": 16489,
-        "kb": 516
+        "kb": 533
       },
       {
         "file": "clay-vase.lod1.glb",
         "tris": 6453,
         "verts": 4806,
-        "kb": 125
+        "kb": 129
       },
       {
         "file": "clay-vase.lod2.glb",
         "tris": 1613,
         "verts": 1414,
-        "kb": 39
+        "kb": 33
       }
     ],
     "hd": {
       "file": "clay-vase.hd.glb",
-      "kb": 1296
+      "kb": 1298
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -232,24 +232,24 @@
         "file": "sofa.glb",
         "tris": 38395,
         "verts": 22157,
-        "kb": 630
+        "kb": 605
       },
       {
         "file": "sofa.lod1.glb",
         "tris": 8446,
         "verts": 6685,
-        "kb": 139
+        "kb": 145
       },
       {
         "file": "sofa.lod2.glb",
         "tris": 2110,
         "verts": 2029,
-        "kb": 42
+        "kb": 40
       }
     ],
     "hd": {
       "file": "sofa.hd.glb",
-      "kb": 1712
+      "kb": 1849
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -270,24 +270,24 @@
         "file": "lamp.glb",
         "tris": 39170,
         "verts": 22313,
-        "kb": 381
+        "kb": 475
       },
       {
         "file": "lamp.lod1.glb",
         "tris": 8616,
         "verts": 6706,
-        "kb": 110
+        "kb": 163
       },
       {
         "file": "lamp.lod2.glb",
         "tris": 2154,
         "verts": 2103,
-        "kb": 38
+        "kb": 53
       }
     ],
     "hd": {
       "file": "lamp.hd.glb",
-      "kb": 666
+      "kb": 843
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -308,24 +308,24 @@
         "file": "cactus.glb",
         "tris": 37384,
         "verts": 25169,
-        "kb": 624
+        "kb": 593
       },
       {
         "file": "cactus.lod1.glb",
         "tris": 8113,
         "verts": 8281,
-        "kb": 202
+        "kb": 204
       },
       {
         "file": "cactus.lod2.glb",
         "tris": 2723,
         "verts": 4171,
-        "kb": 92
+        "kb": 93
       }
     ],
     "hd": {
       "file": "cactus.hd.glb",
-      "kb": 1124
+      "kb": 1021
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -346,24 +346,24 @@
         "file": "sneaker.glb",
         "tris": 38718,
         "verts": 22876,
-        "kb": 504
+        "kb": 448
       },
       {
         "file": "sneaker.lod1.glb",
         "tris": 8490,
         "verts": 6860,
-        "kb": 155
+        "kb": 145
       },
       {
         "file": "sneaker.lod2.glb",
         "tris": 2126,
         "verts": 2166,
-        "kb": 55
+        "kb": 51
       }
     ],
     "hd": {
       "file": "sneaker.hd.glb",
-      "kb": 868
+      "kb": 676
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -384,24 +384,24 @@
         "file": "espresso.glb",
         "tris": 33506,
         "verts": 21046,
-        "kb": 491
+        "kb": 641
       },
       {
         "file": "espresso.lod1.glb",
         "tris": 7370,
         "verts": 6688,
-        "kb": 163
+        "kb": 213
       },
       {
         "file": "espresso.lod2.glb",
         "tris": 1841,
         "verts": 2268,
-        "kb": 62
+        "kb": 74
       }
     ],
     "hd": {
       "file": "espresso.hd.glb",
-      "kb": 844
+      "kb": 1368
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -422,24 +422,24 @@
         "file": "crate.glb",
         "tris": 25172,
         "verts": 15451,
-        "kb": 634
+        "kb": 650
       },
       {
         "file": "crate.lod1.glb",
         "tris": 5537,
         "verts": 4730,
-        "kb": 160
+        "kb": 163
       },
       {
         "file": "crate.lod2.glb",
         "tris": 1384,
         "verts": 1523,
-        "kb": 56
+        "kb": 57
       }
     ],
     "hd": {
       "file": "crate.hd.glb",
-      "kb": 2062
+      "kb": 2046
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -460,24 +460,24 @@
         "file": "barrel.glb",
         "tris": 29288,
         "verts": 16328,
-        "kb": 310
+        "kb": 298
       },
       {
         "file": "barrel.lod1.glb",
         "tris": 6442,
         "verts": 4713,
-        "kb": 92
+        "kb": 91
       },
       {
         "file": "barrel.lod2.glb",
         "tris": 1610,
         "verts": 1394,
-        "kb": 31
+        "kb": 30
       }
     ],
     "hd": {
       "file": "barrel.hd.glb",
-      "kb": 520
+      "kb": 466
     },
     "formats": ["GLB", "USDZ"]
   }
