@@ -613,7 +613,8 @@ export function toView(render: Render): RenderView {
     hasSheet: Boolean(render.sheetKey),
     hasModel: render.status === 'ready' && Boolean(render.glbKey),
     modelVersion: render.updatedAt.getTime(),
-    credits: render.credits,
+    // A failed render was refunded in full, so nothing counts as spent on it.
+    credits: render.status === 'failed' ? 0 : render.credits,
     renderCredits: RENDER_CREDITS,
     sheetCredits: SHEET_CREDITS,
     isPublic: render.isPublic,
