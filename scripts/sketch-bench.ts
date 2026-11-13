@@ -53,20 +53,21 @@ async function timeTwice(model: string, input: Record<string, unknown>): Promise
 
 // fal retires and renames apps, so try each sketch-to-image candidate in order and skip only the
 // ones fal says do not exist. Any other error (auth, bad input) stops the run with its body.
-const SKETCH_MODELS = [
-  'fal-ai/lcm-sd15-i2i',
-  'fal-ai/fast-lcm-diffusion/image-to-image',
-  'fal-ai/flux/dev/image-to-image',
+const SKETCH_MODELS: { id: string; steps: number }[] = [
+  { id: 'fal-ai/lcm-sd15-i2i', steps: 4 },
+  { id: 'fal-ai/fast-lcm-diffusion/image-to-image', steps: 4 },
+  // fal rejects fewer than 10 steps here (422 on 2026-11-13).
+  { id: 'fal-ai/flux/dev/image-to-image', steps: 12 },
 ];
 
 async function sketchToImage(sketch: string): Promise<TimedCall & { model: string }> {
-  for (const model of SKETCH_MODELS) {
+  for (const { id: model, steps } of SKETCH_MODELS) {
     try {
       const timed = await timeTwice(model, {
         image_url: sketch,
         prompt: PROMPT,
         strength: 0.85,
-        num_inference_steps: 4,
+        num_inference_steps: steps,
       });
       return { ...timed, model };
     } catch (error) {
@@ -74,7 +75,9 @@ async function sketchToImage(sketch: string): Promise<TimedCall & { model: strin
       throw error;
     }
   }
-  throw new Error(`None of the sketch-to-image apps exist on fal: ${SKETCH_MODELS.join(', ')}`);
+  throw new Error(
+    `None of the sketch-to-image apps exist on fal: ${SKETCH_MODELS.map((candidate) => candidate.id).join(', ')}`,
+  );
 }
 
 function firstUrl(output: unknown, keys: string[]): string | undefined {
