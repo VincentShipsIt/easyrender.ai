@@ -79,6 +79,8 @@ accounting for these exclusions.
   secret and of Ads attribution.
 - `/api/cron/analytics` answers 401 without `Authorization: Bearer $CRON_SECRET`. Schedule is daily
   at 04:00 UTC.
+- `/admin/analytics` access is the exact-match `ADMIN_EMAILS` list in Vercel Production (two admins:
+  Jorge and Vincent). Vercel reads it at build time, so a change needs a new CI build.
 - Still to do: an approved real purchase (check transaction ID, amount, currency in GA4), consent
   withdrawal on a signed-in session, Ads attribution, and the PostHog read-back in `/admin/analytics`.
   Campaigns stay paused until these pass.
