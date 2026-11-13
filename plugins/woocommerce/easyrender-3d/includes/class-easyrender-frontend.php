@@ -22,7 +22,24 @@ class Easyrender_Frontend {
 	}
 
 	public static function output(): void {
-		echo self::html( (int) get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput -- html() escapes.
+		echo self::once( (int) get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput -- html() escapes.
+	}
+
+	/**
+	 * The automatic placements (the classic summary hook and the block-theme filter) can both fire for
+	 * the same product, and a block theme can render the add-to-cart block twice. Show the block once
+	 * per product per page. The shortcode is not limited: the owner placed it on purpose.
+	 */
+	public static function once( int $product_id ): string {
+		static $shown = array();
+		if ( isset( $shown[ $product_id ] ) ) {
+			return '';
+		}
+		$html = self::html( $product_id );
+		if ( '' !== $html ) {
+			$shown[ $product_id ] = true;
+		}
+		return $html;
 	}
 
 	/** The same block, after the add-to-cart form, on a block theme's product page. */
@@ -30,7 +47,7 @@ class Easyrender_Frontend {
 		if ( 'woocommerce/add-to-cart-form' !== ( $block['blockName'] ?? '' ) || ! function_exists( 'is_product' ) || ! is_product() ) {
 			return $content;
 		}
-		return $content . self::html( (int) get_the_ID() );
+		return $content . self::once( (int) get_the_ID() );
 	}
 
 	/** [easyrender_ar id="123"] shows the block for a product anywhere. */

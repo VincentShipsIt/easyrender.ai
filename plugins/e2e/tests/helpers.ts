@@ -34,3 +34,25 @@ export async function isImageLoaded(page: Page, selector: string): Promise<boole
     return image.complete && image.naturalWidth > 0;
   });
 }
+
+/** What the page shows, for the CI log when a step fails (the screenshots are only in the artifact). */
+export async function describePage(page: Page): Promise<string> {
+  const text = await page
+    .locator('body')
+    .innerText()
+    .catch(() => '(no body)');
+  const links = await page
+    .locator('a')
+    .evaluateAll((anchors) =>
+      anchors
+        .slice(0, 40)
+        .map((a) => `${a.textContent?.trim()} -> ${(a as HTMLAnchorElement).href}`),
+    )
+    .catch(() => []);
+  return [
+    `URL: ${page.url()}`,
+    `TITLE: ${await page.title().catch(() => '')}`,
+    `TEXT: ${text.replace(/\s+/g, ' ').slice(0, 1200)}`,
+    `LINKS: ${links.join(' | ').slice(0, 1500)}`,
+  ].join('\n');
+}

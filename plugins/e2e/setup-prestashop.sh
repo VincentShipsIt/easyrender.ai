@@ -40,6 +40,7 @@ fi
 echo "installing the module"
 $C exec -T prestashop sh -c 'rm -rf /var/www/html/modules/easyrender3d && cp -r /mnt/easyrender3d /var/www/html/modules/easyrender3d && chown -R www-data:www-data /var/www/html/modules/easyrender3d'
 # Test-only: report photos as https while the module collects products (see prestashop/Link.php).
+$C exec -T prestashop mkdir -p /var/www/html/override/classes
 $C cp ./prestashop/Link.php prestashop:/var/www/html/override/classes/Link.php
 $C exec -T prestashop sh -c 'chown www-data:www-data /var/www/html/override/classes/Link.php && rm -rf /var/www/html/var/cache/*'
 $PS php bin/console prestashop:module install easyrender3d

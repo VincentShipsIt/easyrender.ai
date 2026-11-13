@@ -120,5 +120,9 @@ check( 'queued, drafting and building all read as in progress', 'In progress' ==
 check( 'stuck states say why', 'Waiting for credits' === Easyrender_Catalog::state_label( 'needs_credits' ) && 'Needs a usable photo' === Easyrender_Catalog::state_label( 'needs_info' ) && 'Failed, will retry' === Easyrender_Catalog::state_label( 'failed' ) );
 check( 'a product never sent has no label', '' === Easyrender_Catalog::state_label( '' ) );
 
+// The automatic placements show the block once per product, even if both fire.
+check( 'the block shows once when two placements fire for the same product', false !== strpos( Easyrender_Frontend::once( 12 ), 'easyrender-ar' ) && '' === Easyrender_Frontend::once( 12 ) );
+check( 'a product with no model never marks itself as shown', '' === Easyrender_Frontend::once( 13 ) && '' === Easyrender_Frontend::once( 13 ) );
+
 echo $failures ? "\n$failures failed\n" : "\nall passed\n";
 exit( $failures ? 1 : 0 );

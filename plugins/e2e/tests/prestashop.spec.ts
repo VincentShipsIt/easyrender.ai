@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { API_KEY, apiRequests, isImageLoaded, resetApi, shot } from './helpers';
+import { API_KEY, apiRequests, describePage, isImageLoaded, resetApi, shot } from './helpers';
 
 const VERSION = process.env.PS_TAG ?? '8.1';
 
@@ -13,12 +13,18 @@ test.describe(`PrestaShop module on a real shop (${VERSION})`, () => {
     await page.fill('#passwd', 'Password123!');
     await page.click('#submit_login');
     await page.waitForLoadState('networkidle');
+    console.log(`After login:\n${await describePage(page)}`);
 
     // The module's Configure page. PrestaShop asks before opening a legacy page without its token.
     await page.goto('/admin/index.php?controller=AdminModules&configure=easyrender3d');
     const risks = page.getByRole('link', { name: /understand the risks/i });
     if (await risks.isVisible().catch(() => false)) await risks.click();
-    await expect(page.locator('#EASYRENDER3D_API_KEY')).toBeVisible();
+    try {
+      await expect(page.locator('#EASYRENDER3D_API_KEY')).toBeVisible({ timeout: 15_000 });
+    } catch (error) {
+      console.log(`Configure page did not show the key field:\n${await describePage(page)}`);
+      throw error;
+    }
     await shot(page, `prestashop-${VERSION}-1-settings`);
 
     await page.fill('#EASYRENDER3D_API_KEY', API_KEY);

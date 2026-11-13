@@ -65,6 +65,8 @@ test.describe(`WooCommerce plugin on a real shop (${THEME} theme)`, () => {
 
   test('the product page shows "View in your room" and a working QR code', async ({ page }) => {
     await page.goto('/?product=oak-chair');
+    // One block, not one per placement.
+    await expect(page.locator('.easyrender-ar')).toHaveCount(1);
     const button = page.locator('.easyrender-ar__button');
     await expect(button).toBeVisible();
     await expect(button).toHaveText('View in your room');
