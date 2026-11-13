@@ -106,7 +106,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
   const usd = (cents: number) =>
     format.number(cents / 100, {
       style: 'currency',
-      currency: 'USD',
+      currency: pricing.currency.toUpperCase(),
       minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     });
   const credits = (value: number) => format.number(value);
@@ -159,7 +159,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
             <p className="text-muted-foreground">
               {t('description', {
                 credits: RENDER_CREDITS,
-                price: usd(RENDER_CREDITS * pricing.creditUsd * 100),
+                price: usd(RENDER_CREDITS * pricing.creditPrice * 100),
               })}
             </p>
           </>
@@ -190,12 +190,18 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
         <PlanCard
           title={t('payg.title')}
           description={t('payg.description', {
-            price: usd(pricing.payg.min * pricing.creditUsd * 100),
+            price: usd(pricing.payg.min * pricing.creditPrice * 100),
           })}
-          price={usd(pricing.creditUsd * 100)}
+          price={usd(pricing.creditPrice * 100)}
           note={t('payg.note')}
           features={[t('payg.features.downloads'), t('payg.features.ar'), t('payg.features.api')]}
-          footer={user ? <PaygPicker pricingVariant={pricing.variant} /> : signUp}
+          footer={
+            user ? (
+              <PaygPicker pricingVariant={pricing.variant} currency={pricing.currency} />
+            ) : (
+              signUp
+            )
+          }
         />
         {PLAN_IDS.map((id) => {
           const plan = SUBSCRIPTION_PLANS[id];

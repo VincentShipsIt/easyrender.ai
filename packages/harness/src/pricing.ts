@@ -93,6 +93,27 @@ export const EUR_PRICING = {
   test: { creditCents: 2, plans: { creator: 2700, pro: 7400, scale: 18_500 } },
 } as const;
 
+/** What a buyer in `currency` sees and pays: the per-credit price and each plan, in that currency. */
+export function displayPricing(
+  variant: PricingVariant = 'control',
+  currency: ChargeCurrency = 'usd',
+) {
+  const base = pricingFor(variant);
+  const plans = Object.fromEntries(
+    PLAN_IDS.map((id) => [
+      id,
+      { ...base.plans[id], priceCents: unitAmountCents(id, variant, currency) },
+    ]),
+  ) as Record<PlanId, { label: string; priceCents: number; monthlyCredits: number }>;
+  return {
+    variant,
+    currency,
+    creditPrice: unitAmountCents('payg', variant, currency) / 100,
+    payg: base.payg,
+    plans,
+  };
+}
+
 /** The unit amount (in cents) the Stripe price must carry for a plan or one pay-as-you-go credit. */
 export const unitAmountCents = (
   plan: 'payg' | PlanId,

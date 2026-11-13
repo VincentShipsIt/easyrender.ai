@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   CREDIT_USD,
   currencyForCountry,
+  displayPricing,
   isValidPaygCredits,
   PLAN_IDS,
   paygPriceCents,
@@ -67,5 +68,15 @@ describe('EUR pricing', () => {
     expect(PLAN_IDS.map((plan) => unitAmountCents(plan, 'control'))).toEqual([1900, 4900, 14_900]);
     expect(PLAN_IDS.map((plan) => unitAmountCents(plan, 'test'))).toEqual([2900, 7900, 19_900]);
     expect(unitAmountCents('payg', 'test')).toBe(2);
+  });
+  it('shows each visitor the amounts they are charged', () => {
+    const eur = displayPricing('test', 'eur');
+    expect(eur).toMatchObject({ currency: 'eur', creditPrice: 0.02 });
+    expect(PLAN_IDS.map((plan) => eur.plans[plan].priceCents)).toEqual([2700, 7400, 18_500]);
+    const usd = displayPricing('control', 'usd');
+    expect(usd.creditPrice).toBe(0.01);
+    expect(PLAN_IDS.map((plan) => usd.plans[plan].priceCents)).toEqual([1900, 4900, 14_900]);
+    expect(usd.plans.pro.monthlyCredits).toBe(5500);
+    expect(eur.plans.pro.monthlyCredits).toBe(4500);
   });
 });

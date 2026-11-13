@@ -70,9 +70,11 @@ Do not set these variables on preview deployments against live Stripe. No live c
 
 Reference: [PostHog flag creation](https://posthog.com/docs/feature-flags/creating-feature-flags), [flag management API and read scope](https://posthog.com/docs/api/feature-flags), [Stripe Checkout API](https://docs.stripe.com/api/checkout/sessions/create).
 
-## EUR checkout (off by default)
+## EUR pricing
 
-All eight Stripe prices (control and test) carry fixed EUR `currency_options` on the same price IDs: control €0.01/credit, €18, €46, €139; test €0.02/credit, €27, €74, €185. With `EUR_CHECKOUT_ENABLED=1`, checkout charges buyers in euro-area countries (from Vercel's `x-vercel-ip-country`) in EUR and everyone else in USD; Adaptive Pricing stays off. A returning Stripe customer keeps the currency Stripe locked them to. Checkout refuses a price whose EUR amount differs from the catalogue. `Purchase.currency` stores the charged currency. `purchase` and `purchase_completed` carry `currency` and `list_revenue_usd` (the pack's USD list price); in the HogQL above, drop the `currency = 'USD'` filter and sum `list_revenue_usd` to compare EUR and USD orders in one number. Do not enable it until the pricing pages show EUR.
+All eight Stripe prices (control and test) carry fixed EUR `currency_options` on the same price IDs: control €0.01/credit, €18, €46, €139; test €0.02/credit, €27, €74, €185. Visitors in euro-area countries (Vercel's `x-vercel-ip-country`) see and pay EUR; everyone else sees and pays USD. The pricing pages and checkout both resolve the currency through `buyerCurrency`, so what is shown is what is charged. A returning buyer keeps the currency of their last paid order, and a Stripe customer locked to a currency keeps it. Adaptive Pricing stays off and every checkout session names its currency. Static surfaces with no visitor (`llms*.txt`, JSON-LD offers, blog) keep the USD catalogue. `EUR_CHECKOUT_DISABLED=1` puts everyone back on USD.
+
+`Purchase.currency` stores the charged currency. `purchase` and `purchase_completed` carry `currency` and `list_revenue_usd` (the pack's USD list price); in the HogQL above, drop the `currency = 'USD'` filter and sum `list_revenue_usd` to compare EUR and USD orders in one number.
 
 ## Stop / kill switch
 
