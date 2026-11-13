@@ -53,7 +53,13 @@ Anonymous admin requests redirect before initializing auth or querying the datab
 failures also deny access. Admin routes stay noindex and excluded from sitemaps.
 See [admin analytics](admin-analytics.md) for metric definitions and limits.
 
-Missing keys disable PostHog or GA4 and their reason to show a banner. The Google Ads base
+Missing keys disable PostHog. When `NEXT_PUBLIC_GA_MEASUREMENT_ID` is absent, Vercel production
+builds use the public easyrender GA4 destination `G-H54Y1NW81X` (property `564217522`).
+The existing variable overrides that default; an explicitly empty value disables GA4 after
+a rebuild. Local and preview builds have no default destination. `VERCEL_ENV` is provided by
+Vercel and included in the Turbo build environment/cache key. The exact canonical hostname
+guard and consent checks still apply, so previews and localhost never send GA events.
+Disabled GA4 also removes its reason to show a banner. The Google Ads base
 tag from #96 remains independent of these keys and uses denied consent.
 Sentry remains configured independently and unchanged.
 
@@ -94,7 +100,7 @@ The analytics client preserves the bootstrap's `dataLayer` and `gtag` and sends 
 `update` commands. Strict EU/UK/CH/unknown regions stay denied until acceptance; US analytics
 is granted unless rejected or GPC is present. Advertising storage, user data and personalization
 always stay denied; `ads_data_redaction=true` and `url_passthrough=false` remain in force.
-GA4 is configured once per document, only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set and analytics is allowed.
+GA4 is configured once per document, only when the resolved measurement ID is nonempty and analytics is allowed.
 GA URLs use the bootstrap's origin + pathname sanitization (no query or fragment, including
 UTMs); PostHog still keeps allowlisted UTMs. Analytics events use `send_to` with the GA ID so
 that they do not become Ads conversions through the shared queue.

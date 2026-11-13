@@ -5,6 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": [
+        "VERCEL_ENV",
         "REPLICATE_API_TOKEN",
         "HARNESS_GITHUB_TOKEN",
         "BETTER_AUTH_*",

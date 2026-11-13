@@ -1,6 +1,7 @@
 import { withSentryConfig } from '@sentry/nextjs/config';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
+import { gaMeasurementId } from './lib/analytics/config';
 import { NOINDEX_HEADER_PATHS } from './lib/seo/noindex';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
@@ -8,6 +9,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const STATIC_MEDIA_PATHS = ['/studio/:path*', '/showcase/:path*'];
 
 const nextConfig: NextConfig = {
+  env: { NEXT_PUBLIC_GA_MEASUREMENT_ID: gaMeasurementId() },
   transpilePackages: [
     '@easyrender/core',
     '@easyrender/db',
