@@ -270,24 +270,24 @@
         "file": "lamp.glb",
         "tris": 39170,
         "verts": 22313,
-        "kb": 353
+        "kb": 475
       },
       {
         "file": "lamp.lod1.glb",
         "tris": 8616,
         "verts": 6706,
-        "kb": 103
+        "kb": 163
       },
       {
         "file": "lamp.lod2.glb",
         "tris": 2154,
         "verts": 2103,
-        "kb": 36
+        "kb": 53
       }
     ],
     "hd": {
       "file": "lamp.hd.glb",
-      "kb": 552
+      "kb": 843
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -384,24 +384,24 @@
         "file": "espresso.glb",
         "tris": 33506,
         "verts": 21046,
-        "kb": 444
+        "kb": 598
       },
       {
         "file": "espresso.lod1.glb",
         "tris": 7370,
         "verts": 6688,
-        "kb": 159
+        "kb": 225
       },
       {
         "file": "espresso.lod2.glb",
         "tris": 1841,
         "verts": 2268,
-        "kb": 61
+        "kb": 79
       }
     ],
     "hd": {
       "file": "espresso.hd.glb",
-      "kb": 678
+      "kb": 1147
     },
     "formats": ["GLB", "USDZ"]
   },
@@ -422,24 +422,24 @@
         "file": "crate.glb",
         "tris": 25172,
         "verts": 15451,
-        "kb": 535
+        "kb": 650
       },
       {
         "file": "crate.lod1.glb",
         "tris": 5537,
         "verts": 4730,
-        "kb": 144
+        "kb": 163
       },
       {
         "file": "crate.lod2.glb",
         "tris": 1384,
         "verts": 1523,
-        "kb": 50
+        "kb": 57
       }
     ],
     "hd": {
       "file": "crate.hd.glb",
-      "kb": 1678
+      "kb": 2046
     },
     "formats": ["GLB", "USDZ"]
   },

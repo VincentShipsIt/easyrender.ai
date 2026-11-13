@@ -1,7 +1,8 @@
 """Regression checks for the 12 locally corrected public objects (Pillow + NumPy).
 
 python3 scripts/check-showcase-materials.py
-python3 scripts/check-showcase-materials.py --asset-ref e615ff6  # reproduces defects
+python3 scripts/check-showcase-materials.py --asset-ref aaf08a0  # reproduces matte metals
+python3 scripts/check-showcase-materials.py --asset-ref e615ff6  # reproduces original defects
 Geometry is checked against the pre-correction revision without decoding mesh buffers.
 """
 import argparse
@@ -70,6 +71,13 @@ def maps(file, ref=None):
     return doc, np.asarray(color, float), mr
 
 
+def espresso_glass(shape):
+    # Two fixed dial-face islands, measured in the original 1024-pixel atlas.
+    yy, xx = np.mgrid[:shape[0], :shape[1]] * 1024 / shape[0]
+    return (((xx - 223) / 29) ** 2 + ((yy - 170) / 31) ** 2 < 1) | (
+        ((xx - 354) / 26) ** 2 + ((yy - 851) / 25) ** 2 < 1)
+
+
 def highpass(rgb):
     gray = Image.fromarray(np.uint8(rgb)).convert('L')
     return np.asarray(gray, float) - np.asarray(gray.filter(ImageFilter.GaussianBlur(2)), float)
@@ -113,16 +121,19 @@ class ShowcaseMaterials(unittest.TestCase):
                 lum = before.mean(2)
                 # Select parts from the ORIGINAL atlas so tests cannot move their own sample.
                 if name == 'espresso':
-                    mask = lum > 110
-                    self.assertGreater(np.median(rgb[mask]), 195, 'light stainless steel')
-                    self.assertGreater(np.median(mr[:, :, 1][mask]), 110, 'brushed, not mirror metal')
+                    mask = (lum > 110) & ~espresso_glass(lum.shape)
+                    self.assertGreaterEqual(np.median(rgb[mask]), 194, 'steel F0 reflectance')
+                    self.assertLessEqual(np.median(rgb[mask]), 200)
+                    self.assertGreaterEqual(np.median(mr[:, :, 1][mask]), 64)
+                    self.assertLessEqual(np.median(mr[:, :, 1][mask]), 102)
                     self.assertGreater(np.median(mr[:, :, 2][mask]), 240)
-                    self.assertLessEqual(doc['materials'][0]['normalTexture'].get('scale', 1), .2)
+                    self.assertGreaterEqual(doc['materials'][0]['normalTexture'].get('scale', 1), .3)
                 elif name == 'lamp':
                     self.assertGreater(np.median(rgb[:, :, 2]), 110, 'champagne brass, not yellow')
-                    self.assertGreater(np.median(mr[:, :, 1]), 125)
+                    self.assertGreaterEqual(np.median(mr[:, :, 1]), 64)
+                    self.assertLessEqual(np.median(mr[:, :, 1]), 102)
                     self.assertGreater(np.median(mr[:, :, 2]), 240)
-                    self.assertLessEqual(doc['materials'][0]['normalTexture'].get('scale', 1), .05)
+                    self.assertGreaterEqual(doc['materials'][0]['normalTexture'].get('scale', 1), .3)
                 else:
                     mask = lum > 70
                     if name in ('bedside-table', 'crate'):
@@ -168,7 +179,77 @@ class ShowcaseMaterials(unittest.TestCase):
                     elif name == 'crate':
                         self.assertLess(np.median(rgb[mask]), np.median(before[mask]) - 3)
                         iron = (before.max(2) - before.min(2) < 15) & (lum < 90)
-                        self.assertLess(np.mean(np.abs(rgb[iron] - before[iron])), 4)
+                        self.assertGreaterEqual(np.median(mr[:, :, 2][iron]), 250)
+                        self.assertGreaterEqual(np.median(rgb[iron]), 85)
+                        self.assertLessEqual(np.median(rgb[iron]), 125)
+
+    def test_brushed_metals_and_preserved_dielectrics(self):
+        for file in FILES:
+            name = Path(file).name.split('.')[0]
+            if name not in ('espresso', 'lamp', 'crate'):
+                # The follow-up must not alter paint, fabric, wood or the coated chair base.
+                self.assertEqual(data(PUBLIC + file, 'aaf08a0'), data(PUBLIC + file, OPTIONS.asset_ref))
+                continue
+            with self.subTest(file=file):
+                doc, rgb, mr = maps(file, OPTIONS.asset_ref)
+                _, original, _ = maps(file, OPTIONS.baseline_ref)
+                _, previous, previous_mr = maps(file, 'aaf08a0')
+                lum = original.mean(2)
+                metal = ((lum > 110) if name == 'espresso' else
+                         ((original.max(2) - original.min(2) < 15) & (lum < 90))
+                         if name == 'crate' else np.ones(lum.shape, bool))
+                if name == 'espresso':
+                    metal &= ~espresso_glass(lum.shape)
+                    glass = espresso_glass(lum.shape)
+                    self.assertEqual(np.max(mr[:, :, 2][glass]), 0, 'dial cover stays dielectric')
+                    self.assertLess(np.mean(np.abs(rgb[glass] - original[glass])), 4, 'retain printed dial')
+                    # Body/front plate samples outside the dial and rear reservoir islands.
+                    yy, xx = np.mgrid[:lum.shape[0], :lum.shape[1]] * 1024 / lum.shape[0]
+                    body = ((xx > 285) & (xx < 320) & (yy > 140) & (yy < 185)) | (
+                        (xx > 155) & (xx < 230) & (yy > 260) & (yy < 310)) | (
+                        (xx > 760) & (xx < 790) & (yy > 420) & (yy < 470))
+                    self.assertGreater(np.mean(mr[:, :, 2][metal] >= 250), .8, 'retain steel coverage')
+                    metal &= body
+                    reservoir = (xx > 640) & (xx < 680) & (yy > 670) & (yy < 700)
+                    self.assertEqual(np.max(mr[:, :, 2][reservoir]), 0, 'reservoir stays dielectric')
+                self.assertTrue(np.all(np.isin(mr[:, :, 2], [0, 255])), 'binary material separation')
+                self.assertTrue(np.all(mr[:, :, 2][metal] >= 250), 'pure metal, not mixed grey')
+                rough = mr[:, :, 1][metal]
+                self.assertGreaterEqual(np.median(rough), 64)
+                self.assertLessEqual(np.median(rough), 102)
+                self.assertGreater(np.percentile(rough, 90) - np.percentile(rough, 10), 10,
+                                   'roughness must retain brushed variation')
+                if name in ('espresso', 'lamp'):
+                    median = np.median(rgb[metal], axis=0)
+                    if name == 'espresso':
+                        self.assertTrue(np.all((median >= 194) & (median <= 200)))
+                        self.assertLessEqual(abs(median[0] - median[2]), 4, 'neutral/cool steel')
+                    else:
+                        self.assertTrue(np.all(median >= [187, 165, 118]), 'champagne brass')
+                        self.assertTrue(np.all(median <= [202, 183, 141]), 'not chalky or yellow')
+                    self.assertGreater(np.std(highpass(rgb)[metal]), .5, 'subtle colour streaks')
+                    _, binary, _ = load(file, OPTIONS.asset_ref)
+                    normal_info = doc['materials'][0]['normalTexture']
+                    normal = np.asarray(texture(doc, binary, normal_info['index']), float)
+                    deviation = np.linalg.norm(normal[:, :, :2] - 127.5, axis=2)
+                    self.assertGreater(np.median(deviation[metal]) * normal_info.get('scale', 1), 1,
+                                       'visible brushed micro-normal, not a flat normal map')
+                    self.assertLess(np.percentile(deviation[metal], 90) * normal_info.get('scale', 1), 22,
+                                    'avoid hammered relief')
+                dielectric = ((lum < 40) if name == 'espresso' else
+                              (original[:, :, 0] - original[:, :, 2] > 55)
+                              if name == 'crate' else np.zeros(lum.shape, bool))
+                if dielectric.any():
+                    self.assertLessEqual(np.max(mr[:, :, 2][dielectric]), 10)
+                    self.assertLess(np.mean(np.abs(rgb[dielectric] - previous[dielectric])), 3,
+                                    'preserve black grips/knobs and wood')
+                    self.assertLess(np.mean(np.abs(mr[:, :, 1][dielectric] - previous_mr[:, :, 1][dielectric])), 1)
+                if name == 'crate':
+                    # Existing wood normal texels remain byte-for-byte identical.
+                    old, ob, _ = load(file, 'aaf08a0')
+                    new, nb, _ = load(file, OPTIONS.asset_ref)
+                    self.assertEqual(texture(old, ob, old['materials'][0]['normalTexture']['index']).tobytes(),
+                                     texture(new, nb, new['materials'][0]['normalTexture']['index']).tobytes())
 
     def test_catalog_and_posters(self):
         catalog = json.loads(data('apps/web/lib/studio/catalog.json', OPTIONS.asset_ref))
