@@ -34,7 +34,25 @@ test.describe(`PrestaShop module on a real shop (${VERSION})`, () => {
 
     // Saved: the button states the count and the price before anything is charged.
     const generate = page.locator('#easyrender-generate');
-    await expect(generate).toHaveText(/Generate 3D for \d+ products \(\d+ credits\)/);
+    try {
+      await expect(generate).toHaveText(/Generate 3D for \d+ products \(\d+ credits\)/);
+    } catch (error) {
+      const probe = await page.evaluate(async () => {
+        const cfg = (window as unknown as { easyrenderAdmin?: { ajaxUrl: string } })
+          .easyrenderAdmin;
+        if (!cfg) return 'no easyrenderAdmin config on the page';
+        const url = `${cfg.ajaxUrl}${cfg.ajaxUrl.includes('?') ? '&' : '?'}ajax=1`;
+        const response = await fetch(url, {
+          method: 'POST',
+          body: new URLSearchParams({ step: 'prepare' }),
+          credentials: 'same-origin',
+        });
+        return `${url}\n${response.status} ${(await response.text()).slice(0, 1500)}`;
+      });
+      const detail = await page.locator('#easyrender-detail').textContent();
+      console.log(`Generate button never left "checking".\nDETAIL: ${detail}\nPROBE: ${probe}`);
+      throw error;
+    }
     const label = (await generate.textContent()) ?? '';
     const [, count, credits] = label.match(/for (\d+) products \((\d+) credits\)/) ?? [];
     const products = Number(count);
