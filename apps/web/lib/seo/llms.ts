@@ -69,6 +69,8 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
     title: 'Precios',
     note: 'Créditos de pago por uso y planes mensuales, tal como se cobran hoy.',
   },
+  [ROUTES.api.paths.en]: { title: en.ApiLanding.meta.title, note: en.ApiLanding.meta.description },
+  [ROUTES.api.paths.es]: { title: es.ApiLanding.meta.title, note: es.ApiLanding.meta.description },
   [ROUTES.mcp.paths.en]: { title: en.McpLanding.meta.title, note: en.McpLanding.meta.description },
   [ROUTES.mcp.paths.es]: { title: es.McpLanding.meta.title, note: es.McpLanding.meta.description },
   [ROUTES.models.paths.en]: {
