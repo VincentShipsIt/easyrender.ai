@@ -11,6 +11,29 @@
 
 export type BlogImage = { width: number; height: number };
 
+/** Match BlogPostView / CompareView: page gutters, TOC and its gap, then the media grid gap. */
+export function blogImageLayout(nativeWidth: number, isGrid: boolean) {
+  // Large artwork keeps filling the column. Smaller sources get two source pixels per CSS pixel.
+  const maxWidth = nativeWidth < 1440 ? nativeWidth / 2 : undefined;
+  const slot = (width: string) => (maxWidth ? `min(${maxWidth}px, ${width})` : width);
+  const sizes = isGrid
+    ? [
+        `(min-width: 1280px) ${slot('376px')}`,
+        `(min-width: 1152px) ${slot('392px')}`,
+        `(min-width: 1024px) ${slot('calc(50vw - 184px)')}`,
+        `(min-width: 640px) ${slot('calc(50vw - 32px)')}`,
+        slot('calc(50vw - 22px)'),
+      ]
+    : [
+        `(min-width: 1280px) ${slot('768px')}`,
+        `(min-width: 1152px) ${slot('800px')}`,
+        `(min-width: 1024px) ${slot('calc(100vw - 352px)')}`,
+        `(min-width: 640px) ${slot('calc(100vw - 48px)')}`,
+        slot('calc(100vw - 32px)'),
+      ];
+  return { maxWidth, sizes: sizes.join(', ') };
+}
+
 export const BLOG_IMAGES: Record<string, BlogImage> = {
   '/showcase/armchair.jpg': { width: 720, height: 720 },
   '/showcase/armchair-angles.jpg': { width: 1200, height: 1200 },

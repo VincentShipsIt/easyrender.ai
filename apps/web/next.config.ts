@@ -10,6 +10,7 @@ const STATIC_MEDIA_PATHS = ['/studio/:path*', '/showcase/:path*'];
 
 const nextConfig: NextConfig = {
   env: { NEXT_PUBLIC_GA_MEASUREMENT_ID: gaMeasurementId() },
+  images: { qualities: [75, 85] },
   transpilePackages: [
     '@easyrender/core',
     '@easyrender/db',
