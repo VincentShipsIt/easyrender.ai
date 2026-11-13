@@ -31,6 +31,7 @@ function shortcode_atts( $d, $a ) { return array_merge( $d, (array) $a ); }
 function add_action() {}
 function __( $s ) { return $s; }
 function add_shortcode() {}
+function add_filter() {}
 
 require dirname( __DIR__ ) . '/includes/class-easyrender-client.php';
 require dirname( __DIR__ ) . '/includes/class-easyrender-catalog.php';
