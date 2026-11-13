@@ -37,12 +37,11 @@ export function AgentDemo({ item }: { item: ShowcaseItem }) {
 
   return (
     <div className="relative mx-auto w-full min-w-0 max-w-md lg:max-w-none">
-      <div className="pointer-events-none absolute -inset-6 rounded-full bg-gradient-to-tr from-zinc-300/60 via-zinc-100/40 to-transparent blur-3xl dark:from-zinc-700/50 dark:via-zinc-800/30" />
       <div className="relative overflow-hidden rounded-2xl border bg-card text-left shadow-xl shadow-black/5">
         <div className="flex items-center gap-2 border-b bg-muted/40 px-4 py-2.5">
-          <span className="size-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-          <span className="size-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-          <span className="size-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+          <span className="size-2.5 rounded-full bg-muted-foreground/30" />
+          <span className="size-2.5 rounded-full bg-muted-foreground/30" />
+          <span className="size-2.5 rounded-full bg-muted-foreground/30" />
           <span className="ml-2 text-xs text-muted-foreground">{t('window')}</span>
         </div>
         <div className="space-y-3 p-4 text-sm">
@@ -69,7 +68,7 @@ export function AgentDemo({ item }: { item: ShowcaseItem }) {
                   </span>
                   <span className="ml-auto">
                     {done ? (
-                      <Check className="size-3.5 text-emerald-600" />
+                      <Check className="size-3.5 text-success" />
                     ) : (
                       <Loader2 className="size-3.5 animate-spin text-muted-foreground" />
                     )}

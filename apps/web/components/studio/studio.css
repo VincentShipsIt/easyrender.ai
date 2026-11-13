@@ -7,29 +7,9 @@
    stylesheets loaded after navigation.
    ───────────────────────────────────────────── */
 
-/* The page chrome (header, footer, shadcn components) follows the studio palette while a
-   studio page is mounted, whatever the system colour scheme. */
+/* Studio pages retain their radius and typography; colours come from globals.css. */
 body:has(.er-studio) {
   --radius: 0.5rem;
-  --background: #0a0a0b;
-  --foreground: #ecebe7;
-  --card: #131315;
-  --card-foreground: #ecebe7;
-  --popover: #1c1c1f;
-  --popover-foreground: #ecebe7;
-  --primary: #ecebe7;
-  --primary-foreground: #0a0a0b;
-  --secondary: #1c1c1f;
-  --secondary-foreground: #ecebe7;
-  --muted: #1c1c1f;
-  --muted-foreground: #909095;
-  --accent: #1c1c1f;
-  --accent-foreground: #ecebe7;
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: rgb(236 235 231 / 10%);
-  --input: rgb(236 235 231 / 16%);
-  --ring: #909095;
-  color-scheme: dark;
 
   /* The header and footer pick up the studio typeface on these pages. */
   & > :where(header, footer) {
@@ -38,17 +18,17 @@ body:has(.er-studio) {
 }
 
 .er-studio {
-  --carbon: #0a0a0b;
-  --graphite: #131315;
-  --slate: #1c1c1f;
+  --carbon: var(--background);
+  --graphite: var(--card);
+  --slate: var(--muted);
   --steel: #26262a;
-  --line: rgb(236 235 231 / 10%);
+  --line: var(--border);
   --line-strong: rgb(236 235 231 / 22%);
-  --bone: #ecebe7;
-  --ash: #909095;
+  --bone: var(--foreground);
+  --ash: var(--muted-foreground);
   --smoke: #606065;
   --paper: #f3f2ee;
-  --ink: #0a0a0b;
+  --ink: var(--primary-foreground);
   --ink-soft: #55555a;
   --axis-x: #f2555a;
   --axis-y: #8bd450;
@@ -292,7 +272,7 @@ body:has(.er-studio) {
     max-width: 26em;
     font-size: clamp(16px, 1.25vw, 19px);
     line-height: 1.5;
-    color: var(--ink-soft);
+    color: var(--ash);
     text-wrap: pretty;
   }
   .hero__cta {
