@@ -53,6 +53,12 @@ async function timeTwice(model: string, input: Record<string, unknown>): Promise
 
 // fal retires and renames apps, so try each sketch-to-image candidate in order and skip only the
 // ones fal says do not exist. Any other error (auth, bad input) stops the run with its body.
+const MESH_MODELS: { id: string; imageKey: string }[] = [
+  { id: 'fal-ai/trellis', imageKey: 'image_url' },
+  { id: 'fal-ai/hunyuan3d/v2/turbo', imageKey: 'input_image_url' },
+  { id: 'fal-ai/triposr', imageKey: 'image_url' },
+];
+
 const SKETCH_MODELS: { id: string; steps: number }[] = [
   { id: 'fal-ai/lcm-sd15-i2i', steps: 4 },
   { id: 'fal-ai/fast-lcm-diffusion/image-to-image', steps: 4 },
@@ -122,13 +128,21 @@ async function main() {
     );
     links.push(`- ${name} render: ${imageUrl}`);
 
-    for (const model of ['fal-ai/trellis', 'fal-ai/triposr']) {
-      const mesh = await timeTwice(model, { image_url: imageUrl });
-      const meshUrl = firstUrl(mesh.output, ['model_mesh', 'model_mesh_url', 'mesh']);
-      rows.push(
-        `| ${name} | image to 3D (${model.replace('fal-ai/', '')}) | ${(mesh.coldMs / 1000).toFixed(1)} | ${(mesh.warmMs / 1000).toFixed(1)} |`,
-      );
-      links.push(`- ${name} ${model}: ${meshUrl ?? 'no mesh url in output'}`);
+    // A mesh model that fails (retired app, different input name) is a result, not a reason to
+    // lose the rest of the run: record it in the table and move on.
+    for (const { id: model, imageKey } of MESH_MODELS) {
+      const label = model.replace('fal-ai/', '');
+      try {
+        const mesh = await timeTwice(model, { [imageKey]: imageUrl });
+        const meshUrl = firstUrl(mesh.output, ['model_mesh', 'model_mesh_url', 'mesh']);
+        rows.push(
+          `| ${name} | image to 3D (${label}) | ${(mesh.coldMs / 1000).toFixed(1)} | ${(mesh.warmMs / 1000).toFixed(1)} |`,
+        );
+        links.push(`- ${name} ${model}: ${meshUrl ?? 'no mesh url in output'}`);
+      } catch (error) {
+        const reason = error instanceof Error ? error.message.slice(0, 160) : 'unknown error';
+        rows.push(`| ${name} | image to 3D (${label}) | failed | ${reason.replaceAll('|', '/')} |`);
+      }
     }
   }
 
