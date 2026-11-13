@@ -23,7 +23,7 @@ const COLUMNS = [
   {
     title: 'developers',
     links: [
-      { hash: '#connect', key: 'mcp' },
+      { route: 'mcp', key: 'mcp' },
       { href: '/connectors', key: 'apiKeys' },
       { route: 'models', key: 'models' },
       { route: 'evals', key: 'evals' },
@@ -46,6 +46,7 @@ type FooterLink = (typeof COLUMNS)[number]['links'][number];
 function hrefFor(link: FooterLink, locale: Locale, home: string): string | null {
   if ('hash' in link) return `${home}${link.hash}`;
   if ('href' in link) return link.href;
+  if (link.route === 'mcp' && !isPublished('mcp', locale)) return `${home}#connect`;
   return isPublished(link.route, locale) ? ROUTES[link.route].paths[locale] : null;
 }
 

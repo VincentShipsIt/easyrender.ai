@@ -64,6 +64,19 @@ export const ROUTES = {
     priority: 0.8,
     changeFrequency: 'monthly',
   },
+  mcp: {
+    paths: {
+      en: '/mcp',
+      es: '/es/mcp',
+      de: '/de/mcp',
+      fr: '/fr/mcp',
+      it: '/it/mcp',
+      pt: '/pt/mcp',
+    },
+    published: ['en', 'es'],
+    priority: 0.8,
+    changeFrequency: 'monthly',
+  },
   // What runs under the product, and how it is checked. Open in English and Spanish like the
   // pricing and guides; the other four wait for reviewed copy. /evals stays out of the sitemap
   // until a run is published (see lib/evals.ts), so a page with nothing to measure is never

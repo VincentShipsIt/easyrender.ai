@@ -135,6 +135,31 @@ export async function blogIndexGraph(locale: Locale) {
   ];
 }
 
+/** MCP landing: the visible FAQ and schema share their localized content. */
+export async function mcpMetadata(locale: Locale): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'McpLanding.meta' });
+  return pageMetadata({
+    locale,
+    path: ROUTES.mcp.paths[locale],
+    title: t('title'),
+    description: t('description'),
+    alternates: livePaths('mcp'),
+  });
+}
+
+export async function mcpGraph(locale: Locale) {
+  const { mcpFaqItems } = await import('@/components/mcp/mcp-view');
+  const [t, items] = await Promise.all([
+    getTranslations({ locale, namespace: 'McpLanding.meta' }),
+    mcpFaqItems(locale),
+  ]);
+  return [
+    organization(),
+    webPage(locale, ROUTES.mcp.paths[locale], t('title'), t('description')),
+    faqPage(items, `${absoluteUrl(ROUTES.mcp.paths[locale])}#faq`),
+  ];
+}
+
 /** The models page. Same head and structured data in every language it is open in. */
 export async function modelsMetadata(locale: Locale): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'Models' });
