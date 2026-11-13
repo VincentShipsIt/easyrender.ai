@@ -1,32 +1,21 @@
 import type { SVGProps } from 'react';
 import { cn } from '@/lib/utils';
 
-// The easyrender mark: a sphere under one light, coming from the upper right.
-// On a dark ground the solid part is the lit side; on a light ground it is the shadow, so the
-// same shape is drawn turned half a turn. Marketing pages (`.er-studio`) are dark whatever the
-// system theme says.
-const SPHERE = 'M24 7A17 17 0 0 1 24 41A6.5 17 0 0 1 24 7Z';
-
-function Sphere({ turn, className }: { turn: number; className: string }) {
-  return (
-    <g transform={`rotate(${turn} 24 24)`} className={className}>
-      <circle cx="24" cy="24" r="17" stroke="currentColor" strokeWidth="2" />
-      <path d={SPHERE} fill="currentColor" />
-    </g>
-  );
-}
-
+// The easyrender mark: two offset frames, one in front of the other, and a datum dot at the top
+// right. A flat photo turning into something with depth, anchored at one point. It is a single
+// colour, so it follows the text colour on any ground and needs no light or dark variant. The same
+// shape ships as `public/brand/mark.svg`; keep the two in step.
 export function BrandMark({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 48 48"
-      fill="none"
+      viewBox="0 0 64 64"
+      fill="currentColor"
       aria-hidden="true"
       className={cn('size-5 shrink-0', className)}
       {...props}
     >
-      <Sphere turn={142} className="dark:hidden [body:has(.er-studio)_&]:hidden" />
-      <Sphere turn={-38} className="hidden dark:block [body:has(.er-studio)_&]:block" />
+      <path fillRule="evenodd" d="M4 4H44V20H60V60H20V44H4ZM9 9V39H20V20H39V9ZM25 25V55H55V25Z" />
+      <circle cx="55" cy="9" r="5" />
     </svg>
   );
 }
