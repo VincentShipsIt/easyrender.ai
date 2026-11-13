@@ -298,7 +298,9 @@ async function runOne(photo: string, candidate: Candidate): Promise<Row> {
           row.inputSent.push(name);
         } else row.inputDropped.push(name);
       }
-      started = await client.start(`/models/${candidate.model}/predictions`, { input });
+      // Community models have no "official" endpoint: they are started by version id.
+      if (!info.version) throw new Error('the model has no latest version');
+      started = await client.start('/predictions', { version: info.version, input });
     }
     const done = await settle(started, 20 * 60_000);
     row.seconds = done.metrics?.predict_time;
