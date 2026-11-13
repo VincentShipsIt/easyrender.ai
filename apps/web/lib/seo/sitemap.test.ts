@@ -30,12 +30,26 @@ describe('the per-language sitemaps', () => {
       '/compare/meshy',
       '/compare/photogrammetry-software',
       '/compare/tripo',
+      '/privacy',
+      '/terms',
       '/cookies',
     ]);
-    expect(paths('es')).toEqual(['/es', '/es/precios', '/es/modelos', '/es/cookies']);
+    expect(paths('es')).toEqual([
+      '/es',
+      '/es/precios',
+      '/es/modelos',
+      '/es/privacidad',
+      '/es/terminos',
+      '/es/cookies',
+    ]);
     // Homes and cookie information are open; guides and pricing remain unpublished.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
+      expect(paths(locale), locale).toEqual([
+        `/${locale}`,
+        ROUTES.privacy.paths[locale],
+        ROUTES.terms.paths[locale],
+        ROUTES.cookies.paths[locale],
+      ]);
     }
   });
 
@@ -52,11 +66,18 @@ describe('the per-language sitemaps', () => {
       '/compare/meshy',
       '/compare/photogrammetry-software',
       '/compare/tripo',
+      '/privacy',
+      '/terms',
       '/cookies',
       '/learn/how-to-make-a-3d-model-from-photos',
     ]);
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
+      expect(paths(locale), locale).toEqual([
+        `/${locale}`,
+        ROUTES.privacy.paths[locale],
+        ROUTES.terms.paths[locale],
+        ROUTES.cookies.paths[locale],
+      ]);
     }
   });
 

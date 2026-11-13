@@ -35,6 +35,8 @@ const COLUMNS = [
       { href: '/dashboard', key: 'dashboard' },
       { href: '/sign-up', key: 'signUp' },
       { href: '/sign-in', key: 'signIn' },
+      { route: 'privacy', key: 'privacy' },
+      { route: 'terms', key: 'terms' },
       { route: 'cookies', key: 'cookies' },
     ],
   },

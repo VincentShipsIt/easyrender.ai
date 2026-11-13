@@ -4,6 +4,7 @@ import { BlogIndexView } from '@/components/blog/blog-index-view';
 import { BlogPostView } from '@/components/blog/blog-post-view';
 import { CookiesPage } from '@/components/cookies-page';
 import { EvalsView } from '@/components/evals/evals-view';
+import { LegalPage } from '@/components/legal-page';
 import { ModelsView } from '@/components/models/models-view';
 import { PricingView } from '@/components/pricing/pricing-view';
 import { isRoutableLocale, type Locale } from '@/i18n/config';
@@ -14,6 +15,7 @@ import {
   blogIndexMetadata,
   evalsGraph,
   evalsMetadata,
+  legalMetadata,
   modelsGraph,
   modelsMetadata,
   postGraph,
@@ -36,12 +38,19 @@ type Match =
   | { kind: 'pricing'; locale: Locale }
   | { kind: 'models'; locale: Locale }
   | { kind: 'evals'; locale: Locale }
+  | { kind: 'privacy' | 'terms'; locale: Locale }
   | { kind: 'none' };
 
 function resolve(lang: string, segments: string[]): Match {
   if (!isRoutableLocale(lang) || lang === 'en') return { kind: 'none' };
   const locale: Locale = lang;
   const path = `/${[locale, ...segments].join('/')}`;
+
+  for (const kind of ['privacy', 'terms'] as const) {
+    if (isPublished(kind, locale) && path === ROUTES[kind].paths[locale]) {
+      return { kind, locale };
+    }
+  }
 
   if (isPublished('pricing', locale) && path === ROUTES.pricing.paths[locale]) {
     return { kind: 'pricing', locale };
@@ -71,6 +80,8 @@ export async function generateMetadata({
 }: PageProps<'/[lang]/[...path]'>): Promise<Metadata> {
   const { lang, path } = await params;
   const match = resolve(lang, path);
+  if (match.kind === 'privacy' || match.kind === 'terms')
+    return legalMetadata(match.kind, match.locale);
   if (match.kind === 'post') return postMetadata(match.post);
   if (match.kind === 'blogIndex') return blogIndexMetadata(match.locale);
   if (match.kind === 'pricing') return pricingMetadata(match.locale);
@@ -84,6 +95,10 @@ export default async function LocalePage({ params }: PageProps<'/[lang]/[...path
   const match = resolve(lang, path);
   if (isRoutableLocale(lang) && `/${lang}/${path.join('/')}` === ROUTES.cookies.paths[lang])
     return <CookiesPage />;
+
+  if (match.kind === 'privacy' || match.kind === 'terms') {
+    return <LegalPage kind={match.kind} locale={match.locale} />;
+  }
 
   if (match.kind === 'blogIndex') {
     return (

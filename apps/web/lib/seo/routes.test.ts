@@ -67,10 +67,10 @@ describe('the route registry', () => {
       it: '/it',
       pt: '/pt',
     });
-    // Home and cookie information are live; other pages still wait for localized copy.
+    // Homes and legal information are live; other pages still wait for localized copy.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       for (const key of ROUTE_KEYS) {
-        if (key === 'home' || key === 'cookies') continue;
+        if (['home', 'cookies', 'privacy', 'terms'].includes(key)) continue;
         expect(isPublished(key, locale), `${key}/${locale}`).toBe(false);
       }
     }

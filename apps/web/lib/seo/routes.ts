@@ -33,7 +33,7 @@ export const ROUTES = {
   home: {
     paths: { en: '/', es: '/es', de: '/de', fr: '/fr', it: '/it', pt: '/pt' },
     // de, fr, it and pt open with the home only (Jorge, 10-nov-2026). Their guides, pricing,
-    // comparisons, services and legal pages wait for reviewed copy.
+    // comparisons and services wait for reviewed copy. Legal pages have an English source.
     published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 1,
     changeFrequency: 'weekly',
@@ -134,7 +134,7 @@ export const ROUTES = {
       it: '/it/privacy',
       pt: '/pt/privacidade',
     },
-    published: [],
+    published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 0.3,
     changeFrequency: 'yearly',
   },
@@ -147,7 +147,7 @@ export const ROUTES = {
       it: '/it/termini',
       pt: '/pt/termos',
     },
-    published: [],
+    published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 0.3,
     changeFrequency: 'yearly',
   },
