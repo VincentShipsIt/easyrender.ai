@@ -11,11 +11,17 @@ SQL="$C exec -T db mariadb -ups -pps prestashop"
 $C up -d db api prestashop
 
 echo "waiting for PrestaShop ${PS_TAG} to install itself (up to 12 minutes)"
+front_has_prestashop() {
+  # Not "curl | grep -q": grep exits early, curl gets SIGPIPE, and pipefail turns that into a failure.
+  local body
+  body="$(curl -fsSL "http://localhost:8080/index.php" 2>/dev/null || true)"
+  grep -qi "prestashop" <<<"$body"
+}
 is_ready() {
   # Installed: settings written, installer folder erased, and the front office answers with a shop page.
   $C exec -T prestashop test -f /var/www/html/app/config/parameters.php 2>/dev/null \
     && ! $C exec -T prestashop test -d /var/www/html/install 2>/dev/null \
-    && curl -fsSL "http://localhost:8080/index.php" 2>/dev/null | grep -qi "prestashop"
+    && front_has_prestashop
 }
 for i in $(seq 1 144); do
   if is_ready; then break; fi
