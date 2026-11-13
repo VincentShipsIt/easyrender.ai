@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { isFaqHeading } from './faq';
-import { parseImage } from './images';
+import { blogImageLayout, parseImage } from './images';
 import { plainText } from './posts';
 
 // Pictures, models, diagrams and tables carry `data-wide`: the page lets them run wider than the
@@ -256,15 +256,18 @@ function Figure({
   isLive,
   locale,
   isHero = false,
+  isGrid = false,
 }: {
   media: Media;
   hint: string;
   isLive: LinkGate;
   locale: string;
   isHero?: boolean;
+  isGrid?: boolean;
 }) {
+  const imageLayout = blogImageLayout(media.width, isGrid);
   return (
-    <figure>
+    <figure className="min-w-0">
       {media.type === 'diagram' ? (
         // Drawn on the server from the site's tokens: the words are in the HTML, it needs no
         // JavaScript, and it follows the light or dark scheme. The alt text names the picture.
@@ -293,8 +296,10 @@ function Figure({
           width={media.width}
           height={media.height}
           {...(isHero ? { preload: true } : {})}
-          sizes="(min-width: 768px) 720px, 100vw"
-          className="h-auto w-full rounded-xl border bg-muted"
+          sizes={imageLayout.sizes}
+          quality={85}
+          style={{ maxWidth: imageLayout.maxWidth }}
+          className="mx-auto h-auto w-full rounded-xl border bg-muted"
         />
       )}
       {media.caption && (
@@ -354,6 +359,7 @@ function renderBlock(
               hint={modelHint}
               isLive={isLive}
               locale={locale}
+              isGrid
             />
           ))}
         </div>
