@@ -127,7 +127,24 @@ async function settle(first: Prediction, limitMs: number): Promise<Prediction> {
   let prediction = first;
   const deadline = Date.now() + limitMs;
   while (!isSettled(prediction.status)) {
-    if (Date.now() > deadline) throw new Error(`prediction ${prediction.id} timed out`);
+    if (Date.now() > deadline) {
+      // Stop the prediction so it cannot keep billing, and say what state it was stuck in: a
+      // model that never left "starting" is a cold boot or a queue, one stuck in "processing"
+      // is a hung or crashed run, and the log tail shows which.
+      const lastStatus = prediction.status;
+      const logs = String((prediction as { logs?: unknown }).logs ?? '')
+        .trim()
+        .split('\n')
+        .slice(-3)
+        .join(' | ');
+      const stopped = await client.cancel(prediction.id).then(
+        (p) => p.status,
+        () => 'cancel failed',
+      );
+      throw new Error(
+        `prediction ${prediction.id} timed out after ${Math.round(limitMs / 60_000)} min in "${lastStatus}" (cancel: ${stopped})${logs ? `; log tail: ${logs}` : ''}`,
+      );
+    }
     await sleep(4000);
     prediction = await client.get(prediction.id);
   }
@@ -302,7 +319,7 @@ async function runOne(photo: string, candidate: Candidate): Promise<Row> {
       if (!info.version) throw new Error('the model has no latest version');
       started = await client.start('/predictions', { version: info.version, input });
     }
-    const done = await settle(started, 20 * 60_000);
+    const done = await settle(started, 10 * 60_000);
     row.seconds = done.metrics?.predict_time;
     row.costUsd = candidate.model
       ? (row.seconds ?? 0) * candidate.usdPerSecond
