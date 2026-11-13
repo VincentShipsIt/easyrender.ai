@@ -169,3 +169,67 @@ it.each(['localhost', 'preview.vercel.app', 'easyrender.ai.example.com'])(
     expect(page.commands()).toEqual([]);
   },
 );
+
+it('preserves campaign attribution explicitly without restoring private URL parameters', async () => {
+  const page = await googleBrowser();
+  page.api.initializeGa('G-TEST000000');
+  await page.api.setBrowserTools(false, true);
+  expect(page.commands()).toContainEqual([
+    'set',
+    expect.objectContaining({ campaign_source: 'test' }),
+  ]);
+  expect(JSON.stringify(page.commands())).not.toMatch(/email=|private|#secret/);
+});
+it('does not report a historical render as a new activation, including after reload', async () => {
+  for (let reload = 0; reload < 2; reload++) {
+    const page = await googleBrowser();
+    page.api.initializeGa('G-TEST000000');
+    await page.api.setBrowserTools(false, true);
+    page.api.observeRender({ id: 'historical', status: 'ready', hasSheet: true });
+    expect(
+      page
+        .commands()
+        .filter(([c, e]) => c === 'event' && ['preview_ready', 'render_ready'].includes(String(e))),
+    ).toEqual([]);
+  }
+});
+it('reports each observed render transition once instead of each poll', async () => {
+  const page = await googleBrowser();
+  page.api.initializeGa('G-TEST000000');
+  await page.api.setBrowserTools(false, true);
+  page.api.observeRender({ id: 'new', status: 'drafting', hasSheet: false });
+  page.api.observeRender({ id: 'new', status: 'preview_ready', hasSheet: true });
+  page.api.observeRender({ id: 'new', status: 'rendering', hasSheet: true });
+  page.api.observeRender({ id: 'new', status: 'ready', hasSheet: true });
+  page.api.observeRender({ id: 'new', status: 'ready', hasSheet: true });
+  expect(page.commands().filter(([c, e]) => c === 'event' && e === 'preview_ready')).toHaveLength(
+    1,
+  );
+  expect(page.commands().filter(([c, e]) => c === 'event' && e === 'render_ready')).toHaveLength(1);
+});
+it('does not trust an OAuth signup query parameter as a completed registration', async () => {
+  const page = await googleBrowser();
+  page.window.location.search = '?__signup=google';
+  page.api.initializeGa('G-TEST000000');
+  await page.api.setBrowserTools(false, true);
+  expect(page.commands().filter(([c, e]) => c === 'event' && e === 'sign_up')).toEqual([]);
+});
+it('keeps campaign context across documents only while analytics storage is allowed and clears it on withdrawal', async () => {
+  const saved = new Map<string, string>();
+  const storage = {
+    getItem: (key: string) => saved.get(key) ?? null,
+    setItem: (key: string, value: string) => saved.set(key, value),
+    removeItem: (key: string) => saved.delete(key),
+  };
+  vi.stubGlobal('sessionStorage', storage);
+  const first = await googleBrowser();
+  first.api.initializeGa('G-TEST000000');
+  await first.api.setBrowserTools(false, true);
+  const second = await googleBrowser();
+  second.window.location.search = '';
+  second.api.initializeGa('G-TEST000000');
+  await second.api.setBrowserTools(false, true);
+  expect(second.api.attribution()?.utm_source).toBe('test');
+  await second.api.setBrowserTools(false, false, true);
+  expect(saved.size).toBe(0);
+});

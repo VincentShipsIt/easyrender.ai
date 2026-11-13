@@ -200,3 +200,19 @@ it('keeps a returning customer in the currency Stripe already locked them to', a
   await createCheckout('user', { plan: 'payg', credits: 500 }, { country: 'US' });
   expect(state.session.mock.calls[1][0]).toMatchObject({ currency: 'eur' });
 });
+it('returns the server-selected checkout amount and currency for analytics', async () => {
+  const { createCheckoutDetails } = await import('./billing');
+  vi.stubEnv('EUR_CHECKOUT_ENABLED', '1');
+  expect(
+    await createCheckoutDetails('user', { plan: 'payg', credits: 500 }, { country: 'ES' }),
+  ).toMatchObject({
+    url: 'https://checkout.stripe.com/local',
+    sessionId: 'cs_local',
+    analytics: {
+      currency: 'EUR',
+      value: 10,
+      pricing_variant: 'test',
+      items: [{ item_id: 'payg', quantity: 500 }],
+    },
+  });
+});
