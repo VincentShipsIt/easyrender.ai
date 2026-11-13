@@ -29,10 +29,11 @@ concurrency:
   group: plugin-e2e-${{ github.ref }}
   cancel-in-progress: true
 
+# Pinned: ubuntu-latest is 26.04, which Playwright does not support yet.
 jobs:
   woocommerce:
     name: WooCommerce (${{ matrix.theme }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -79,7 +80,7 @@ jobs:
 
   prestashop:
     name: PrestaShop ${{ matrix.version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     strategy:
       fail-fast: false
