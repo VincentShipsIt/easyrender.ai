@@ -28,7 +28,7 @@ services:
           - api.test
 
   wordpress:
-    image: wordpress:6-php8.3-apache
+    image: wordpress:php8.3-apache
     depends_on:
       db:
         condition: service_healthy

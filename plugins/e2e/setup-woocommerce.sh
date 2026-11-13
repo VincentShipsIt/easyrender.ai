@@ -16,12 +16,6 @@ for _ in $(seq 1 90); do
 done
 $C exec -T wordpress test -f /var/www/html/wp-config.php
 
-echo "waiting for the database"
-for _ in $(seq 1 60); do
-  $WP db check >/dev/null 2>&1 && break
-  sleep 2
-done
-
 $WP core install --url=http://localhost:8080 --title="E2E shop" --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email
 $WP option update permalink_structure ''
 $WP plugin install woocommerce --activate

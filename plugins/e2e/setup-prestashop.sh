@@ -10,16 +10,19 @@ SQL="$C exec -T db mariadb -ups -pps prestashop"
 
 $C up -d db api prestashop
 
-echo "waiting for PrestaShop ${PS_TAG} to install itself (up to 20 minutes)"
+echo "waiting for PrestaShop ${PS_TAG} to install itself (up to 12 minutes)"
 is_ready() {
   # Installed: settings written, installer folder erased, and the front office answers with a shop page.
   $C exec -T prestashop test -f /var/www/html/app/config/parameters.php 2>/dev/null \
     && ! $C exec -T prestashop test -d /var/www/html/install 2>/dev/null \
-    && curl -fsS "http://localhost:8080/index.php" 2>/dev/null | grep -qi "prestashop"
+    && curl -fsSL "http://localhost:8080/index.php" 2>/dev/null | grep -qi "prestashop"
 }
-for i in $(seq 1 240); do
+for i in $(seq 1 144); do
   if is_ready; then break; fi
-  if [ $((i % 12)) -eq 0 ]; then $C logs --tail 5 prestashop || true; fi
+  if [ $((i % 12)) -eq 0 ]; then
+    echo "--- still waiting (${i}); settings: $($C exec -T prestashop test -f /var/www/html/app/config/parameters.php && echo yes || echo no), installer folder: $($C exec -T prestashop test -d /var/www/html/install && echo present || echo gone), front: $(curl -sL -o /dev/null -w '%{http_code}' http://localhost:8080/index.php)"
+    $C logs --tail 5 prestashop | cut -c1-200 || true
+  fi
   sleep 5
 done
 if ! is_ready; then
