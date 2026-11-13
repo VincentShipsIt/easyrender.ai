@@ -29,7 +29,7 @@ The numbers in that diagram add up exactly, and the arithmetic is worth knowing.
 
 ## How big are real GLB files, and where do the bytes go?
 
-We read every model on our showcase the same way. All six are one mesh with one material and one 1024-pixel WebP texture, packed with glTF Transform for the web.
+We read every model on our showcase the same way. All six are one mesh with one material and a 1024-pixel WebP colour texture, packed for the web. The bouclé armchair also has a 512-pixel roughness and metallic map to distinguish its fabric from its steel frame.
 
 | Model              | File size (bytes) | Triangles | Texture (bytes) | Share that is geometry |
 | ------------------ | ----------------- | --------- | --------------- | ---------------------- |
@@ -37,10 +37,10 @@ We read every model on our showcase the same way. All six are one mesh with one 
 | Stoneware vase     | 312,816           | 16,708    | 28,466          | 90%                    |
 | Round coffee table | 322,876           | 16,228    | 34,266          | 89%                    |
 | Swivel armchair    | 519,988           | 24,268    | 57,680          | 89%                    |
-| Bouclé armchair    | 551,068           | 25,879    | 70,690          | 87%                    |
+| Bouclé armchair    | 622,804           | 25,879    | 142,236         | 77%                    |
 | Bedside table      | 1,287,432         | 69,910    | 40,628          | 97%                    |
 
-The usual advice is that textures are the heavy part of a GLB. That is true for a file with 4096-pixel PNGs. Once the texture is a 1024-pixel WebP, as here, the uncompressed geometry is 83% to 97% of every file, and the triangle count decides the size.
+The usual advice is that textures are the heavy part of a GLB. That is true for a file with 4096-pixel PNGs. Once the texture is a 1024-pixel WebP, as here, the uncompressed geometry is 77% to 97% of every file, and the triangle count decides the size.
 
 ## What do the materials in a GLB describe?
 

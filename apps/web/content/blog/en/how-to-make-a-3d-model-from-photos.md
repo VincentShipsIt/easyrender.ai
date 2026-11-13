@@ -111,7 +111,7 @@ Our build asks for a 2048-pixel texture and returns one mesh with one material, 
 
 The six models on our showcase run from 14,590 triangles for a clay vase to 69,910 for a bedside table with drawers. All six sit under the 100,000 triangles that [Google's Scene Viewer](https://developers.google.com/ar/develop/scene-viewer) recommends as a maximum.
 
-![The bouclé lounge armchair as a textured 3D model, built from the photo in step 1 and shown in a 3D viewer](/showcase/armchair.glb "The model easyrender built from that photo and its angle sheet, textures compressed for this page: 25,879 triangles, 538 KB. Drag to turn it and check the back, then look at the fabric under neutral light before you publish.")
+![The bouclé lounge armchair as a textured 3D model, built from the photo in step 1 and shown in a 3D viewer](/showcase/armchair.glb "The model easyrender built from that photo and its angle sheet, upholstery and steel matched locally to the source photo and textures compressed for this page: 25,879 triangles, 608 KB. Drag to turn it and check the back, then look at the fabric under neutral light before you publish.")
 
 A GLB opens in Blender (File, Import, glTF 2.0) and in free browser viewers such as the [Babylon.js Sandbox](https://sandbox.babylonjs.com/). In Blender, turn on Statistics in the viewport overlays to read the triangle count. Open the file once before you use it anywhere, and spin it slowly.
 
