@@ -94,7 +94,7 @@ test.describe(`PrestaShop module on a real shop (${VERSION})`, () => {
 
     // The background-sync URL answers with the right token and refuses a wrong one.
     const cron = ((await page.locator('code').first().textContent()) ?? '').trim();
-    expect(cron).toContain('controller=cron');
+    expect(cron).toMatch(/controller=cron|module\/easyrender3d\/cron/);
     const ok = await page.request.get(cron);
     expect(ok.status()).toBe(200);
     expect(await ok.text()).toMatch(/^ok \d+ ready/);
