@@ -17,6 +17,22 @@ class Easyrender_Admin {
 		add_action( 'wp_ajax_easyrender_submit', array( __CLASS__, 'ajax_submit' ) );
 		add_action( 'wp_ajax_easyrender_sync', array( __CLASS__, 'ajax_sync' ) );
 		add_action( self::CRON, array( __CLASS__, 'cron_sync' ) );
+		add_filter( 'manage_edit-product_columns', array( __CLASS__, 'product_column' ) );
+		add_action( 'manage_product_posts_custom_column', array( __CLASS__, 'product_column_value' ), 10, 2 );
+	}
+
+	/** A "3D" column in the Products list, so the owner sees which products have a model. */
+	public static function product_column( array $columns ): array {
+		$columns['easyrender_3d'] = __( '3D', 'easyrender-3d' );
+		return $columns;
+	}
+
+	public static function product_column_value( string $column, int $post_id ): void {
+		if ( 'easyrender_3d' !== $column ) {
+			return;
+		}
+		$label = Easyrender_Catalog::state_label( (string) get_post_meta( $post_id, Easyrender_Catalog::META_STATE, true ) );
+		echo '' === $label ? '&ndash;' : esc_html( $label );
 	}
 
 	public static function menu(): void {
