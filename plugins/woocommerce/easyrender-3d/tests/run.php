@@ -31,6 +31,7 @@ function shortcode_atts( $d, $a ) { return array_merge( $d, (array) $a ); }
 function add_action() {}
 function __( $s ) { return $s; }
 function add_shortcode() {}
+function add_filter() {}
 
 require dirname( __DIR__ ) . '/includes/class-easyrender-client.php';
 require dirname( __DIR__ ) . '/includes/class-easyrender-catalog.php';
@@ -118,6 +119,10 @@ check( 'a ready product is labelled 3D ready', '3D ready' === Easyrender_Catalog
 check( 'queued, drafting and building all read as in progress', 'In progress' === Easyrender_Catalog::state_label( 'queued' ) && 'In progress' === Easyrender_Catalog::state_label( 'drafting' ) && 'In progress' === Easyrender_Catalog::state_label( 'building' ) );
 check( 'stuck states say why', 'Waiting for credits' === Easyrender_Catalog::state_label( 'needs_credits' ) && 'Needs a usable photo' === Easyrender_Catalog::state_label( 'needs_info' ) && 'Failed, will retry' === Easyrender_Catalog::state_label( 'failed' ) );
 check( 'a product never sent has no label', '' === Easyrender_Catalog::state_label( '' ) );
+
+// The automatic placements show the block once per product, even if both fire.
+check( 'the block shows once when two placements fire for the same product', false !== strpos( Easyrender_Frontend::once( 12 ), 'easyrender-ar' ) && '' === Easyrender_Frontend::once( 12 ) );
+check( 'a product with no model never marks itself as shown', '' === Easyrender_Frontend::once( 13 ) && '' === Easyrender_Frontend::once( 13 ) );
 
 echo $failures ? "\n$failures failed\n" : "\nall passed\n";
 exit( $failures ? 1 : 0 );

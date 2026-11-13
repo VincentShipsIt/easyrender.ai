@@ -1,0 +1,17 @@
+{
+  "name": "easyrender-plugin-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Real WordPress/WooCommerce and PrestaShop shops in Docker, driven by Playwright. Not part of the root workspace.",
+  "scripts": {
+    "test:woocommerce": "playwright test tests/woocommerce.spec.ts",
+    "test:prestashop": "playwright test tests/prestashop.spec.ts"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.0",
+    "@types/node": "22.10.2"
+  }
+}

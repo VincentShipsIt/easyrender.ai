@@ -71,7 +71,10 @@ class Easyrender_Admin {
 		}
 		check_admin_referer( 'easyrender_save_key' );
 		$key = isset( $_POST['easyrender_api_key'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['easyrender_api_key'] ) ) ) : '';
-		update_option( 'easyrender_api_key', $key, false );
+		// The field shows dots when a key is saved. Saving it untouched must keep the key, not replace it with the dots.
+		if ( false === strpos( $key, '•' ) ) {
+			update_option( 'easyrender_api_key', $key, false );
+		}
 		wp_safe_redirect( add_query_arg( array( 'page' => self::PAGE ), admin_url( 'admin.php' ) ) );
 		exit;
 	}
