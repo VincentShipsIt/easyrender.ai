@@ -2,6 +2,8 @@ import { config } from '@easyrender/core';
 import { ArrowRight, Box, ChevronDownIcon, Code2, Repeat2 } from 'lucide-react';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import { IntegrationCosts } from '@/components/integrations/costs';
+import { IntegrationResult } from '@/components/integrations/result';
 import { Pricing, Section } from '@/components/landing';
 import { McpSetup } from '@/components/mcp-setup';
 import { StudioHero } from '@/components/studio/hero';
@@ -70,6 +72,8 @@ export async function McpView({ locale }: { locale: Locale }) {
         </div>
       </Section>
 
+      <IntegrationResult locale={locale} />
+      <IntegrationCosts locale={locale} kind="mcp" />
       <Section
         id="how-it-works"
         title={t('workflow.title')}

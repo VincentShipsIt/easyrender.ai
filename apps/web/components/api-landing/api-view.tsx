@@ -2,6 +2,8 @@ import { ArrowRight, Box, ChevronDownIcon, Code2, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { CodeSnippet } from '@/components/code-snippet';
+import { IntegrationCosts } from '@/components/integrations/costs';
+import { IntegrationResult } from '@/components/integrations/result';
 import { Pricing, Section } from '@/components/landing';
 import { StudioHero } from '@/components/studio/hero';
 import { StudioClosing } from '@/components/studio/proof';
@@ -70,6 +72,8 @@ export async function ApiView({ locale }: { locale: Locale }) {
           ))}
         </div>
       </Section>
+      <IntegrationResult locale={locale} />
+      <IntegrationCosts locale={locale} kind="api" />
       <Section
         id="how-it-works"
         title={t('workflow.title')}
