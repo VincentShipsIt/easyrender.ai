@@ -333,7 +333,17 @@
       "resetDone": "De vuelta al aspecto generado.",
       "saveFailed": "No se pudieron guardar los cambios. Inténtalo de nuevo."
     },
-    "details": "Detalles"
+    "details": "Detalles",
+    "history": {
+      "empty": "Aún no hay cambios. Aquí aparecen la hoja de ángulos, sus redibujos, los cambios de material y la creación 3D.",
+      "kind": {
+        "sheet": "Hoja de ángulos dibujada",
+        "sheet_redraw": "Hoja de ángulos redibujada",
+        "build": "Creación 3D iniciada",
+        "material": "Materiales cambiados"
+      },
+      "credits": "{credits} créditos"
+    }
   },
   "PromptBar": {
     "steps": {
@@ -564,6 +574,9 @@
     "toggleContext": "Mostrar u ocultar el panel de partes",
     "context": {
       "title": "Partes"
+    },
+    "history": {
+      "title": "Historial"
     }
   },
   "AppHome": {

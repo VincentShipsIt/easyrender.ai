@@ -333,7 +333,17 @@
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
     },
-    "details": "Details"
+    "details": "Details",
+    "history": {
+      "empty": "Noch keine Änderungen. Hier erscheinen die Winkelübersicht, ihre Neuzeichnungen, Materialänderungen und der 3D-Build.",
+      "kind": {
+        "sheet": "Winkelübersicht gezeichnet",
+        "sheet_redraw": "Winkelübersicht neu gezeichnet",
+        "build": "3D-Build gestartet",
+        "material": "Materialien geändert"
+      },
+      "credits": "{credits} Credits"
+    }
   },
   "PromptBar": {
     "steps": {
@@ -564,6 +574,9 @@
     "toggleContext": "Teilebereich ein- oder ausblenden",
     "context": {
       "title": "Teile"
+    },
+    "history": {
+      "title": "Verlauf"
     }
   },
   "AppHome": {

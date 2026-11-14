@@ -333,7 +333,17 @@
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
     },
-    "details": "Dettagli"
+    "details": "Dettagli",
+    "history": {
+      "empty": "Ancora nessuna modifica. Qui compaiono la tavola degli angoli, i suoi ridisegni, i cambi di materiale e la creazione 3D.",
+      "kind": {
+        "sheet": "Tavola degli angoli disegnata",
+        "sheet_redraw": "Tavola degli angoli ridisegnata",
+        "build": "Creazione 3D avviata",
+        "material": "Materiali modificati"
+      },
+      "credits": "{credits} crediti"
+    }
   },
   "PromptBar": {
     "steps": {
@@ -564,6 +574,9 @@
     "toggleContext": "Mostra o nascondi il pannello delle parti",
     "context": {
       "title": "Parti"
+    },
+    "history": {
+      "title": "Cronologia"
     }
   },
   "AppHome": {

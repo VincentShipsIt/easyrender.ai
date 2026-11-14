@@ -9,6 +9,7 @@ import { useDefaultLayout, usePanelRef } from 'react-resizable-panels';
 import { BrandMark } from '@/components/brand-mark';
 import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { AppBreadcrumb } from './app-breadcrumb';
 import { ACCOUNT_NAV, APP_NAV, isActivePath, isSettingsPath } from './nav';
@@ -67,10 +68,12 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
   const pathname = usePathname();
   const isMd = useMediaQuery(MD_QUERY);
   const isXl = useMediaQuery(XL_QUERY);
-  const { setNode, hasContext, slot } = usePanelSlotState();
+  const { setLeftNode, setRightNode, hasLeftContext, hasRightContext, slot } = usePanelSlotState();
   const isSettings = isSettingsPath(pathname);
   const hasLeft = isMd && !isSettings;
-  const hasRight = isXl && !isSettings && hasContext;
+  const hasRight = isXl && !isSettings && hasRightContext;
+  // A render page also offers its edit history, so the left drawer gets a second tab.
+  const [leftTab, setLeftTab] = useState('history');
 
   const leftRef = usePanelRef();
   const rightRef = usePanelRef();
@@ -229,7 +232,27 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
                     inert={!isLeftOpen}
                     className="h-full overflow-hidden"
                   >
-                    <RendersPanel renders={data.renders} now={data.now} />
+                    {hasLeftContext ? (
+                      <Tabs value={leftTab} onValueChange={setLeftTab} className="h-full gap-0">
+                        <TabsList className="m-2 grid grid-cols-2">
+                          <TabsTrigger value="renders">{t('panel.title')}</TabsTrigger>
+                          <TabsTrigger value="history">{t('history.title')}</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="renders" className="min-h-0">
+                          <RendersPanel renders={data.renders} now={data.now} />
+                        </TabsContent>
+                        {/* Kept mounted so the page can draw its history into it. */}
+                        <TabsContent
+                          value="history"
+                          forceMount
+                          className="min-h-0 overflow-y-auto data-[state=inactive]:hidden"
+                        >
+                          <div ref={setLeftNode} />
+                        </TabsContent>
+                      </Tabs>
+                    ) : (
+                      <RendersPanel renders={data.renders} now={data.now} />
+                    )}
                   </aside>
                 </ResizablePanel>
                 <ResizableHandle />
@@ -253,7 +276,7 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
                       <aside
                         aria-label={t('context.title')}
                         inert={!isRightOpen}
-                        ref={setNode}
+                        ref={setRightNode}
                         className="h-full overflow-y-auto"
                       />
                     </ResizablePanel>

@@ -47,6 +47,7 @@ run('credits and generation billing (real database)', () => {
   const load = async () => ({
     credits: await import('./credits'),
     renders: await import('./renders'),
+    edits: await import('./render-edits'),
   });
 
   const newUser = async (credits: number) => {
@@ -196,6 +197,53 @@ run('credits and generation billing (real database)', () => {
     // The note reaches the sheet prompt that Replicate is given.
     const body = replicate.start.mock.calls[0]?.[1] as { input: { prompt: string } };
     expect(body.input.prompt).toContain('Back legs are too thick');
+  });
+
+  it('the history lists each paid step once, newest first, and only to the owner', async () => {
+    const { renders, edits } = await load();
+    const userId = await newUser(SHEET_CREDITS * 4);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png', credits: 0 });
+    // A double click is one redraw, so it is one row.
+    await Promise.allSettled([
+      renders.redrawSheet(render.id, { userId }, 'Back legs are too thick'),
+      renders.redrawSheet(render.id, { userId }, 'Back legs are too thick'),
+    ]);
+    await edits.recordEdit(render.id, 'material');
+    const history = await renders.listEdits(render.id, { userId });
+    expect(history.map((edit) => edit.kind)).toEqual(['material', 'sheet_redraw']);
+    expect(history[1]).toMatchObject({ note: 'Back legs are too thick', credits: SHEET_CREDITS });
+    expect(history[0]).toMatchObject({ note: null, credits: 0 });
+    // Someone else, or a visitor, cannot read it.
+    await expect(renders.listEdits(render.id, { userId: 'someone-else' })).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(renders.listEdits(render.id, { anonId: 'visitor' })).rejects.toMatchObject({
+      status: 404,
+    });
+  });
+
+  it('a refused redraw leaves no history', async () => {
+    const { renders } = await load();
+    const poor = await newUser(0);
+    const render = await newRender(poor, { sheetKey: 'fake:sheets/old.png' });
+    await expect(
+      renders.redrawSheet(render.id, { userId: poor }, 'Seat is flat'),
+    ).rejects.toMatchObject({ status: 402 });
+    expect(await db().renderEdit.count({ where: { renderId: render.id } })).toBe(0);
+  });
+
+  it('the sheet and the build each add a row with what they cost', async () => {
+    const { renders } = await load();
+    const userId = await newUser(RENDER_CREDITS + SHEET_CREDITS);
+    const render = await newRender(userId, { credits: 0 });
+    await renders.startSheet(render.id, { userId });
+    const rows = await db().renderEdit.findMany({ where: { renderId: render.id } });
+    expect(rows.map((row) => [row.kind, row.credits])).toEqual([['sheet', SHEET_CREDITS]]);
+    const second = await newRender(userId, { credits: 0 });
+    await renders.startBuild(second.id, { userId });
+    const built = await db().renderEdit.findMany({ where: { renderId: second.id } });
+    expect(built.map((row) => row.kind)).toEqual(['build']);
+    expect(built[0]?.credits).toBe(RENDER_CREDITS);
   });
 
   it('a redraw that Replicate fails is refunded and the owner keeps the sheet they had', async () => {

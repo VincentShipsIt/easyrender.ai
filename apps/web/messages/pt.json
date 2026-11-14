@@ -333,7 +333,17 @@
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
     },
-    "details": "Detalhes"
+    "details": "Detalhes",
+    "history": {
+      "empty": "Ainda não há alterações. Aqui aparecem a folha de ângulos, os redesenhos, as mudanças de material e a criação 3D.",
+      "kind": {
+        "sheet": "Folha de ângulos desenhada",
+        "sheet_redraw": "Folha de ângulos redesenhada",
+        "build": "Criação 3D iniciada",
+        "material": "Materiais alterados"
+      },
+      "credits": "{credits} créditos"
+    }
   },
   "PromptBar": {
     "steps": {
@@ -564,6 +574,9 @@
     "toggleContext": "Mostrar ou ocultar o painel de partes",
     "context": {
       "title": "Partes"
+    },
+    "history": {
+      "title": "Histórico"
     }
   },
   "AppHome": {

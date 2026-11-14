@@ -333,7 +333,17 @@
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
     },
-    "details": "Details"
+    "details": "Details",
+    "history": {
+      "empty": "No edits yet. Drawing the angle sheet, redrawing it, changing a material or building in 3D shows up here.",
+      "kind": {
+        "sheet": "Angle sheet drawn",
+        "sheet_redraw": "Angle sheet redrawn",
+        "build": "3D build started",
+        "material": "Materials changed"
+      },
+      "credits": "{credits} credits"
+    }
   },
   "PromptBar": {
     "steps": {
@@ -564,6 +574,9 @@
     "toggleContext": "Toggle parts panel",
     "context": {
       "title": "Parts"
+    },
+    "history": {
+      "title": "History"
     }
   },
   "AppHome": {

@@ -164,11 +164,31 @@ model Render {
   source            String       @default("web")
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
+  edits             RenderEdit[]
 
   @@index([userId, createdAt])
   @@index([anonId, createdAt])
   @@index([ipHash, createdAt])
   @@index([isPublic, status, createdAt])
+}
+
+// What the owner did to a render after the free preview, newest last: the angle sheet drawn, a
+// redraw with its note, the 3D build, a material change. One row per paid or saved step, written
+// when the step starts, so the History tab on the render page can list them. A render made
+// before this table existed simply has none.
+model RenderEdit {
+  id        String   @id @default(cuid())
+  renderId  String
+  render    Render   @relation(fields: [renderId], references: [id], onDelete: Cascade)
+  // sheet | sheet_redraw | build | material
+  kind      String
+  // The owner's words for a redraw; null for the rest.
+  note      String?
+  // What the step cost. Zero for a material change.
+  credits   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([renderId, createdAt])
 }
 
 // Product views: one photo in, nine packshots out on white, with no 3D build. A set is paid for

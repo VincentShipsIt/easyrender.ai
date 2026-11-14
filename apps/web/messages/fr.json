@@ -333,7 +333,17 @@
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
     },
-    "details": "Détails"
+    "details": "Détails",
+    "history": {
+      "empty": "Aucune modification pour l'instant. La planche d'angles, ses redessins, les changements de matière et la création 3D apparaissent ici.",
+      "kind": {
+        "sheet": "Planche d'angles dessinée",
+        "sheet_redraw": "Planche d'angles redessinée",
+        "build": "Création 3D lancée",
+        "material": "Matières modifiées"
+      },
+      "credits": "{credits} crédits"
+    }
   },
   "PromptBar": {
     "steps": {
@@ -564,6 +574,9 @@
     "toggleContext": "Afficher ou masquer le panneau des éléments",
     "context": {
       "title": "Éléments"
+    },
+    "history": {
+      "title": "Historique"
     }
   },
   "AppHome": {
