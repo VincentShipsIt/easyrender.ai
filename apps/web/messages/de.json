@@ -13,7 +13,9 @@
       "hub": "Hub",
       "connect": "Verbinden",
       "try": "Ausprobieren",
-      "pricing": "Preise"
+      "pricing": "Preise",
+      "mcp": "MCP",
+      "api": "API"
     },
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
@@ -1846,5 +1848,62 @@
     "buy": "Credits zum Hochskalieren kaufen",
     "download": "{width} px herunterladen",
     "downloadLarge": "Größere Datei herunterladen"
+  },
+  "IntegrationLanding": {
+    "result": {
+      "title": "Inspect the output before you integrate.",
+      "description": "A real easyrender showcase example: the source photo, generated angles and a textured GLB you can rotate and download.",
+      "photo": {
+        "label": "Source photo",
+        "alt": "Source photo of a mustard armchair with a metal frame",
+        "body": "One clear image of the object. No 3D file or multi-camera capture required."
+      },
+      "angles": {
+        "label": "Generated angle sheet",
+        "alt": "Nine generated views of the same mustard armchair",
+        "body": "See how the object is interpreted from different sides before using the final asset."
+      },
+      "model": {
+        "label": "Textured GLB",
+        "alt": "Interactive generated 3D model of the mustard armchair",
+        "body": "Drag to rotate the model. Download it to inspect in your own 3D viewer."
+      },
+      "note": "Pre-generated showcase assets, not a live request. This sheet is a finished example; the initial preview is watermarked. Geometry is approximate and unseen surfaces are inferred.",
+      "download": "Download sample GLB"
+    },
+    "costs": {
+      "api": {
+        "title": "What does the image to 3D API cost?",
+        "description": "Pay for 3D builds with your account credits. API access uses the same credit balance as the web app.",
+        "check": "Read renderCredits in the render response before building; it is the credit cost for that render. Keep approval and spending limits in your application."
+      },
+      "mcp": {
+        "title": "What does the image to 3D MCP server cost?",
+        "description": "Connect your agent to your easyrender account. The 3D build spends credits; there is no separate MCP access subscription.",
+        "check": "Ask your agent to call get_credits and confirm the cost before render_3d. Your AI client or model provider may charge separately; those fees are not included here."
+      },
+      "preview": {
+        "label": "Angle-sheet preview",
+        "body": "No credits charged, subject to your account’s preview allowance. Review the preview before the paid build."
+      },
+      "build": {
+        "label": "Per full 3D build · pay as you go",
+        "body": "{credits} credits for the final angle sheet and textured GLB. This is the full photo-to-3D workflow."
+      },
+      "access": {
+        "label": "API & MCP access",
+        "value": "Included",
+        "body": "Use your account and credits through either integration. No separate connector fee."
+      },
+      "estimate": {
+        "title": "Budget example: {count} full builds",
+        "body": "{credits} credits = {price} at the pay-as-you-go rate of {unit} per credit. Monthly plans can lower the effective cost per credit."
+      },
+      "start": {
+        "title": "Start without a subscription",
+        "body": "The minimum credit purchase is {credits} credits ({price}). Credits do not expire. Review the total at checkout before paying."
+      },
+      "refund": "Failed 3D builds refund their credits. Prices shown use your current currency and pricing offer."
+    }
   }
 }

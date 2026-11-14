@@ -12,6 +12,8 @@
       "howItWorks": "How it works",
       "hub": "Hub",
       "connect": "Connect",
+      "mcp": "MCP",
+      "api": "API",
       "try": "Try it",
       "pricing": "Pricing"
     },
@@ -1618,7 +1620,7 @@
       "description": "Connect Claude, Cursor or VS Code to easyrender. Turn product photos into 3D models through MCP: preview the result, spend credits to build and download a GLB."
     },
     "hero": {
-      "title": "Product photos to 3D. From your agent.",
+      "title": "Image to 3D MCP server. From your agent.",
       "subtitle": "Connect easyrender through MCP. Give your agent a product photo, review the preview and build a textured GLB without switching to a modeling tool.",
       "cta": "Connect your agent",
       "note": "Preview first. Credits for the 3D build."
@@ -1633,11 +1635,11 @@
       },
       "web": {
         "title": "Product pages & prototypes",
-        "body": "Ask your coding agent to generate a GLB for the 3D viewer you are building."
+        "body": "Building a product page in Cursor or Claude Code? Ask the agent to generate a GLB from your product photo, download it and use it in the viewer you are developing."
       },
       "workflow": {
         "title": "Repeatable asset workflows",
-        "body": "Use the same tools to create a preview, check its status and retrieve the finished model for each product."
+        "body": "Create a repeatable task for each product: submit its photo, review the preview, approve the cost and retrieve the model. The same renders remain available in your web library."
       }
     },
     "workflow": {
@@ -1717,7 +1719,7 @@
       "description": "Add photo-to-3D generation to your app with the easyrender REST API. Upload a product image, review the preview, start the paid build and download a textured GLB."
     },
     "hero": {
-      "title": "Photo to 3D. Built into your app.",
+      "title": "Image to 3D API. Built into your app.",
       "subtitle": "Use the easyrender REST API to turn product photos into textured GLBs. Your interface, your workflow, with a preview before the paid build.",
       "cta": "Get your API key",
       "note": "REST API · Product photo in. GLB out."
@@ -1735,15 +1737,15 @@
       "description": "Connect your backend to easyrender and decide how people upload, review and use each model.",
       "catalog": {
         "title": "Catalog tools",
-        "body": "Add a photo-to-model step to the tools your team uses to prepare product assets."
+        "body": "Give your catalog team an upload-and-review tool. Keep each render ID with its product record and retrieve the GLB when the build completes."
       },
       "app": {
         "title": "Your own upload experience",
-        "body": "Let users submit a product photo in your app. Your server creates the preview and starts the build when they approve it."
+        "body": "Keep your own interface and approval flow. Your backend submits the photo, returns the preview to your user and starts the paid build only after approval."
       },
       "web": {
         "title": "3D product experiences",
-        "body": "Retrieve a GLB to use in your own product viewer, prototype or asset workflow."
+        "body": "Download a textured GLB for your web viewer or prototype. Your application controls where the file is stored and how it is displayed; store publishing is your integration’s responsibility."
       }
     },
     "workflow": {
@@ -1819,7 +1821,7 @@
         },
         "cost": {
           "q": "How do I check the cost and my balance?",
-          "a": "Render responses include renderCredits, the total credit cost of a 3D build. GET /api/renders returns your library and balance. The preview has an allowance; a POST to the render endpoint starts the paid build. The pricing section below reflects the current plans."
+          "a": "Render responses include renderCredits, the total credit cost of a 3D build. GET /api/renders returns your library and balance. The preview has an allowance; a POST to the render endpoint starts the paid build. The pricing section on this page reflects the current plans."
         },
         "errors": {
           "q": "How should I handle progress and errors?",
@@ -1846,5 +1848,62 @@
     "buy": "Buy credits to upscale",
     "download": "Download {width} px",
     "downloadLarge": "Download larger file"
+  },
+  "IntegrationLanding": {
+    "result": {
+      "title": "Inspect the output before you integrate.",
+      "description": "A real easyrender showcase example: the source photo, generated angles and a textured GLB you can rotate and download.",
+      "photo": {
+        "label": "Source photo",
+        "alt": "Source photo of a mustard armchair with a metal frame",
+        "body": "One clear image of the object. No 3D file or multi-camera capture required."
+      },
+      "angles": {
+        "label": "Generated angle sheet",
+        "alt": "Nine generated views of the same mustard armchair",
+        "body": "See how the object is interpreted from different sides before using the final asset."
+      },
+      "model": {
+        "label": "Textured GLB",
+        "alt": "Interactive generated 3D model of the mustard armchair",
+        "body": "Drag to rotate the model. Download it to inspect in your own 3D viewer."
+      },
+      "note": "Pre-generated showcase assets, not a live request. This sheet is a finished example; the initial preview is watermarked. Geometry is approximate and unseen surfaces are inferred.",
+      "download": "Download sample GLB"
+    },
+    "costs": {
+      "api": {
+        "title": "What does the image to 3D API cost?",
+        "description": "Pay for 3D builds with your account credits. API access uses the same credit balance as the web app.",
+        "check": "Read renderCredits in the render response before building; it is the credit cost for that render. Keep approval and spending limits in your application."
+      },
+      "mcp": {
+        "title": "What does the image to 3D MCP server cost?",
+        "description": "Connect your agent to your easyrender account. The 3D build spends credits; there is no separate MCP access subscription.",
+        "check": "Ask your agent to call get_credits and confirm the cost before render_3d. Your AI client or model provider may charge separately; those fees are not included here."
+      },
+      "preview": {
+        "label": "Angle-sheet preview",
+        "body": "No credits charged, subject to your account’s preview allowance. Review the preview before the paid build."
+      },
+      "build": {
+        "label": "Per full 3D build · pay as you go",
+        "body": "{credits} credits for the final angle sheet and textured GLB. This is the full photo-to-3D workflow."
+      },
+      "access": {
+        "label": "API & MCP access",
+        "value": "Included",
+        "body": "Use your account and credits through either integration. No separate connector fee."
+      },
+      "estimate": {
+        "title": "Budget example: {count} full builds",
+        "body": "{credits} credits = {price} at the pay-as-you-go rate of {unit} per credit. Monthly plans can lower the effective cost per credit."
+      },
+      "start": {
+        "title": "Start without a subscription",
+        "body": "The minimum credit purchase is {credits} credits ({price}). Credits do not expire. Review the total at checkout before paying."
+      },
+      "refund": "Failed 3D builds refund their credits. Prices shown use your current currency and pricing offer."
+    }
   }
 }
