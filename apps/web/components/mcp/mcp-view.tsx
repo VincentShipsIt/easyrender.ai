@@ -7,7 +7,7 @@ import { IntegrationResult } from '@/components/integrations/result';
 import { Pricing, Section } from '@/components/landing';
 import { McpSetup } from '@/components/mcp-setup';
 import { StudioHero } from '@/components/studio/hero';
-import { StudioClosing } from '@/components/studio/proof';
+import { StudioClosing, StudioCompatibility } from '@/components/studio/proof';
 import { StudioShell } from '@/components/studio/shell';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -49,16 +49,16 @@ export async function McpView({ locale }: { locale: Locale }) {
           note: t('hero.note'),
         }}
       />
-      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 border-y px-5 py-6 text-sm">
-        <p className="text-muted-foreground">{t('clientsLabel')}</p>
-        <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          {CLIENTS.map((client) => (
-            <li key={client}>{client}</li>
-          ))}
-        </ul>
-      </div>
-
+      <StudioCompatibility />
       <Section title={t('intro.title')} description={t('intro.description')}>
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 pb-8 text-sm">
+          <p className="text-muted-foreground">{t('clientsLabel')}</p>
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            {CLIENTS.map((client) => (
+              <li key={client}>{client}</li>
+            ))}
+          </ul>
+        </div>
         <div className="grid gap-8 md:grid-cols-3">
           {USE_CASES.map(({ key, icon: Icon }) => (
             <div key={key} className="space-y-3 border-t pt-6">

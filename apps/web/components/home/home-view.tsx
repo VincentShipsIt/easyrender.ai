@@ -11,7 +11,7 @@ import { SiteLink as Link } from '@/components/site-link';
 import { StudioHero } from '@/components/studio/hero';
 import { StudioIndustries } from '@/components/studio/industries';
 import { StudioPipeline } from '@/components/studio/pipeline';
-import { StudioClosing, StudioProof } from '@/components/studio/proof';
+import { StudioClosing, StudioCompatibility, StudioProof } from '@/components/studio/proof';
 import { StudioShelf } from '@/components/studio/shelf';
 import { StudioShell } from '@/components/studio/shell';
 import { StudioTools } from '@/components/studio/tools';
@@ -43,6 +43,7 @@ export async function HomeView() {
   return (
     <StudioShell>
       <StudioHero ctaHref="#try" />
+      <StudioCompatibility />
       <HomeIntro />
       <StudioPipeline />
 
