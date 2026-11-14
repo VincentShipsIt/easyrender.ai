@@ -333,7 +333,8 @@
       "saved": "Saved. The downloads now include your changes.",
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
-    }
+    },
+    "details": "Detalhes"
   },
   "PromptBar": {
     "steps": {
@@ -515,7 +516,8 @@
     "connectors": "Connectors",
     "credits": "Credits",
     "account": "Account",
-    "views": "Product views"
+    "views": "Product views",
+    "profile": "Perfil"
   },
   "AppShell": {
     "model": "Modelo",
@@ -524,9 +526,6 @@
     "toggleSidebar": "Mostrar ou ocultar a barra lateral",
     "home": "Início do easyrender",
     "newModel": "Novo modelo 3D",
-    "recents": "Recentes",
-    "noRecents": "Nada por enquanto. Envie uma foto ou peça ao seu agente.",
-    "credits": "créditos",
     "untitled": "Sem título",
     "status": {
       "drafting": "Preparando",
@@ -535,7 +534,6 @@
       "ready": "Pronto",
       "failed": "Falhou"
     },
-    "toggleRenders": "Mostrar ou ocultar o painel de renders",
     "breadcrumb": "Caminho de navegação",
     "panel": {
       "title": "Renders",
@@ -563,6 +561,10 @@
       "balance": "Saldo",
       "sheet": "Folha de ângulos",
       "build": "Criar 3D"
+    },
+    "toggleContext": "Mostrar ou ocultar o painel de partes",
+    "context": {
+      "title": "Partes"
     }
   },
   "AppHome": {

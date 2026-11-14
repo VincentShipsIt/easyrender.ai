@@ -137,11 +137,19 @@ chrome accents. Chart series also use labels, legends and dashed previous-period
 
 ## Layout
 
-- The signed-in app has its own shell (`components/app-shell`): a thin icon rail, a collapsible
-  sidebar with recents, and the page in one rounded block. It has no marketing header; below `md`
-  the rail becomes a bottom bar. Marketing pages use the site header and footer (`site-chrome.tsx`).
-  Drawers animate their width in 200ms with `cubic-bezier(0.2, 0.7, 0.2, 1)` and a fixed inner
-  width, so content does not reflow, and honour `prefers-reduced-motion`.
+- The signed-in app has its own shell (`components/app-shell`): a thin icon rail (Overview,
+  Library, Product views, Account), a left drawer with the renders list (thumbnails, grouped by
+  state), the page in one rounded block, and a right drawer that a page may fill with its context
+  (a render's parts: photo, angle sheet, details) through `ShellPanel`. It has no marketing
+  header; below `md` the rail becomes a bottom bar and the drawers are hidden (a page's context
+  then follows the page content). Both drawers resize by dragging the handle (shadcn
+  `Resizable`, widths in pixels, saved per browser), snap shut when dragged below their minimum,
+  and toggle from the top bar. Marketing pages use the site header and footer (`site-chrome.tsx`).
+- Settings are full pages with no drawers: Account, Credits and Connectors, linked by one row of
+  tabs and reached from the Account rail item. The credit balance is shown only there, never in
+  the top bar or the rail.
+- The rail peek is a shadcn `HoverCard`: short delays, closes on click and navigation, and never
+  opens for the active item.
 - Product pages sit in a centred column inside that shell. Do not choose columns from viewport
   breakpoints when the page column is what constrains the grid.
 - Controls snap to 32 / 36 / 40px.

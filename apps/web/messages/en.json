@@ -333,7 +333,8 @@
       "saved": "Saved. The downloads now include your changes.",
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
-    }
+    },
+    "details": "Details"
   },
   "PromptBar": {
     "steps": {
@@ -515,7 +516,8 @@
     "connectors": "Connectors",
     "credits": "Credits",
     "account": "Account",
-    "views": "Product views"
+    "views": "Product views",
+    "profile": "Profile"
   },
   "AppShell": {
     "model": "Model",
@@ -524,9 +526,6 @@
     "toggleSidebar": "Toggle sidebar",
     "home": "easyrender home",
     "newModel": "New 3D model",
-    "recents": "Recents",
-    "noRecents": "Nothing yet. Upload a photo or ask your agent.",
-    "credits": "credits",
     "untitled": "Untitled",
     "status": {
       "drafting": "Drafting",
@@ -535,7 +534,6 @@
       "ready": "Ready",
       "failed": "Failed"
     },
-    "toggleRenders": "Toggle renders panel",
     "breadcrumb": "Breadcrumb",
     "panel": {
       "title": "Renders",
@@ -563,6 +561,10 @@
       "balance": "Balance",
       "sheet": "Angle sheet",
       "build": "Build 3D"
+    },
+    "toggleContext": "Toggle parts panel",
+    "context": {
+      "title": "Parts"
     }
   },
   "AppHome": {
