@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { isLocale } from '@/i18n/config';
 import {
   attribution,
   attributionHeaders,
@@ -16,6 +17,7 @@ import {
   captureSignup,
 } from '@/lib/analytics/browser';
 import { authClient } from '@/lib/auth-client';
+import { ROUTES } from '@/lib/seo/routes';
 
 export type AuthMode = 'sign-in' | 'sign-up';
 
@@ -35,6 +37,7 @@ export function AuthFields({
   const t = useTranslations('Auth');
   const a = useTranslations('Analytics');
   const locale = useLocale();
+  const legalLocale = isLocale(locale) ? locale : 'en';
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -87,6 +90,20 @@ export function AuthFields({
 
   return (
     <div className="grid gap-4">
+      <p className="text-center text-xs leading-relaxed text-muted-foreground">
+        {t.rich('legalNotice', {
+          terms: (chunks) => (
+            <Link href={ROUTES.terms.paths[legalLocale]} className="underline underline-offset-4">
+              {chunks}
+            </Link>
+          ),
+          privacy: (chunks) => (
+            <Link href={ROUTES.privacy.paths[legalLocale]} className="underline underline-offset-4">
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
       <Button type="button" variant="outline" className="w-full" disabled={busy} onClick={google}>
         <GoogleIcon />
         {t('google')}

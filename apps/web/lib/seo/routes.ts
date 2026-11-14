@@ -32,8 +32,8 @@ export type RouteEntry = {
 export const ROUTES = {
   home: {
     paths: { en: '/', es: '/es', de: '/de', fr: '/fr', it: '/it', pt: '/pt' },
-    // All six homes and pricing pages are public. Other translated marketing pages
-    // open individually as their copy is reviewed.
+    // All six homes, pricing and legal pages are public. Other translated marketing pages
+    // open individually as their copy is reviewed. Legal pages use an English source.
     published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 1,
     changeFrequency: 'weekly',
@@ -161,7 +161,7 @@ export const ROUTES = {
       it: '/it/privacy',
       pt: '/pt/privacidade',
     },
-    published: [],
+    published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 0.3,
     changeFrequency: 'yearly',
   },
@@ -174,7 +174,7 @@ export const ROUTES = {
       it: '/it/termini',
       pt: '/pt/termos',
     },
-    published: [],
+    published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 0.3,
     changeFrequency: 'yearly',
   },

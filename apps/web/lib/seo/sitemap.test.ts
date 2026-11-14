@@ -32,6 +32,8 @@ describe('the per-language sitemaps', () => {
       '/compare/meshy',
       '/compare/photogrammetry-software',
       '/compare/tripo',
+      '/privacy',
+      '/terms',
       '/cookies',
     ]);
     expect(paths('es')).toEqual([
@@ -40,6 +42,8 @@ describe('the per-language sitemaps', () => {
       '/es/mcp',
       '/es/api-imagen-a-3d',
       '/es/modelos',
+      '/es/privacidad',
+      '/es/terminos',
       '/es/cookies',
     ]);
     // Homes and cookie information are open; guides remain unpublished.
@@ -47,6 +51,8 @@ describe('the per-language sitemaps', () => {
       expect(paths(locale), locale).toEqual([
         `/${locale}`,
         ROUTES.pricing.paths[locale],
+        ROUTES.privacy.paths[locale],
+        ROUTES.terms.paths[locale],
         ROUTES.cookies.paths[locale],
       ]);
     }
@@ -67,6 +73,8 @@ describe('the per-language sitemaps', () => {
       '/compare/meshy',
       '/compare/photogrammetry-software',
       '/compare/tripo',
+      '/privacy',
+      '/terms',
       '/cookies',
       '/learn/how-to-make-a-3d-model-from-photos',
     ]);
@@ -74,6 +82,8 @@ describe('the per-language sitemaps', () => {
       expect(paths(locale), locale).toEqual([
         `/${locale}`,
         ROUTES.pricing.paths[locale],
+        ROUTES.privacy.paths[locale],
+        ROUTES.terms.paths[locale],
         ROUTES.cookies.paths[locale],
       ]);
     }

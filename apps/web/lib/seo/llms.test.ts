@@ -9,7 +9,7 @@ import itMessages from '@/messages/it.json';
 import pt from '@/messages/pt.json';
 import { faqText, llmsFullTxt, llmsTxt } from './llms';
 import { NOINDEX_PREFIXES } from './noindex';
-import { DISALLOWED_PREFIXES } from './routes';
+import { DISALLOWED_PREFIXES, ROUTES } from './routes';
 import { absoluteUrl, SITE_URL } from './site';
 import { localeEntries } from './sitemap';
 
@@ -85,8 +85,20 @@ describe('llms.txt', () => {
         expect(path.startsWith(prefix), `${url} vs ${prefix}`).toBe(false);
       }
     }
-    // Pricing and cookie information are open below these homes.
-    expect(text).not.toMatch(/\/(de|fr|it|pt)\/(?!cookies?\b|preise\b|tarifs\b|prezzi\b|precos\b)/);
+    // These languages publish their home, pricing and legal information.
+    for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
+      const paths = urlsIn(text)
+        .map((url) => new URL(url).pathname)
+        .filter((path) => path.startsWith(`/${locale}/`));
+      expect(paths.sort()).toEqual(
+        [
+          ROUTES.pricing.paths[locale],
+          ROUTES.cookies.paths[locale],
+          ROUTES.privacy.paths[locale],
+          ROUTES.terms.paths[locale],
+        ].sort(),
+      );
+    }
   });
 
   it('describes the product within claims.md', () => {

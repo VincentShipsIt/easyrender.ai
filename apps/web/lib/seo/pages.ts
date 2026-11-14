@@ -30,6 +30,17 @@ import { absoluteUrl } from './site';
 // The head and the structured data of every indexable page, in one place, so the home in English
 // and the home in Spanish are built the same way and only the words differ.
 
+export async function legalMetadata(kind: 'privacy' | 'terms', locale: Locale): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: `Legal.${kind}` });
+  return pageMetadata({
+    locale,
+    path: ROUTES[kind].paths[locale],
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    alternates: livePaths(kind),
+  });
+}
+
 export async function homeMetadata(locale: Locale): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'Home.meta' });
   return pageMetadata({
