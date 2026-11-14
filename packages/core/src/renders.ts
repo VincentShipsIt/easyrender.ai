@@ -13,6 +13,7 @@ import {
   cutCells,
   DEFAULT_FINAL_SHEET_SETTINGS,
   download,
+  FINAL_SHEET_CREDITS,
   FINAL_SHEET_MODEL,
   findGlbUrl,
   isSettled,
@@ -46,7 +47,7 @@ export type Actor = {
 export type RenderSource = 'web' | 'mcp' | 'api';
 
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
-const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
+export const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const DAY_MS = 24 * 60 * 60 * 1000;
 // A sheet takes ~1 minute and a 3D build ~2: anything still running after this has been lost.
 const STALE_MS = 45 * 60 * 1000;
@@ -57,7 +58,7 @@ const replicate = () => createReplicate(config.replicateToken());
 // never cuts it), then their original prompt.
 const sheetNotes = (render: Pick<Render, 'prompt' | 'sheetNote'>) =>
   cleanNote([render.sheetNote, render.prompt].filter(Boolean).join('. ')) || null;
-const extension = (contentType: string) =>
+export const extension = (contentType: string) =>
   contentType.split('/')[1]?.replace('jpeg', 'jpg') ?? 'bin';
 
 export function canAccess(render: Pick<Render, 'userId' | 'anonId'>, actor: Actor): boolean {
@@ -429,9 +430,10 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     throw new AppError('This render cannot be built', 409, 'bad_state');
   }
 
-  // An angle sheet bought earlier already counts toward the price.
+  // An angle sheet bought earlier already counts toward the price, and so does the final sheet
+  // of a product views set, which the build then reuses instead of drawing again.
   const alreadyPaid = render.credits;
-  const owed = Math.max(0, RENDER_CREDITS - alreadyPaid);
+  const owed = Math.max(0, buildTotal(render) - alreadyPaid);
 
   // Claim the render first so a double click cannot spend twice.
   const { count } = await db().render.updateMany({
@@ -464,7 +466,7 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
   try {
     // A paid build draws the final sheet first (the visitor saw a cheaper draft); the 3D build
     // starts when it is done, in advance(). Without a draft the build runs from the photo alone.
-    if (render.sheetKey) {
+    if (render.sheetKey && !render.hasFinalSheet) {
       const client = replicate();
       const source = await getFile(render.sourceKey);
       const sourceUrl = await client.upload(source, 'source.jpg', 'image/jpeg');
@@ -638,6 +640,8 @@ export async function redrawSheet(id: string, actor: Actor, note: string): Promi
       sheetRedraws: { increment: 1 },
       sheetNote: fix,
       sheetPredictionId: null,
+      // The redraw is a draft again, so the build draws its final sheet as usual.
+      hasFinalSheet: false,
     },
   });
   if (count === 0) return (await db().render.findUnique({ where: { id } })) as Render;
@@ -676,6 +680,10 @@ export async function redrawSheet(id: string, actor: Actor, note: string): Promi
   }
 }
 
+// What a full build costs this render: a sheet that is already the final one is not drawn again.
+const buildTotal = (render: Pick<Render, 'hasFinalSheet'>) =>
+  render.hasFinalSheet ? RENDER_CREDITS - FINAL_SHEET_CREDITS : RENDER_CREDITS;
+
 export type RenderView = {
   id: string;
   status: Render['status'];
@@ -713,7 +721,7 @@ export function toView(render: Render): RenderView {
     modelVersion: render.updatedAt.getTime(),
     // A failed render was refunded in full, so nothing counts as spent on it.
     credits: render.status === 'failed' ? 0 : render.credits,
-    renderCredits: RENDER_CREDITS,
+    renderCredits: buildTotal(render),
     sheetCredits: SHEET_CREDITS,
     isPublic: render.isPublic,
     source: render.source as RenderSource,

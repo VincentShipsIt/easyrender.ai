@@ -71,6 +71,7 @@
       "devDependencies": {
         "@easyrender/tsconfig": "workspace:*",
         "@types/node": "26.6.6",
+        "sharp": "0.35.5",
         "typescript": "6.0.3",
         "vitest": "5.1.0",
       },

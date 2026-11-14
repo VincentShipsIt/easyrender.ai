@@ -44,6 +44,7 @@ model User {
   apiKeys   ApiKey[]
   catalogItems CatalogItem[]
   shopifyShops ShopifyShop[]
+  viewSets  ViewSet[]
 
   @@map("user")
 }
@@ -146,6 +147,9 @@ model Render {
   buildPredictionId String?      @unique
   // A paid build redraws the sheet with the final model before the 3D build; this is that prediction.
   finalSheetPredictionId String? @unique
+  // True when the sheet is already the final 2K sheet (it came from a product views set), so the
+  // paid build skips the redraw and only charges for the 3D step.
+  hasFinalSheet     Boolean      @default(false)
   // Set by whichever call starts the 3D build, so webhook and polling cannot start it twice.
   buildClaimedAt    DateTime?
   costUsd           Float        @default(0)
@@ -165,6 +169,76 @@ model Render {
   @@index([anonId, createdAt])
   @@index([ipHash, createdAt])
   @@index([isPublic, status, createdAt])
+}
+
+// Product views: one photo in, nine packshots out on white, with no 3D build. A set is paid for
+// when it is created; its views can be polished one by one afterwards.
+enum ViewSetStatus {
+  drafting
+  processing
+  ready
+  failed
+}
+
+enum ProductViewStatus {
+  drawing
+  upscaling
+  ready
+}
+
+model ViewSet {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name              String?
+  prompt            String?
+  status            ViewSetStatus @default(drafting)
+  sourceKey         String
+  sourceUrl         String?
+  // The 3x3 sheet the views were cut from, and how many sheets were drawn (one automatic retry).
+  sheetKey          String?
+  sheetPredictionId String?       @unique
+  sheetAttempts     Int           @default(1)
+  // What the guardrails measured on the sheet and on each view, for comparing quality over time.
+  quality           Json?
+  credits           Int           @default(0)
+  costUsd           Float         @default(0)
+  error             String?
+  // The 3D render made from these views, once the owner chose to build one.
+  renderId          String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  views             ProductView[]
+
+  @@index([userId, createdAt])
+}
+
+model ProductView {
+  id           String            @id @default(cuid())
+  setId        String
+  set          ViewSet           @relation(fields: [setId], references: [id], onDelete: Cascade)
+  // One of the nine sheet positions: front, front_right, ..., top.
+  view         String
+  status       ProductViewStatus @default(drawing)
+  // The finished packshot (white background, fixed canvas). Empty until the first one is made.
+  key          String?
+  // The drawn view before it was upscaled and finished.
+  rawKey       String?
+  predictionId String?           @unique
+  // Redraws tried for this stage; the automatic ones stop at the harness limit.
+  attempts     Int               @default(0)
+  // What the owner asked to fix, and how many polishes they have paid for.
+  note         String?
+  polishes     Int               @default(0)
+  // True while the current stage is a paid polish, so a failed one is refunded and reverted.
+  isPolishing  Boolean           @default(false)
+  // The checks that ran on the current picture: the problems found, if any.
+  qa           Json?
+  version      Int               @default(0)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@unique([setId, view])
 }
 
 model CreditLedger {

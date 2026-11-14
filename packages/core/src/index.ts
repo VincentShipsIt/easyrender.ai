@@ -9,6 +9,7 @@ export * from './google-measurement';
 export * from './google-outbox';
 export * from './oauth';
 export * from './pricing-experiment';
+export * from './product-views';
 export * from './remote-image';
 export * from './render-materials';
 export * from './render-quality';

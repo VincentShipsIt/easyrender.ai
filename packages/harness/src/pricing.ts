@@ -20,6 +20,22 @@ export const BUILD_COST_USD = 0.09;
 export const RENDER_COST_USD = FINAL_SHEET_COST_USD + BUILD_COST_USD;
 export const RENDER_CREDITS = creditsFor(RENDER_COST_USD);
 
+// Product views: one photo in, nine packshots out on white, with no 3D build. The 2K sheet is drawn
+// once, each view is upscaled to the packshot size, and the price keeps room for one view the
+// checks send back for a redraw (a 1K single view plus its upscale). Nothing in it is 3D.
+export const PRODUCT_VIEW_COUNT = 9;
+export const UPSCALE_COST_USD = 0.002; // Real-ESRGAN, per output image
+export const VIEW_REDRAW_COST_USD = SHEET_COST_USD + UPSCALE_COST_USD;
+export const PRODUCT_VIEWS_COST_USD =
+  FINAL_SHEET_COST_USD + PRODUCT_VIEW_COUNT * UPSCALE_COST_USD + VIEW_REDRAW_COST_USD;
+export const PRODUCT_VIEWS_CREDITS = creditsFor(PRODUCT_VIEWS_COST_USD);
+// Polishing one view: the owner describes what is wrong and that view is drawn again.
+export const VIEW_POLISH_CREDITS = creditsFor(VIEW_REDRAW_COST_USD);
+// A 3D build from a finished set reuses its 2K sheet, so it only charges for what is left of a
+// full render: the 3D step.
+export const FINAL_SHEET_CREDITS = creditsFor(FINAL_SHEET_COST_USD);
+export const BUILD_FROM_VIEWS_CREDITS = RENDER_CREDITS - FINAL_SHEET_CREDITS;
+
 // Pay as you go: buy any number of credits at CREDIT_USD each, through one Stripe price of $0.01.
 export const PAYG = { min: 500, max: 100_000, presets: [1000, 2500, 5000, 10_000] };
 
