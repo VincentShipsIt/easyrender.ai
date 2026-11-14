@@ -14,6 +14,8 @@ import {
   DEFAULT_FINAL_SHEET_SETTINGS,
   DEFAULT_SHEET_SETTINGS,
   download,
+  ENLARGE_MODEL,
+  enlargeRequest,
   FINAL_SHEET_MODEL,
   finishView,
   imageSide,
@@ -21,6 +23,7 @@ import {
   isViewId,
   loadHarness,
   measureObject,
+  needsUpscale,
   type ObjectStats,
   PRODUCT_VIEWS_CREDITS,
   SHEET_MODEL,
@@ -29,9 +32,6 @@ import {
   sheetOutputUrl,
   sheetRequest,
   UPSCALE_CREDITS,
-  UPSCALE_MODEL,
-  upscaleFactor,
-  upscaleRequest,
   VIEW_POLISH_CREDITS,
   VIEWS,
   type ViewId,
@@ -389,7 +389,7 @@ async function finishUpscale(set: ViewSetWithViews, view: ProductView, url: stri
   if (url) {
     try {
       bytes = await download(url);
-      await addCost(set.id, UPSCALE_MODEL.costUsd);
+      await addCost(set.id, ENLARGE_MODEL.costUsd);
     } catch (error) {
       reportError(error, { viewSetId: set.id, view: view.view, stage: 'product_view_upscale' });
     }
@@ -521,11 +521,10 @@ async function startRedraw(set: ViewSetWithViews, view: ProductView, problems: V
 async function startUpscale(set: ViewSetWithViews, view: ProductView) {
   const raw = await getFile(view.rawKey as string);
   try {
-    const scale = upscaleFactor(await imageSide(raw));
-    if (scale === 1) return await finalize(view, raw);
+    if (!needsUpscale(await imageSide(raw))) return await finalize(view, raw);
     const client = replicate();
     const imageUrl = await client.upload(raw, 'view.png', 'image/png');
-    const request = upscaleRequest(imageUrl, scale);
+    const request = enlargeRequest(imageUrl);
     const prediction = await client.start(request.path, request.body, webhook(set.id));
     await db().productView.update({
       where: { id: view.id },

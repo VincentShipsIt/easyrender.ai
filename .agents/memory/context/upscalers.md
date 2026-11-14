@@ -6,8 +6,10 @@ type: reference
 ---
 
 The paid Upscale action runs `recraft-ai/recraft-crisp-upscale` on Replicate (`ENLARGE_MODEL` in
-`packages/harness/src/models.ts`). Product views still use Real-ESRGAN (`UPSCALE_MODEL`) to reach the
-2000 px packshot.
+`packages/harness/src/models.ts`). Product views use the same model for their upscale step (to reach
+the 2000 px packshot), switched from Real-ESRGAN on 2026-11-14 at Vincent's choice: a set went from
+52 to 65 credits and a polish from 12 to 14. Not A/B tested on live Replicate yet; a failed upscale
+still falls back to the drawn picture.
 
 Bake-off 2026-11-14 (workflow `upscale-bakeoff.yml`, 6 real pictures: a dim staged room, a portrait
 room, sofa, brass lamp, sneaker, painted barrel; plus 3 half-size ground-truth cases; judged by
@@ -35,7 +37,5 @@ is not meaningful; look at the crops.
 
 **Why:** Vincent asked for an upscaler for the interior designer and architect suite (#159). Designers
 want the picture sharper, not changed.
-**How to apply:** change the model in `ENLARGE_MODEL` and its cost in `ENLARGE_COST_USD` together.
-Before moving the product views pipeline from Real-ESRGAN to Crisp, note that a set would cost about
-13 credits more (nine views at $0.006 instead of $0.002) and run the pipeline A/B on live
-Replicate; that was not done.
+**How to apply:** change the model in `ENLARGE_MODEL` and its cost in `ENLARGE_COST_USD` together;
+the action, product views and every price follow from those two.

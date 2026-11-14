@@ -2,8 +2,8 @@ import { db } from '@easyrender/db';
 import {
   BUILD_FROM_VIEWS_CREDITS,
   DEFAULT_HARNESS,
+  ENLARGE_MODEL,
   PRODUCT_VIEWS_CREDITS,
-  UPSCALE_MODEL,
   VIEW_POLISH_CREDITS,
   VIEWS,
 } from '@easyrender/harness';
@@ -43,7 +43,7 @@ vi.mock('@easyrender/harness', async (importOriginal) => ({
         ? 'sheet'
         : path.includes('nano-banana-2-lite')
           ? 'redraw'
-          : body.version === UPSCALE_MODEL.version
+          : path === ENLARGE_MODEL.path
             ? 'upscale'
             : 'build';
       const queue = kind === 'build' ? [] : fake.next[kind];
@@ -205,7 +205,7 @@ run('product views (real database, scripted models)', () => {
     }
     // Nothing was charged beyond the set, and every view that passed went through the upscaler.
     expect(await balance(userId)).toBe(10);
-    expect(fake.starts.filter((s) => s.body.version === UPSCALE_MODEL.version)).toHaveLength(9);
+    expect(fake.starts.filter((s) => s.path === ENLARGE_MODEL.path)).toHaveLength(9);
     expect(done.costUsd).toBeGreaterThan(0);
   });
 

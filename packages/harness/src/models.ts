@@ -18,14 +18,7 @@ export const FINAL_SHEET_MODEL = {
   costUsd: 0.101, // per 2K output image; keep in step with FINAL_SHEET_COST_USD in pricing.ts
 } as const;
 
-// Upscales each product view to the packshot size. Pinned by version like the 3D build.
-export const UPSCALE_MODEL = {
-  name: 'nightmareai/real-esrgan',
-  version: 'b3ef194191d13140337468c916c2c5b96dd0cb06dffc032a022a31807f6a5ea8',
-  costUsd: 0.002, // per output image; keep in step with UPSCALE_COST_USD in pricing.ts
-} as const;
-
-// The paid Upscale action on a finished picture. Picked by a bake-off on interiors and product
+// The upscaler: the paid Upscale action and the upscale step of every product view. Picked by a bake-off on interiors and product
 // shots (.github/workflows/upscale-bakeoff.yml): it keeps the grain of wood, fabric and metal
 // without inventing texture, takes a 2000 px picture where Real-ESRGAN (2 MP input limit) fails,
 // answers in a few seconds and costs a fraction of the alternatives. It enlarges about 4x and
