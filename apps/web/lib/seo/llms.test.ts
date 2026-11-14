@@ -85,13 +85,14 @@ describe('llms.txt', () => {
         expect(path.startsWith(prefix), `${url} vs ${prefix}`).toBe(false);
       }
     }
-    // These languages publish their home and legal information, but no other sections yet.
+    // These languages publish their home, pricing and legal information.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       const paths = urlsIn(text)
         .map((url) => new URL(url).pathname)
         .filter((path) => path.startsWith(`/${locale}/`));
       expect(paths.sort()).toEqual(
         [
+          ROUTES.pricing.paths[locale],
           ROUTES.cookies.paths[locale],
           ROUTES.privacy.paths[locale],
           ROUTES.terms.paths[locale],
@@ -163,4 +164,10 @@ describe('the home FAQ copy', () => {
       .join(' ');
     expect(answers).not.toMatch(/product queue|pedida al producto|link-only|solo con enlace/i);
   });
+});
+
+it('offers one monthly plan and explicitly describes subscriber top-ups', () => {
+  expect(llmsTxt()).toContain('monthly plan: Pro');
+  expect(llmsTxt()).toContain('without changing plans');
+  expect(llmsTxt()).not.toMatch(/Creator|Scale/);
 });

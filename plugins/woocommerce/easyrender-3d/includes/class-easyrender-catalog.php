@@ -109,6 +109,26 @@ class Easyrender_Catalog {
 		return false;
 	}
 
+	/** The text for a product's state in the Products list. Empty state means it has not been sent. */
+	public static function state_label( string $state ): string {
+		switch ( $state ) {
+			case 'ready':
+				return __( '3D ready', 'easyrender-3d' );
+			case 'queued':
+			case 'drafting':
+			case 'building':
+				return __( 'In progress', 'easyrender-3d' );
+			case 'needs_credits':
+				return __( 'Waiting for credits', 'easyrender-3d' );
+			case 'needs_info':
+				return __( 'Needs a usable photo', 'easyrender-3d' );
+			case 'failed':
+				return __( 'Failed, will retry', 'easyrender-3d' );
+			default:
+				return '';
+		}
+	}
+
 	/** The AR page and QR URLs of a product with a finished model, else null. */
 	public static function links( int $product_id, string $base ): ?array {
 		if ( 'ready' !== get_post_meta( $product_id, self::META_STATE, true ) ) {

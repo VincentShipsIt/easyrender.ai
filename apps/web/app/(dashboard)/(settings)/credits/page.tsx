@@ -1,8 +1,8 @@
 import { getBalance, getBillingStatus } from '@easyrender/core';
 import {
   ENTERPRISE_BOOKING_URL,
-  PLAN_IDS,
   type PlanId,
+  PUBLIC_PLAN_IDS,
   RENDER_CREDITS,
   rendersFor,
 } from '@easyrender/harness';
@@ -27,7 +27,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { currentUser } from '@/lib/actor';
-import { currentPricing } from '@/lib/pricing';
+import { currentPricing, currentTopupPricing } from '@/lib/pricing';
 import { ROUTES } from '@/lib/seo/routes';
 import { absoluteUrl } from '@/lib/seo/site';
 import { cn } from '@/lib/utils';
@@ -95,7 +95,7 @@ function PlanCard({
 }
 
 export default async function CreditsPage({ searchParams }: PageProps<'/credits'>) {
-  const pricing = await currentPricing();
+  const [pricing, topup] = await Promise.all([currentPricing(), currentTopupPricing()]);
   const { plans: SUBSCRIPTION_PLANS } = pricing;
   const { status, next } = await searchParams;
   const user = await currentUser();
@@ -106,7 +106,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
   const usd = (cents: number) =>
     format.number(cents / 100, {
       style: 'currency',
-      currency: 'USD',
+      currency: pricing.currency.toUpperCase(),
       minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     });
   const credits = (value: number) => format.number(value);
@@ -159,7 +159,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
             <p className="text-muted-foreground">
               {t('description', {
                 credits: RENDER_CREDITS,
-                price: usd(RENDER_CREDITS * pricing.creditUsd * 100),
+                price: usd(RENDER_CREDITS * pricing.creditPrice * 100),
               })}
             </p>
           </>
@@ -173,6 +173,13 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
                 })
               : t('balance', { credits: credits(balance) })}
           </p>
+        )}
+        {billing.plan && billing.canManage && (
+          <BuyButton
+            label={t('manageSubscription')}
+            endpoint="/api/billing/portal"
+            variant="outline"
+          />
         )}
         {status === 'success' && (
           <Alert>
@@ -188,16 +195,28 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
       </div>
       <div className="grid gap-4 lg:grid-cols-3">
         <PlanCard
-          title={t('payg.title')}
-          description={t('payg.description', {
-            price: usd(pricing.payg.min * pricing.creditUsd * 100),
+          title={t(topup.plan ? 'topUp.title' : 'payg.title')}
+          description={t(topup.plan ? 'topUp.description' : 'payg.description', {
+            price: usd(pricing.payg.min * pricing.creditPrice * 100),
+            plan: topup.plan ? SUBSCRIPTION_PLANS[topup.plan].label : '',
           })}
-          price={usd(pricing.creditUsd * 100)}
+          price={format.number(topup.priceCents / topup.creditsPerUnit / 100, {
+            style: 'currency',
+            currency: topup.currency.toUpperCase(),
+            minimumFractionDigits: 2,
+            maximumFractionDigits: topup.plan ? 5 : 2,
+          })}
           note={t('payg.note')}
-          features={[t('payg.features.downloads'), t('payg.features.ar'), t('payg.features.api')]}
-          footer={user ? <PaygPicker pricingVariant={pricing.variant} /> : signUp}
+          features={[t('payg.features.downloads'), t('payg.features.api'), t('topUp.noExpiry')]}
+          footer={
+            user ? (
+              <PaygPicker pricingVariant={pricing.variant} currency={topup.currency} rate={topup} />
+            ) : (
+              signUp
+            )
+          }
         />
-        {PLAN_IDS.map((id) => {
+        {PUBLIC_PLAN_IDS.map((id) => {
           const plan = SUBSCRIPTION_PLANS[id];
           return (
             <PlanCard

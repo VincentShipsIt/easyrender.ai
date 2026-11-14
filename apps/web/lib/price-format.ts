@@ -17,6 +17,20 @@ export function formatUsd(
   }).format(value);
 }
 
+/** An amount in the buyer's currency and the visitor's locale, e.g. 18 EUR in es → "18 €". */
+export function formatMoney(
+  locale: string,
+  value: number,
+  currency: 'usd' | 'eur',
+  options: Omit<Intl.NumberFormatOptions, 'style' | 'currency'> = {},
+): string {
+  return new Intl.NumberFormat(intlLocale(locale), {
+    ...options,
+    style: 'currency',
+    currency: currency.toUpperCase(),
+  }).format(value);
+}
+
 /** A plain number (credit counts) in the visitor's locale. */
 export function formatCount(locale: string, value: number): string {
   return new Intl.NumberFormat(intlLocale(locale)).format(value);

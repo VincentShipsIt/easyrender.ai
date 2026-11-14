@@ -1,9 +1,12 @@
-import { PLAN_IDS, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
+import { PUBLIC_PLAN_IDS, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
 import { ChevronDown } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
+import { PaygPicker } from '@/components/payg-picker';
 import { PlanCards } from '@/components/pricing/plan-cards';
 import { PricingExposure } from '@/components/pricing-exposure';
+import { SiteLink as Link } from '@/components/site-link';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
@@ -14,14 +17,17 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import type { Locale } from '@/i18n/config';
-import { formatCount, formatUsd } from '@/lib/price-format';
-import { currentPricing } from '@/lib/pricing';
+import { formatCount, formatMoney } from '@/lib/price-format';
+import { currentPricing, currentTopupPricing } from '@/lib/pricing';
+import { ROUTES } from '@/lib/seo/routes';
 import { FAQ_ITEM_KEYS } from './faq-keys';
 
-/** Money in the visitor's language: whole dollars without cents, the rest with two. */
-function dollars(locale: Locale) {
+/** Money in the visitor's language and currency: whole units without cents, the rest with two. */
+function dollars(locale: Locale, currency: 'usd' | 'eur') {
   return (cents: number) =>
-    formatUsd(locale, cents / 100, { minimumFractionDigits: cents % 100 === 0 ? 0 : 2 });
+    formatMoney(locale, cents / 100, currency, {
+      minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
+    });
 }
 
 /**
@@ -33,14 +39,14 @@ export async function pricingFaqItems(locale: Locale) {
     getTranslations({ locale, namespace: 'Pricing.faq' }),
     currentPricing(),
   ]);
-  const usd = dollars(locale);
-  const { plans, payg, creditUsd } = pricing;
+  const usd = dollars(locale, pricing.currency);
+  const { plans, payg, creditPrice, currency } = pricing;
   const values = {
     credits: RENDER_CREDITS,
-    price: formatUsd(locale, RENDER_CREDITS * creditUsd),
-    unit: formatUsd(locale, creditUsd),
+    price: formatMoney(locale, RENDER_CREDITS * creditPrice, currency),
+    unit: formatMoney(locale, creditPrice, currency),
     min: formatCount(locale, payg.min),
-    minPrice: usd(payg.min * creditUsd * 100),
+    minPrice: usd(payg.min * creditPrice * 100),
     plan: plans.pro.label,
     planCredits: formatCount(locale, plans.pro.monthlyCredits),
     planModels: rendersFor(plans.pro.monthlyCredits),
@@ -58,28 +64,29 @@ export async function pricingFaqItems(locale: Locale) {
  * variant); the purchase itself happens on /credits, behind sign-up.
  */
 export async function PricingView({ locale }: { locale: Locale }) {
-  const [t, pricing, items] = await Promise.all([
+  const [t, pricing, items, topup] = await Promise.all([
     getTranslations({ locale, namespace: 'Pricing' }),
     currentPricing(),
     pricingFaqItems(locale),
+    currentTopupPricing(),
   ]);
   const tPlans = await getTranslations({ locale, namespace: 'Landing.pricing' });
-  const usd = dollars(locale);
-  const { plans, payg, creditUsd } = pricing;
-  const price = formatUsd(locale, RENDER_CREDITS * creditUsd);
+  const usd = dollars(locale, pricing.currency);
+  const { plans, payg, creditPrice, currency } = pricing;
+  const price = formatMoney(locale, RENDER_CREDITS * creditPrice, currency);
   const perCredit = (value: number) =>
-    formatUsd(locale, value, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+    formatMoney(locale, value, currency, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
 
   const rows = [
     {
       key: 'payg',
       name: tPlans('payg.name'),
-      price: t('compare.from', { value: usd(payg.min * creditUsd * 100) }),
+      price: t('compare.from', { value: usd(payg.min * creditPrice * 100) }),
       credits: t('compare.from', { value: formatCount(locale, payg.min) }),
       models: t('compare.from', { value: rendersFor(payg.min) }),
-      unit: perCredit(creditUsd),
+      unit: perCredit(creditPrice),
     },
-    ...PLAN_IDS.map((id) => ({
+    ...PUBLIC_PLAN_IDS.map((id) => ({
       key: id,
       name: plans[id].label,
       price: t('compare.perMonth', { value: usd(plans[id].priceCents) }),
@@ -110,6 +117,10 @@ export async function PricingView({ locale }: { locale: Locale }) {
         <p className="text-lg text-muted-foreground text-pretty">
           {t('description', { credits: RENDER_CREDITS, price })}
         </p>
+        <Button size="lg" asChild>
+          <Link href={`${ROUTES.home.paths[locale]}#try`}>{tPlans('tryFree')}</Link>
+        </Button>
+        <p className="text-sm text-muted-foreground">{tPlans('noCard')}</p>
       </header>
 
       <div id="plans" className="mt-12">
@@ -117,13 +128,22 @@ export async function PricingView({ locale }: { locale: Locale }) {
         <p className="mt-4 text-center text-sm text-muted-foreground">{t('note')}</p>
       </div>
 
+      {topup.plan && (
+        <section className="mx-auto mt-8 max-w-lg space-y-4" aria-labelledby="pricing-topups">
+          <h2 id="pricing-topups" className="text-2xl font-semibold tracking-tight">
+            {t('topUpTitle')}
+          </h2>
+          <PaygPicker pricingVariant={pricing.variant} currency={topup.currency} rate={topup} />
+        </section>
+      )}
+
       <section className="mt-16 space-y-4" aria-labelledby="pricing-compare">
         <div className="space-y-1">
           <h2 id="pricing-compare" className="text-2xl font-semibold tracking-tight">
             {t('compare.title')}
           </h2>
           <p className="max-w-2xl text-muted-foreground text-pretty">
-            {t('compare.description', { unit: formatUsd(locale, creditUsd) })}
+            {t('compare.description', { unit: formatMoney(locale, creditPrice, currency) })}
           </p>
         </div>
         <Table>

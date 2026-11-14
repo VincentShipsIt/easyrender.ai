@@ -18,6 +18,37 @@ export const FINAL_SHEET_MODEL = {
   costUsd: 0.101, // per 2K output image; keep in step with FINAL_SHEET_COST_USD in pricing.ts
 } as const;
 
+// Upscales each product view to the packshot size. Pinned by version like the 3D build.
+export const UPSCALE_MODEL = {
+  name: 'nightmareai/real-esrgan',
+  version: 'b3ef194191d13140337468c916c2c5b96dd0cb06dffc032a022a31807f6a5ea8',
+  costUsd: 0.002, // per output image; keep in step with UPSCALE_COST_USD in pricing.ts
+} as const;
+
+// The paid Upscale action on a finished picture. Picked by a bake-off on interiors and product
+// shots (.github/workflows/upscale-bakeoff.yml): it keeps the grain of wood, fabric and metal
+// without inventing texture, takes a 2000 px picture where Real-ESRGAN (2 MP input limit) fails,
+// answers in a few seconds and costs a fraction of the alternatives. It enlarges about 4x and
+// caps the result at ENLARGE_MAX_SIDE; there is no scale setting.
+export const ENLARGE_MODEL = {
+  name: 'recraft-ai/recraft-crisp-upscale',
+  path: '/models/recraft-ai/recraft-crisp-upscale/predictions',
+  costUsd: 0.006, // per output image (Replicate lists about 166 images per $1); keep in step with ENLARGE_COST_USD in pricing.ts
+} as const;
+
+// The longest side an enlarged picture may have, and so the longest side one is made from: a
+// picture over half of it would not even double.
+export const ENLARGE_MAX_SIDE = 4096;
+
+export function enlargeFactor(side: number): number | null {
+  if (side < 1 || side > ENLARGE_MAX_SIDE / 2) return null;
+  return Math.min(4, Math.floor(ENLARGE_MAX_SIDE / side));
+}
+
+export function enlargeRequest(imageUrl: string) {
+  return { path: ENLARGE_MODEL.path, body: { input: { image: imageUrl } } };
+}
+
 export const BUILD_MODEL = {
   name: 'firtoz/trellis',
   version: 'e8f6c45206993f297372f5436b90350817bd9b4a0d52d2a76df50c1c8afa2b3c',

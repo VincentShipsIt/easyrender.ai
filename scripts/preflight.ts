@@ -12,6 +12,7 @@ const steps: Array<[string, string[]]> = [
 // The store plugins are PHP; CI checks them in their own job, and so does this when php is installed.
 if (Bun.which('php')) {
   steps.push(['woocommerce plugin', ['php', 'plugins/woocommerce/easyrender-3d/tests/run.php']]);
+  steps.push(['prestashop module', ['php', 'plugins/prestashop/easyrender3d/tests/run.php']]);
 }
 
 let failed = 0;

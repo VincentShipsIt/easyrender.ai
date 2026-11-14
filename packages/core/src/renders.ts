@@ -13,6 +13,7 @@ import {
   cutCells,
   DEFAULT_FINAL_SHEET_SETTINGS,
   download,
+  FINAL_SHEET_CREDITS,
   FINAL_SHEET_MODEL,
   findGlbUrl,
   isSettled,
@@ -25,12 +26,14 @@ import {
   selectSkillFrom,
   sheetOutputUrl,
   sheetRequest,
+  UPSCALE_CREDITS,
 } from '@easyrender/harness';
 import { captureRender, deferAnalytics } from './analytics';
 import { type Attribution, classifyCountry, normalizeAttribution } from './attribution';
 import { config } from './config';
 import { grantCredits, spendCredits } from './credits';
 import { AppError, notFound } from './errors';
+import { type RenderEditView, recordEdit, toEditView } from './render-edits';
 import { type RenderQuality, withQuality } from './render-quality';
 import { reportError } from './report';
 import { getFile, putFile } from './storage';
@@ -46,14 +49,18 @@ export type Actor = {
 export type RenderSource = 'web' | 'mcp' | 'api';
 
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
-const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
+export const IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const DAY_MS = 24 * 60 * 60 * 1000;
 // A sheet takes ~1 minute and a 3D build ~2: anything still running after this has been lost.
 const STALE_MS = 45 * 60 * 1000;
 
 const harness = () => loadHarness({ token: config.harnessToken() });
 const replicate = () => createReplicate(config.replicateToken());
-const extension = (contentType: string) =>
+// What the sheet prompt is told about the object: the owner's fix note first (so the length cap
+// never cuts it), then their original prompt.
+const sheetNotes = (render: Pick<Render, 'prompt' | 'sheetNote'>) =>
+  cleanNote([render.sheetNote, render.prompt].filter(Boolean).join('. ')) || null;
+export const extension = (contentType: string) =>
   contentType.split('/')[1]?.replace('jpeg', 'jpg') ?? 'bin';
 
 export function canAccess(render: Pick<Render, 'userId' | 'anonId'>, actor: Actor): boolean {
@@ -202,6 +209,24 @@ async function fail(id: string, error: unknown) {
   reportError(error, { renderId: id, stage: 'render' });
   const render = await db().render.findUnique({ where: { id } });
   if (!render || !['drafting', 'rendering'].includes(render.status)) return;
+  // A redraw that fails must not cost the owner the sheet they already have: it goes back to
+  // the preview, the redraw is refunded, and nothing else changes.
+  if (render.status === 'drafting' && render.sheetKey) {
+    const { count: reverted } = await db().render.updateMany({
+      where: { id, status: 'drafting' },
+      data: { status: 'preview_ready', error: null },
+    });
+    if (reverted && render.userId) {
+      await grantCredits({
+        userId: render.userId,
+        amount: SHEET_CREDITS,
+        key: `refund:${render.id}:redraw:${render.sheetRedraws}`,
+        reason: 'sheet_redraw_failed',
+        renderId: render.id,
+      });
+    }
+    return;
+  }
   const { count } = await db().render.updateMany({
     where: { id, status: render.status },
     data: { status: 'failed', error: message.slice(0, 500) },
@@ -282,24 +307,27 @@ export async function advance(id: string): Promise<Render | null> {
         },
       });
       if (count === 0) return db().render.findUnique({ where: { id } });
+      // A redraw is not a new preview: it was never counted as one, nor does it use the allowance.
+      const isRedraw = Boolean(render.sheetKey);
       const duration = Date.now() - render.createdAt.getTime();
-      deferAnalytics(async () => {
-        const used = await db().render.count({
-          where: {
-            createdAt: { gte: new Date(Date.now() - DAY_MS) },
-            status: { not: 'failed' },
-            OR: [
-              ...(render.userId ? [{ userId: render.userId }] : []),
-              ...(render.anonId ? [{ anonId: render.anonId }] : []),
-              ...(render.ipHash ? [{ ipHash: render.ipHash }] : []),
-            ],
-          },
+      if (!isRedraw)
+        deferAnalytics(async () => {
+          const used = await db().render.count({
+            where: {
+              createdAt: { gte: new Date(Date.now() - DAY_MS) },
+              status: { not: 'failed' },
+              OR: [
+                ...(render.userId ? [{ userId: render.userId }] : []),
+                ...(render.anonId ? [{ anonId: render.anonId }] : []),
+                ...(render.ipHash ? [{ ipHash: render.ipHash }] : []),
+              ],
+            },
+          });
+          captureRender('preview_ready', render, {
+            duration_ms: duration,
+            free_previews_left_today: Math.max(0, config.freePreviewsPerDay() - used),
+          });
         });
-        captureRender('preview_ready', render, {
-          duration_ms: duration,
-          free_previews_left_today: Math.max(0, config.freePreviewsPerDay() - used),
-        });
-      });
     }
 
     // A paid build redraws the sheet with the final model first; when it is done, the 3D build starts.
@@ -404,9 +432,10 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     throw new AppError('This render cannot be built', 409, 'bad_state');
   }
 
-  // An angle sheet bought earlier already counts toward the price.
+  // An angle sheet bought earlier already counts toward the price, and so does the final sheet
+  // of a product views set, which the build then reuses instead of drawing again.
   const alreadyPaid = render.credits;
-  const owed = Math.max(0, RENDER_CREDITS - alreadyPaid);
+  const owed = Math.max(0, buildTotal(render) - alreadyPaid);
 
   // Claim the render first so a double click cannot spend twice.
   const { count } = await db().render.updateMany({
@@ -431,6 +460,7 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     throw error;
   }
 
+  await recordEdit(id, 'build', { credits: owed });
   captureRender(
     'render_start',
     { ...render, userId: actor.userId, credits: alreadyPaid + owed },
@@ -439,18 +469,19 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
   try {
     // A paid build draws the final sheet first (the visitor saw a cheaper draft); the 3D build
     // starts when it is done, in advance(). Without a draft the build runs from the photo alone.
-    if (render.sheetKey) {
+    if (render.sheetKey && !render.hasFinalSheet) {
       const client = replicate();
       const source = await getFile(render.sourceKey);
       const sourceUrl = await client.upload(source, 'source.jpg', 'image/jpeg');
       const recipe = await harness();
+      const notes = sheetNotes(render);
       const request = sheetRequest(
         sourceUrl,
-        render.prompt,
-        selectSkillFrom(recipe.skills, render.name, render.prompt),
+        notes,
+        selectSkillFrom(recipe.skills, render.name, notes),
         DEFAULT_FINAL_SHEET_SETTINGS,
         recipe.sheetPrompt,
-        selectMaterialsFrom(recipe.materials, render.name, render.prompt),
+        selectMaterialsFrom(recipe.materials, render.name, notes),
       );
       try {
         const prediction = await client.start(
@@ -535,6 +566,7 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
     throw error;
   }
 
+  await recordEdit(id, 'sheet', { credits: SHEET_CREDITS });
   captureRender(
     'preview_start',
     { ...render, userId: actor.userId },
@@ -545,32 +577,7 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
     },
   );
   try {
-    const client = replicate();
-    const bytes = await getFile(render.sourceKey);
-    const contentType = render.sourceKey.endsWith('.png')
-      ? 'image/png'
-      : render.sourceKey.endsWith('.webp')
-        ? 'image/webp'
-        : 'image/jpeg';
-    const sourceUrl = await client.upload(bytes, `source.${extension(contentType)}`, contentType);
-    const recipe = await harness();
-    const request = sheetRequest(
-      sourceUrl,
-      render.prompt,
-      selectSkillFrom(recipe.skills, render.name, render.prompt),
-      recipe.sheet,
-      recipe.sheetPrompt,
-      selectMaterialsFrom(recipe.materials, render.name, render.prompt),
-    );
-    const prediction = await client.start(
-      request.path,
-      request.body,
-      config.webhookUrl(`/api/webhooks/replicate?render=${id}`),
-    );
-    return await db().render.update({
-      where: { id },
-      data: { sourceUrl, sheetPredictionId: prediction.id },
-    });
+    return await startSheetPrediction(render);
   } catch (error) {
     await fail(id, error);
     throw new AppError(
@@ -581,6 +588,107 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
   }
 }
 
+// Draws the angle sheet from the stored photo and notes, and records the prediction.
+async function startSheetPrediction(render: Render): Promise<Render> {
+  const client = replicate();
+  const bytes = await getFile(render.sourceKey);
+  const contentType = render.sourceKey.endsWith('.png')
+    ? 'image/png'
+    : render.sourceKey.endsWith('.webp')
+      ? 'image/webp'
+      : 'image/jpeg';
+  const sourceUrl = await client.upload(bytes, `source.${extension(contentType)}`, contentType);
+  const recipe = await harness();
+  const notes = sheetNotes(render);
+  const request = sheetRequest(
+    sourceUrl,
+    notes,
+    selectSkillFrom(recipe.skills, render.name, notes),
+    recipe.sheet,
+    recipe.sheetPrompt,
+    selectMaterialsFrom(recipe.materials, render.name, notes),
+  );
+  const prediction = await client.start(
+    request.path,
+    request.body,
+    config.webhookUrl(`/api/webhooks/replicate?render=${render.id}`),
+  );
+  return db().render.update({
+    where: { id: render.id },
+    data: { sourceUrl, sheetPredictionId: prediction.id },
+  });
+}
+
+// Redraws the angle sheet of a preview, steered by what the owner says is wrong with it. It costs
+// one sheet (SHEET_CREDITS), separate from the 3D render's price, and is refunded if it fails; the
+// sheet they already have is only replaced when the new one passes the guardrails. Every redraw
+// starts from the photo, so the note has to describe everything to fix.
+export async function redrawSheet(id: string, actor: Actor, note: string): Promise<Render> {
+  if (!actor.userId) throw new AppError('Sign in to redraw the angle sheet', 401, 'sign_in');
+  const fix = cleanNote(note);
+  if (!fix) throw new AppError('Describe what to fix in the angle sheet', 400, 'empty_note');
+  enforce(checkNote(fix), 400);
+  const render = await db().render.findUnique({ where: { id } });
+  if (!render || !canAccess(render, actor)) throw notFound();
+  if (render.status !== 'preview_ready' || !render.sheetKey) {
+    throw new AppError('This render has no angle sheet to redraw', 409, 'bad_state');
+  }
+
+  // Claim first so a double click cannot spend twice. The old prediction id is dropped so a
+  // redraw that never started cannot be mistaken for the sheet it replaces.
+  const { count } = await db().render.updateMany({
+    where: { id, status: 'preview_ready', sheetKey: { not: null } },
+    data: {
+      status: 'drafting',
+      userId: actor.userId,
+      sheetRedraws: { increment: 1 },
+      sheetNote: fix,
+      sheetPredictionId: null,
+      // The redraw is a draft again, so the build draws its final sheet as usual.
+      hasFinalSheet: false,
+    },
+  });
+  if (count === 0) return (await db().render.findUnique({ where: { id } })) as Render;
+  const claimed = { ...render, status: 'drafting' as const, sheetNote: fix };
+
+  try {
+    await spendCredits({
+      userId: actor.userId,
+      amount: SHEET_CREDITS,
+      key: `redraw:${id}:${render.sheetRedraws + 1}`,
+      reason: 'angle_sheet_redraw',
+      renderId: id,
+    });
+  } catch (error) {
+    await db().render.update({
+      where: { id },
+      data: {
+        status: 'preview_ready',
+        sheetRedraws: { decrement: 1 },
+        sheetNote: render.sheetNote,
+        sheetPredictionId: render.sheetPredictionId,
+      },
+    });
+    throw error;
+  }
+
+  await recordEdit(id, 'sheet_redraw', { note: fix, credits: SHEET_CREDITS });
+  try {
+    return await startSheetPrediction(claimed);
+  } catch (error) {
+    await fail(id, error);
+    throw new AppError(
+      'Could not redraw the angle sheet. Your credits were refunded.',
+      502,
+      'upstream',
+    );
+  }
+}
+
+// What a full build costs this render: a sheet that is already the final one is not drawn again.
+const buildTotal = (render: Pick<Render, 'hasFinalSheet'>) =>
+  render.hasFinalSheet ? RENDER_CREDITS - FINAL_SHEET_CREDITS : RENDER_CREDITS;
+
 export type RenderView = {
   id: string;
   status: Render['status'];
@@ -590,6 +698,8 @@ export type RenderView = {
   hasPreview: boolean;
   // True once the 3x3 angle sheet exists. Without it the preview is the plain photo.
   hasSheet: boolean;
+  // What the owner last asked to fix in the sheet, to prefill the next redraw.
+  sheetNote: string | null;
   hasModel: boolean;
   // Changes when the render does, including its material edits: a viewer adds it to the model URL
   // so it never shows a cached copy of an older look.
@@ -597,6 +707,9 @@ export type RenderView = {
   credits: number;
   renderCredits: number;
   sheetCredits: number;
+  // What enlarging the angle sheet costs, and whether it can be done yet (the 3D model is paid).
+  upscaleCredits: number;
+  canUpscale: boolean;
   isPublic: boolean;
   source: RenderSource;
   createdAt: string;
@@ -611,12 +724,15 @@ export function toView(render: Render): RenderView {
     error: render.status === 'failed' ? 'Generation failed. Credits, if any, were refunded.' : null,
     hasPreview: render.status !== 'drafting' && render.status !== 'failed',
     hasSheet: Boolean(render.sheetKey),
+    sheetNote: render.sheetNote,
     hasModel: render.status === 'ready' && Boolean(render.glbKey),
     modelVersion: render.updatedAt.getTime(),
     // A failed render was refunded in full, so nothing counts as spent on it.
     credits: render.status === 'failed' ? 0 : render.credits,
-    renderCredits: RENDER_CREDITS,
+    renderCredits: buildTotal(render),
     sheetCredits: SHEET_CREDITS,
+    upscaleCredits: UPSCALE_CREDITS,
+    canUpscale: Boolean(render.sheetKey) && (render.status === 'ready' || render.hasFinalSheet),
     isPublic: render.isPublic,
     source: render.source as RenderSource,
     createdAt: render.createdAt.toISOString(),
@@ -625,6 +741,19 @@ export function toView(render: Render): RenderView {
 
 // Reads a render the actor may see (their own, or a public one), nudging its pipeline forward
 // when it is still running.
+// The render's history, newest first. Only the owner can read it.
+export async function listEdits(id: string, actor: Actor): Promise<RenderEditView[]> {
+  const render = await db().render.findUnique({ where: { id } });
+  if (!render || !canAccess(render, actor)) throw notFound();
+  if (!actor.userId || render.userId !== actor.userId) return [];
+  const rows = await db().renderEdit.findMany({
+    where: { renderId: id },
+    orderBy: { createdAt: 'desc' },
+    take: 100,
+  });
+  return rows.map(toEditView).filter((edit): edit is RenderEditView => edit !== null);
+}
+
 export async function getRender(id: string, actor: Actor): Promise<Render> {
   const render = await db().render.findUnique({ where: { id } });
   if (!render || !canView(render, actor)) throw notFound();

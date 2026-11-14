@@ -1,6 +1,6 @@
 import { deflateSync } from 'node:zlib';
 import { db } from '@easyrender/db';
-import { RENDER_CREDITS, SHEET_CREDITS } from '@easyrender/harness';
+import { RENDER_CREDITS, SHEET_CREDITS, topupAmountCents, topupPricing } from '@easyrender/harness';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Runs against a real Postgres: set TEST_DATABASE_URL (a scratch database with the schema pushed).
@@ -47,6 +47,7 @@ run('credits and generation billing (real database)', () => {
   const load = async () => ({
     credits: await import('./credits'),
     renders: await import('./renders'),
+    edits: await import('./render-edits'),
   });
 
   const newUser = async (credits: number) => {
@@ -175,6 +176,156 @@ run('credits and generation billing (real database)', () => {
     const second = await newRender(userId);
     replicate.fail = true;
     await expect(renders.startSheet(second.id, { userId })).rejects.toMatchObject({ status: 502 });
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+  });
+
+  it('redrawSheet debits one sheet once, keeps the note, and counts nothing toward the build', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS * 3);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png', credits: 0 });
+    await Promise.allSettled([
+      renders.redrawSheet(render.id, { userId }, '  Back legs\nare too thick '),
+      renders.redrawSheet(render.id, { userId }, 'Back legs are too thick'),
+    ]);
+    expect(await balance(userId)).toBe(SHEET_CREDITS * 2);
+    const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+    expect(after.status).toBe('drafting');
+    expect(after.sheetNote).toBe('Back legs are too thick');
+    expect(after.sheetRedraws).toBe(1);
+    expect(after.credits).toBe(0);
+    expect(after.sheetKey).toBe('fake:sheets/old.png');
+    // The note reaches the sheet prompt that Replicate is given.
+    const body = replicate.start.mock.calls[0]?.[1] as { input: { prompt: string } };
+    expect(body.input.prompt).toContain('Back legs are too thick');
+  });
+
+  it('the history lists each paid step once, newest first, and only to the owner', async () => {
+    const { renders, edits } = await load();
+    const userId = await newUser(SHEET_CREDITS * 4);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png', credits: 0 });
+    // A double click is one redraw, so it is one row.
+    await Promise.allSettled([
+      renders.redrawSheet(render.id, { userId }, 'Back legs are too thick'),
+      renders.redrawSheet(render.id, { userId }, 'Back legs are too thick'),
+    ]);
+    await edits.recordEdit(render.id, 'material');
+    const history = await renders.listEdits(render.id, { userId });
+    expect(history.map((edit) => edit.kind)).toEqual(['material', 'sheet_redraw']);
+    expect(history[1]).toMatchObject({ note: 'Back legs are too thick', credits: SHEET_CREDITS });
+    expect(history[0]).toMatchObject({ note: null, credits: 0 });
+    // Someone else, or a visitor, cannot read it.
+    await expect(renders.listEdits(render.id, { userId: 'someone-else' })).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(renders.listEdits(render.id, { anonId: 'visitor' })).rejects.toMatchObject({
+      status: 404,
+    });
+  });
+
+  it('a refused redraw leaves no history', async () => {
+    const { renders } = await load();
+    const poor = await newUser(0);
+    const render = await newRender(poor, { sheetKey: 'fake:sheets/old.png' });
+    await expect(
+      renders.redrawSheet(render.id, { userId: poor }, 'Seat is flat'),
+    ).rejects.toMatchObject({ status: 402 });
+    expect(await db().renderEdit.count({ where: { renderId: render.id } })).toBe(0);
+  });
+
+  it('the sheet and the build each add a row with what they cost', async () => {
+    const { renders } = await load();
+    const userId = await newUser(RENDER_CREDITS + SHEET_CREDITS);
+    const render = await newRender(userId, { credits: 0 });
+    await renders.startSheet(render.id, { userId });
+    const rows = await db().renderEdit.findMany({ where: { renderId: render.id } });
+    expect(rows.map((row) => [row.kind, row.credits])).toEqual([['sheet', SHEET_CREDITS]]);
+    const second = await newRender(userId, { credits: 0 });
+    await renders.startBuild(second.id, { userId });
+    const built = await db().renderEdit.findMany({ where: { renderId: second.id } });
+    expect(built.map((row) => row.kind)).toEqual(['build']);
+    expect(built[0]?.credits).toBe(RENDER_CREDITS);
+  });
+
+  it('a redraw that Replicate fails is refunded and the owner keeps the sheet they had', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png' });
+    replicate.start.mockResolvedValue({ id: `pred_redraw_${userId}` });
+    await renders.redrawSheet(render.id, { userId }, 'Seat is flat');
+    expect(await balance(userId)).toBe(0);
+    replicate.get.mockResolvedValue({ status: 'failed', error: 'boom' });
+    await renders.advance(render.id);
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+    const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+    expect(after.status).toBe('preview_ready');
+    expect(after.sheetKey).toBe('fake:sheets/old.png');
+    // Polling again never refunds twice.
+    await renders.advance(render.id);
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+  });
+
+  it('a redraw that cannot start is refunded, and can be tried again', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png' });
+    replicate.fail = true;
+    await expect(renders.redrawSheet(render.id, { userId }, 'Seat is flat')).rejects.toMatchObject({
+      status: 502,
+    });
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+    expect((await db().render.findUniqueOrThrow({ where: { id: render.id } })).status).toBe(
+      'preview_ready',
+    );
+    replicate.fail = false;
+    await renders.redrawSheet(render.id, { userId }, 'Seat is flat');
+    expect(await balance(userId)).toBe(0);
+  });
+
+  it('a finished redraw replaces the sheet and shows in the next paid sheet prompt', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS + RENDER_CREDITS);
+    const render = await newRender(userId, {
+      sheetKey: 'fake:sheets/old.png',
+      prompt: 'oak table',
+    });
+    replicate.start.mockResolvedValue({ id: `pred_done_${userId}` });
+    await renders.redrawSheet(render.id, { userId }, 'Four legs, not three');
+    replicate.get.mockResolvedValue({ status: 'succeeded', output: 'https://r.test/new.png' });
+    await renders.advance(render.id);
+    const done = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+    expect(done.status).toBe('preview_ready');
+    expect(done.sheetKey).toBe('fake:sheets/sheet.png');
+    // The paid build draws its final sheet with the same fix.
+    replicate.start.mockClear();
+    await renders.startBuild(render.id, { userId });
+    const body = replicate.start.mock.calls[0]?.[1] as { input: { prompt: string } };
+    expect(body.input.prompt).toContain('Four legs, not three');
+    expect(body.input.prompt).toContain('oak table');
+  });
+
+  it('redrawSheet refuses an empty note, a missing sheet, other people and a low balance', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png' });
+    await expect(renders.redrawSheet(render.id, { userId }, '   ')).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(
+      renders.redrawSheet(render.id, { userId: 'someone-else' }, 'Seat is flat'),
+    ).rejects.toMatchObject({ status: 404 });
+    const noSheet = await newRender(userId);
+    await expect(renders.redrawSheet(noSheet.id, { userId }, 'Seat is flat')).rejects.toMatchObject(
+      { status: 409 },
+    );
+    const poor = await newUser(0);
+    const poorRender = await newRender(poor, { sheetKey: 'fake:sheets/old.png' });
+    await expect(
+      renders.redrawSheet(poorRender.id, { userId: poor }, 'Seat is flat'),
+    ).rejects.toMatchObject({ status: 402 });
+    expect(await balance(poor)).toBe(0);
+    expect((await db().render.findUniqueOrThrow({ where: { id: poorRender.id } })).status).toBe(
+      'preview_ready',
+    );
     expect(await balance(userId)).toBe(SHEET_CREDITS);
   });
 
@@ -425,6 +576,96 @@ run('credits and generation billing (real database)', () => {
         (await db().purchase.findUniqueOrThrow({ where: { stripeSessionId: sessionId } })).status,
       ).toBe('paid');
     });
+
+    it.each(['creator', 'pro', 'scale'])(
+      'keeps %s unchanged after a top-up, duplicate webhook and cancellation',
+      async (plan) => {
+        const { getBillingStatus } = await import('./billing');
+        const userId = await newUser(120);
+        await db().user.update({
+          where: { id: userId },
+          data: {
+            subscriptionPlan: plan,
+            subscriptionStatus: 'active',
+            subscriptionId: `sub_${userId}`,
+          },
+        });
+        const sessionId = `cs_topup_${userId}`;
+        const purchase = await db().purchase.create({
+          data: {
+            userId,
+            stripeSessionId: sessionId,
+            packId: `topup_${plan}`,
+            currency: 'eur',
+            credits: 1000,
+            amountCents: topupAmountCents(
+              1000,
+              topupPricing({ status: 'active', plan, variant: 'control' }, 'control', 'eur'),
+            ),
+          },
+        });
+        const event = {
+          type: 'checkout.session.completed',
+          data: {
+            object: {
+              id: sessionId,
+              mode: 'payment',
+              amount_total: purchase.amountCents,
+              currency: 'eur',
+              metadata: { credits: '999999', topup_plan: 'forged' },
+              payment_status: 'paid',
+              client_reference_id: userId,
+              customer: `cus_${userId}`,
+            },
+          },
+        };
+        // Unpaid and mismatched deliveries must not grant; delayed success and replay grant once.
+        await send({
+          ...event,
+          data: { object: { ...event.data.object, payment_status: 'unpaid' } },
+        });
+        expect(await balance(userId)).toBe(120);
+        await expect(
+          send({ ...event, data: { object: { ...event.data.object, amount_total: 1 } } }),
+        ).rejects.toMatchObject({ code: 'purchase_mismatch' });
+        await expect(
+          send({ ...event, data: { object: { ...event.data.object, currency: 'usd' } } }),
+        ).rejects.toMatchObject({ code: 'purchase_mismatch' });
+        expect(await balance(userId)).toBe(120);
+        await send({ ...event, type: 'checkout.session.async_payment_succeeded' });
+        await send(event);
+        expect(await balance(userId)).toBe(1120);
+        expect(await getBillingStatus(userId)).toEqual({ plan, canManage: true });
+        expect(
+          await db().creditLedger.findMany({
+            where: { userId },
+            select: { delta: true, reason: true, purchaseId: true },
+          }),
+        ).toEqual([{ delta: 1000, reason: 'purchase', purchaseId: purchase.id }]);
+        await send({
+          type: 'customer.subscription.deleted',
+          data: {
+            object: {
+              id: `sub_${userId}`,
+              status: 'canceled',
+              customer: `cus_${userId}`,
+              metadata: { userId, plan },
+            },
+          },
+        });
+        expect((await getBillingStatus(userId)).plan).toBeNull();
+        expect(await balance(userId)).toBe(1120);
+        const future = new Date();
+        future.setFullYear(future.getFullYear() + 2);
+        vi.useFakeTimers({ toFake: ['Date'] });
+        try {
+          vi.setSystemTime(future);
+          expect(await balance(userId)).toBe(1120);
+        } finally {
+          vi.useRealTimers();
+        }
+      },
+    );
 
     it('does not credit an unpaid checkout', async () => {
       const userId = await newUser(0);

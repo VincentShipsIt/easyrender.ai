@@ -32,8 +32,8 @@ export type RouteEntry = {
 export const ROUTES = {
   home: {
     paths: { en: '/', es: '/es', de: '/de', fr: '/fr', it: '/it', pt: '/pt' },
-    // de, fr, it and pt open with the home only (Jorge, 10-nov-2026). Their guides, pricing,
-    // comparisons and services wait for reviewed copy. Legal pages have an English source.
+    // All six homes, pricing and legal pages are public. Other translated marketing pages
+    // open individually as their copy is reviewed. Legal pages use an English source.
     published: ['en', 'es', 'de', 'fr', 'it', 'pt'],
     priority: 1,
     changeFrequency: 'weekly',
@@ -59,6 +59,33 @@ export const ROUTES = {
       fr: '/fr/tarifs',
       it: '/it/prezzi',
       pt: '/pt/precos',
+    },
+    published: LOCALES,
+    priority: 0.8,
+    changeFrequency: 'monthly',
+  },
+  mcp: {
+    paths: {
+      en: '/mcp',
+      es: '/es/mcp',
+      de: '/de/mcp',
+      fr: '/fr/mcp',
+      it: '/it/mcp',
+      pt: '/pt/mcp',
+    },
+    published: ['en', 'es'],
+    priority: 0.8,
+    changeFrequency: 'monthly',
+  },
+  // Marketing content lives outside /api/, which is reserved for HTTP handlers.
+  api: {
+    paths: {
+      en: '/image-to-3d-api',
+      es: '/es/api-imagen-a-3d',
+      de: '/de/image-to-3d-api',
+      fr: '/fr/image-to-3d-api',
+      it: '/it/image-to-3d-api',
+      pt: '/pt/image-to-3d-api',
     },
     published: ['en', 'es'],
     priority: 0.8,

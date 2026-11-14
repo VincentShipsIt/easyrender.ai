@@ -23,6 +23,8 @@ describe('the per-language sitemaps', () => {
     expect(paths('en')).toEqual([
       '/',
       '/pricing',
+      '/mcp',
+      '/image-to-3d-api',
       '/models',
       '/compare',
       '/compare/360-vs-3d',
@@ -37,15 +39,18 @@ describe('the per-language sitemaps', () => {
     expect(paths('es')).toEqual([
       '/es',
       '/es/precios',
+      '/es/mcp',
+      '/es/api-imagen-a-3d',
       '/es/modelos',
       '/es/privacidad',
       '/es/terminos',
       '/es/cookies',
     ]);
-    // Homes and cookie information are open; guides and pricing remain unpublished.
+    // Homes and cookie information are open; guides remain unpublished.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       expect(paths(locale), locale).toEqual([
         `/${locale}`,
+        ROUTES.pricing.paths[locale],
         ROUTES.privacy.paths[locale],
         ROUTES.terms.paths[locale],
         ROUTES.cookies.paths[locale],
@@ -59,6 +64,8 @@ describe('the per-language sitemaps', () => {
     expect(paths('en')).toEqual([
       '/',
       '/pricing',
+      '/mcp',
+      '/image-to-3d-api',
       '/models',
       '/compare',
       '/compare/360-vs-3d',
@@ -74,6 +81,7 @@ describe('the per-language sitemaps', () => {
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       expect(paths(locale), locale).toEqual([
         `/${locale}`,
+        ROUTES.pricing.paths[locale],
         ROUTES.privacy.paths[locale],
         ROUTES.terms.paths[locale],
         ROUTES.cookies.paths[locale],
@@ -133,6 +141,25 @@ describe('the per-language sitemaps', () => {
     const start = xml.indexOf('/compare</loc>');
     const compare = xml.slice(start, xml.indexOf('</url>', start));
     expect(compare).not.toContain('xhtml:link');
+  });
+
+  it('publishes the API landing separately from MCP with localized alternates', () => {
+    for (const locale of ['en', 'es'] as const) {
+      const entry = localeEntries(locale, BEFORE_GUIDES).find(
+        (item) => item.path === (locale === 'en' ? '/image-to-3d-api' : '/es/api-imagen-a-3d'),
+      );
+      expect(entry?.alternates).toEqual({ en: '/image-to-3d-api', es: '/es/api-imagen-a-3d' });
+    }
+  });
+
+  it('publishes MCP with reciprocal English and Spanish alternates', () => {
+    for (const [locale, path] of [
+      ['en', '/mcp'],
+      ['es', '/es/mcp'],
+    ] as const) {
+      const entry = localeEntries(locale, BEFORE_GUIDES).find((item) => item.path === path);
+      expect(entry?.alternates).toEqual({ en: '/mcp', es: '/es/mcp' });
+    }
   });
 
   it('gives the pricing page its English and Spanish alternates', () => {

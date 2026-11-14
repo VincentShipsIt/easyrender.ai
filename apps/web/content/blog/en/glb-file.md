@@ -3,7 +3,7 @@
 group: glb-file
 title: What is a GLB file? How to open, check and use one
 description: "A GLB file is a 3D model in binary glTF 2.0: what is inside it, how to open it on any device, how to make it smaller, and where it is used."
-date: 2026-11-15
+date: 2026-11-14
 updated: 2026-11-11
 author: Jorge Rodríguez
 authorType: person
@@ -29,18 +29,18 @@ The numbers in that diagram add up exactly, and the arithmetic is worth knowing.
 
 ## How big are real GLB files, and where do the bytes go?
 
-We read every model on our showcase the same way. All six are one mesh with one material and one 1024-pixel WebP texture, packed with glTF Transform for the web.
+We read every model on our showcase the same way. All six are one mesh with one material and a 1024-pixel WebP colour texture, packed for the web. The bouclé armchair, swivel chair, stoneware vase and two tables also have 512-pixel roughness and metallic maps to describe their different surface finishes.
 
 | Model              | File size (bytes) | Triangles | Texture (bytes) | Share that is geometry |
 | ------------------ | ----------------- | --------- | --------------- | ---------------------- |
 | Clay vase          | 308,448           | 14,590    | 51,354          | 83%                    |
-| Stoneware vase     | 312,816           | 16,708    | 28,466          | 90%                    |
-| Round coffee table | 322,876           | 16,228    | 34,266          | 89%                    |
-| Swivel armchair    | 519,988           | 24,268    | 57,680          | 89%                    |
-| Bouclé armchair    | 551,068           | 25,879    | 70,690          | 87%                    |
-| Bedside table      | 1,287,432         | 69,910    | 40,628          | 97%                    |
+| Stoneware vase     | 400,792           | 16,708    | 116,214         | 71%                    |
+| Round coffee table | 326,872           | 16,228    | 38,038          | 88%                    |
+| Swivel armchair    | 680,936           | 24,268    | 218,394         | 68%                    |
+| Bouclé armchair    | 622,804           | 25,879    | 142,236         | 77%                    |
+| Bedside table      | 1,302,804         | 69,910    | 55,770          | 96%                    |
 
-The usual advice is that textures are the heavy part of a GLB. That is true for a file with 4096-pixel PNGs. Once the texture is a 1024-pixel WebP, as here, the uncompressed geometry is 83% to 97% of every file, and the triangle count decides the size.
+The usual advice is that textures are the heavy part of a GLB. That is true for a file with 4096-pixel PNGs. Once the texture is a 1024-pixel WebP, as here, the uncompressed geometry is 68% to 96% of every file, and the triangle count decides the size.
 
 ## What do the materials in a GLB describe?
 

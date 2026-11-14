@@ -1,21 +1,27 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { ApiView } from '@/components/api-landing/api-view';
 import { BlogIndexView } from '@/components/blog/blog-index-view';
 import { BlogPostView } from '@/components/blog/blog-post-view';
 import { CookiesPage } from '@/components/cookies-page';
 import { EvalsView } from '@/components/evals/evals-view';
 import { LegalPage } from '@/components/legal-page';
+import { McpView } from '@/components/mcp/mcp-view';
 import { ModelsView } from '@/components/models/models-view';
 import { PricingView } from '@/components/pricing/pricing-view';
 import { isRoutableLocale, type Locale } from '@/i18n/config';
 import { type BlogPost, getPost } from '@/lib/blog/posts';
 import { JsonLd } from '@/lib/seo/jsonld';
 import {
+  apiGraph,
+  apiMetadata,
   blogIndexGraph,
   blogIndexMetadata,
   evalsGraph,
   evalsMetadata,
   legalMetadata,
+  mcpGraph,
+  mcpMetadata,
   modelsGraph,
   modelsMetadata,
   postGraph,
@@ -36,6 +42,8 @@ type Match =
   | { kind: 'blogIndex'; locale: Locale }
   | { kind: 'post'; post: BlogPost }
   | { kind: 'pricing'; locale: Locale }
+  | { kind: 'api'; locale: Locale }
+  | { kind: 'mcp'; locale: Locale }
   | { kind: 'models'; locale: Locale }
   | { kind: 'evals'; locale: Locale }
   | { kind: 'privacy' | 'terms'; locale: Locale }
@@ -54,6 +62,12 @@ function resolve(lang: string, segments: string[]): Match {
 
   if (isPublished('pricing', locale) && path === ROUTES.pricing.paths[locale]) {
     return { kind: 'pricing', locale };
+  }
+  if (isPublished('api', locale) && path === ROUTES.api.paths[locale]) {
+    return { kind: 'api', locale };
+  }
+  if (isPublished('mcp', locale) && path === ROUTES.mcp.paths[locale]) {
+    return { kind: 'mcp', locale };
   }
   if (isPublished('models', locale) && path === ROUTES.models.paths[locale]) {
     return { kind: 'models', locale };
@@ -85,6 +99,8 @@ export async function generateMetadata({
   if (match.kind === 'post') return postMetadata(match.post);
   if (match.kind === 'blogIndex') return blogIndexMetadata(match.locale);
   if (match.kind === 'pricing') return pricingMetadata(match.locale);
+  if (match.kind === 'api') return apiMetadata(match.locale);
+  if (match.kind === 'mcp') return mcpMetadata(match.locale);
   if (match.kind === 'models') return modelsMetadata(match.locale);
   if (match.kind === 'evals') return evalsMetadata(match.locale);
   return {};
@@ -121,6 +137,22 @@ export default async function LocalePage({ params }: PageProps<'/[lang]/[...path
       <>
         <JsonLd graph={await pricingGraph(match.locale)} />
         <PricingView locale={match.locale} />
+      </>
+    );
+  }
+  if (match.kind === 'api') {
+    return (
+      <>
+        <JsonLd graph={await apiGraph(match.locale)} />
+        <ApiView locale={match.locale} />
+      </>
+    );
+  }
+  if (match.kind === 'mcp') {
+    return (
+      <>
+        <JsonLd graph={await mcpGraph(match.locale)} />
+        <McpView locale={match.locale} />
       </>
     );
   }

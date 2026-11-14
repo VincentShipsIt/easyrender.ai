@@ -70,7 +70,7 @@ describe('the route registry', () => {
     // Homes and legal information are live; other pages still wait for localized copy.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
       for (const key of ROUTE_KEYS) {
-        if (['home', 'cookies', 'privacy', 'terms'].includes(key)) continue;
+        if (['home', 'cookies', 'privacy', 'terms', 'pricing'].includes(key)) continue;
         expect(isPublished(key, locale), `${key}/${locale}`).toBe(false);
       }
     }
@@ -81,8 +81,8 @@ describe('the route registry', () => {
     // English comparisons are published; the other locales wait for reviewed copy.
     expect(isPublished('compare', 'en')).toBe(true);
     expect(livePaths('compare')).toEqual({ en: '/compare' });
-    // Pricing is open in English and Spanish; the other four wait for reviewed copy.
-    expect(livePaths('pricing')).toEqual({ en: '/pricing', es: '/es/precios' });
+    // Pricing is now open in every supported locale.
+    expect(livePaths('pricing')).toEqual(ROUTES.pricing.paths);
   });
 });
 

@@ -68,6 +68,23 @@ normal signed-in withdrawal flow. No event is sent for checkouts without eligibl
 and browser identifiers. Do not compare covered GA purchases with all Stripe orders without
 accounting for these exclusions.
 
+## Production status (2026-11-13)
+
+- Vercel Production has `GA_MEASUREMENT_ID` (G-H54Y1NW81X), `GA_MEASUREMENT_API_SECRET` (sensitive,
+  created for web stream 16335202450 of property 564217522) and `CRON_SECRET` (sensitive). They take
+  effect with the next production build.
+- The exact `purchase` payload built by `googlePurchasePayload` was sent to GA4's debug endpoint
+  (`/debug/mp/collect`) for `G-H54Y1NW81X` and returned no validation messages. That endpoint
+  records nothing and does not check the secret, so a real purchase is still the only proof of the
+  secret and of Ads attribution.
+- `/api/cron/analytics` answers 401 without `Authorization: Bearer $CRON_SECRET`. Schedule is daily
+  at 04:00 UTC.
+- `/admin/analytics` access is the exact-match `ADMIN_EMAILS` list in Vercel Production (two admins:
+  Jorge and Vincent). Vercel reads it at build time, so a change needs a new CI build.
+- Still to do: an approved real purchase (check transaction ID, amount, currency in GA4), consent
+  withdrawal on a signed-in session, Ads attribution, and the PostHog read-back in `/admin/analytics`.
+  Campaigns stay paused until these pass.
+
 ## Operational release gate
 
 1. Set the three server variables and deploy. Keep campaigns paused.

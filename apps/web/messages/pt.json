@@ -13,9 +13,10 @@
       "hub": "Hub",
       "connect": "Ligar agente",
       "try": "Experimentar",
-      "pricing": "Preços"
+      "pricing": "Preços",
+      "mcp": "MCP",
+      "api": "API"
     },
-    "credits": "créditos",
     "dashboard": "Painel",
     "signIn": "Iniciar sessão",
     "connect": "Ligar",
@@ -45,6 +46,7 @@
       "models": "Models",
       "evals": "Evals",
       "cookies": "Cookies e análise",
+      "api": "REST API",
       "privacy": "Política de privacidade",
       "terms": "Termos de serviço"
     },
@@ -86,7 +88,7 @@
       "title": "O que é o easyrender?",
       "body": "O easyrender é uma ferramenta de imagem para 3D: transforma a fotografia de um móvel, de uma peça de decoração ou da fachada de um edifício num modelo 3D. Primeiro desenha o objeto de todos os lados, numa folha de ângulos grátis que podes rever antes de gastares seja o que for. Se a pré-visualização te convencer, um clique transforma-a num modelo 3D para rodar e descarregar em GLB e USDZ.",
       "scope": "Não modela divisões inteiras nem inventa medidas. Recebes o ficheiro e decides tu se vale a pena ficar com ele.",
-      "primaryCta": "Carregar uma fotografia",
+      "primaryCta": "Experimenta grátis",
       "secondaryCta": "Ver a galeria"
     }
   },
@@ -96,16 +98,6 @@
       "description": "As pré-visualizações são grátis. Um modelo 3D pronto custa {credits} créditos ({price}).",
       "seeAll": "Ver todos os preços",
       "bestValue": "Mais vantajoso",
-      "free": {
-        "name": "Grátis",
-        "note": "para experimentar",
-        "features": {
-          "mcp": "Liga o teu agente por MCP",
-          "previews": "Pré-visualizações grátis de todos os ângulos",
-          "noCard": "Sem cartão de crédito"
-        },
-        "cta": "Começar grátis"
-      },
       "payg": {
         "name": "Pagamento por uso",
         "note": "por crédito",
@@ -123,7 +115,8 @@
           "credits": "{credits} créditos por mês",
           "models": "Cerca de {count} modelos 3D",
           "rollover": "Os créditos não usados passam para o mês seguinte",
-          "cancel": "Podes cancelar quando quiseres"
+          "cancel": "Podes cancelar quando quiseres",
+          "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa do teu plano."
         },
         "cta": "Passar a {plan}"
       },
@@ -138,7 +131,9 @@
           "onboarding": "Sessão de arranque"
         },
         "cta": "Marcar uma chamada"
-      }
+      },
+      "tryFree": "Experimenta grátis",
+      "noCard": "Pré-visualizações grátis. Sem cartão de crédito."
     },
     "faq": {
       "title": "Perguntas frequentes",
@@ -279,7 +274,6 @@
     "modelAlt": "3D model: {name}",
     "meta": {
       "status": "Status",
-      "engine": "Engine",
       "dimensions": "Dimensions",
       "formats": "Formats",
       "visibility": "Visibility",
@@ -295,7 +289,7 @@
     },
     "drafting": "Drawing every angle of your object. This takes about a minute.",
     "rendering": "Building the 3D model. This takes about two minutes.",
-    "previewReady": "Your preview is ready below. Check every angle, then render the 3D model.",
+    "previewReady": "Your preview is ready. Check every angle above, then render the 3D model.",
     "previewAlt": "Preview of every angle",
     "noPreview": "No preview",
     "signUpToRender": "Sign up to render in 3D",
@@ -306,9 +300,16 @@
     "finishedOnly": "Finished models only",
     "errors": {
       "start": "Could not start the render",
-      "sheet": "Could not generate the angle sheet"
+      "sheet": "Could not generate the angle sheet",
+      "redraw": "Could not redraw the angle sheet",
+      "upscale": "Não foi possível ampliar esta imagem. Tente novamente dentro de um minuto."
     },
     "generateSheet": "Generate angle sheet ({credits} credits)",
+    "fixSheetLabel": "Something off in an angle?",
+    "fixSheetHint": "Describe what to fix and we redraw every angle from your photo, so mention everything you want changed. A redraw that fails is refunded.",
+    "fixSheetPlaceholder": "e.g. The back legs should match the front ones, and the seat is flat",
+    "redrawSheet": "Redraw angles ({credits} credits)",
+    "buyToRedraw": "Buy credits to redraw",
     "materials": {
       "title": "Materials",
       "hint": "Change how each material looks. Saved changes are included in the GLB and USDZ downloads.",
@@ -329,6 +330,17 @@
       "saved": "Saved. The downloads now include your changes.",
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
+    },
+    "details": "Detalhes",
+    "history": {
+      "empty": "Ainda não há alterações. Aqui aparecem a folha de ângulos, os redesenhos, as mudanças de material e a criação 3D.",
+      "kind": {
+        "sheet": "Folha de ângulos desenhada",
+        "sheet_redraw": "Folha de ângulos redesenhada",
+        "build": "Criação 3D iniciada",
+        "material": "Materiais alterados"
+      },
+      "credits": "{credits} créditos"
     }
   },
   "PromptBar": {
@@ -439,12 +451,81 @@
       "short": "Short by {credits} credits. Buy more"
     }
   },
+  "ProductViews": {
+    "metaTitle": "Product views · easyrender",
+    "title": "Product views",
+    "subtitle": "One product photo in, nine clean packshots out on white. No studio, no 3D needed.",
+    "choose": "Choose a product photo",
+    "chooseHint": "JPEG, PNG or WebP. Show the whole product.",
+    "noteLabel": "Describe the product (optional)",
+    "notePlaceholder": "Matte black metal frame, oak seat",
+    "create": "Make product views, {credits} credits",
+    "buyCredits": "Buy credits to make product views",
+    "aiNote": "Views are AI-generated from your photo. Hidden sides are inferred, so check each view against the real product and polish any that is off.",
+    "recents": "Your product views",
+    "empty": "No product views yet. Upload a photo to make your first set.",
+    "untitled": "Untitled product",
+    "viewsReady": "{count} views ready",
+    "progress": "{ready} of {total} views ready",
+    "canvas": "2000 × 2000 px · JPG · white background",
+    "downloadAll": "Download all (ZIP)",
+    "download": "Download",
+    "polish": "Polish",
+    "flagged": "Check this view",
+    "failed": "The views could not be drawn. Your credits were refunded.",
+    "buyToPolish": "Buy credits to polish a view",
+    "polishTitle": "Polish the {view} view",
+    "polishHint": "Describe what is wrong. This view is drawn again from your photo and the current picture; the others stay as they are.",
+    "polishLabel": "What should change?",
+    "polishPlaceholder": "The handle should be on the left, and the wood is lighter",
+    "polishSubmit": "Redraw this view, {credits} credits",
+    "upsellTitle": "Need it in 3D?",
+    "upsellBody": "Build a 3D model and AR from these same views. Your finished views are reused, so you only pay for the 3D step.",
+    "build3d": "Build 3D from these views, {credits} credits",
+    "openRender": "Open the 3D render",
+    "status": {
+      "drafting": "Drawing the angle sheet",
+      "processing": "Checking and finishing the views, {ready} of {total} ready",
+      "upscaling": "Finishing",
+      "redrawing": "Redrawing",
+      "failed": "Failed"
+    },
+    "views": {
+      "front": "Front",
+      "front_right": "Front right",
+      "right": "Right",
+      "back_right": "Back right",
+      "back": "Back",
+      "back_left": "Back left",
+      "left": "Left",
+      "front_left": "Front left",
+      "top": "Top"
+    },
+    "problems": {
+      "empty": "object hard to see",
+      "cropped": "object touches the edge",
+      "small": "object too small",
+      "background": "background not pure white",
+      "blurry": "soft detail",
+      "colour": "colour differs from the photo",
+      "duplicate": "looks like another view"
+    },
+    "errors": {
+      "unreadable": "Could not read this photo",
+      "create": "Could not make the product views. Try again in a minute.",
+      "polish": "Could not polish this view. Try again in a minute.",
+      "render": "Could not start the 3D render.",
+      "upscale": "Não foi possível ampliar esta imagem. Tente novamente dentro de um minuto."
+    }
+  },
   "DashboardNav": {
     "overview": "Overview",
     "library": "Library",
     "connectors": "Connectors",
     "credits": "Credits",
-    "account": "Account"
+    "account": "Account",
+    "views": "Product views",
+    "profile": "Perfil"
   },
   "AppShell": {
     "model": "Modelo",
@@ -453,9 +534,6 @@
     "toggleSidebar": "Mostrar ou ocultar a barra lateral",
     "home": "Início do easyrender",
     "newModel": "Novo modelo 3D",
-    "recents": "Recentes",
-    "noRecents": "Nada por enquanto. Envie uma foto ou peça ao seu agente.",
-    "credits": "créditos",
     "untitled": "Sem título",
     "status": {
       "drafting": "Preparando",
@@ -464,7 +542,6 @@
       "ready": "Pronto",
       "failed": "Falhou"
     },
-    "toggleRenders": "Mostrar ou ocultar o painel de renders",
     "breadcrumb": "Caminho de navegação",
     "panel": {
       "title": "Renders",
@@ -492,6 +569,13 @@
       "balance": "Saldo",
       "sheet": "Folha de ângulos",
       "build": "Criar 3D"
+    },
+    "toggleContext": "Mostrar ou ocultar o painel de partes",
+    "context": {
+      "title": "Partes"
+    },
+    "history": {
+      "title": "Histórico"
     }
   },
   "AppHome": {
@@ -503,7 +587,6 @@
     "remove": "Remover a foto",
     "create": "Criar pré-visualização grátis",
     "uploading": "Enviando…",
-    "balance": "{credits} créditos",
     "batch": "Enviar várias fotos",
     "connect": "Conectar um agente",
     "errors": {
@@ -642,7 +725,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Top up with pay as you go anytime",
+        "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa do teu plano.",
         "cancel": "Cancel anytime"
       }
     },
@@ -659,87 +742,98 @@
       "cta": "Book a call"
     },
     "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month."
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
+    "topUp": {
+      "title": "Recarregar créditos",
+      "description": "Compra créditos extra à tarifa do teu plano {plan}, sem mudar de plano. O total é arredondado ao cêntimo mais próximo.",
+      "noExpiry": "Os créditos das recargas nunca expiram."
+    }
   },
   "Pricing": {
-    "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
-    "home": "Home",
-    "breadcrumb": "Pricing",
-    "eyebrow": "Pricing",
-    "title": "Pay per 3D model. Previews are free.",
-    "description": "A finished 3D model costs {credits} credits ({price}). Buy credits as you go, or pick a monthly plan for a cheaper credit. Credits never expire.",
-    "note": "Prices in USD. Credits never expire. If a 3D build fails, its credits are refunded.",
+    "metaTitle": "Preços: paga por modelo 3D · easyrender",
+    "metaDescription": "As pré-visualizações são grátis. Um modelo 3D completo custa {credits} créditos ({price}), sem validade. Paga por utilização ou escolhe Pro com {proCredits} créditos por mês.",
+    "home": "Início",
+    "breadcrumb": "Preços",
+    "eyebrow": "Preços",
+    "title": "Paga por modelo 3D. As pré-visualizações são grátis.",
+    "description": "Um modelo 3D completo custa {credits} créditos ({price}). Compra créditos por utilização ou escolhe Pro para um preço mensal inferior por crédito. Os créditos nunca expiram.",
+    "note": "Os créditos nunca expiram. Se a criação de um modelo 3D falhar, os créditos são devolvidos.",
     "compare": {
-      "title": "Compare plans",
-      "description": "Pay as you go is {unit} a credit. Every monthly plan makes the credit cheaper, and a bigger plan cheaper still.",
-      "plan": "Plan",
-      "price": "Price",
-      "credits": "Credits",
-      "models": "3D models",
-      "perCredit": "Per credit",
-      "from": "From {value}",
-      "perMonth": "{value} / month"
+      "title": "Comparar planos",
+      "description": "No pagamento por utilização, cada crédito custa {unit}. Pro inclui créditos mensais a um preço inferior. Contacta-nos para preços por volume de Empresa.",
+      "plan": "Plano",
+      "price": "Preço",
+      "credits": "Créditos",
+      "models": "Modelos 3D",
+      "perCredit": "Por crédito",
+      "from": "A partir de {value}",
+      "perMonth": "{value} / mês"
     },
     "how": {
-      "title": "How credits work",
-      "step": "Step {number}",
+      "title": "Como funcionam os créditos",
+      "step": "Passo {number}",
       "preview": {
-        "title": "Previews cost nothing",
-        "body": "Upload a photo and check a free sheet that shows the object from every angle before you spend anything."
+        "title": "As pré-visualizações não custam nada",
+        "body": "Envia uma fotografia e verifica gratuitamente o objeto de todos os ângulos antes de gastares créditos."
       },
       "build": {
-        "title": "A 3D model costs {credits} credits",
-        "body": "That is {price}. The button shows the cost before you click, and you download the model as GLB and USDZ."
+        "title": "Um modelo 3D custa {credits} créditos",
+        "body": "São {price}. O botão mostra o custo antes de clicares e podes transferir o modelo em GLB e USDZ."
       },
       "refund": {
-        "title": "Failed builds are refunded",
-        "body": "If a 3D model fails to build, the credits for that render go back to your balance automatically."
+        "title": "As criações que falham são reembolsadas",
+        "body": "Se a criação de um modelo 3D falhar, os créditos são automaticamente devolvidos ao teu saldo."
       }
     },
     "faq": {
-      "title": "Pricing questions",
+      "title": "Perguntas sobre preços",
       "items": {
         "cost": {
-          "q": "How much does a 3D model cost?",
-          "a": "Previews are free. A finished 3D model costs {credits} credits. On pay as you go a credit costs {unit}, so a model is {price}. Monthly plans make each credit cheaper."
+          "q": "Quanto custa um modelo 3D?",
+          "a": "As pré-visualizações são grátis. Um modelo 3D completo custa {credits} créditos. Por utilização, cada crédito custa {unit}, ou seja, {price} por modelo. Pro reduz o preço por crédito."
         },
         "freePreview": {
-          "q": "Why is the preview free?",
-          "a": "Before the 3D model is built we draw the object from every angle. You check that preview at no cost and only spend credits when the shape and the details look right."
+          "q": "Porque é que a pré-visualização é grátis?",
+          "a": "Antes de criar o modelo 3D, desenhamos o objeto de todos os ângulos. Verificas a pré-visualização gratuitamente e só gastas créditos quando a forma e os detalhes te agradam."
         },
         "plans": {
-          "q": "Pay as you go or a monthly plan?",
-          "a": "Pay as you go suits occasional use: buy from {min} credits ({minPrice}) whenever you need them. A monthly plan adds credits every month at a lower price per credit. {plan}, for example, is {planPrice} a month for {planCredits} credits, about {planModels} 3D models."
+          "q": "Pagamento por utilização ou Pro?",
+          "a": "Para uso ocasional, compra a partir de {min} créditos ({minPrice}) quando precisares. {plan} custa {planPrice} por mês por {planCredits} créditos, cerca de {planModels} modelos 3D. Contacta-nos para preços por volume de Empresa."
         },
         "expire": {
-          "q": "Do credits expire?",
-          "a": "No. Credits never expire, and unused credits from a monthly plan roll over to the next month."
+          "q": "Os créditos expiram?",
+          "a": "Não. Os créditos nunca expiram e os créditos mensais não utilizados passam para o mês seguinte."
         },
         "cancel": {
-          "q": "Can I change or cancel my plan?",
-          "a": "Yes. Change or cancel your plan at any time from Credits in your account, where you can manage your subscription."
+          "q": "Posso alterar ou cancelar o plano?",
+          "a": "Sim. Podes gerir, alterar ou cancelar a subscrição a qualquer momento em Créditos na tua conta."
         },
         "failed": {
-          "q": "What if a render fails?",
-          "a": "If the 3D model fails to build, the credits for that render go back to your balance automatically."
+          "q": "O que acontece se um render falhar?",
+          "a": "Se a criação do modelo 3D falhar, os créditos são automaticamente devolvidos ao teu saldo."
         },
         "enterprise": {
-          "q": "Do you offer volume pricing or invoices?",
-          "a": "Yes, on Enterprise: volume credit pricing, invoice billing, priority support and an onboarding call. Book a call and we will set it up."
+          "q": "Há preços por volume ou faturação?",
+          "a": "Sim, com Empresa: preços por volume, pagamento por fatura, apoio prioritário e uma chamada de apresentação. Marca uma chamada para combinarmos os detalhes."
+        },
+        "topUp": {
+          "q": "Posso comprar mais créditos sem mudar de plano?",
+          "a": "Sim. Os subscritores ativos ou em período de avaliação podem recarregar à tarifa por crédito do seu plano, com o total arredondado ao cêntimo mais próximo. Abre Créditos na tua conta para ver os preços dos pacotes. Sem uma subscrição elegível, aplica-se a tarifa de pagamento por utilização apresentada. O plano mensal mantém-se e os créditos extra nunca expiram."
         }
       }
-    }
+    },
+    "topUpTitle": "Recarregar créditos"
   },
   "PaygPicker": {
-    "custom": "Or enter an amount",
-    "estimate": "{price} for about {count} renders",
-    "range": "Choose between {min} and {max} credits",
-    "buyAmount": "Buy {credits} credits",
-    "buy": "Buy credits"
+    "custom": "Ou introduz uma quantidade",
+    "estimate": "{price} para cerca de {count} renders",
+    "range": "Escolhe entre {min} e {max} créditos",
+    "buyAmount": "Comprar {credits} créditos",
+    "buy": "Comprar créditos",
+    "planRate": "Recargas à tarifa do teu plano {plan}"
   },
   "BuyButton": {
-    "failed": "Checkout failed",
+    "failed": "O pagamento falhou",
     "pricingChanged": "Os preços mudaram. Atualiza a página e tenta novamente."
   },
   "Auth": {
@@ -788,7 +882,7 @@
   "Studio": {
     "hero": {
       "title": "A fotografia do produto transforma-se num modelo 3D.",
-      "cta": "Começar",
+      "cta": "Experimenta grátis",
       "note": "Pré-visualização grátis · sem cartão",
       "stackLabel": "O mesmo objeto em cinco camadas do motor. Arrasta para o rodar.",
       "photo": "Fotografia original",
@@ -852,7 +946,7 @@
     "tools": {
       "lead": "Vê a forma antes de gastares um crédito.",
       "body": "Cada elemento aparece tal como o motor o construiu: malha, materiais e texturas.",
-      "link": "Ver a ficha técnica",
+      "link": "Explora criações",
       "topology": "Topologia",
       "triangles": "Triângulos",
       "material": "Material PBR",
@@ -913,7 +1007,7 @@
     },
     "cta": {
       "title": "O teu catálogo já não tem de esperar por uma equipa de 3D",
-      "button": "Começar"
+      "button": "Experimenta grátis"
     },
     "shelf": {
       "lead": "Explora o hub.",
@@ -1523,6 +1617,298 @@
       "visitsIncomplete": "Visits: PostHog data incomplete",
       "visitsError": "Visits: PostHog unavailable (request failed)",
       "sheetCountUnit": "sheets"
+    }
+  },
+  "McpLanding": {
+    "meta": {
+      "title": "Image to 3D MCP server for AI agents · easyrender",
+      "description": "Connect Claude, Cursor or VS Code to easyrender. Turn product photos into 3D models through MCP: preview the result, spend credits to build and download a GLB."
+    },
+    "hero": {
+      "title": "Product photos to 3D. From your agent.",
+      "subtitle": "Connect easyrender through MCP. Give your agent a product photo, review the preview and build a textured GLB without switching to a modeling tool.",
+      "cta": "Connect your agent",
+      "note": "Preview first. Credits for the 3D build."
+    },
+    "clientsLabel": "Setup guides included for",
+    "intro": {
+      "title": "The product asset your next project needs.",
+      "description": "Work with your own photos, inside the conversation where you are already building.",
+      "catalog": {
+        "title": "Furniture & decor",
+        "body": "Turn a photo of a chair, lamp or decor object into a model you can inspect from every angle."
+      },
+      "web": {
+        "title": "Product pages & prototypes",
+        "body": "Ask your coding agent to generate a GLB for the 3D viewer you are building."
+      },
+      "workflow": {
+        "title": "Repeatable asset workflows",
+        "body": "Use the same tools to create a preview, check its status and retrieve the finished model for each product."
+      }
+    },
+    "workflow": {
+      "title": "One photo. A preview. Your GLB.",
+      "description": "Your agent calls the tools. You choose when to spend credits.",
+      "photo": {
+        "title": "Send a product photo",
+        "body": "Provide a JPEG, PNG or WebP image. Your agent starts a preview and checks until it is ready."
+      },
+      "review": {
+        "title": "Review before the paid build",
+        "body": "Inspect the angle sheet. Ask your agent to check your balance and wait for your approval before calling render_3d."
+      },
+      "download": {
+        "title": "Build and retrieve the model",
+        "body": "The build runs asynchronously. Your agent checks the status, then retrieves the GLB with your authenticated connection."
+      },
+      "exampleLabel": "Example request to your connected agent",
+      "prompt": "Turn this product photo into a 3D model. Show me the preview and the credit cost first. Wait for my approval before building the GLB. Once it is ready, download the model.",
+      "exampleNote": "Illustrative workflow. Use your own photo; the preview and model are generated when you run the tools.",
+      "toolsLabel": "Four tools, one workflow",
+      "tools": {
+        "create_render": "Start the angle-sheet preview from a photo.",
+        "get_render": "Check progress and retrieve the result links.",
+        "get_credits": "Read your balance and current build cost.",
+        "render_3d": "Spend credits to build the textured GLB."
+      },
+      "limit": "Made for individual objects. Generated geometry is approximate, without guaranteed real-world dimensions or manufacturing precision."
+    },
+    "connect": {
+      "title": "Give your agent a 3D tool.",
+      "description": "Use the easyrender MCP endpoint with your account. Choose your client below for its setup instructions.",
+      "accountTitle": "Start with your account",
+      "accountBody": "Sign in or create an account to manage your API keys and credits. Use the same account to find your agent’s renders in your library.",
+      "cta": "Open connectors",
+      "endpoint": "MCP endpoint",
+      "security": "Use the sign-in flow where supported, or your own API key. Keep keys in your client configuration, never in shared prompts.",
+      "guide": "Choose your MCP client"
+    },
+    "faq": {
+      "title": "Before you connect",
+      "items": {
+        "account": {
+          "q": "Do I need an easyrender account?",
+          "a": "Yes. MCP requests are authenticated and renders belong to your account. The connector setup offers sign-in instructions for Claude and API-key configuration for the other listed clients."
+        },
+        "input": {
+          "q": "Can my agent use a local photo?",
+          "a": "create_render accepts a public HTTPS image URL or base64 image data. For a local photo, your client needs to read and send the file as base64. Supported types are JPEG, PNG and WebP, up to 4 MB."
+        },
+        "payment": {
+          "q": "When are credits spent?",
+          "a": "The angle-sheet preview is free, subject to preview limits. render_3d starts the paid build. Ask your agent to call get_credits for the current cost and to request your approval before building. That instruction is part of your agent workflow, not an extra confirmation screen enforced by the MCP server. Failed 3D builds refund their credits."
+        },
+        "output": {
+          "q": "What does my agent get back?",
+          "a": "The tools return a render ID, status and links to the render page, preview and GLB. Poll get_render until the model is ready before downloading. Private files require authentication; receiving a link does not make a render public."
+        },
+        "scope": {
+          "q": "Is this a model library or a CAD tool?",
+          "a": "Neither. It generates an approximate model of the object in your photo. It does not provide a library of downloadable assets, exact measurements, manufacturing-ready geometry or automatic publication to your store."
+        },
+        "api": {
+          "q": "How is MCP different from a REST API?",
+          "a": "MCP exposes named tools that a compatible agent can discover and call in a conversation. You connect the server in your client instead of writing those tool integrations yourself. This page covers the MCP workflow."
+        }
+      }
+    },
+    "closing": {
+      "title": "Bring your next product into the conversation.",
+      "cta": "Connect easyrender"
+    }
+  },
+  "ApiLanding": {
+    "meta": {
+      "title": "Image to 3D API for product photos · easyrender",
+      "description": "Add photo-to-3D generation to your app with the easyrender REST API. Upload a product image, review the preview, start the paid build and download a textured GLB."
+    },
+    "hero": {
+      "title": "Photo to 3D. Built into your app.",
+      "subtitle": "Use the easyrender REST API to turn product photos into textured GLBs. Your interface, your workflow, with a preview before the paid build.",
+      "cta": "Get your API key",
+      "note": "REST API · Product photo in. GLB out."
+    },
+    "headerCta": "Get API key",
+    "formatsLabel": "One HTTP workflow",
+    "formats": {
+      "auth": "Bearer authentication",
+      "upload": "Multipart upload",
+      "status": "JSON status",
+      "output": "GLB download"
+    },
+    "intro": {
+      "title": "Make 3D generation part of your product.",
+      "description": "Connect your backend to easyrender and decide how people upload, review and use each model.",
+      "catalog": {
+        "title": "Catalog tools",
+        "body": "Add a photo-to-model step to the tools your team uses to prepare product assets."
+      },
+      "app": {
+        "title": "Your own upload experience",
+        "body": "Let users submit a product photo in your app. Your server creates the preview and starts the build when they approve it."
+      },
+      "web": {
+        "title": "3D product experiences",
+        "body": "Retrieve a GLB to use in your own product viewer, prototype or asset workflow."
+      }
+    },
+    "workflow": {
+      "title": "You own the experience. We generate the model.",
+      "description": "Three stages, with a clear boundary between the preview and the paid build.",
+      "photo": {
+        "title": "Upload and preview",
+        "body": "Send a JPEG, PNG or WebP file as multipart form data. Keep the returned render ID and check progress."
+      },
+      "review": {
+        "title": "Approve the build",
+        "body": "Show the preview and credit cost in your UI. Call the build endpoint only when you are ready to spend credits."
+      },
+      "download": {
+        "title": "Retrieve the GLB",
+        "body": "Poll for completion from your server, handle failures and download the finished model with your API key."
+      }
+    },
+    "connect": {
+      "title": "Start with an API key.",
+      "description": "Create a key in Connectors, then make requests from your backend or terminal.",
+      "accountTitle": "Your account, your credits",
+      "accountBody": "Sign in or create an account to manage API keys, buy credits and find generated models in your library.",
+      "cta": "Get API key",
+      "setupLabel": "Terminal · environment",
+      "setupNote": "Replace er_your_key with your key. Run the examples in the same shell. Keep the key on your server; never put it in browser or mobile client code.",
+      "mcpTitle": "Want to connect an AI agent instead?",
+      "mcpLink": "See the MCP integration"
+    },
+    "examples": {
+      "title": "From the first request to a GLB.",
+      "description": "Copyable cURL examples for the current REST endpoints. Run each stage separately and wait for the required status.",
+      "upload": {
+        "title": "01 · Upload your photo",
+        "body": "Use your own product.jpg. The response includes id, status and renderCredits. The image field is a file, not a JSON image_url.",
+        "label": "POST /api/renders"
+      },
+      "visibility": {
+        "title": "02 · Choose visibility",
+        "body": "Replace EASYRENDER_RENDER_ID with the id from the response. Finished renders are public by default. This request keeps the render out of the public gallery; send it before starting the build.",
+        "label": "PATCH /api/renders/'{'id'}'"
+      },
+      "preview": {
+        "title": "03 · Wait for the preview",
+        "body": "Repeat the first request with a delay until status is preview_ready. Then run the second request and inspect preview.webp. Use renderCredits from the JSON response to show the build cost. Stop if status is failed.",
+        "label": "GET status → GET preview"
+      },
+      "build": {
+        "title": "04 · Start the paid build",
+        "body": "This request spends credits. Run it only after reviewing the preview, confirming the cost and ensuring your account has enough credits. Your application must implement its own approval step.",
+        "label": "POST /api/renders/'{'id'}'/render"
+      },
+      "download": {
+        "title": "05 · Download when ready",
+        "body": "Repeat the status request with a delay until status is ready and hasModel is true. Only then run the download request. A failed status ends the job; failed builds refund their credits.",
+        "label": "GET status → GET model"
+      },
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyError": "Clipboard unavailable. Select the code and copy it manually.",
+      "polling": "Use polling with a delay and a timeout in your application. These examples show individual requests, not an automatic retry loop. For HTTP errors, inspect the JSON error and code fields."
+    },
+    "faq": {
+      "title": "Integration details",
+      "items": {
+        "input": {
+          "q": "What images can I upload?",
+          "a": "Send a JPEG, PNG or WebP file up to 4 MB in the multipart image field. An optional prompt adds notes about the object. Use a clear photo of one product; image quality checks may reject unsuitable inputs."
+        },
+        "auth": {
+          "q": "Where should I use my API key?",
+          "a": "Send it as Authorization: Bearer from your backend. The key authorizes requests for your account, including paid builds. Do not expose it in a frontend bundle, a mobile app or shared example code. Manage and revoke keys in Connectors."
+        },
+        "cost": {
+          "q": "How do I check the cost and my balance?",
+          "a": "Render responses include renderCredits, the total credit cost of a 3D build. GET /api/renders returns your library and balance. The preview has an allowance; a POST to the render endpoint starts the paid build. The pricing section below reflects the current plans."
+        },
+        "errors": {
+          "q": "How should I handle progress and errors?",
+          "a": "Poll GET /api/renders/'{'id'}' with delays and a timeout. Wait for preview_ready before building and ready before downloading; stop on failed. HTTP 402 means insufficient credits, 409 an invalid build state, 413 an oversized image, 415 an unsupported image type and 429 an exhausted preview allowance. Do not blindly repeat upload or payment requests."
+        },
+        "webhooks": {
+          "q": "Can my application receive a completion webhook?",
+          "a": "The public REST flow shown here uses polling. A customer-configurable completion webhook is not exposed by these endpoints. Use the status response to trigger the next step in your application."
+        },
+        "scope": {
+          "q": "What kind of model does the API produce?",
+          "a": "A textured GLB representing the object in your photo. Geometry is approximate, without guaranteed real-world dimensions or manufacturing precision. This is generation from your own images, not a model library or a promise of automatic store publishing."
+        }
+      }
+    },
+    "closing": {
+      "title": "Add the next dimension to your product.",
+      "cta": "Get your API key"
+    }
+  },
+  "Upscale": {
+    "action": "Ampliar, {credits} créditos",
+    "working": "A ampliar",
+    "buy": "Comprar créditos para ampliar",
+    "download": "Transferir {width} px",
+    "downloadLarge": "Transferir ficheiro maior"
+  },
+  "IntegrationLanding": {
+    "result": {
+      "title": "Inspect the output before you integrate.",
+      "description": "A real easyrender showcase example: the source photo, generated angles and a textured GLB you can rotate and download.",
+      "photo": {
+        "label": "Source photo",
+        "alt": "Source photo of a mustard armchair with a metal frame",
+        "body": "One clear image of the object. No 3D file or multi-camera capture required."
+      },
+      "angles": {
+        "label": "Generated angle sheet",
+        "alt": "Nine generated views of the same mustard armchair",
+        "body": "See how the object is interpreted from different sides before using the final asset."
+      },
+      "model": {
+        "label": "Textured GLB",
+        "alt": "Interactive generated 3D model of the mustard armchair",
+        "body": "Drag to rotate the model. Download it to inspect in your own 3D viewer."
+      },
+      "note": "Pre-generated showcase assets, not a live request. This sheet is a finished example; the initial preview is watermarked. Geometry is approximate and unseen surfaces are inferred.",
+      "download": "Download sample GLB"
+    },
+    "costs": {
+      "api": {
+        "title": "What does the image to 3D API cost?",
+        "description": "Pay for 3D builds with your account credits. API access uses the same credit balance as the web app.",
+        "check": "Read renderCredits in the render response before building; it is the credit cost for that render. Keep approval and spending limits in your application."
+      },
+      "mcp": {
+        "title": "What does the image to 3D MCP server cost?",
+        "description": "Connect your agent to your easyrender account. The 3D build spends credits; there is no separate MCP access subscription.",
+        "check": "Ask your agent to call get_credits and confirm the cost before render_3d. Your AI client or model provider may charge separately; those fees are not included here."
+      },
+      "preview": {
+        "label": "Angle-sheet preview",
+        "body": "No credits charged, subject to your account’s preview allowance. Review the preview before the paid build."
+      },
+      "build": {
+        "label": "Per full 3D build · pay as you go",
+        "body": "{credits} credits for the final angle sheet and textured GLB. This is the full photo-to-3D workflow."
+      },
+      "access": {
+        "label": "API & MCP access",
+        "value": "Included",
+        "body": "Use your account and credits through either integration. No separate connector fee."
+      },
+      "estimate": {
+        "title": "Budget example: {count} full builds",
+        "body": "{credits} credits = {price} at the pay-as-you-go rate of {unit} per credit. Monthly plans can lower the effective cost per credit."
+      },
+      "start": {
+        "title": "Start without a subscription",
+        "body": "The minimum credit purchase is {credits} credits ({price}). Credits do not expire. Review the total at checkout before paying."
+      },
+      "refund": "Failed 3D builds refund their credits. Prices shown use your current currency and pricing offer."
     }
   },
   "Legal": {

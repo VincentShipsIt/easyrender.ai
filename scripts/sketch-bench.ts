@@ -2,7 +2,7 @@
  * Sketch-to-3D latency spike for the live sketch canvas (issue #98).
  *
  * Times the two steps a live canvas needs on fal.ai, per sketch:
- *   1. sketch -> image   (fal-ai/fast-lcm-diffusion/image-to-image)
+ *   1. sketch -> image   (first fal LCM or FLUX image-to-image app that exists)
  *   2. image  -> 3D mesh (fal-ai/trellis and fal-ai/triposr)
  * Each call runs twice: the first run includes any cold start, the second is the warm number that
  * matters for a live canvas. It spends real fal credit (about $0.30 for the default set).
@@ -51,6 +51,41 @@ async function timeTwice(model: string, input: Record<string, unknown>): Promise
   return { coldMs, warmMs: performance.now() - secondStart, output };
 }
 
+// fal retires and renames apps, so try each sketch-to-image candidate in order and skip only the
+// ones fal says do not exist. Any other error (auth, bad input) stops the run with its body.
+const MESH_MODELS: { id: string; imageKey: string }[] = [
+  { id: 'fal-ai/trellis', imageKey: 'image_url' },
+  { id: 'fal-ai/hunyuan3d/v2/turbo', imageKey: 'input_image_url' },
+  { id: 'fal-ai/triposr', imageKey: 'image_url' },
+];
+
+const SKETCH_MODELS: { id: string; steps: number }[] = [
+  { id: 'fal-ai/lcm-sd15-i2i', steps: 4 },
+  { id: 'fal-ai/fast-lcm-diffusion/image-to-image', steps: 4 },
+  // fal rejects fewer than 10 steps here (422 on 2026-11-13).
+  { id: 'fal-ai/flux/dev/image-to-image', steps: 12 },
+];
+
+async function sketchToImage(sketch: string): Promise<TimedCall & { model: string }> {
+  for (const { id: model, steps } of SKETCH_MODELS) {
+    try {
+      const timed = await timeTwice(model, {
+        image_url: sketch,
+        prompt: PROMPT,
+        strength: 0.85,
+        num_inference_steps: steps,
+      });
+      return { ...timed, model };
+    } catch (error) {
+      if (error instanceof Error && error.message.includes(` 404: `)) continue;
+      throw error;
+    }
+  }
+  throw new Error(
+    `None of the sketch-to-image apps exist on fal: ${SKETCH_MODELS.map((candidate) => candidate.id).join(', ')}`,
+  );
+}
+
 function firstUrl(output: unknown, keys: string[]): string | undefined {
   if (typeof output !== 'object' || output === null) return undefined;
   const record = output as Record<string, unknown>;
@@ -85,26 +120,29 @@ async function main() {
     const name = file.replace(/\.png$/, '');
     const sketch = toDataUri(await readFile(join(SKETCH_DIR, file)));
 
-    const image = await timeTwice('fal-ai/fast-lcm-diffusion/image-to-image', {
-      image_url: sketch,
-      prompt: PROMPT,
-      strength: 0.85,
-      num_inference_steps: 4,
-    });
+    const image = await sketchToImage(sketch);
     const imageUrl = firstUrl(image.output, ['images', 'image']);
-    if (!imageUrl) throw new Error(`No image in LCM output for ${name}`);
+    if (!imageUrl) throw new Error(`No image in ${image.model} output for ${name}`);
     rows.push(
-      `| ${name} | sketch to image (LCM) | ${(image.coldMs / 1000).toFixed(1)} | ${(image.warmMs / 1000).toFixed(1)} |`,
+      `| ${name} | sketch to image (${image.model.replace('fal-ai/', '')}) | ${(image.coldMs / 1000).toFixed(1)} | ${(image.warmMs / 1000).toFixed(1)} |`,
     );
     links.push(`- ${name} render: ${imageUrl}`);
 
-    for (const model of ['fal-ai/trellis', 'fal-ai/triposr']) {
-      const mesh = await timeTwice(model, { image_url: imageUrl });
-      const meshUrl = firstUrl(mesh.output, ['model_mesh', 'model_mesh_url', 'mesh']);
-      rows.push(
-        `| ${name} | image to 3D (${model.replace('fal-ai/', '')}) | ${(mesh.coldMs / 1000).toFixed(1)} | ${(mesh.warmMs / 1000).toFixed(1)} |`,
-      );
-      links.push(`- ${name} ${model}: ${meshUrl ?? 'no mesh url in output'}`);
+    // A mesh model that fails (retired app, different input name) is a result, not a reason to
+    // lose the rest of the run: record it in the table and move on.
+    for (const { id: model, imageKey } of MESH_MODELS) {
+      const label = model.replace('fal-ai/', '');
+      try {
+        const mesh = await timeTwice(model, { [imageKey]: imageUrl });
+        const meshUrl = firstUrl(mesh.output, ['model_mesh', 'model_mesh_url', 'mesh']);
+        rows.push(
+          `| ${name} | image to 3D (${label}) | ${(mesh.coldMs / 1000).toFixed(1)} | ${(mesh.warmMs / 1000).toFixed(1)} |`,
+        );
+        links.push(`- ${name} ${model}: ${meshUrl ?? 'no mesh url in output'}`);
+      } catch (error) {
+        const reason = error instanceof Error ? error.message.slice(0, 160) : 'unknown error';
+        rows.push(`| ${name} | image to 3D (${label}) | failed | ${reason.replaceAll('|', '/')} |`);
+      }
     }
   }
 

@@ -2,9 +2,9 @@
 
 import { ArrowRight, Box } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import type { CSSProperties } from 'react';
+import { SiteLink as Link } from '@/components/site-link';
 import { type ItemId, itemOf, photoUrl } from '@/lib/studio/catalog';
 import { createFormat } from '@/lib/studio/format';
 import { DemoCursor } from './icons';

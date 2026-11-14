@@ -1,0 +1,126 @@
+name: Plugin e2e
+run-name: "Plugin e2e · ${{ github.event.pull_request.title || github.ref_name }}"
+
+# Real shops in Docker, driven by a browser: WordPress with WooCommerce (two themes) and PrestaShop
+# (two versions). Each installs the plugin from this repo, connects it to a mock of the easyrender
+# catalogue API (plugins/e2e/mock-api.mjs), generates the catalogue, and checks that a product page
+# shows the "View in your room" button and a QR code that loads. Screenshots are uploaded.
+# The mock does not generate models; a real render, real stores and a real phone are not covered.
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "plugins/woocommerce/**"
+      - "plugins/prestashop/**"
+      - "plugins/e2e/**"
+      - ".github/workflows/plugin-e2e.yml"
+  push:
+    branches: [main]
+    paths:
+      - "plugins/woocommerce/**"
+      - "plugins/prestashop/**"
+      - "plugins/e2e/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plugin-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+# Pinned: ubuntu-latest is 26.04, which Playwright does not support yet.
+jobs:
+  woocommerce:
+    name: WooCommerce (${{ matrix.theme }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        theme: [storefront, twentytwentyfive]
+    env:
+      THEME: ${{ matrix.theme }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: plugins/e2e/package-lock.json
+      - name: Install test tooling
+        working-directory: plugins/e2e
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Start WordPress with WooCommerce and install the plugin
+        working-directory: plugins/e2e
+        run: ./setup-woocommerce.sh
+      - name: Run the plugin in a browser
+        working-directory: plugins/e2e
+        run: npx playwright test tests/woocommerce.spec.ts
+      - name: Collect logs
+        if: always()
+        working-directory: plugins/e2e
+        run: |
+          mkdir -p logs
+          docker compose -f compose.woocommerce.yml logs --no-color > logs/compose.log 2>&1 || true
+          docker compose -f compose.woocommerce.yml exec -T wordpress cat /var/www/html/wp-content/debug.log > logs/wp-debug.log 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: woocommerce-${{ matrix.theme }}
+          path: |
+            plugins/e2e/screenshots
+            plugins/e2e/test-results
+            plugins/e2e/logs
+          if-no-files-found: ignore
+
+  prestashop:
+    name: PrestaShop ${{ matrix.version }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["8.1", "1.7.8"]
+    env:
+      PS_TAG: ${{ matrix.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: plugins/e2e/package-lock.json
+      - name: Install test tooling
+        working-directory: plugins/e2e
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Start PrestaShop and install the module
+        working-directory: plugins/e2e
+        run: ./setup-prestashop.sh
+      - name: Run the module in a browser
+        working-directory: plugins/e2e
+        run: npx playwright test tests/prestashop.spec.ts
+      - name: Collect logs
+        if: always()
+        working-directory: plugins/e2e
+        run: |
+          mkdir -p logs
+          docker compose -f compose.prestashop.yml logs --no-color > logs/compose.log 2>&1 || true
+          docker compose -f compose.prestashop.yml exec -T prestashop sh -c 'tail -n 200 /var/www/html/var/logs/*.log' > logs/ps-logs.log 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prestashop-${{ matrix.version }}
+          path: |
+            plugins/e2e/screenshots
+            plugins/e2e/test-results
+            plugins/e2e/logs
+          if-no-files-found: ignore

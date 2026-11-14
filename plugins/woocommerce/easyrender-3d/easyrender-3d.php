@@ -10,6 +10,7 @@
  * Author URI:        https://easyrender.ai
  * License:           GPL-2.0-or-later
  * Text Domain:       easyrender-3d
+ * Domain Path:       /languages
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -28,6 +29,7 @@ add_action(
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return;
 		}
+		load_plugin_textdomain( 'easyrender-3d', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 		Easyrender_Admin::init();
 		Easyrender_Frontend::init();
 	}

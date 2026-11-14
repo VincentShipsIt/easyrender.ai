@@ -13,7 +13,7 @@ import {
 } from '@/lib/blog/posts';
 import { COMPARE_INDEX, type ComparePage } from '@/lib/compare/pages';
 import { hasPublishedRuns } from '@/lib/evals';
-import { formatCount, formatUsd } from '@/lib/price-format';
+import { formatCount, formatMoney } from '@/lib/price-format';
 import {
   article,
   breadcrumbList,
@@ -84,7 +84,7 @@ export async function pricingMetadata(locale: Locale): Promise<Metadata> {
     title: t('metaTitle'),
     description: t('metaDescription', {
       credits: RENDER_CREDITS,
-      price: formatUsd(locale, RENDER_CREDITS * pricing.creditUsd),
+      price: formatMoney(locale, RENDER_CREDITS * pricing.creditPrice, pricing.currency),
       proCredits: formatCount(locale, pricing.plans.pro.monthlyCredits),
     }),
     alternates: livePaths('pricing'),
@@ -104,7 +104,7 @@ export async function pricingGraph(locale: Locale) {
   ]);
   const description = t('metaDescription', {
     credits: RENDER_CREDITS,
-    price: formatUsd(locale, RENDER_CREDITS * pricing.creditUsd),
+    price: formatMoney(locale, RENDER_CREDITS * pricing.creditPrice, pricing.currency),
     proCredits: formatCount(locale, pricing.plans.pro.monthlyCredits),
   });
   return [
@@ -143,6 +143,56 @@ export async function blogIndexGraph(locale: Locale) {
       { name: t('breadcrumb.home'), path: ROUTES.home.paths[locale] },
       { name: t('index.title'), path: ROUTES.blog.paths[locale] },
     ]),
+  ];
+}
+
+/** MCP landing: the visible FAQ and schema share their localized content. */
+export async function mcpMetadata(locale: Locale): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'McpLanding.meta' });
+  return pageMetadata({
+    locale,
+    path: ROUTES.mcp.paths[locale],
+    title: t('title'),
+    description: t('description'),
+    alternates: livePaths('mcp'),
+  });
+}
+
+export async function mcpGraph(locale: Locale) {
+  const { mcpFaqItems } = await import('@/components/mcp/mcp-view');
+  const [t, items] = await Promise.all([
+    getTranslations({ locale, namespace: 'McpLanding.meta' }),
+    mcpFaqItems(locale),
+  ]);
+  return [
+    organization(),
+    webPage(locale, ROUTES.mcp.paths[locale], t('title'), t('description')),
+    faqPage(items, `${absoluteUrl(ROUTES.mcp.paths[locale])}#faq`),
+  ];
+}
+
+/** REST API landing: the visible FAQ and schema share their localized content. */
+export async function apiMetadata(locale: Locale): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'ApiLanding.meta' });
+  return pageMetadata({
+    locale,
+    path: ROUTES.api.paths[locale],
+    title: t('title'),
+    description: t('description'),
+    alternates: livePaths('api'),
+  });
+}
+
+export async function apiGraph(locale: Locale) {
+  const { apiFaqItems } = await import('@/components/api-landing/api-view');
+  const [t, items] = await Promise.all([
+    getTranslations({ locale, namespace: 'ApiLanding.meta' }),
+    apiFaqItems(locale),
+  ]);
+  return [
+    organization(),
+    webPage(locale, ROUTES.api.paths[locale], t('title'), t('description')),
+    faqPage(items, `${absoluteUrl(ROUTES.api.paths[locale])}#faq`),
   ];
 }
 

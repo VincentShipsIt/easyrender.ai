@@ -109,6 +109,10 @@ jobs:
         run: find plugins/woocommerce -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: WooCommerce plugin tests
         run: php plugins/woocommerce/easyrender-3d/tests/run.php
+      - name: PHP syntax (PrestaShop module)
+        run: find plugins/prestashop -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: PrestaShop module tests
+        run: php plugins/prestashop/easyrender3d/tests/run.php
 
   gate:
     name: CI Gate
