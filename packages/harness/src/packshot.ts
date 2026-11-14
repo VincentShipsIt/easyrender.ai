@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 import { LIMITS, type Limits } from './guardrails';
 import { type MaterialProfile, materialRules } from './materials';
-import { DEFAULT_SHEET_SETTINGS, UPSCALE_MODEL } from './models';
+import { DEFAULT_SHEET_SETTINGS } from './models';
 import { cleanNote } from './note';
 import { VIEWS } from './sheet';
 import { DEFAULT_SKILL, type RenderSkill } from './skills';
@@ -101,26 +101,13 @@ export function viewRequest(
   };
 }
 
-// How much to enlarge a view so its long side reaches the packshot canvas (1 means leave it).
-export function upscaleFactor(side: number): number {
-  if (side >= PACKSHOT_SIDE) return 1;
-  return Math.min(4, Math.max(2, Math.ceil(PACKSHOT_SIDE / side)));
-}
+// A view is enlarged only when its long side is short of the packshot canvas.
+export const needsUpscale = (side: number): boolean => side < PACKSHOT_SIDE;
 
 // The long side of a picture, in pixels.
 export async function imageSide(image: Uint8Array): Promise<number> {
   const { width = 0, height = 0 } = await sharp(image).metadata();
   return Math.max(width, height);
-}
-
-export function upscaleRequest(imageUrl: string, scale: number) {
-  return {
-    path: '/predictions',
-    body: {
-      version: UPSCALE_MODEL.version,
-      input: { image: imageUrl, scale, face_enhance: false },
-    },
-  };
 }
 
 // --- Measuring a picture -------------------------------------------------------------------

@@ -15,7 +15,7 @@
   note (`redrawSheet`) costs `SHEET_CREDITS` each time, does not count toward the 3D price, and is
   refunded if that redraw fails (the owner keeps the sheet they had).
 - Product views (`packages/core/src/product-views.ts`): one photo to nine white-background
-  packshots, no 3D. A set costs `PRODUCT_VIEWS_CREDITS` (2K sheet + nine upscales + one reserved
+  packshots, no 3D. A set costs `PRODUCT_VIEWS_CREDITS` (2K sheet + nine upscales, same model as the Upscale action + one reserved
   redraw) and is refunded in full only if no sheet can be drawn; after the sheet no view ever
   fails the set (it falls back and is flagged). Polishing one view costs `VIEW_POLISH_CREDITS` and
   is refunded if it cannot be drawn. Building 3D from a set creates a `Render` with

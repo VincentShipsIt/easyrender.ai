@@ -8,9 +8,8 @@ import {
   finishView,
   isViewId,
   measureObject,
+  needsUpscale,
   PACKSHOT_SIDE,
-  upscaleFactor,
-  upscaleRequest,
   viewPrompt,
   viewRequest,
 } from './packshot';
@@ -184,15 +183,11 @@ describe('view prompts and requests', () => {
     ]);
   });
 
-  it('upscales only as far as the canvas needs', () => {
-    expect(upscaleFactor(2400)).toBe(1);
-    expect(upscaleFactor(1000)).toBe(2);
-    expect(upscaleFactor(660)).toBe(4);
-    expect(upscaleFactor(100)).toBe(4);
-    expect(upscaleRequest('https://p/v', 3).body.input).toMatchObject({
-      image: 'https://p/v',
-      scale: 3,
-    });
+  it('upscales only a view that is short of the canvas', () => {
+    expect(needsUpscale(2400)).toBe(false);
+    expect(needsUpscale(PACKSHOT_SIDE)).toBe(false);
+    expect(needsUpscale(1999)).toBe(true);
+    expect(needsUpscale(660)).toBe(true);
   });
 
   it('knows the nine view ids', () => {

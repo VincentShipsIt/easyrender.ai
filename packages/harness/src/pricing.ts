@@ -20,20 +20,19 @@ export const BUILD_COST_USD = 0.09;
 export const RENDER_COST_USD = FINAL_SHEET_COST_USD + BUILD_COST_USD;
 export const RENDER_CREDITS = creditsFor(RENDER_COST_USD);
 
+// The upscaler, per output image. It is the paid Upscale action (one finished picture, a product
+// view or the angle sheet of a paid render, enlarged to print size, at a flat price because the
+// upscaler charges per picture) and the upscale step inside product views.
+export const ENLARGE_COST_USD = 0.006;
+export const UPSCALE_CREDITS = creditsFor(ENLARGE_COST_USD);
+
 // Product views: one photo in, nine packshots out on white, with no 3D build. The 2K sheet is drawn
 // once, each view is upscaled to the packshot size, and the price keeps room for one view the
 // checks send back for a redraw (a 1K single view plus its upscale). Nothing in it is 3D.
 export const PRODUCT_VIEW_COUNT = 9;
-
-// The paid Upscale action: one finished picture (a product view, the angle sheet of a paid render)
-// enlarged to print size. A flat price, because the upscaler charges per picture.
-export const ENLARGE_COST_USD = 0.006;
-export const UPSCALE_CREDITS = creditsFor(ENLARGE_COST_USD);
-
-export const UPSCALE_COST_USD = 0.002; // Real-ESRGAN, per output image
-export const VIEW_REDRAW_COST_USD = SHEET_COST_USD + UPSCALE_COST_USD;
+export const VIEW_REDRAW_COST_USD = SHEET_COST_USD + ENLARGE_COST_USD;
 export const PRODUCT_VIEWS_COST_USD =
-  FINAL_SHEET_COST_USD + PRODUCT_VIEW_COUNT * UPSCALE_COST_USD + VIEW_REDRAW_COST_USD;
+  FINAL_SHEET_COST_USD + PRODUCT_VIEW_COUNT * ENLARGE_COST_USD + VIEW_REDRAW_COST_USD;
 export const PRODUCT_VIEWS_CREDITS = creditsFor(PRODUCT_VIEWS_COST_USD);
 // Polishing one view: the owner describes what is wrong and that view is drawn again.
 export const VIEW_POLISH_CREDITS = creditsFor(VIEW_REDRAW_COST_USD);
