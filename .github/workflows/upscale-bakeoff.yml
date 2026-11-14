@@ -4,11 +4,9 @@ run-name: "Upscale bake-off · ${{ inputs.candidates }}"
 # Manual only. Enlarges real interior and product pictures with each candidate upscaler on Replicate
 # (and fal, when the FAL_KEY secret exists) and compares them. It spends real money (about $1 to
 # $3), so it needs the word "spend" typed in. Needs the repository secret REPLICATE_API_TOKEN.
+# The model behind the paid Upscale action was picked with it; see
+# .agents/memory/context/upscalers.md.
 on:
-  # TEMPORARY: lets the first run start from the feature branch, before this file is on main.
-  push:
-    branches: [claude/project-thread-xhy548]
-    paths: [.github/workflows/upscale-bakeoff.yml]
   workflow_dispatch:
     inputs:
       confirm:
@@ -16,12 +14,12 @@ on:
         required: true
         type: string
       candidates:
-        description: "Comma-separated ids: esrgan, clarity, crisp, topaz, google, bria, seedvr, fal-seedvr, fal-aura, fal-clarity, fal-crisp"
+        description: "Comma-separated ids: esrgan, crisp, topaz, bria, fal-seedvr, fal-aura, fal-clarity, fal-crisp"
         required: true
-        default: "esrgan,clarity,crisp,topaz,google,bria,seedvr,fal-seedvr,fal-aura,fal-clarity,fal-crisp"
+        default: "esrgan,crisp,topaz,bria,fal-seedvr,fal-aura,fal-clarity,fal-crisp"
         type: string
       images:
-        description: "Comma-separated images (interior, room-ar, sofa, lamp, sneaker, barrel, gt-hero, gt-interior, gt-armchair)"
+        description: "Comma-separated images (interior, room-ar, sofa, lamp, sneaker, barrel, big, gt-hero, gt-interior, gt-armchair)"
         required: true
         default: "interior,room-ar,sofa,lamp,sneaker,barrel,gt-hero,gt-interior,gt-armchair"
         type: string
@@ -37,7 +35,7 @@ permissions:
 jobs:
   bakeoff:
     name: Bake-off
-    if: ${{ github.event_name == 'push' || inputs.confirm == 'spend' }}
+    if: ${{ inputs.confirm == 'spend' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -55,7 +53,7 @@ jobs:
           CANDIDATES: ${{ inputs.candidates }}
           IMAGES: ${{ inputs.images }}
           SCALE: ${{ inputs.scale }}
-        run: bun packages/harness/scripts/upscale-bakeoff.ts --spend --scale="${SCALE:-2}" --candidates="${CANDIDATES:-esrgan,crisp,topaz}" --images="${IMAGES:-big,interior,sofa}"
+        run: bun packages/harness/scripts/upscale-bakeoff.ts --spend --scale="$SCALE" --candidates="$CANDIDATES" --images="$IMAGES"
       - name: Job summary
         if: always()
         run: |

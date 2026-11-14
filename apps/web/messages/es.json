@@ -304,7 +304,8 @@
     "errors": {
       "start": "No se pudo iniciar el render",
       "sheet": "No se pudo generar la hoja de ángulos",
-      "redraw": "No se pudo redibujar la hoja de ángulos"
+      "redraw": "No se pudo redibujar la hoja de ángulos",
+      "upscale": "No se pudo ampliar esta imagen. Inténtalo de nuevo en un minuto."
     },
     "generateSheet": "Generar hoja de ángulos ({credits} créditos)",
     "fixSheetLabel": "¿Algún ángulo no es correcto?",
@@ -516,7 +517,8 @@
       "unreadable": "No se pudo leer esta foto",
       "create": "No se pudieron crear las vistas de producto. Inténtalo de nuevo en un minuto.",
       "polish": "No se pudo pulir esta vista. Inténtalo de nuevo en un minuto.",
-      "render": "No se pudo iniciar el render 3D."
+      "render": "No se pudo iniciar el render 3D.",
+      "upscale": "No se pudo ampliar esta imagen. Inténtalo de nuevo en un minuto."
     }
   },
   "DashboardNav": {
@@ -1835,5 +1837,12 @@
       "title": "Añade otra dimensión a tu producto.",
       "cta": "Obtén tu clave API"
     }
+  },
+  "Upscale": {
+    "action": "Ampliar, {credits} créditos",
+    "working": "Ampliando",
+    "buy": "Compra créditos para ampliar",
+    "download": "Descargar {width} px",
+    "downloadLarge": "Descargar archivo más grande"
   }
 }

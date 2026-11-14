@@ -45,6 +45,7 @@ model User {
   catalogItems CatalogItem[]
   shopifyShops ShopifyShop[]
   viewSets  ViewSet[]
+  upscales  Upscale[]
 
   @@map("user")
 }
@@ -259,6 +260,42 @@ model ProductView {
   updatedAt    DateTime          @updatedAt
 
   @@unique([setId, view])
+}
+
+// A paid enlargement of one picture the owner already has: a product view, or the angle sheet of
+// a paid render. The original is never touched; the larger file is stored beside it.
+enum UpscaleStatus {
+  processing
+  ready
+  failed
+}
+
+model Upscale {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // view | sheet
+  kind         String
+  // The render (sheet) or the views set and view name (view) it was made from.
+  renderId     String?
+  viewSetId    String?
+  view         String?
+  status       UpscaleStatus @default(processing)
+  sourceKey    String
+  // The enlarged picture, once there is one.
+  key          String?
+  predictionId String?       @unique
+  scale        Int
+  width        Int?
+  height       Int?
+  credits      Int
+  costUsd      Float         @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([renderId])
+  @@index([viewSetId, view])
 }
 
 model CreditLedger {

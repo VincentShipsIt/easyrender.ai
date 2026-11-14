@@ -304,7 +304,8 @@
     "errors": {
       "start": "Could not start the render",
       "sheet": "Could not generate the angle sheet",
-      "redraw": "Could not redraw the angle sheet"
+      "redraw": "Could not redraw the angle sheet",
+      "upscale": "Não foi possível ampliar esta imagem. Tente novamente dentro de um minuto."
     },
     "generateSheet": "Generate angle sheet ({credits} credits)",
     "fixSheetLabel": "Something off in an angle?",
@@ -516,7 +517,8 @@
       "unreadable": "Could not read this photo",
       "create": "Could not make the product views. Try again in a minute.",
       "polish": "Could not polish this view. Try again in a minute.",
-      "render": "Could not start the 3D render."
+      "render": "Could not start the 3D render.",
+      "upscale": "Não foi possível ampliar esta imagem. Tente novamente dentro de um minuto."
     }
   },
   "DashboardNav": {
@@ -1835,5 +1837,12 @@
       "title": "Add the next dimension to your product.",
       "cta": "Get your API key"
     }
+  },
+  "Upscale": {
+    "action": "Ampliar, {credits} créditos",
+    "working": "A ampliar",
+    "buy": "Comprar créditos para ampliar",
+    "download": "Transferir {width} px",
+    "downloadLarge": "Transferir ficheiro maior"
   }
 }

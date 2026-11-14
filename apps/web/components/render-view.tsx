@@ -15,6 +15,8 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { UpscaleAction } from '@/components/upscale/upscale-action';
+import { latestUpscale, useUpscales } from '@/components/upscale/use-upscales';
 import { captureBrowser, observeRender } from '@/lib/analytics/browser';
 
 const RUNNING = new Set(['drafting', 'rendering']);
@@ -46,6 +48,7 @@ export function RenderView({
   const [saving, setSaving] = useState(false);
   const [redrawError, setRedrawError] = useState<string | null>(null);
   const [note, setNote] = useState(initial.sheetNote ?? '');
+  const upscales = useUpscales({ renderId: initial.id }, owner && signedIn && initial.canUpscale);
 
   useEffect(() => {
     if (!RUNNING.has(render.status)) return;
@@ -178,6 +181,25 @@ export function RenderView({
   const angles = (
     <div className="space-y-4">
       {sheet}
+      {owner && signedIn && render.canUpscale && (
+        <div className="space-y-2">
+          <UpscaleAction
+            row={latestUpscale(upscales.rows, (row) => row.kind === 'sheet')}
+            credits={render.upscaleCredits}
+            balance={balance}
+            isBusy={upscales.busyKey === 'sheet'}
+            buyHref={`/credits?next=${next}`}
+            onStart={() =>
+              upscales.start({ kind: 'sheet', renderId: render.id }, 'sheet', t('errors.upscale'))
+            }
+          />
+          {upscales.error && (
+            <Alert variant="destructive">
+              <AlertDescription>{upscales.error}</AlertDescription>
+            </Alert>
+          )}
+        </div>
+      )}
       {isFixable && (
         <div className="space-y-2">
           <Label htmlFor="sheet-note">{t('fixSheetLabel')}</Label>

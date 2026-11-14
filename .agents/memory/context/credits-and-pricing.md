@@ -17,6 +17,11 @@
   `hasFinalSheet` and charges `BUILD_FROM_VIEWS_CREDITS` (a full render minus the 2K sheet it
   reuses). Per-view checks and their limits live in `packages/harness/src/packshot.ts` and
   `LIMITS` (`view*`), tunable from the private harness `limits`.
+- Upscale (`packages/core/src/upscale.ts`): a paid enlargement of a ready product view or of the
+  angle sheet of a paid render, to at most 4096 px. A flat `UPSCALE_CREDITS` (from
+  `ENLARGE_COST_USD`), charged before the model runs and refunded if it fails; asking again for the
+  same picture returns the earlier file at no charge. Which model runs, and why:
+  [upscalers](upscalers.md).
 - A failed job refunds its credits. Guardrail failures (bad photo, bad sheet, bad GLB) fail and
   refund.
 - Stripe is live only. There is no test mode, so a test checkout is a real charge. With

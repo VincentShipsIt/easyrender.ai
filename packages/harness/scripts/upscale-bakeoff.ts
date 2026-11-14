@@ -28,6 +28,8 @@ type Candidate = {
   input: (image: string, scale: number) => Record<string, unknown>;
 };
 
+// Not listed: philz1337x/clarity-upscaler, google/upscaler and zsxkib/seedvr2 answered 404 or 422 on
+// Replicate on 2026-11-14 (no such public model for this token); fal's clarity and SeedVR are below.
 const candidates: Candidate[] = [
   {
     id: 'esrgan',
@@ -35,20 +37,6 @@ const candidates: Candidate[] = [
     model: 'nightmareai/real-esrgan',
     listedUsd: 0.002,
     input: (image, scale) => ({ image, scale, face_enhance: false }),
-  },
-  {
-    id: 'clarity',
-    provider: 'replicate',
-    model: 'philz1337x/clarity-upscaler',
-    listedUsd: 0.03,
-    input: (image, scale) => ({
-      image,
-      scale_factor: scale,
-      creativity: 0.25,
-      resemblance: 0.8,
-      dynamic: 6,
-      output_format: 'png',
-    }),
   },
   {
     id: 'crisp',
@@ -70,25 +58,11 @@ const candidates: Candidate[] = [
     }),
   },
   {
-    id: 'google',
-    provider: 'replicate',
-    model: 'google/upscaler',
-    listedUsd: 0.003,
-    input: (image, scale) => ({ image, upscale_factor: `x${scale}`, output_format: 'png' }),
-  },
-  {
     id: 'bria',
     provider: 'replicate',
     model: 'bria/increase-resolution',
     listedUsd: 0.04,
     input: (image, scale) => ({ image, desired_increase: scale, preserve_alpha: false }),
-  },
-  {
-    id: 'seedvr',
-    provider: 'replicate',
-    model: 'zsxkib/seedvr2',
-    listedUsd: 0.05,
-    input: (image, scale) => ({ image, upscale_factor: scale, output_format: 'png' }),
   },
   {
     id: 'fal-seedvr',

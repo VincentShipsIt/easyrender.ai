@@ -29,6 +29,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
+import { UpscaleAction } from '@/components/upscale/upscale-action';
+import { latestUpscale, useUpscales } from '@/components/upscale/use-upscales';
 
 const RUNNING = new Set(['drafting', 'processing']);
 // Mirrors MAX_NOTE_LENGTH in the harness, which a client component cannot import (it pulls in sharp).
@@ -51,6 +53,7 @@ export function ProductViewsDetail({
   const [error, setError] = useState<string | null>(null);
   const [dialogError, setDialogError] = useState<string | null>(null);
   const base = `/api/product-views/${set.id}`;
+  const upscales = useUpscales({ viewSetId: set.id }, set.status === 'ready');
 
   useEffect(() => {
     if (!RUNNING.has(set.status)) return;
@@ -190,6 +193,25 @@ export function ProductViewsDetail({
                     {t('polish')}
                   </Button>
                 </div>
+                {view.hasImage && view.status === 'ready' && (
+                  <UpscaleAction
+                    row={latestUpscale(
+                      upscales.rows,
+                      (row) => row.kind === 'view' && row.view === view.view,
+                    )}
+                    credits={set.upscaleCredits}
+                    balance={balance}
+                    isBusy={upscales.busyKey === view.view}
+                    buyHref={`/credits?next=/views/${set.id}`}
+                    onStart={() =>
+                      upscales.start(
+                        { kind: 'view', viewSetId: set.id, view: view.view },
+                        view.view,
+                        t('errors.upscale'),
+                      )
+                    }
+                  />
+                )}
               </CardContent>
             </Card>
           </li>
@@ -221,9 +243,9 @@ export function ProductViewsDetail({
           </CardContent>
         </Card>
       )}
-      {error && (
+      {(error || upscales.error) && (
         <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription>{error ?? upscales.error}</AlertDescription>
         </Alert>
       )}
       {isReady && balance < set.polishCredits && (
