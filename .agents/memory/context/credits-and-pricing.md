@@ -6,7 +6,9 @@
 - Pay as you go: any number of credits from 500 to 100,000 through one $0.01 Stripe price, bought
   with `quantity = credits`. Pro: $49 a month for 5,000 credits.
 - A 3D build is `RENDER_CREDITS`; the angle sheet is `SHEET_CREDITS` and counts toward the 3D
-  price. Free previews are limited per day (`FREE_PREVIEWS_PER_DAY`).
+  price. Free previews are limited per day (`FREE_PREVIEWS_PER_DAY`). Redrawing a sheet with a fix
+  note (`redrawSheet`) costs `SHEET_CREDITS` each time, does not count toward the 3D price, and is
+  refunded if that redraw fails (the owner keeps the sheet they had).
 - A failed job refunds its credits. Guardrail failures (bad photo, bad sheet, bad GLB) fail and
   refund.
 - Stripe is live only. There is no test mode, so a test checkout is a real charge. With

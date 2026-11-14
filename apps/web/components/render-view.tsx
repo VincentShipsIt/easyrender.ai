@@ -1,7 +1,7 @@
 'use client';
 
 import type { RenderView as View } from '@easyrender/core';
-import { Box, Globe, Grid3x3, Loader2, Lock, Sparkles } from 'lucide-react';
+import { Box, Globe, Grid3x3, Loader2, Lock, RefreshCw, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -11,9 +11,12 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { captureBrowser, observeRender } from '@/lib/analytics/browser';
 
 const RUNNING = new Set(['drafting', 'rendering']);
+// Mirrors MAX_NOTE_LENGTH in the harness, which a client component cannot import (it pulls in sharp).
+const NOTE_MAX_LENGTH = 500;
 
 export function RenderView({
   initial,
@@ -32,6 +35,8 @@ export function RenderView({
   const [error, setError] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [redrawError, setRedrawError] = useState<string | null>(null);
+  const [note, setNote] = useState(initial.sheetNote ?? '');
 
   useEffect(() => {
     if (!RUNNING.has(render.status)) return;
@@ -70,6 +75,25 @@ export function RenderView({
         credits: render.sheetCredits,
       });
     } else setError(data.error ?? t('errors.sheet'));
+    setStarting(false);
+  }
+
+  async function redrawSheet() {
+    setStarting(true);
+    setRedrawError(null);
+    const response = await fetch(`/api/renders/${render.id}/sheet/redraw`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ note }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (response.ok) {
+      setRender(data);
+      captureBrowser('render_sheet_redraw_started', {
+        source: 'render_detail',
+        credits: render.sheetCredits,
+      });
+    } else setRedrawError(data.error ?? t('errors.redraw'));
     setStarting(false);
   }
 
@@ -121,10 +145,11 @@ export function RenderView({
       </div>
     );
 
-  const angles = render.hasPreview ? (
+  const isFixable = owner && signedIn && render.status === 'preview_ready' && render.hasSheet;
+  const sheet = render.hasPreview ? (
     // biome-ignore lint/performance/noImgElement: watermarked preview served by our own API
     <img
-      src={`${base}/preview?s=${render.status}`}
+      src={`${base}/preview?v=${render.modelVersion}`}
       alt={t('previewAlt')}
       className="w-full rounded-lg border bg-white"
     />
@@ -134,6 +159,46 @@ export function RenderView({
         <span className="text-sm">{t('noPreview')}</span>
       ) : (
         <Loader2 className="size-5 animate-spin" />
+      )}
+    </div>
+  );
+
+  const angles = (
+    <div className="space-y-4">
+      {sheet}
+      {isFixable && (
+        <div className="space-y-2">
+          <Label htmlFor="sheet-note">{t('fixSheetLabel')}</Label>
+          <Textarea
+            id="sheet-note"
+            value={note}
+            maxLength={NOTE_MAX_LENGTH}
+            rows={3}
+            placeholder={t('fixSheetPlaceholder')}
+            onChange={(event) => setNote(event.target.value)}
+          />
+          <p className="text-xs text-muted-foreground">{t('fixSheetHint')}</p>
+          {balance < render.sheetCredits ? (
+            <Button variant="outline" className="w-full" asChild>
+              <Link href={`/credits?next=${next}`}>{t('buyToRedraw')}</Link>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={redrawSheet}
+              disabled={starting || note.trim().length === 0}
+            >
+              {starting ? <Loader2 className="animate-spin" /> : <RefreshCw />}
+              {t('redrawSheet', { credits: render.sheetCredits })}
+            </Button>
+          )}
+          {redrawError && (
+            <Alert variant="destructive">
+              <AlertDescription>{redrawError}</AlertDescription>
+            </Alert>
+          )}
+        </div>
       )}
     </div>
   );
@@ -208,6 +273,7 @@ export function RenderView({
       prompt={render.prompt}
       badges={[t(`status.${render.status}`)]}
       viewer={viewer}
+      isViewerFirst={render.status === 'ready'}
       input={`${base}/source`}
       angles={angles}
       meta={[
@@ -220,7 +286,6 @@ export function RenderView({
             </span>
           ),
         },
-        { label: t('meta.engine'), value: 'TRELLIS + angle sheet' },
         { label: t('meta.formats'), value: 'GLB · USDZ' },
         ...(owner ? [{ label: t('meta.creditsUsed'), value: format.number(render.credits) }] : []),
         {

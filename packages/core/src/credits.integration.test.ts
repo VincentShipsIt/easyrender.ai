@@ -178,6 +178,109 @@ run('credits and generation billing (real database)', () => {
     expect(await balance(userId)).toBe(SHEET_CREDITS);
   });
 
+  it('redrawSheet debits one sheet once, keeps the note, and counts nothing toward the build', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS * 3);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png', credits: 0 });
+    await Promise.allSettled([
+      renders.redrawSheet(render.id, { userId }, '  Back legs\nare too thick '),
+      renders.redrawSheet(render.id, { userId }, 'Back legs are too thick'),
+    ]);
+    expect(await balance(userId)).toBe(SHEET_CREDITS * 2);
+    const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+    expect(after.status).toBe('drafting');
+    expect(after.sheetNote).toBe('Back legs are too thick');
+    expect(after.sheetRedraws).toBe(1);
+    expect(after.credits).toBe(0);
+    expect(after.sheetKey).toBe('fake:sheets/old.png');
+    // The note reaches the sheet prompt that Replicate is given.
+    const body = replicate.start.mock.calls[0]?.[1] as { input: { prompt: string } };
+    expect(body.input.prompt).toContain('Back legs are too thick');
+  });
+
+  it('a redraw that Replicate fails is refunded and the owner keeps the sheet they had', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png' });
+    replicate.start.mockResolvedValue({ id: `pred_redraw_${userId}` });
+    await renders.redrawSheet(render.id, { userId }, 'Seat is flat');
+    expect(await balance(userId)).toBe(0);
+    replicate.get.mockResolvedValue({ status: 'failed', error: 'boom' });
+    await renders.advance(render.id);
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+    const after = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+    expect(after.status).toBe('preview_ready');
+    expect(after.sheetKey).toBe('fake:sheets/old.png');
+    // Polling again never refunds twice.
+    await renders.advance(render.id);
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+  });
+
+  it('a redraw that cannot start is refunded, and can be tried again', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png' });
+    replicate.fail = true;
+    await expect(renders.redrawSheet(render.id, { userId }, 'Seat is flat')).rejects.toMatchObject({
+      status: 502,
+    });
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+    expect((await db().render.findUniqueOrThrow({ where: { id: render.id } })).status).toBe(
+      'preview_ready',
+    );
+    replicate.fail = false;
+    await renders.redrawSheet(render.id, { userId }, 'Seat is flat');
+    expect(await balance(userId)).toBe(0);
+  });
+
+  it('a finished redraw replaces the sheet and shows in the next paid sheet prompt', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS + RENDER_CREDITS);
+    const render = await newRender(userId, {
+      sheetKey: 'fake:sheets/old.png',
+      prompt: 'oak table',
+    });
+    replicate.start.mockResolvedValue({ id: `pred_done_${userId}` });
+    await renders.redrawSheet(render.id, { userId }, 'Four legs, not three');
+    replicate.get.mockResolvedValue({ status: 'succeeded', output: 'https://r.test/new.png' });
+    await renders.advance(render.id);
+    const done = await db().render.findUniqueOrThrow({ where: { id: render.id } });
+    expect(done.status).toBe('preview_ready');
+    expect(done.sheetKey).toBe('fake:sheets/sheet.png');
+    // The paid build draws its final sheet with the same fix.
+    replicate.start.mockClear();
+    await renders.startBuild(render.id, { userId });
+    const body = replicate.start.mock.calls[0]?.[1] as { input: { prompt: string } };
+    expect(body.input.prompt).toContain('Four legs, not three');
+    expect(body.input.prompt).toContain('oak table');
+  });
+
+  it('redrawSheet refuses an empty note, a missing sheet, other people and a low balance', async () => {
+    const { renders } = await load();
+    const userId = await newUser(SHEET_CREDITS);
+    const render = await newRender(userId, { sheetKey: 'fake:sheets/old.png' });
+    await expect(renders.redrawSheet(render.id, { userId }, '   ')).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(
+      renders.redrawSheet(render.id, { userId: 'someone-else' }, 'Seat is flat'),
+    ).rejects.toMatchObject({ status: 404 });
+    const noSheet = await newRender(userId);
+    await expect(renders.redrawSheet(noSheet.id, { userId }, 'Seat is flat')).rejects.toMatchObject(
+      { status: 409 },
+    );
+    const poor = await newUser(0);
+    const poorRender = await newRender(poor, { sheetKey: 'fake:sheets/old.png' });
+    await expect(
+      renders.redrawSheet(poorRender.id, { userId: poor }, 'Seat is flat'),
+    ).rejects.toMatchObject({ status: 402 });
+    expect(await balance(poor)).toBe(0);
+    expect((await db().render.findUniqueOrThrow({ where: { id: poorRender.id } })).status).toBe(
+      'preview_ready',
+    );
+    expect(await balance(userId)).toBe(SHEET_CREDITS);
+  });
+
   it('startSheet at zero balance is refused', async () => {
     const { renders } = await load();
     const userId = await newUser(0);

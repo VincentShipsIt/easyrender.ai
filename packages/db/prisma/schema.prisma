@@ -138,6 +138,10 @@ model Render {
   // What the guardrails measured at each stage (photo, draft sheet, final sheet, model), for
   // comparing quality across renders. Never read to decide anything; see render-quality.ts.
   quality           Json?
+  // What the owner asked to fix in the angle sheet, and how many redraws they have paid for. The
+  // note joins the prompt in every later sheet, including the final one of the paid build.
+  sheetNote         String?
+  sheetRedraws      Int          @default(0)
   sheetPredictionId String?      @unique
   buildPredictionId String?      @unique
   // A paid build redraws the sheet with the final model before the 3D build; this is that prediction.
