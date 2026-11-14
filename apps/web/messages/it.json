@@ -15,7 +15,6 @@
       "try": "Prova",
       "pricing": "Prezzi"
     },
-    "credits": "crediti",
     "dashboard": "Dashboard",
     "signIn": "Accedi",
     "connect": "Collega",
@@ -576,7 +575,6 @@
     "remove": "Rimuovi la foto",
     "create": "Crea anteprima gratuita",
     "uploading": "Caricamento…",
-    "balance": "{credits} crediti",
     "batch": "Carica più foto",
     "connect": "Collega un agente",
     "errors": {

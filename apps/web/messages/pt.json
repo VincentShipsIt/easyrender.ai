@@ -15,7 +15,6 @@
       "try": "Experimentar",
       "pricing": "Preços"
     },
-    "credits": "créditos",
     "dashboard": "Painel",
     "signIn": "Iniciar sessão",
     "connect": "Ligar",
@@ -576,7 +575,6 @@
     "remove": "Remover a foto",
     "create": "Criar pré-visualização grátis",
     "uploading": "Enviando…",
-    "balance": "{credits} créditos",
     "batch": "Enviar várias fotos",
     "connect": "Conectar um agente",
     "errors": {

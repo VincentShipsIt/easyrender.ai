@@ -15,7 +15,6 @@
       "try": "Ausprobieren",
       "pricing": "Preise"
     },
-    "credits": "Credits",
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
     "connect": "Agent verbinden",
@@ -576,7 +575,6 @@
     "remove": "Foto entfernen",
     "create": "Kostenlose Vorschau erstellen",
     "uploading": "Wird hochgeladen…",
-    "balance": "{credits} Credits",
     "batch": "Mehrere Fotos hochladen",
     "connect": "Agenten verbinden",
     "errors": {

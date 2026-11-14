@@ -1,9 +1,8 @@
-import { getBalance } from '@easyrender/core';
-import { Coins, LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard } from 'lucide-react';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { connection } from 'next/server';
-import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { BrandMark } from '@/components/brand-mark';
 import { LocaleSwitcher } from '@/components/locale-switcher';
 import { SiteMenu } from '@/components/site-menu';
@@ -26,10 +25,8 @@ export async function SiteHeader() {
   // Per-request: the header reads the session, so no page (404 included) is prerendered against the database.
   await connection();
   const user = await currentUser().catch(() => null);
-  const balance = user ? await getBalance(user.id).catch(() => 0) : 0;
-  const [t, format, locale, headerList] = await Promise.all([
+  const [t, locale, headerList] = await Promise.all([
     getTranslations('Header'),
-    getFormatter(),
     getLocale(),
     headers(),
   ]);
@@ -55,7 +52,7 @@ export async function SiteHeader() {
   };
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* One row at every width: section links only from xl, sign-in (or the balance) from sm,
+      {/* One row at every width: section links only from xl, sign-in from sm,
           the language dropdown always, signed in or not. Whatever is hidden moves into the menu, so nothing is cut off at 320px. */}
       <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-4">
@@ -78,14 +75,6 @@ export async function SiteHeader() {
           <LocaleSwitcher />
           {user ? (
             <>
-              {/* The balance moves into the menu below sm, like sign-in when signed out: the
-                  language dropdown and Dashboard keep the row ("Tableau de bord" at 320px). */}
-              <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
-                <Link href="/credits">
-                  <Coins />
-                  {format.number(balance)} {t('credits')}
-                </Link>
-              </Button>
               <Button size="sm" asChild>
                 <Link href="/dashboard">
                   <LayoutDashboard />
@@ -120,14 +109,7 @@ export async function SiteHeader() {
                   </Link>
                 </Button>
               ))}
-              {user ? (
-                <Button variant="ghost" className="justify-start sm:hidden" asChild>
-                  <Link href="/credits">
-                    <Coins />
-                    {format.number(balance)} {t('credits')}
-                  </Link>
-                </Button>
-              ) : (
+              {!user && (
                 <Button variant="ghost" className="justify-start sm:hidden" asChild>
                   <Link href="/sign-in">{t('signIn')}</Link>
                 </Button>

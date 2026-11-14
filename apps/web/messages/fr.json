@@ -15,7 +15,6 @@
       "try": "Essayer",
       "pricing": "Tarifs"
     },
-    "credits": "crédits",
     "dashboard": "Tableau de bord",
     "signIn": "Se connecter",
     "connect": "Connecter",
@@ -576,7 +575,6 @@
     "remove": "Retirer la photo",
     "create": "Créer un aperçu gratuit",
     "uploading": "Envoi en cours…",
-    "balance": "{credits} crédits",
     "batch": "Envoyer plusieurs photos",
     "connect": "Connecter un agent",
     "errors": {

@@ -15,7 +15,6 @@
       "try": "Try it",
       "pricing": "Pricing"
     },
-    "credits": "credits",
     "dashboard": "Dashboard",
     "signIn": "Sign in",
     "connect": "Connect",
@@ -576,7 +575,6 @@
     "remove": "Remove photo",
     "create": "Create free preview",
     "uploading": "Uploading…",
-    "balance": "{credits} credits",
     "batch": "Upload a batch",
     "connect": "Connect an agent",
     "errors": {
