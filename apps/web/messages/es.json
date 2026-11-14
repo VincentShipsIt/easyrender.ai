@@ -443,12 +443,79 @@
       "short": "Te faltan {credits} créditos. Comprar más"
     }
   },
+  "ProductViews": {
+    "metaTitle": "Vistas de producto · easyrender",
+    "title": "Vistas de producto",
+    "subtitle": "Una foto del producto y nueve fotos de catálogo limpias sobre fondo blanco. Sin estudio y sin necesidad de 3D.",
+    "choose": "Elige una foto del producto",
+    "chooseHint": "JPEG, PNG o WebP. Que se vea el producto entero.",
+    "noteLabel": "Describe el producto (opcional)",
+    "notePlaceholder": "Estructura de metal negro mate, asiento de roble",
+    "create": "Crear vistas de producto, {credits} créditos",
+    "buyCredits": "Compra créditos para crear vistas de producto",
+    "aiNote": "Las vistas las genera la IA a partir de tu foto. Los lados ocultos se deducen, así que compara cada vista con el producto real y pule las que no cuadren.",
+    "recents": "Tus vistas de producto",
+    "empty": "Aún no hay vistas de producto. Sube una foto para crear tu primer conjunto.",
+    "untitled": "Producto sin título",
+    "viewsReady": "{count} vistas listas",
+    "progress": "{ready} de {total} vistas listas",
+    "canvas": "2000 × 2000 px · JPG · fondo blanco",
+    "downloadAll": "Descargar todo (ZIP)",
+    "download": "Descargar",
+    "polish": "Pulir",
+    "flagged": "Revisa esta vista",
+    "failed": "No se pudieron dibujar las vistas. Te hemos devuelto los créditos.",
+    "buyToPolish": "Compra créditos para pulir una vista",
+    "polishTitle": "Pulir la vista {view}",
+    "polishHint": "Describe qué está mal. Esta vista se dibuja de nuevo a partir de tu foto y de la imagen actual; las demás no cambian.",
+    "polishLabel": "¿Qué hay que cambiar?",
+    "polishPlaceholder": "El asa debe estar a la izquierda y la madera es más clara",
+    "polishSubmit": "Redibujar esta vista, {credits} créditos",
+    "upsellTitle": "¿Lo necesitas en 3D?",
+    "upsellBody": "Crea un modelo 3D y RA a partir de estas mismas vistas. Se reutilizan tus vistas terminadas, así que solo pagas el paso 3D.",
+    "build3d": "Crear 3D con estas vistas, {credits} créditos",
+    "openRender": "Abrir el render 3D",
+    "status": {
+      "drafting": "Dibujando la hoja de ángulos",
+      "processing": "Revisando y terminando las vistas, {ready} de {total} listas",
+      "upscaling": "Terminando",
+      "redrawing": "Redibujando",
+      "failed": "Error"
+    },
+    "views": {
+      "front": "Frontal",
+      "front_right": "Frontal derecha",
+      "right": "Derecha",
+      "back_right": "Trasera derecha",
+      "back": "Trasera",
+      "back_left": "Trasera izquierda",
+      "left": "Izquierda",
+      "front_left": "Frontal izquierda",
+      "top": "Superior"
+    },
+    "problems": {
+      "empty": "objeto difícil de ver",
+      "cropped": "el objeto toca el borde",
+      "small": "objeto demasiado pequeño",
+      "background": "fondo no es blanco puro",
+      "blurry": "detalle borroso",
+      "colour": "el color difiere de la foto",
+      "duplicate": "se parece a otra vista"
+    },
+    "errors": {
+      "unreadable": "No se pudo leer esta foto",
+      "create": "No se pudieron crear las vistas de producto. Inténtalo de nuevo en un minuto.",
+      "polish": "No se pudo pulir esta vista. Inténtalo de nuevo en un minuto.",
+      "render": "No se pudo iniciar el render 3D."
+    }
+  },
   "DashboardNav": {
     "overview": "Resumen",
     "library": "Biblioteca",
     "connectors": "Conectores",
     "credits": "Créditos",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "views": "Vistas de producto"
   },
   "AppShell": {
     "model": "Modelo",
