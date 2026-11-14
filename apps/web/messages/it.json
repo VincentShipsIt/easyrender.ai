@@ -114,7 +114,7 @@
           "models": "Circa {count} modelli 3D",
           "rollover": "I crediti non usati restano disponibili",
           "cancel": "Disdici quando vuoi",
-          "topUp": "Ti servono altri crediti? Ricarica quando vuoi alla tariffa a consumo."
+          "topUp": "Ti serve di più? Ricarica quando vuoi alla tariffa del tuo piano."
         },
         "cta": "Passa a {plan}"
       },
@@ -723,7 +723,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Ti servono altri crediti? Ricarica quando vuoi alla tariffa a consumo.",
+        "topUp": "Ti serve di più? Ricarica quando vuoi alla tariffa del tuo piano.",
         "cancel": "Cancel anytime"
       }
     },
@@ -743,7 +743,7 @@
     "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
     "topUp": {
       "title": "Ricarica crediti",
-      "description": "Acquista crediti extra da {price} alla tariffa a consumo, senza cambiare piano.",
+      "description": "Acquista crediti extra alla tariffa del tuo piano {plan}, senza cambiare piano. Il totale viene arrotondato al centesimo più vicino.",
       "noExpiry": "I crediti delle ricariche non scadono mai."
     }
   },
@@ -816,20 +816,22 @@
         },
         "topUp": {
           "q": "Posso acquistare altri crediti senza cambiare piano?",
-          "a": "Sì. Apri Crediti nel tuo account e ricarica alla tariffa a consumo indicata. Il piano mensile resta invariato e i crediti extra non scadono mai."
+          "a": "Sì. Gli abbonati attivi o in prova possono ricaricare alla tariffa per credito del proprio piano, con il totale arrotondato al centesimo più vicino. Apri Crediti nel tuo account per vedere i prezzi dei pacchetti. Senza un abbonamento idoneo si applica la tariffa a consumo indicata. Il piano mensile resta invariato e i crediti extra non scadono mai."
         }
       }
-    }
+    },
+    "topUpTitle": "Ricarica crediti"
   },
   "PaygPicker": {
-    "custom": "Or enter an amount",
-    "estimate": "{price} for about {count} renders",
-    "range": "Choose between {min} and {max} credits",
-    "buyAmount": "Buy {credits} credits",
-    "buy": "Buy credits"
+    "custom": "Oppure inserisci una quantità",
+    "estimate": "{price} per circa {count} rendering",
+    "range": "Scegli tra {min} e {max} crediti",
+    "buyAmount": "Acquista {credits} crediti",
+    "buy": "Acquista crediti",
+    "planRate": "Ricariche alla tariffa del tuo piano {plan}"
   },
   "BuyButton": {
-    "failed": "Checkout failed",
+    "failed": "Pagamento non riuscito",
     "pricingChanged": "I prezzi sono cambiati. Aggiorna la pagina e riprova."
   },
   "Auth": {

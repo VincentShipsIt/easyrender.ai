@@ -113,8 +113,16 @@ test('monthly subscriber buys a top-up without changing Pro', async ({ page, con
     page.getByText('You have 5,500 credits and you are on Pro.', { exact: true }),
   ).toBeVisible();
   await expect(page.getByText('Top up credits', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: '1,000', exact: true }).click();
-  await expect(page.getByText('$10.00 for about 15 renders', { exact: true })).toBeVisible();
+  await expect(page.getByText('Top-ups at your Pro rate', { exact: true })).toBeVisible();
+  const preset = page.getByRole('button', { name: '1,000', exact: true });
+  await preset.focus();
+  await preset.press('Enter');
+  await expect(preset).toHaveAttribute('aria-pressed', 'true');
+  await expect(preset).toHaveAccessibleDescription('$8.91');
+  await page.getByLabel('Or enter an amount').fill('499');
+  await expect(page.getByRole('button', { name: 'Buy credits', exact: true })).toBeDisabled();
+  await page.getByLabel('Or enter an amount').fill('1000');
+  await expect(page.getByText('$8.91 for about 15 renders', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Buy 1,000 credits', exact: true }).click();
   await expect(
     page.getByText('You have 6,500 credits and you are on Pro.', { exact: true }),
@@ -124,5 +132,56 @@ test('monthly subscriber buys a top-up without changing Pro', async ({ page, con
     await page.emulateMedia({ colorScheme });
     await page.setViewportSize({ width: 375, height: 812 });
     await page.screenshot({ path: `${output}/subscriber-${colorScheme}-375.png`, fullPage: true });
+  }
+});
+
+test('subscriber pricing pages show localized pack prices in every locale', async ({
+  page,
+  context,
+}) => {
+  const signup = await context.request.post(`${base}/api/auth/sign-up/email`, {
+    headers: { origin: base },
+    data: {
+      name: 'Top-up fixture',
+      email: `topup-${crypto.randomUUID()}@example.invalid`,
+      password: 'local-fixture-password-123',
+    },
+  });
+  expect(signup.ok()).toBe(true);
+  await page.goto(`${base}/credits`);
+  await page.getByRole('button', { name: 'Subscribe to Pro', exact: true }).click();
+  await expect(
+    page.getByText('You have 5,500 credits and you are on Pro.', { exact: true }),
+  ).toBeVisible();
+  for (const locale of LOCALES) {
+    await page.goto(`${base}${ROUTES.pricing.paths[locale]}`);
+    const copy = messages[locale];
+    await expect(
+      page.getByText(copy.PaygPicker.planRate.replace('{plan}', 'Pro'), { exact: true }),
+    ).toBeVisible();
+    const amount = new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' }).format(
+      8.91,
+    );
+    const credits = new Intl.NumberFormat(locale).format(1000);
+    const preset = page.getByRole('button', { name: credits, exact: true });
+    await expect(preset).toContainText(amount);
+    await preset.click();
+    await expect(
+      page.getByText(copy.PaygPicker.estimate.replace('{price}', amount).replace('{count}', '15'), {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await page.setViewportSize({ width: 375, height: 812 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    if (locale === 'en' || locale === 'es') {
+      for (const colorScheme of ['light', 'dark'] as const) {
+        await page.emulateMedia({ colorScheme });
+        await page
+          .locator('[aria-labelledby="pricing-topups"]')
+          .screenshot({ path: `${output}/${locale}-topup-packs-${colorScheme}-375.png` });
+      }
+    }
   }
 });

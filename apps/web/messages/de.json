@@ -114,7 +114,7 @@
           "models": "Etwa {count} 3D-Modelle",
           "rollover": "Ungenutzte Credits bleiben erhalten",
           "cancel": "Jederzeit kündbar",
-          "topUp": "Mehr nötig? Jederzeit zum Preis nach Verbrauch aufladen."
+          "topUp": "Mehr benötigt? Jederzeit zum Preis deines Tarifs aufladen."
         },
         "cta": "{plan} wählen"
       },
@@ -723,7 +723,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Mehr nötig? Jederzeit zum Preis nach Verbrauch aufladen.",
+        "topUp": "Mehr benötigt? Jederzeit zum Preis deines Tarifs aufladen.",
         "cancel": "Cancel anytime"
       }
     },
@@ -743,7 +743,7 @@
     "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
     "topUp": {
       "title": "Credits aufladen",
-      "description": "Zusätzliche Credits ab {price} zum Preis nach Verbrauch kaufen, ohne den Tarif zu wechseln.",
+      "description": "Kaufe zusätzliche Credits zum Preis deines {plan}-Tarifs, ohne den Tarif zu wechseln. Der Gesamtbetrag wird auf den nächsten Cent gerundet.",
       "noExpiry": "Aufgeladene Credits verfallen nie."
     }
   },
@@ -816,21 +816,23 @@
         },
         "topUp": {
           "q": "Kann ich Credits ohne Tarifwechsel nachkaufen?",
-          "a": "Ja. Öffne Credits in deinem Konto und lade zum angezeigten Preis nach Verbrauch auf. Dein Monatstarif bleibt unverändert und die zusätzlichen Credits verfallen nie."
+          "a": "Ja. Mit einem aktiven Abo oder Probeabo kaufst du zusätzliche Credits zum Creditpreis deines Tarifs. Der Gesamtbetrag wird auf den nächsten Cent gerundet. Unter Credits in deinem Konto siehst du die Paketpreise. Ohne berechtigtes Abo gilt der angezeigte Preis nach Verbrauch. Dein Monatstarif bleibt unverändert und zusätzliche Credits verfallen nie."
         }
       }
-    }
+    },
+    "topUpTitle": "Credits aufladen"
   },
   "PaygPicker": {
-    "custom": "Or enter an amount",
-    "estimate": "{price} for about {count} renders",
-    "range": "Choose between {min} and {max} credits",
-    "buyAmount": "Buy {credits} credits",
-    "buy": "Buy credits"
+    "custom": "Oder gib eine Menge ein",
+    "estimate": "{price} für etwa {count} Renderings",
+    "range": "Wähle zwischen {min} und {max} Credits",
+    "buyAmount": "{credits} Credits kaufen",
+    "buy": "Credits kaufen",
+    "planRate": "Aufladen zum Preis deines {plan}-Tarifs"
   },
   "BuyButton": {
-    "failed": "Checkout failed",
-    "pricingChanged": "Die Preise haben sich geändert. Lade die Seite neu und versuch es noch einmal."
+    "failed": "Zahlung konnte nicht gestartet werden",
+    "pricingChanged": "Die Preise haben sich geändert. Lade die Seite neu und versuche es erneut."
   },
   "Auth": {
     "signUp": "Sign up",

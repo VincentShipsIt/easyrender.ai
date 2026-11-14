@@ -114,7 +114,7 @@
           "models": "Unos {count} modelos 3D",
           "rollover": "Los créditos sin usar se acumulan",
           "cancel": "Cancela cuando quieras",
-          "topUp": "¿Necesitas más? Recarga cuando quieras a la tarifa de pago por uso."
+          "topUp": "¿Necesitas más? Recarga cuando quieras a la tarifa de tu plan."
         },
         "cta": "Hazte {plan}"
       },
@@ -723,7 +723,7 @@
       "features": {
         "credits": "{credits} créditos nuevos cada mes",
         "rollover": "Los créditos sin usar se acumulan",
-        "topUp": "¿Necesitas más? Recarga cuando quieras a la tarifa de pago por uso.",
+        "topUp": "¿Necesitas más? Recarga cuando quieras a la tarifa de tu plan.",
         "cancel": "Cancela cuando quieras"
       }
     },
@@ -743,7 +743,7 @@
     "metaDescription": "La previsualización es gratis. Un modelo 3D terminado cuesta {credits} créditos ({price}) y los créditos no caducan. Paga por uso o pásate a Pro.",
     "topUp": {
       "title": "Recargar créditos",
-      "description": "Compra créditos extra desde {price} a la tarifa de pago por uso, sin cambiar de plan.",
+      "description": "Compra créditos extra a la tarifa de tu plan {plan}, sin cambiar de plan. El total se redondea al céntimo más cercano.",
       "noExpiry": "Los créditos de recarga no caducan."
     }
   },
@@ -816,17 +816,19 @@
         },
         "topUp": {
           "q": "¿Puedo comprar más créditos sin cambiar de plan?",
-          "a": "Sí. Abre Créditos en tu cuenta y recarga a la tarifa de pago por uso que se muestra. Tu plan mensual no cambia y los créditos extra no caducan."
+          "a": "Sí. Los suscriptores activos o en periodo de prueba pueden recargar a la tarifa por crédito de su plan, con el total redondeado al céntimo más cercano. Abre Créditos en tu cuenta para ver los precios de los paquetes. Sin una suscripción válida se aplica la tarifa de pago por uso indicada. Tu plan mensual no cambia y los créditos extra no caducan."
         }
       }
-    }
+    },
+    "topUpTitle": "Recargar créditos"
   },
   "PaygPicker": {
     "custom": "O introduce una cantidad",
     "estimate": "{price} para unos {count} renders",
     "range": "Elige entre {min} y {max} créditos",
     "buyAmount": "Comprar {credits} créditos",
-    "buy": "Comprar créditos"
+    "buy": "Comprar créditos",
+    "planRate": "Recargas a la tarifa de tu plan {plan}"
   },
   "BuyButton": {
     "failed": "No se pudo completar el pago",

@@ -27,7 +27,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { currentUser } from '@/lib/actor';
-import { currentPricing } from '@/lib/pricing';
+import { currentPricing, currentTopupPricing } from '@/lib/pricing';
 import { ROUTES } from '@/lib/seo/routes';
 import { absoluteUrl } from '@/lib/seo/site';
 import { cn } from '@/lib/utils';
@@ -95,7 +95,7 @@ function PlanCard({
 }
 
 export default async function CreditsPage({ searchParams }: PageProps<'/credits'>) {
-  const pricing = await currentPricing();
+  const [pricing, topup] = await Promise.all([currentPricing(), currentTopupPricing()]);
   const { plans: SUBSCRIPTION_PLANS } = pricing;
   const { status, next } = await searchParams;
   const user = await currentUser();
@@ -195,16 +195,22 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
       </div>
       <div className="grid gap-4 lg:grid-cols-3">
         <PlanCard
-          title={t(billing.plan ? 'topUp.title' : 'payg.title')}
-          description={t(billing.plan ? 'topUp.description' : 'payg.description', {
+          title={t(topup.plan ? 'topUp.title' : 'payg.title')}
+          description={t(topup.plan ? 'topUp.description' : 'payg.description', {
             price: usd(pricing.payg.min * pricing.creditPrice * 100),
+            plan: topup.plan ? SUBSCRIPTION_PLANS[topup.plan].label : '',
           })}
-          price={usd(pricing.creditPrice * 100)}
+          price={format.number(topup.priceCents / topup.creditsPerUnit / 100, {
+            style: 'currency',
+            currency: topup.currency.toUpperCase(),
+            minimumFractionDigits: 2,
+            maximumFractionDigits: topup.plan ? 5 : 2,
+          })}
           note={t('payg.note')}
           features={[t('payg.features.downloads'), t('payg.features.api'), t('topUp.noExpiry')]}
           footer={
             user ? (
-              <PaygPicker pricingVariant={pricing.variant} currency={pricing.currency} />
+              <PaygPicker pricingVariant={pricing.variant} currency={topup.currency} rate={topup} />
             ) : (
               signUp
             )

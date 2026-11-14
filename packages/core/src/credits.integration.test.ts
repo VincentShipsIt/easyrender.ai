@@ -1,6 +1,6 @@
 import { deflateSync } from 'node:zlib';
 import { db } from '@easyrender/db';
-import { RENDER_CREDITS, SHEET_CREDITS } from '@easyrender/harness';
+import { RENDER_CREDITS, SHEET_CREDITS, topupAmountCents, topupPricing } from '@easyrender/harness';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Runs against a real Postgres: set TEST_DATABASE_URL (a scratch database with the schema pushed).
@@ -595,9 +595,13 @@ run('credits and generation billing (real database)', () => {
           data: {
             userId,
             stripeSessionId: sessionId,
-            packId: 'payg',
+            packId: `topup_${plan}`,
+            currency: 'eur',
             credits: 1000,
-            amountCents: 1000,
+            amountCents: topupAmountCents(
+              1000,
+              topupPricing({ status: 'active', plan, variant: 'control' }, 'control', 'eur'),
+            ),
           },
         });
         const event = {
@@ -606,13 +610,29 @@ run('credits and generation billing (real database)', () => {
             object: {
               id: sessionId,
               mode: 'payment',
+              amount_total: purchase.amountCents,
+              currency: 'eur',
+              metadata: { credits: '999999', topup_plan: 'forged' },
               payment_status: 'paid',
               client_reference_id: userId,
               customer: `cus_${userId}`,
             },
           },
         };
-        await send(event);
+        // Unpaid and mismatched deliveries must not grant; delayed success and replay grant once.
+        await send({
+          ...event,
+          data: { object: { ...event.data.object, payment_status: 'unpaid' } },
+        });
+        expect(await balance(userId)).toBe(120);
+        await expect(
+          send({ ...event, data: { object: { ...event.data.object, amount_total: 1 } } }),
+        ).rejects.toMatchObject({ code: 'purchase_mismatch' });
+        await expect(
+          send({ ...event, data: { object: { ...event.data.object, currency: 'usd' } } }),
+        ).rejects.toMatchObject({ code: 'purchase_mismatch' });
+        expect(await balance(userId)).toBe(120);
+        await send({ ...event, type: 'checkout.session.async_payment_succeeded' });
         await send(event);
         expect(await balance(userId)).toBe(1120);
         expect(await getBillingStatus(userId)).toEqual({ plan, canManage: true });

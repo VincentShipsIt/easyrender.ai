@@ -114,7 +114,7 @@
           "models": "About {count} 3D models",
           "rollover": "Unused credits roll over",
           "cancel": "Cancel anytime",
-          "topUp": "Need more? Top up anytime at pay-as-you-go rates."
+          "topUp": "Need more? Top up anytime at your plan’s rate."
         },
         "cta": "Go {plan}"
       },
@@ -723,7 +723,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Need more? Top up anytime at pay-as-you-go rates.",
+        "topUp": "Need more? Top up anytime at your plan’s rate.",
         "cancel": "Cancel anytime"
       }
     },
@@ -743,7 +743,7 @@
     "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
     "topUp": {
       "title": "Top up credits",
-      "description": "Buy extra credits from {price} at the pay-as-you-go rate, without changing your plan.",
+      "description": "Buy extra credits at your {plan} plan’s rate, without changing your plan. The total is rounded to the nearest cent.",
       "noExpiry": "Top-up credits never expire."
     }
   },
@@ -816,17 +816,19 @@
         },
         "topUp": {
           "q": "Can I buy more credits without upgrading?",
-          "a": "Yes. Open Credits in your account and buy a top-up at the displayed pay-as-you-go rate. Your monthly plan stays the same, and the extra credits never expire."
+          "a": "Yes. Active and trialing subscribers buy top-ups at their plan’s per-credit rate, rounded to the nearest cent per purchase. Open Credits in your account to see pack prices. Without an eligible subscription, the displayed pay-as-you-go rate applies. Your monthly plan stays the same, and extra credits never expire."
         }
       }
-    }
+    },
+    "topUpTitle": "Top up credits"
   },
   "PaygPicker": {
     "custom": "Or enter an amount",
     "estimate": "{price} for about {count} renders",
     "range": "Choose between {min} and {max} credits",
     "buyAmount": "Buy {credits} credits",
-    "buy": "Buy credits"
+    "buy": "Buy credits",
+    "planRate": "Top-ups at your {plan} rate"
   },
   "BuyButton": {
     "failed": "Checkout failed",

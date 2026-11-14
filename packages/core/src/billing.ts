@@ -11,6 +11,8 @@ import {
   type PricingVariant,
   PUBLIC_PLAN_IDS,
   pricingFor,
+  topupAmountCents,
+  topupPricing,
   unitAmountCents,
 } from '@easyrender/harness';
 import Stripe from 'stripe';
@@ -104,6 +106,66 @@ async function checkoutCurrency(
   return wanted;
 }
 
+/** Resolve the existing contract, never the client's plan or the current experiment arm.
+ * Stripe is re-read when linked, including when the DB's last webhook is stale. In local
+ * simulation only, the DB status/plan is sufficient. Unknown live contracts fail closed.
+ */
+export async function getTopupPricing(
+  userId: string | null | undefined,
+  variant: PricingVariant = 'control',
+  currency: ChargeCurrency = 'usd',
+) {
+  if (!userId) return topupPricing(null, variant, currency);
+  const user = await db().user.findUnique({
+    where: { id: userId },
+    select: {
+      subscriptionId: true,
+      subscriptionStatus: true,
+      subscriptionPlan: true,
+      stripeCustomerId: true,
+    },
+  });
+  if (!user) throw new AppError('Sign in to buy credits', 401, 'unauthorized');
+  const client = stripe();
+  if (client && user.subscriptionId) {
+    const subscription = await client.subscriptions.retrieve(user.subscriptionId);
+    if (id(subscription.customer) !== user.stripeCustomerId)
+      throw new AppError('Subscription customer mismatch', 503, 'price_mismatch');
+    if (subscription.status !== 'active' && subscription.status !== 'trialing')
+      return topupPricing(null, variant, currency);
+    const contracts = subscription.items.data.flatMap((item) => {
+      const plan = planForPrice(item.price);
+      if (!plan) return [];
+      const contractVariant: PricingVariant =
+        process.env[`STRIPE_PRICE_${plan.toUpperCase()}_TEST`] === item.price.id
+          ? 'test'
+          : 'control';
+      return [{ plan, variant: contractVariant }];
+    });
+    const contract = contracts[0];
+    if (
+      !contract ||
+      contracts.length !== 1 ||
+      (subscription.currency !== 'usd' && subscription.currency !== 'eur')
+    )
+      throw new AppError('Unknown subscription price', 503, 'price_mismatch');
+    return topupPricing(
+      { ...contract, status: subscription.status },
+      variant,
+      subscription.currency,
+    );
+  }
+  const hasEligibleStatus =
+    user.subscriptionStatus === 'active' || user.subscriptionStatus === 'trialing';
+  if (client && hasEligibleStatus)
+    throw new AppError('Subscription is not linked', 503, 'price_mismatch');
+  return topupPricing(
+    { status: user.subscriptionStatus, plan: user.subscriptionPlan, variant },
+    variant,
+    currency,
+  );
+}
+
 const devCheckoutUrl = (request: CheckoutRequest) =>
   request.plan === 'payg'
     ? `${config.appUrl()}/api/dev/checkout?plan=payg&credits=${request.credits}`
@@ -111,7 +173,12 @@ const devCheckoutUrl = (request: CheckoutRequest) =>
 
 export async function createCheckoutDetails(
   userId: string,
-  input: { plan?: unknown; credits?: unknown },
+  input: {
+    plan?: unknown;
+    credits?: unknown;
+    expectedAmountCents?: unknown;
+    expectedCurrency?: unknown;
+  },
   context: {
     anonId?: string | null;
     expectedVariant?: string | null;
@@ -127,7 +194,7 @@ export async function createCheckoutDetails(
       'pricing_changed',
     );
   const request = parseCheckout(input, variant);
-  const metadata = {
+  let metadata: Stripe.MetadataParam = {
     userId,
     plan: request.plan,
     pricing_variant: variant,
@@ -147,21 +214,63 @@ export async function createCheckoutDetails(
   const customer = user.stripeCustomerId
     ? { customer: user.stripeCustomerId }
     : { customer_email: user.email };
-  const currency = await checkoutCurrency(client, userId, user.stripeCustomerId, context.country);
-  const selectedPrice = await client.prices.retrieve(priceId(request.plan, variant), {
-    expand: ['currency_options'],
-  });
-  validateCheckoutPrice(selectedPrice, request.plan, variant, currency);
+  let currency = await checkoutCurrency(client, userId, user.stripeCustomerId, context.country);
+  const topup = request.plan === 'payg' ? await getTopupPricing(userId, variant, currency) : null;
+  if (topup) currency = topup.currency;
+  const amountCents =
+    request.plan === 'payg' && topup
+      ? topupAmountCents(request.credits, topup)
+      : unitAmountCents(request.plan, variant, currency);
+  // These client values are only stale-display guards, never inputs to pricing.
+  if (
+    (input.expectedAmountCents !== undefined && input.expectedAmountCents !== amountCents) ||
+    (input.expectedCurrency !== undefined && input.expectedCurrency !== currency)
+  )
+    throw new AppError(
+      'Pricing changed. Refresh the page before checking out.',
+      409,
+      'pricing_changed',
+    );
+  let lineItems: Stripe.Checkout.SessionCreateParams.LineItem[];
+  if (request.plan === 'payg' && topup?.plan) {
+    lineItems = [
+      {
+        quantity: 1,
+        price_data: {
+          currency,
+          unit_amount: amountCents,
+          product_data: {
+            name: `${request.credits} credits`,
+            metadata: { topup_plan: topup.plan },
+          },
+        },
+      },
+    ];
+  } else {
+    const selectedPrice = await client.prices.retrieve(priceId(request.plan, variant), {
+      expand: ['currency_options'],
+    });
+    validateCheckoutPrice(selectedPrice, request.plan, variant, currency);
+    lineItems = [
+      { price: selectedPrice.id, quantity: request.plan === 'payg' ? request.credits : 1 },
+    ];
+  }
+  if (request.plan === 'payg' && topup)
+    metadata = {
+      ...metadata,
+      pricing_variant: topup.variant,
+      credits: String(request.credits),
+      ...(topup.plan
+        ? { topup_plan: topup.plan, amount_cents: String(amountCents), currency }
+        : {}),
+    };
   // Always name the currency. Without it Stripe Checkout picks one from the buyer's location
   // whenever the price carries currency_options, so a euro-area buyer was charged in EUR even
   // with EUR checkout off and the pricing pages showing USD.
   const chargeCurrency = { currency };
   const analytics = {
-    pricing_variant: variant,
-    value:
-      (unitAmountCents(request.plan, variant, currency) *
-        (request.plan === 'payg' ? request.credits : 1)) /
-      100,
+    pricing_variant: topup?.variant ?? variant,
+    value: amountCents / 100,
     currency: currency.toUpperCase(),
     items: [{ item_id: request.plan, quantity: request.plan === 'payg' ? request.credits : 1 }],
   };
@@ -182,7 +291,7 @@ export async function createCheckoutDetails(
       mode: 'subscription',
       client_reference_id: userId,
       ...customer,
-      line_items: [{ price: selectedPrice.id, quantity: 1 }],
+      line_items: lineItems,
       metadata,
       subscription_data: { metadata },
       adaptive_pricing: { enabled: false },
@@ -198,7 +307,7 @@ export async function createCheckoutDetails(
     client_reference_id: userId,
     ...customer,
     ...(user.stripeCustomerId ? {} : { customer_creation: 'always' as const }),
-    line_items: [{ price: selectedPrice.id, quantity: request.credits }],
+    line_items: lineItems,
     metadata,
     adaptive_pricing: { enabled: false },
     ...chargeCurrency,
@@ -208,9 +317,12 @@ export async function createCheckoutDetails(
     data: {
       userId,
       stripeSessionId: session.id,
-      packId: purchasePackId('payg', variant),
+      packId: purchasePackId(
+        topup?.plan ? `topup_${topup.plan}` : 'payg',
+        topup?.variant ?? variant,
+      ),
       credits: request.credits,
-      amountCents: request.credits * unitAmountCents('payg', variant, currency),
+      amountCents,
       currency,
     },
   });
@@ -394,6 +506,13 @@ async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   const purchase = await db().purchase.findUnique({ where: { stripeSessionId: session.id } });
   if (!purchase) throw new Error(`unknown checkout session ${session.id}`);
+  if (
+    purchase.packId.startsWith('topup_') &&
+    (session.amount_total !== purchase.amountCents ||
+      session.currency !== purchase.currency ||
+      session.client_reference_id !== purchase.userId)
+  )
+    throw new AppError('Paid top-up does not match the purchase', 400, 'purchase_mismatch');
   await grantCredits({
     userId: purchase.userId,
     amount: purchase.credits,
@@ -482,6 +601,16 @@ export async function getBillingStatus(userId: string) {
 function listRevenueUsd(purchase: { packId: string; credits: number }): number | null {
   const [plan] = purchase.packId.split(':');
   const variant = purchasedVariant(purchase.packId);
+  if (plan?.startsWith('topup_')) {
+    const subscriptionPlan = plan.slice('topup_'.length);
+    if (isPlanId(subscriptionPlan))
+      return (
+        topupAmountCents(
+          purchase.credits,
+          topupPricing({ status: 'active', plan: subscriptionPlan, variant }),
+        ) / 100
+      );
+  }
   if (plan === 'payg') return (purchase.credits * unitAmountCents('payg', variant)) / 100;
   return isPlanId(plan) ? unitAmountCents(plan, variant) / 100 : null;
 }

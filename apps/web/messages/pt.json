@@ -114,7 +114,7 @@
           "models": "Cerca de {count} modelos 3D",
           "rollover": "Os créditos não usados passam para o mês seguinte",
           "cancel": "Podes cancelar quando quiseres",
-          "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa de pagamento por utilização."
+          "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa do teu plano."
         },
         "cta": "Passar a {plan}"
       },
@@ -723,7 +723,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa de pagamento por utilização.",
+        "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa do teu plano.",
         "cancel": "Cancel anytime"
       }
     },
@@ -743,7 +743,7 @@
     "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
     "topUp": {
       "title": "Recarregar créditos",
-      "description": "Compra créditos extra a partir de {price} à tarifa de pagamento por utilização, sem mudar de plano.",
+      "description": "Compra créditos extra à tarifa do teu plano {plan}, sem mudar de plano. O total é arredondado ao cêntimo mais próximo.",
       "noExpiry": "Os créditos das recargas nunca expiram."
     }
   },
@@ -816,20 +816,22 @@
         },
         "topUp": {
           "q": "Posso comprar mais créditos sem mudar de plano?",
-          "a": "Sim. Abre Créditos na tua conta e recarrega à tarifa de pagamento por utilização apresentada. O plano mensal mantém-se e os créditos extra nunca expiram."
+          "a": "Sim. Os subscritores ativos ou em período de avaliação podem recarregar à tarifa por crédito do seu plano, com o total arredondado ao cêntimo mais próximo. Abre Créditos na tua conta para ver os preços dos pacotes. Sem uma subscrição elegível, aplica-se a tarifa de pagamento por utilização apresentada. O plano mensal mantém-se e os créditos extra nunca expiram."
         }
       }
-    }
+    },
+    "topUpTitle": "Recarregar créditos"
   },
   "PaygPicker": {
-    "custom": "Or enter an amount",
-    "estimate": "{price} for about {count} renders",
-    "range": "Choose between {min} and {max} credits",
-    "buyAmount": "Buy {credits} credits",
-    "buy": "Buy credits"
+    "custom": "Ou introduz uma quantidade",
+    "estimate": "{price} para cerca de {count} renders",
+    "range": "Escolhe entre {min} e {max} créditos",
+    "buyAmount": "Comprar {credits} créditos",
+    "buy": "Comprar créditos",
+    "planRate": "Recargas à tarifa do teu plano {plan}"
   },
   "BuyButton": {
-    "failed": "Checkout failed",
+    "failed": "O pagamento falhou",
     "pricingChanged": "Os preços mudaram. Atualiza a página e tenta novamente."
   },
   "Auth": {

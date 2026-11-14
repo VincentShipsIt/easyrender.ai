@@ -114,7 +114,7 @@
           "models": "Environ {count} modèles 3D",
           "rollover": "Les crédits non utilisés sont reportés",
           "cancel": "Résiliable à tout moment",
-          "topUp": "Besoin de plus ? Recharge à tout moment au tarif à l’usage."
+          "topUp": "Besoin de plus ? Recharge à tout moment au tarif de ta formule."
         },
         "cta": "Passer à {plan}"
       },
@@ -723,7 +723,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Besoin de plus ? Recharge à tout moment au tarif à l’usage.",
+        "topUp": "Besoin de plus ? Recharge à tout moment au tarif de ta formule.",
         "cancel": "Cancel anytime"
       }
     },
@@ -743,7 +743,7 @@
     "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
     "topUp": {
       "title": "Recharger des crédits",
-      "description": "Achète des crédits supplémentaires dès {price} au tarif à l’usage, sans changer de formule.",
+      "description": "Achète des crédits supplémentaires au tarif de ta formule {plan}, sans changer de formule. Le total est arrondi au centime le plus proche.",
       "noExpiry": "Les crédits rechargés n’expirent jamais."
     }
   },
@@ -816,20 +816,22 @@
         },
         "topUp": {
           "q": "Puis-je acheter des crédits sans changer de formule ?",
-          "a": "Oui. Ouvre Crédits dans ton compte et recharge au tarif à l’usage affiché. Ta formule mensuelle reste la même et les crédits supplémentaires n’expirent jamais."
+          "a": "Oui. Les abonnés actifs ou en période d’essai rechargent au tarif par crédit de leur formule, avec un total arrondi au centime le plus proche. Ouvre Crédits dans ton compte pour voir les prix des lots. Sans abonnement éligible, le tarif à l’usage affiché s’applique. Ta formule mensuelle reste la même et les crédits supplémentaires n’expirent jamais."
         }
       }
-    }
+    },
+    "topUpTitle": "Recharger des crédits"
   },
   "PaygPicker": {
-    "custom": "Or enter an amount",
-    "estimate": "{price} for about {count} renders",
-    "range": "Choose between {min} and {max} credits",
-    "buyAmount": "Buy {credits} credits",
-    "buy": "Buy credits"
+    "custom": "Ou saisis une quantité",
+    "estimate": "{price} pour environ {count} rendus",
+    "range": "Choisis entre {min} et {max} crédits",
+    "buyAmount": "Acheter {credits} crédits",
+    "buy": "Acheter des crédits",
+    "planRate": "Recharges au tarif de ta formule {plan}"
   },
   "BuyButton": {
-    "failed": "Checkout failed",
+    "failed": "Échec du paiement",
     "pricingChanged": "Les prix ont changé. Actualise la page et réessaie."
   },
   "Auth": {
