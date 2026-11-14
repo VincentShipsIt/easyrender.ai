@@ -14,6 +14,42 @@ export const windowLightSetup = defineDiagram(
       ceiling: 'Ceiling lights off',
       bounce: 'bounce',
     },
+    de: {
+      window: ['Fenster,', 'keine direkte Sonne'],
+      board: ['Weiße', 'Schaumplatte'],
+      product: 'Produkt',
+      camera: ['Handy auf Stativ', 'auf halber Höhe'],
+      angle: '45°',
+      ceiling: 'Deckenlicht aus',
+      bounce: 'reflektiertes Licht',
+    },
+    fr: {
+      window: ['Fenêtre,', 'sans soleil direct'],
+      board: ['Panneau blanc', 'en mousse'],
+      product: 'Produit',
+      camera: ['Téléphone, trépied', 'à mi-hauteur'],
+      angle: '45°',
+      ceiling: 'Plafonnier éteint',
+      bounce: 'renvoi',
+    },
+    it: {
+      window: ['Finestra,', 'senza sole diretto'],
+      board: ['Pannello', 'di schiuma'],
+      product: 'Prodotto',
+      camera: ['Telefono, treppiede', 'a metà altezza'],
+      angle: '45°',
+      ceiling: 'Luci a soffitto spente',
+      bounce: 'riflesso',
+    },
+    pt: {
+      window: ['Janela,', 'sem sol direto'],
+      board: ['Placa branca', 'de espuma'],
+      product: 'Produto',
+      camera: ['Telemóvel num tripé', 'a meia altura'],
+      angle: '45°',
+      ceiling: 'Luzes do teto apagadas',
+      bounce: 'reflexão',
+    },
   },
   function WindowLightSetup({ t }) {
     // Product centred at (300, 190). The window sits front-left of it, 45 degrees off the axis
@@ -148,6 +184,26 @@ export const cameraHeight = defineDiagram(
       high: ['Standing height:', 'short and squat'],
       floor: 'Floor',
     },
+    de: {
+      level: ['Halbe Objekthöhe:', 'richtige Proportionen'],
+      high: ['Aus dem Stand:', 'kurz und gedrungen'],
+      floor: 'Boden',
+    },
+    fr: {
+      level: ['À mi-hauteur :', 'proportions fidèles'],
+      high: ['À hauteur des yeux :', 'meuble tassé'],
+      floor: 'Sol',
+    },
+    it: {
+      level: ['A metà altezza:', 'proporzioni fedeli'],
+      high: ['All’altezza degli occhi:', 'mobile schiacciato'],
+      floor: 'Pavimento',
+    },
+    pt: {
+      level: ['A meia altura:', 'proporções fiéis'],
+      high: ['À altura dos olhos:', 'peça achatada'],
+      floor: 'Chão',
+    },
   },
   function CameraHeight({ t }) {
     return (
@@ -200,6 +256,22 @@ export const lensDistance = defineDiagram(
     en: {
       close: ['1x lens, close', 'Front legs look longer'],
       far: ['2x or 3x, back', 'Legs look even'],
+    },
+    de: {
+      close: ['1x, kurzer Abstand', 'Beine wirken länger'],
+      far: ['2x oder 3x, zurück', 'Beine wirken gleich lang'],
+    },
+    fr: {
+      close: ['Objectif 1x, de près', 'Pieds avant allongés'],
+      far: ['2x ou 3x, de plus loin', 'Pieds proportionnés'],
+    },
+    it: {
+      close: ['Obiettivo 1x, da vicino', 'Gambe più lunghe'],
+      far: ['2x o 3x, da più lontano', 'Gambe proporzionate'],
+    },
+    pt: {
+      close: ['Objetiva 1x, de perto', 'Pernas da frente longas'],
+      far: ['2x ou 3x, mais longe', 'Pernas proporcionadas'],
     },
   },
   function LensDistance({ t }) {

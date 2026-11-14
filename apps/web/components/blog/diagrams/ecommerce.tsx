@@ -23,6 +23,107 @@ export const storeFiles = defineDiagram(
       ],
       shopify: 'Shopify takes both files as product media.',
     },
+    de: {
+      model: 'Ein Produktmodell',
+      files: [
+        {
+          name: 'GLB',
+          places: [
+            { title: 'Produktseite im Browser', note: 'Etwa mit model-viewer' },
+            { title: 'AR auf Android', note: 'Google Scene Viewer' },
+          ],
+        },
+        {
+          name: 'USDZ',
+          places: [{ title: 'AR auf iPhone und iPad', note: 'Apple AR Quick Look' }],
+        },
+      ],
+      shopify: 'Shopify nimmt beide als Produktmedien an.',
+    },
+    fr: {
+      model: 'Un modèle 3D de produit',
+      files: [
+        {
+          name: 'GLB',
+          places: [
+            {
+              title: 'Fiche produit, tout navigateur',
+              note: 'Dans une visionneuse comme model-viewer',
+            },
+            {
+              title: 'RA sur Android',
+              note: 'Google Scene Viewer',
+            },
+          ],
+        },
+        {
+          name: 'USDZ',
+          places: [
+            {
+              title: 'RA sur iPhone et iPad',
+              note: 'Apple AR Quick Look',
+            },
+          ],
+        },
+      ],
+      shopify: 'Shopify accepte les deux fichiers dans la fiche produit.',
+    },
+    it: {
+      model: 'Un modello 3D del prodotto',
+      files: [
+        {
+          name: 'GLB',
+          places: [
+            {
+              title: 'Pagina prodotto in ogni browser',
+              note: 'Per esempio, model-viewer',
+            },
+            {
+              title: 'AR su Android',
+              note: 'Google Scene Viewer',
+            },
+          ],
+        },
+        {
+          name: 'USDZ',
+          places: [
+            {
+              title: 'AR su iPhone e iPad',
+              note: 'Apple AR Quick Look',
+            },
+          ],
+        },
+      ],
+      shopify: 'Shopify accetta entrambi i file tra i contenuti del prodotto.',
+    },
+    pt: {
+      model: 'Um modelo 3D do produto',
+      files: [
+        {
+          name: 'GLB',
+          places: [
+            {
+              title: 'Página de produto no navegador',
+              note: 'Num visualizador como model-viewer',
+            },
+            {
+              title: 'RA no Android',
+              note: 'Google Scene Viewer',
+            },
+          ],
+        },
+        {
+          name: 'USDZ',
+          places: [
+            {
+              title: 'RA no iPhone e iPad',
+              note: 'Apple AR Quick Look',
+            },
+          ],
+        },
+      ],
+      shopify: 'A Shopify aceita os dois ficheiros nos conteúdos do produto.',
+    },
   },
   function StoreFiles({ t }) {
     const icons = [[Globe, Smartphone], [Tablet]];
@@ -62,6 +163,61 @@ export const sideboardPhotoPick = defineDiagram(
         { title: 'Front', note: ['No depth:', 'none in', 'the photo'] },
         { title: 'Three-quarter', note: ['Front and', 'end panel:', 'use this one'] },
         { title: 'Close-up', note: ['A handle,', 'not the', 'whole piece'] },
+      ],
+    },
+    de: {
+      shots: [
+        { title: 'Vorne', note: ['Keine Tiefe:', 'auf dem Foto', 'nicht sichtbar'] },
+        { title: 'Dreiviertel', note: ['Front und', 'Seitenwand:', 'nimm dieses Foto'] },
+        { title: 'Nahaufnahme', note: ['Ein Griff,', 'nicht das', 'ganze Stück'] },
+      ],
+    },
+    fr: {
+      shots: [
+        {
+          title: 'Face',
+          note: ['Profondeur', 'absente de', 'la photo'],
+        },
+        {
+          title: 'Trois quarts',
+          note: ['Face et', 'côté :', 'choisis celle-ci'],
+        },
+        {
+          title: 'Gros plan',
+          note: ['Une poignée,', 'pas le', 'meuble entier'],
+        },
+      ],
+    },
+    it: {
+      shots: [
+        {
+          title: 'Fronte',
+          note: ['La foto', 'non mostra', 'la profondità'],
+        },
+        {
+          title: 'Tre quarti',
+          note: ['Fronte e', 'fianco:', 'scegli questa'],
+        },
+        {
+          title: 'Dettaglio',
+          note: ['Una maniglia,', 'non il', 'mobile intero'],
+        },
+      ],
+    },
+    pt: {
+      shots: [
+        {
+          title: 'Frente',
+          note: ['A foto', 'não mostra a', 'profundidade'],
+        },
+        {
+          title: 'Três quartos',
+          note: ['Frente e lado:', 'escolhe', 'esta foto'],
+        },
+        {
+          title: 'Pormenor',
+          note: ['Um puxador,', 'não a', 'peça inteira'],
+        },
       ],
     },
   },

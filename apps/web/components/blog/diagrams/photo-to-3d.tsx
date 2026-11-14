@@ -43,6 +43,155 @@ export const photoVsPhotogrammetry = defineDiagram(
       ],
       needs: 'Needs',
     },
+    de: {
+      lanes: [
+        {
+          heading: 'Fotogrammetrie',
+          input: 'Das Objekt steht vor dir',
+          steps: [
+            { title: '20 bis 100+ überlappende Fotos', note: 'Rund um den Gegenstand' },
+            { title: 'Software gleicht Bildpunkte ab', note: 'Jede Fläche auf 2+ Fotos' },
+            { title: 'Jede Fläche fotografiert', note: 'Details, die die Kamera erfasst hat' },
+          ],
+        },
+        {
+          heading: '3D aus einem Foto',
+          input: 'Ein Foto, auch vom Lieferanten',
+          steps: [
+            { title: '1 Foto einer Seite', note: 'Scharf, schlichter Hintergrund' },
+            {
+              title: 'Nicht gezeigte Seiten ableiten',
+              note: 'Dein Foto liefert die Anhaltspunkte',
+            },
+            { title: 'Prüfe die Rückseite', note: 'Diese Seite fehlt auf dem Foto' },
+          ],
+        },
+      ],
+      needs: 'Du brauchst',
+    },
+    fr: {
+      lanes: [
+        {
+          heading: 'Photogrammétrie',
+          input: 'L’objet devant toi',
+          steps: [
+            {
+              title: '20 à 100+ photos avec recouvrement',
+              note: 'Prises tout autour',
+            },
+            {
+              title: 'Le logiciel relie les points communs',
+              note: 'Chaque surface sur 2+ photos',
+            },
+            {
+              title: 'Chaque surface a été photographiée',
+              note: 'Détails visibles par l’appareil',
+            },
+          ],
+        },
+        {
+          heading: 'Image-vers-3D',
+          input: 'Une photo, même du fournisseur',
+          steps: [
+            {
+              title: '1 photo d’un côté',
+              note: 'Nette, fond uni',
+            },
+            {
+              title: 'Côtés hors champ déduits de la photo',
+              note: 'Vérifie-les dans l’aperçu',
+            },
+            {
+              title: 'Vérifie le dos dans l’aperçu',
+              note: 'La photo ne montre pas ce côté',
+            },
+          ],
+        },
+      ],
+      needs: 'Il faut',
+    },
+    it: {
+      lanes: [
+        {
+          heading: 'Fotogrammetria',
+          input: 'L’oggetto davanti a te',
+          steps: [
+            {
+              title: 'Da 20 a oltre 100 foto sovrapposte',
+              note: 'Scattate tutto intorno',
+            },
+            {
+              title: 'Il software collega i punti comuni',
+              note: 'Ogni superficie in almeno 2 foto',
+            },
+            {
+              title: 'Ogni superficie è stata fotografata',
+              note: 'Dettagli ripresi dalla fotocamera',
+            },
+          ],
+        },
+        {
+          heading: 'Image-to-3D',
+          input: 'Una foto, anche del fornitore',
+          steps: [
+            {
+              title: '1 foto di un lato',
+              note: 'Nitida, sfondo uniforme',
+            },
+            {
+              title: 'Lati fuori campo ricavati dalla foto',
+              note: 'Controllali nell’anteprima',
+            },
+            {
+              title: 'Controlla il retro nell’anteprima',
+              note: 'La foto non mostrava quel lato',
+            },
+          ],
+        },
+      ],
+      needs: 'Serve',
+    },
+    pt: {
+      lanes: [
+        {
+          heading: 'Fotogrametria',
+          input: 'O objeto à tua frente',
+          steps: [
+            {
+              title: '20 a mais de 100 fotos sobrepostas',
+              note: 'Tiradas a toda a volta',
+            },
+            {
+              title: 'O programa identifica pontos comuns',
+              note: 'Cada superfície em 2 ou mais fotos',
+            },
+            {
+              title: 'Cada superfície foi fotografada',
+              note: 'Detalhes que a câmara captou',
+            },
+          ],
+        },
+        {
+          heading: 'Imagem para 3D',
+          input: 'Uma foto tua ou do fornecedor',
+          steps: [
+            {
+              title: '1 foto de um lado',
+              note: 'Nítida, fundo liso',
+            },
+            {
+              title: 'Lados ocultos deduzidos da foto',
+              note: 'Verifica-os na pré-visualização',
+            },
+            {
+              title: 'Verifica as costas',
+              note: 'A foto não mostrava esse lado',
+            },
+          ],
+        },
+      ],
+      needs: 'Precisas de',
+    },
   },
   function PhotoVsPhotogrammetry({ t }) {
     const icons = [
@@ -93,6 +242,118 @@ export const imageTo3dPipeline = defineDiagram(
       preview: 'Preview',
       build: 'Model',
       loop: 'Looks wrong at step 3: change the photo, not the settings.',
+    },
+    de: {
+      steps: [
+        { tag: '1', title: 'Ein Foto', note: 'Ganzes Objekt, Dreiviertelansicht' },
+        { tag: '2', title: 'Ansichtenraster', note: 'Das Objekt aus mehreren Blickwinkeln' },
+        {
+          tag: '3',
+          title: 'Vorschau prüfen',
+          note: 'Im Foto nicht zu sehen: Rückseite, Seiten, Oberseite',
+        },
+        { tag: '4', title: 'Modell erstellen', note: 'Mesh mit Textur aus diesen Ansichten' },
+        { tag: '5', title: 'GLB und USDZ', note: 'Web und Android, iPhone und iPad' },
+      ],
+      preview: 'Vorschau',
+      build: 'Modell',
+      loop: 'Falsche Vorschau in Schritt 3: Ändere das Foto, nicht die Einstellungen.',
+    },
+    fr: {
+      steps: [
+        {
+          tag: '1',
+          title: 'Une photo',
+          note: 'Objet entier, de trois quarts',
+        },
+        {
+          tag: '2',
+          title: 'Planche de vues',
+          note: 'L’objet dessiné sous plusieurs angles',
+        },
+        {
+          tag: '3',
+          title: 'Tu vérifies',
+          note: 'Dos, côtés, dessus absents de la photo',
+        },
+        {
+          tag: '4',
+          title: 'Crée le modèle',
+          note: 'Maillage texturé à partir des vues',
+        },
+        {
+          tag: '5',
+          title: 'GLB et USDZ',
+          note: 'Web et Android, iPhone et iPad',
+        },
+      ],
+      preview: 'Aperçu',
+      build: 'Modèle',
+      loop: 'Un problème à l’étape 3 ? Change la photo, pas les réglages.',
+    },
+    it: {
+      steps: [
+        {
+          tag: '1',
+          title: 'Una foto',
+          note: 'Oggetto intero, a tre quarti',
+        },
+        {
+          tag: '2',
+          title: 'Tavola di viste',
+          note: 'L’oggetto disegnato da più lati',
+        },
+        {
+          tag: '3',
+          title: 'Controlla',
+          note: 'Retro, lati e alto assenti dalla foto',
+        },
+        {
+          tag: '4',
+          title: 'Crea il modello',
+          note: 'Mesh con texture da quelle viste',
+        },
+        {
+          tag: '5',
+          title: 'GLB e USDZ',
+          note: 'Web e Android, iPhone e iPad',
+        },
+      ],
+      preview: 'Anteprima',
+      build: 'Modello',
+      loop: 'Qualcosa non va al punto 3? Cambia foto, non le impostazioni.',
+    },
+    pt: {
+      steps: [
+        {
+          tag: '1',
+          title: 'Uma fotografia',
+          note: 'Objeto inteiro, a três quartos',
+        },
+        {
+          tag: '2',
+          title: 'Nove vistas',
+          note: 'Uma imagem com vários ângulos',
+        },
+        {
+          tag: '3',
+          title: 'Verifica',
+          note: 'Costas, lados e parte de cima que a foto não mostra',
+        },
+        {
+          tag: '4',
+          title: 'Cria o modelo',
+          note: 'Malha com textura a partir das vistas',
+        },
+        {
+          tag: '5',
+          title: 'GLB e USDZ',
+          note: 'Web e Android, iPhone e iPad',
+        },
+      ],
+      preview: 'Pré-visualização',
+      build: 'Modelo',
+      loop: 'Algo errado no passo 3? Muda a foto, não as definições.',
     },
   },
   function ImageTo3dPipeline({ t }) {
