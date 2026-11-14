@@ -140,6 +140,12 @@ const CASES: Case[] = [
     note: 'product, wood grain',
   },
   {
+    id: 'big',
+    file: `${PUBLIC}/studio/interior.jpg`,
+    kind: 'real',
+    note: 'the room at 2000 px: the size of a product view, to check limits, time and price',
+  },
+  {
     id: 'gt-hero',
     file: `${PUBLIC}/blog/illustrations/sell-vintage-furniture-online/hero.webp`,
     kind: 'gt',
@@ -162,7 +168,7 @@ const falKey = process.env.FAL_KEY ?? '';
 const out = arg('out') ?? 'upscale-out';
 const wantedCandidates = list(arg('candidates'));
 const wantedImages = list(arg('images'));
-const SCALE = 2;
+const SCALE = Number(arg('scale') ?? 2);
 const active = candidates.filter(
   (c) =>
     (!wantedCandidates || wantedCandidates.includes(c.id)) &&
@@ -211,8 +217,16 @@ async function pageprice(candidate: Candidate): Promise<string> {
   try {
     const response = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0' } });
     const text = (await response.text()).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    const raw = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0' } }).then((r) =>
+      r.text(),
+    );
+    const described = [...raw.matchAll(/"description":\s*"([^"]*\$[^"]*)"/g)].map((m) => m[1]);
     const hit = text.match(/.{0,50}\$\s?\d+(\.\d+)?.{0,60}(image|run|megapixel|output|second)/i);
-    return hit ? hit[0].trim() : `no price text (HTTP ${response.status})`;
+    return described.length
+      ? described.slice(0, 4).join(' ; ')
+      : hit
+        ? hit[0].trim()
+        : `no price text (HTTP ${response.status})`;
   } catch (error) {
     return `page not read: ${error instanceof Error ? error.message : String(error)}`;
   }
@@ -358,6 +372,13 @@ type Row = {
 // What each case feeds the models, and what the result is compared with.
 async function prepare(c: Case) {
   const original = new Uint8Array(readFileSync(c.file));
+  if (c.id === 'big') {
+    const large = await sharp(original)
+      .resize(2000, 2000, { fit: 'inside', kernel: 'lanczos3' })
+      .jpeg({ quality: 95 })
+      .toBuffer();
+    return { input: new Uint8Array(large), truth: null as Uint8Array | null };
+  }
   if (c.kind === 'real') return { input: original, truth: null as Uint8Array | null };
   const meta = await sharp(original).metadata();
   const half = await sharp(original)
