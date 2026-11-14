@@ -1,4 +1,3 @@
-import { getBalance } from '@easyrender/core';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
@@ -17,6 +16,5 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DashboardPage() {
   const user = await currentUser();
   if (!user) redirect('/sign-in?next=/dashboard');
-  const balance = await getBalance(user.id).catch(() => 0);
-  return <HomeComposer balance={balance} />;
+  return <HomeComposer />;
 }

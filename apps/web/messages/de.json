@@ -15,7 +15,6 @@
       "try": "Ausprobieren",
       "pricing": "Preise"
     },
-    "credits": "Credits",
     "dashboard": "Dashboard",
     "signIn": "Anmelden",
     "connect": "Agent verbinden",
@@ -333,7 +332,8 @@
       "saved": "Saved. The downloads now include your changes.",
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
-    }
+    },
+    "details": "Details"
   },
   "PromptBar": {
     "steps": {
@@ -515,7 +515,8 @@
     "connectors": "Connectors",
     "credits": "Credits",
     "account": "Account",
-    "views": "Product views"
+    "views": "Product views",
+    "profile": "Profil"
   },
   "AppShell": {
     "model": "Modell",
@@ -524,9 +525,6 @@
     "toggleSidebar": "Seitenleiste ein- oder ausblenden",
     "home": "easyrender Startseite",
     "newModel": "Neues 3D-Modell",
-    "recents": "Zuletzt",
-    "noRecents": "Noch nichts. Lade ein Foto hoch oder bitte deinen Agenten darum.",
-    "credits": "Credits",
     "untitled": "Ohne Titel",
     "status": {
       "drafting": "Wird vorbereitet",
@@ -535,7 +533,6 @@
       "ready": "Fertig",
       "failed": "Fehlgeschlagen"
     },
-    "toggleRenders": "Render-Leiste ein- oder ausblenden",
     "breadcrumb": "Brotkrumen-Navigation",
     "panel": {
       "title": "Renders",
@@ -563,6 +560,10 @@
       "balance": "Guthaben",
       "sheet": "Winkelblatt",
       "build": "3D erstellen"
+    },
+    "toggleContext": "Teilebereich ein- oder ausblenden",
+    "context": {
+      "title": "Teile"
     }
   },
   "AppHome": {
@@ -574,7 +575,6 @@
     "remove": "Foto entfernen",
     "create": "Kostenlose Vorschau erstellen",
     "uploading": "Wird hochgeladen…",
-    "balance": "{credits} Credits",
     "batch": "Mehrere Fotos hochladen",
     "connect": "Agenten verbinden",
     "errors": {

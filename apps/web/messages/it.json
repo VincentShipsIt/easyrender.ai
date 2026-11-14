@@ -15,7 +15,6 @@
       "try": "Prova",
       "pricing": "Prezzi"
     },
-    "credits": "crediti",
     "dashboard": "Dashboard",
     "signIn": "Accedi",
     "connect": "Collega",
@@ -333,7 +332,8 @@
       "saved": "Saved. The downloads now include your changes.",
       "resetDone": "Back to the generated look.",
       "saveFailed": "Could not save the changes. Try again."
-    }
+    },
+    "details": "Dettagli"
   },
   "PromptBar": {
     "steps": {
@@ -515,7 +515,8 @@
     "connectors": "Connectors",
     "credits": "Credits",
     "account": "Account",
-    "views": "Product views"
+    "views": "Product views",
+    "profile": "Profilo"
   },
   "AppShell": {
     "model": "Modello",
@@ -524,9 +525,6 @@
     "toggleSidebar": "Mostra o nascondi la barra laterale",
     "home": "Home di easyrender",
     "newModel": "Nuovo modello 3D",
-    "recents": "Recenti",
-    "noRecents": "Ancora niente. Carica una foto o chiedilo al tuo agente.",
-    "credits": "crediti",
     "untitled": "Senza titolo",
     "status": {
       "drafting": "In preparazione",
@@ -535,7 +533,6 @@
       "ready": "Pronto",
       "failed": "Non riuscito"
     },
-    "toggleRenders": "Mostra o nascondi il pannello dei render",
     "breadcrumb": "Percorso di navigazione",
     "panel": {
       "title": "Render",
@@ -563,6 +560,10 @@
       "balance": "Saldo",
       "sheet": "Foglio angoli",
       "build": "Crea il 3D"
+    },
+    "toggleContext": "Mostra o nascondi il pannello delle parti",
+    "context": {
+      "title": "Parti"
     }
   },
   "AppHome": {
@@ -574,7 +575,6 @@
     "remove": "Rimuovi la foto",
     "create": "Crea anteprima gratuita",
     "uploading": "Caricamento…",
-    "balance": "{credits} crediti",
     "batch": "Carica più foto",
     "connect": "Collega un agente",
     "errors": {
