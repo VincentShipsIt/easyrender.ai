@@ -1,6 +1,6 @@
 # Pricing A/B test — November 2026
 
-Status: **off by default**. This PR does not create a flag, change Vercel variables, create Stripe prices, or merge/deploy anything. Wait until production deploys are healthy.
+Status (2026-11-14): **wired, waiting for the PostHog flag.** The four `*_TEST` Stripe prices exist in the live account (each with EUR `currency_options`), and the production Vercel variables are set: the four `STRIPE_PRICE_*_TEST` IDs, `POSTHOG_PROJECT_ID`, `POSTHOG_API_HOST`, `POSTHOG_PERSONAL_API_KEY` and `PRICING_AB_ENABLED=1`. Until the `pricing-test-2026-11` flag exists and is enabled in PostHog, every visitor stays on control. Next: create the flag (50/50, 100% rollout), check checkout for both arms, then switch it on.
 
 ## Price catalogue
 
