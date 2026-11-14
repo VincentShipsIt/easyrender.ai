@@ -5,6 +5,10 @@ run-name: "Upscale bake-off · ${{ inputs.candidates }}"
 # (and fal, when the FAL_KEY secret exists) and compares them. It spends real money (about $1 to
 # $3), so it needs the word "spend" typed in. Needs the repository secret REPLICATE_API_TOKEN.
 on:
+  # TEMPORARY: lets the first run start from the feature branch, before this file is on main.
+  push:
+    branches: [claude/project-thread-xhy548]
+    paths: [.github/workflows/upscale-bakeoff.yml]
   workflow_dispatch:
     inputs:
       confirm:
@@ -28,7 +32,7 @@ permissions:
 jobs:
   bakeoff:
     name: Bake-off
-    if: ${{ inputs.confirm == 'spend' }}
+    if: ${{ github.event_name == 'push' || inputs.confirm == 'spend' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -45,7 +49,7 @@ jobs:
           FAL_KEY: ${{ secrets.FAL_KEY }}
           CANDIDATES: ${{ inputs.candidates }}
           IMAGES: ${{ inputs.images }}
-        run: bun packages/harness/scripts/upscale-bakeoff.ts --spend --candidates="$CANDIDATES" --images="$IMAGES"
+        run: bun packages/harness/scripts/upscale-bakeoff.ts --spend --candidates="${CANDIDATES:-esrgan,clarity,crisp,topaz,google,bria,seedvr,fal-seedvr,fal-aura,fal-clarity,fal-crisp}" --images="${IMAGES:-interior,room-ar,sofa,lamp,sneaker,barrel,gt-hero,gt-interior,gt-armchair}"
       - name: Job summary
         if: always()
         run: |
