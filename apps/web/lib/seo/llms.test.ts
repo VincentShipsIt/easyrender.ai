@@ -85,8 +85,8 @@ describe('llms.txt', () => {
         expect(path.startsWith(prefix), `${url} vs ${prefix}`).toBe(false);
       }
     }
-    // Only cookie information is open below these homes.
-    expect(text).not.toMatch(/\/(de|fr|it|pt)\/(?!cookies?\b)/);
+    // Pricing and cookie information are open below these homes.
+    expect(text).not.toMatch(/\/(de|fr|it|pt)\/(?!cookies?\b|preise\b|tarifs\b|prezzi\b|precos\b)/);
   });
 
   it('describes the product within claims.md', () => {
@@ -152,4 +152,10 @@ describe('the home FAQ copy', () => {
       .join(' ');
     expect(answers).not.toMatch(/product queue|pedida al producto|link-only|solo con enlace/i);
   });
+});
+
+it('offers one monthly plan and explicitly describes subscriber top-ups', () => {
+  expect(llmsTxt()).toContain('monthly plan: Pro');
+  expect(llmsTxt()).toContain('without changing plans');
+  expect(llmsTxt()).not.toMatch(/Creator|Scale/);
 });

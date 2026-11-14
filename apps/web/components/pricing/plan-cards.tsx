@@ -1,7 +1,7 @@
-import { ENTERPRISE_BOOKING_URL, PLAN_IDS, rendersFor } from '@easyrender/harness';
+import { ENTERPRISE_BOOKING_URL, PUBLIC_PLAN_IDS, rendersFor } from '@easyrender/harness';
 import { Check } from 'lucide-react';
-import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { SiteLink as Link } from '@/components/site-link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 const BUY = `/sign-up?next=${encodeURIComponent('/credits')}`;
 
 /**
- * The plan cards: Free, pay as you go, the monthly plans and Enterprise. The home page and the
+ * The three public options: pay as you go, Pro and Enterprise. The home page and the
  * pricing page both render this, so the two can never show different numbers. Prices, credits and
  * counts come from the harness through currentPricing(), which already honours the A/B variant.
  */
@@ -26,14 +26,6 @@ export async function PlanCards() {
       minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
     });
   const plans = [
-    {
-      name: t('free.name'),
-      price: usd(0),
-      note: t('free.note'),
-      features: [t('free.features.mcp'), t('free.features.previews'), t('free.features.noCard')],
-      cta: { href: '/sign-up', label: t('free.cta') },
-      featured: false,
-    },
     {
       name: t('payg.name'),
       price: usd(pricing.creditPrice * 100),
@@ -50,7 +42,7 @@ export async function PlanCards() {
       cta: { href: BUY, label: t('payg.cta') },
       featured: false,
     },
-    ...PLAN_IDS.map((id) => ({
+    ...PUBLIC_PLAN_IDS.map((id) => ({
       name: SUBSCRIPTION_PLANS[id].label,
       price: usd(SUBSCRIPTION_PLANS[id].priceCents),
       note: t('pro.note'),
@@ -60,6 +52,7 @@ export async function PlanCards() {
         }),
         t('pro.features.models', { count: rendersFor(SUBSCRIPTION_PLANS[id].monthlyCredits) }),
         t('pro.features.rollover'),
+        t('pro.features.topUp'),
         t('pro.features.cancel'),
       ],
       cta: { href: BUY, label: t('pro.cta', { plan: SUBSCRIPTION_PLANS[id].label }) },

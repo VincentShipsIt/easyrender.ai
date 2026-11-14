@@ -11,7 +11,12 @@ import {
   startBuild,
   toView,
 } from '@easyrender/core';
-import { ENTERPRISE_BOOKING_URL, PLAN_IDS, pricingFor, RENDER_CREDITS } from '@easyrender/harness';
+import {
+  ENTERPRISE_BOOKING_URL,
+  PUBLIC_PLAN_IDS,
+  pricingFor,
+  RENDER_CREDITS,
+} from '@easyrender/harness';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
@@ -148,7 +153,7 @@ export function createMcpServer(actor: Actor & { userId: string }) {
               max_credits: PAYG.max,
             },
             ...Object.fromEntries(
-              PLAN_IDS.map((id) => [
+              PUBLIC_PLAN_IDS.map((id) => [
                 id,
                 {
                   usd_per_month: SUBSCRIPTION_PLANS[id].priceCents / 100,

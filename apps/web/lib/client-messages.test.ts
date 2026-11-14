@@ -2,8 +2,12 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import de from '@/messages/de.json';
 import en from '@/messages/en.json';
 import es from '@/messages/es.json';
+import fr from '@/messages/fr.json';
+import itMessages from '@/messages/it.json';
+import pt from '@/messages/pt.json';
 import { CLIENT_NAMESPACES, pickClientMessages } from './client-messages';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
@@ -48,7 +52,7 @@ describe('client messages', () => {
   });
 
   it('sends the client namespaces in every language, with the same copy', () => {
-    for (const messages of [en, es]) {
+    for (const messages of [en, es, de, fr, itMessages, pt]) {
       const picked = pickClientMessages(messages);
       for (const path of CLIENT_NAMESPACES) {
         expect(lookup(picked, path), path).toEqual(lookup(messages, path));

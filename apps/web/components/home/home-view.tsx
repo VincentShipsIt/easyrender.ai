@@ -1,17 +1,17 @@
 import { config } from '@easyrender/core';
 import { ENTERPRISE_BOOKING_URL } from '@easyrender/harness';
 import { ArrowRight, KeyRound, LayoutDashboard, Plug } from 'lucide-react';
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { AgentDemo } from '@/components/agent-demo';
 import { HomeIntro } from '@/components/home/home-intro';
 import { Faq, Pricing, Section } from '@/components/landing';
 import { McpSetup } from '@/components/mcp-setup';
 import { PromptBar } from '@/components/prompt-bar';
+import { SiteLink as Link } from '@/components/site-link';
 import { StudioHero } from '@/components/studio/hero';
 import { StudioIndustries } from '@/components/studio/industries';
 import { StudioPipeline } from '@/components/studio/pipeline';
-import { StudioClosing, StudioProof } from '@/components/studio/proof';
+import { StudioClosing, StudioCompatibility, StudioProof } from '@/components/studio/proof';
 import { StudioShelf } from '@/components/studio/shelf';
 import { StudioShell } from '@/components/studio/shell';
 import { StudioTools } from '@/components/studio/tools';
@@ -43,6 +43,7 @@ export async function HomeView() {
   return (
     <StudioShell>
       <StudioHero ctaHref="#try" />
+      <StudioCompatibility />
       <HomeIntro />
       <StudioPipeline />
 

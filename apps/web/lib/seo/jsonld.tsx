@@ -1,4 +1,4 @@
-import { PLAN_IDS, type PricingVariant, pricingFor } from '@easyrender/harness';
+import { type PricingVariant, PUBLIC_PLAN_IDS, pricingFor } from '@easyrender/harness';
 import { HTML_LANG, type Locale } from '@/i18n/config';
 import { ROUTES } from './routes';
 import { absoluteUrl, OG_IMAGE, OG_IMAGE_SIZE, SITE_NAME, SITE_URL } from './site';
@@ -64,7 +64,7 @@ export function softwareApplication(
         description: `From ${PAYG.min} credits at $${CREDIT_USD.toFixed(2)} each. Credits never expire.`,
         url: absoluteUrl(ROUTES.pricing.paths.en),
       },
-      ...PLAN_IDS.map((id) => ({
+      ...PUBLIC_PLAN_IDS.map((id) => ({
         '@type': 'Offer',
         name: SUBSCRIPTION_PLANS[id].label,
         price: (SUBSCRIPTION_PLANS[id].priceCents / 100).toFixed(2),

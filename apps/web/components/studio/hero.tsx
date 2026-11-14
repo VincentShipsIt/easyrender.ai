@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
+import { SiteLink as Link } from '@/components/site-link';
 import { itemOf } from '@/lib/studio/catalog';
 import { createFormat } from '@/lib/studio/format';
 import { TriMark } from './icons';

@@ -86,7 +86,7 @@
       "title": "¿Qué es easyrender?",
       "body": "easyrender pasa una imagen a 3D: convierte una foto de un mueble, un objeto de decoración o la fachada de un edificio en un modelo 3D. Primero dibuja la pieza desde todos los lados, en una hoja de ángulos gratis que revisas antes de gastar nada. Si la previsualización está bien, un clic la convierte en un modelo 3D que puedes girar y descargar en GLB y USDZ.",
       "scope": "No modela habitaciones enteras: trabaja con una pieza cada vez. No saca el modelo a escala real.",
-      "primaryCta": "Subir una foto",
+      "primaryCta": "Pruébalo gratis",
       "secondaryCta": "Ver la galería"
     }
   },
@@ -96,16 +96,6 @@
       "description": "Las vistas previas son gratis. Un modelo 3D terminado cuesta {credits} créditos ({price}).",
       "seeAll": "Ver todos los precios",
       "bestValue": "Mejor precio",
-      "free": {
-        "name": "Gratis",
-        "note": "para probarlo",
-        "features": {
-          "mcp": "Conecta tu agente por MCP",
-          "previews": "Vistas previas gratis de todos los ángulos",
-          "noCard": "Sin tarjeta de crédito"
-        },
-        "cta": "Empieza gratis"
-      },
       "payg": {
         "name": "Pago por uso",
         "note": "por crédito",
@@ -123,7 +113,8 @@
           "credits": "{credits} créditos cada mes",
           "models": "Unos {count} modelos 3D",
           "rollover": "Los créditos sin usar se acumulan",
-          "cancel": "Cancela cuando quieras"
+          "cancel": "Cancela cuando quieras",
+          "topUp": "¿Necesitas más? Recarga cuando quieras a la tarifa de tu plan."
         },
         "cta": "Hazte {plan}"
       },
@@ -138,7 +129,9 @@
           "onboarding": "Llamada de puesta en marcha"
         },
         "cta": "Reservar una llamada"
-      }
+      },
+      "tryFree": "Pruébalo gratis",
+      "noCard": "Vistas previas gratis. Sin tarjeta de crédito."
     },
     "faq": {
       "title": "Tus preguntas, respondidas",
@@ -730,7 +723,7 @@
       "features": {
         "credits": "{credits} créditos nuevos cada mes",
         "rollover": "Los créditos sin usar se acumulan",
-        "topUp": "Recarga con pago por uso cuando quieras",
+        "topUp": "¿Necesitas más? Recarga cuando quieras a la tarifa de tu plan.",
         "cancel": "Cancela cuando quieras"
       }
     },
@@ -747,7 +740,12 @@
       "cta": "Reservar una llamada"
     },
     "metaTitle": "Precios: se paga por modelo 3D · easyrender",
-    "metaDescription": "La previsualización es gratis. Un modelo 3D terminado cuesta {credits} créditos ({price}) y los créditos no caducan. Paga por uso o pásate a Pro."
+    "metaDescription": "La previsualización es gratis. Un modelo 3D terminado cuesta {credits} créditos ({price}) y los créditos no caducan. Paga por uso o pásate a Pro.",
+    "topUp": {
+      "title": "Recargar créditos",
+      "description": "Compra créditos extra a la tarifa de tu plan {plan}, sin cambiar de plan. El total se redondea al céntimo más cercano.",
+      "noExpiry": "Los créditos de recarga no caducan."
+    }
   },
   "Pricing": {
     "metaTitle": "Precios: paga por modelo 3D · easyrender",
@@ -757,10 +755,10 @@
     "eyebrow": "Precios",
     "title": "Paga por modelo 3D. Las vistas previas son gratis.",
     "description": "Un modelo 3D terminado cuesta {credits} créditos ({price}). Compra créditos según los necesites o elige un plan mensual con el crédito más barato. Los créditos no caducan.",
-    "note": "Precios en USD. Los créditos no caducan. Si un modelo 3D falla al construirse, se reembolsan sus créditos.",
+    "note": "Los créditos no caducan. Si falla la creación de un modelo 3D, se devuelven los créditos.",
     "compare": {
       "title": "Compara los planes",
-      "description": "El pago por uso son {unit} por crédito. Todos los planes mensuales abaratan el crédito, y un plan mayor lo abarata aún más.",
+      "description": "Pago por uso cuesta {unit} por crédito. Pro incluye créditos mensuales a un precio menor. Contacta con nosotros para precios por volumen de Empresa.",
       "plan": "Plan",
       "price": "Precio",
       "credits": "Créditos",
@@ -790,7 +788,7 @@
       "items": {
         "cost": {
           "q": "¿Cuánto cuesta un modelo 3D?",
-          "a": "Las vistas previas son gratis. Un modelo 3D terminado cuesta {credits} créditos. Con el pago por uso cada crédito cuesta {unit}, así que un modelo sale por {price}. Los planes mensuales abaratan cada crédito."
+          "a": "Las vistas previas son gratis. Un modelo 3D terminado cuesta {credits} créditos. Con el pago por uso cada crédito cuesta {unit}, así que un modelo sale por {price}. Pro abarata cada crédito."
         },
         "freePreview": {
           "q": "¿Por qué es gratis la vista previa?",
@@ -798,7 +796,7 @@
         },
         "plans": {
           "q": "¿Pago por uso o plan mensual?",
-          "a": "El pago por uso va bien para un uso ocasional: compras desde {min} créditos ({minPrice}) cuando los necesites. Un plan mensual añade créditos cada mes a un precio menor por crédito. {plan}, por ejemplo, cuesta {planPrice} al mes por {planCredits} créditos, unos {planModels} modelos 3D."
+          "a": "Pago por uso es ideal para un uso ocasional: compra desde {min} créditos ({minPrice}) cuando los necesites. {plan} cuesta {planPrice} al mes por {planCredits} créditos, unos {planModels} modelos 3D. Contacta con nosotros para precios por volumen de Empresa."
         },
         "expire": {
           "q": "¿Caducan los créditos?",
@@ -815,16 +813,22 @@
         "enterprise": {
           "q": "¿Ofrecéis precio por volumen o facturas?",
           "a": "Sí, en Empresa: créditos con precio por volumen, pago con factura, soporte prioritario y una llamada de puesta en marcha. Reserva una llamada y lo preparamos."
+        },
+        "topUp": {
+          "q": "¿Puedo comprar más créditos sin cambiar de plan?",
+          "a": "Sí. Los suscriptores activos o en periodo de prueba pueden recargar a la tarifa por crédito de su plan, con el total redondeado al céntimo más cercano. Abre Créditos en tu cuenta para ver los precios de los paquetes. Sin una suscripción válida se aplica la tarifa de pago por uso indicada. Tu plan mensual no cambia y los créditos extra no caducan."
         }
       }
-    }
+    },
+    "topUpTitle": "Recargar créditos"
   },
   "PaygPicker": {
     "custom": "O introduce una cantidad",
     "estimate": "{price} para unos {count} renders",
     "range": "Elige entre {min} y {max} créditos",
     "buyAmount": "Comprar {credits} créditos",
-    "buy": "Comprar créditos"
+    "buy": "Comprar créditos",
+    "planRate": "Recargas a la tarifa de tu plan {plan}"
   },
   "BuyButton": {
     "failed": "No se pudo completar el pago",
@@ -875,7 +879,7 @@
   "Studio": {
     "hero": {
       "title": "De una imagen a 3D, con una sola foto.",
-      "cta": "Empezar",
+      "cta": "Pruébalo gratis",
       "note": "Vista previa gratis · sin tarjeta",
       "stackLabel": "Un mismo objeto visto en cinco pases del motor. Arrastra para girarlo.",
       "photo": "Foto de entrada",
@@ -939,7 +943,7 @@
     "tools": {
       "lead": "Mira la forma antes de gastar un crédito.",
       "body": "Cada elemento se muestra tal como lo construyó el motor: malla, materiales y texturas.",
-      "link": "Explora la ficha técnica",
+      "link": "Explora creaciones",
       "topology": "Topología",
       "triangles": "Triángulos",
       "material": "Material PBR",
@@ -1000,7 +1004,7 @@
     },
     "cta": {
       "title": "Tu catálogo ya no tiene que esperar a un equipo 3D",
-      "button": "Empezar"
+      "button": "Pruébalo gratis"
     },
     "shelf": {
       "lead": "Explora el hub.",

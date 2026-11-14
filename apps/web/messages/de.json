@@ -86,7 +86,7 @@
       "title": "Was ist easyrender?",
       "body": "Mit easyrender wandelst du ein Bild in 3D um: Aus dem Foto eines Möbelstücks, eines Deko-Objekts oder einer Gebäudefassade wird ein 3D-Modell. Zuerst zeichnet easyrender das Objekt von allen Seiten. Diese Ansichtsübersicht ist kostenlos, und du prüfst sie, bevor du etwas ausgibst. Passt sie, wird daraus mit einem Klick ein 3D-Modell, das du drehen und als GLB und USDZ herunterladen kannst.",
       "scope": "Ganze Räume modelliert es nicht, und Maße erfindet es auch nicht. Du bekommst die Datei und entscheidest selbst, ob sie gut genug ist.",
-      "primaryCta": "Foto hochladen",
+      "primaryCta": "Kostenlos testen",
       "secondaryCta": "Galerie ansehen"
     }
   },
@@ -96,16 +96,6 @@
       "description": "Die Vorschau ist kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits ({price}).",
       "seeAll": "Alle Preise ansehen",
       "bestValue": "Bester Preis",
-      "free": {
-        "name": "Kostenlos",
-        "note": "zum Ausprobieren",
-        "features": {
-          "mcp": "Agent per MCP verbinden",
-          "previews": "Kostenlose Vorschau aller Ansichten",
-          "noCard": "Keine Kreditkarte nötig"
-        },
-        "cta": "Kostenlos starten"
-      },
       "payg": {
         "name": "Nach Verbrauch",
         "note": "pro Credit",
@@ -123,7 +113,8 @@
           "credits": "{credits} Credits jeden Monat",
           "models": "Etwa {count} 3D-Modelle",
           "rollover": "Ungenutzte Credits bleiben erhalten",
-          "cancel": "Jederzeit kündbar"
+          "cancel": "Jederzeit kündbar",
+          "topUp": "Mehr benötigt? Jederzeit zum Preis deines Tarifs aufladen."
         },
         "cta": "{plan} wählen"
       },
@@ -138,7 +129,9 @@
           "onboarding": "Einführungsgespräch"
         },
         "cta": "Termin buchen"
-      }
+      },
+      "tryFree": "Kostenlos testen",
+      "noCard": "Kostenlose Vorschauen. Keine Kreditkarte nötig."
     },
     "faq": {
       "title": "Häufige Fragen",
@@ -730,7 +723,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Top up with pay as you go anytime",
+        "topUp": "Mehr benötigt? Jederzeit zum Preis deines Tarifs aufladen.",
         "cancel": "Cancel anytime"
       }
     },
@@ -747,88 +740,99 @@
       "cta": "Book a call"
     },
     "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month."
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
+    "topUp": {
+      "title": "Credits aufladen",
+      "description": "Kaufe zusätzliche Credits zum Preis deines {plan}-Tarifs, ohne den Tarif zu wechseln. Der Gesamtbetrag wird auf den nächsten Cent gerundet.",
+      "noExpiry": "Aufgeladene Credits verfallen nie."
+    }
   },
   "Pricing": {
-    "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
-    "home": "Home",
-    "breadcrumb": "Pricing",
-    "eyebrow": "Pricing",
-    "title": "Pay per 3D model. Previews are free.",
-    "description": "A finished 3D model costs {credits} credits ({price}). Buy credits as you go, or pick a monthly plan for a cheaper credit. Credits never expire.",
-    "note": "Prices in USD. Credits never expire. If a 3D build fails, its credits are refunded.",
+    "metaTitle": "Preise: pro 3D-Modell bezahlen · easyrender",
+    "metaDescription": "Vorschauen sind kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits ({price}). Credits verfallen nie. Nach Verbrauch bezahlen oder Pro mit {proCredits} Credits pro Monat wählen.",
+    "home": "Startseite",
+    "breadcrumb": "Preise",
+    "eyebrow": "Preise",
+    "title": "Pro 3D-Modell bezahlen. Vorschauen sind kostenlos.",
+    "description": "Ein fertiges 3D-Modell kostet {credits} Credits ({price}). Kaufe Credits nach Bedarf oder wähle Pro für günstigere monatliche Credits. Credits verfallen nie.",
+    "note": "Credits verfallen nie. Schlägt die Erstellung eines 3D-Modells fehl, werden die Credits erstattet.",
     "compare": {
-      "title": "Compare plans",
-      "description": "Pay as you go is {unit} a credit. Every monthly plan makes the credit cheaper, and a bigger plan cheaper still.",
-      "plan": "Plan",
-      "price": "Price",
+      "title": "Tarife vergleichen",
+      "description": "Nach Verbrauch kostet ein Credit {unit}. Pro enthält monatliche Credits zu einem günstigeren Preis. Für Enterprise-Mengenpreise kontaktiere uns.",
+      "plan": "Tarif",
+      "price": "Preis",
       "credits": "Credits",
-      "models": "3D models",
-      "perCredit": "Per credit",
-      "from": "From {value}",
-      "perMonth": "{value} / month"
+      "models": "3D-Modelle",
+      "perCredit": "Pro Credit",
+      "from": "Ab {value}",
+      "perMonth": "{value} / Monat"
     },
     "how": {
-      "title": "How credits work",
-      "step": "Step {number}",
+      "title": "So funktionieren Credits",
+      "step": "Schritt {number}",
       "preview": {
-        "title": "Previews cost nothing",
-        "body": "Upload a photo and check a free sheet that shows the object from every angle before you spend anything."
+        "title": "Vorschauen kosten nichts",
+        "body": "Lade ein Foto hoch und prüfe die kostenlose Ansicht aus allen Blickwinkeln, bevor du etwas ausgibst."
       },
       "build": {
-        "title": "A 3D model costs {credits} credits",
-        "body": "That is {price}. The button shows the cost before you click, and you download the model as GLB and USDZ."
+        "title": "Ein 3D-Modell kostet {credits} Credits",
+        "body": "Das sind {price}. Die Schaltfläche zeigt die Kosten vor dem Klick. Das Modell lädst du als GLB und USDZ herunter."
       },
       "refund": {
-        "title": "Failed builds are refunded",
-        "body": "If a 3D model fails to build, the credits for that render go back to your balance automatically."
+        "title": "Fehlgeschlagene Modelle werden erstattet",
+        "body": "Kann ein 3D-Modell nicht erstellt werden, werden die Credits automatisch deinem Guthaben wieder gutgeschrieben."
       }
     },
     "faq": {
-      "title": "Pricing questions",
+      "title": "Fragen zu Preisen",
       "items": {
         "cost": {
-          "q": "How much does a 3D model cost?",
-          "a": "Previews are free. A finished 3D model costs {credits} credits. On pay as you go a credit costs {unit}, so a model is {price}. Monthly plans make each credit cheaper."
+          "q": "Wie viel kostet ein 3D-Modell?",
+          "a": "Vorschauen sind kostenlos. Ein fertiges 3D-Modell kostet {credits} Credits. Nach Verbrauch kostet ein Credit {unit}, ein Modell also {price}. Bei Pro ist jeder Credit günstiger."
         },
         "freePreview": {
-          "q": "Why is the preview free?",
-          "a": "Before the 3D model is built we draw the object from every angle. You check that preview at no cost and only spend credits when the shape and the details look right."
+          "q": "Warum ist die Vorschau kostenlos?",
+          "a": "Vor dem 3D-Modell zeichnen wir das Objekt aus allen Blickwinkeln. Du prüfst die Vorschau kostenlos und gibst erst Credits aus, wenn Form und Details stimmen."
         },
         "plans": {
-          "q": "Pay as you go or a monthly plan?",
-          "a": "Pay as you go suits occasional use: buy from {min} credits ({minPrice}) whenever you need them. A monthly plan adds credits every month at a lower price per credit. {plan}, for example, is {planPrice} a month for {planCredits} credits, about {planModels} 3D models."
+          "q": "Nach Verbrauch oder Pro?",
+          "a": "Für gelegentliche Nutzung kaufst du nach Bedarf ab {min} Credits ({minPrice}). {plan} kostet {planPrice} im Monat für {planCredits} Credits, etwa {planModels} 3D-Modelle. Für Enterprise-Mengenpreise kontaktiere uns."
         },
         "expire": {
-          "q": "Do credits expire?",
-          "a": "No. Credits never expire, and unused credits from a monthly plan roll over to the next month."
+          "q": "Verfallen Credits?",
+          "a": "Nein. Credits verfallen nie. Nicht verbrauchte monatliche Credits werden in den nächsten Monat übernommen."
         },
         "cancel": {
-          "q": "Can I change or cancel my plan?",
-          "a": "Yes. Change or cancel your plan at any time from Credits in your account, where you can manage your subscription."
+          "q": "Kann ich meinen Tarif ändern oder kündigen?",
+          "a": "Ja. Unter Credits in deinem Konto kannst du dein Abonnement jederzeit verwalten, ändern oder kündigen."
         },
         "failed": {
-          "q": "What if a render fails?",
-          "a": "If the 3D model fails to build, the credits for that render go back to your balance automatically."
+          "q": "Was passiert, wenn ein Render fehlschlägt?",
+          "a": "Kann das 3D-Modell nicht erstellt werden, werden die Credits automatisch deinem Guthaben wieder gutgeschrieben."
         },
         "enterprise": {
-          "q": "Do you offer volume pricing or invoices?",
-          "a": "Yes, on Enterprise: volume credit pricing, invoice billing, priority support and an onboarding call. Book a call and we will set it up."
+          "q": "Gibt es Mengenpreise oder Rechnungen?",
+          "a": "Ja, mit Enterprise: Mengenpreise für Credits, Zahlung auf Rechnung, bevorzugter Support und ein Einführungsgespräch. Vereinbare ein Gespräch mit uns."
+        },
+        "topUp": {
+          "q": "Kann ich Credits ohne Tarifwechsel nachkaufen?",
+          "a": "Ja. Mit einem aktiven Abo oder Probeabo kaufst du zusätzliche Credits zum Creditpreis deines Tarifs. Der Gesamtbetrag wird auf den nächsten Cent gerundet. Unter Credits in deinem Konto siehst du die Paketpreise. Ohne berechtigtes Abo gilt der angezeigte Preis nach Verbrauch. Dein Monatstarif bleibt unverändert und zusätzliche Credits verfallen nie."
         }
       }
-    }
+    },
+    "topUpTitle": "Credits aufladen"
   },
   "PaygPicker": {
-    "custom": "Or enter an amount",
-    "estimate": "{price} for about {count} renders",
-    "range": "Choose between {min} and {max} credits",
-    "buyAmount": "Buy {credits} credits",
-    "buy": "Buy credits"
+    "custom": "Oder gib eine Menge ein",
+    "estimate": "{price} für etwa {count} Renderings",
+    "range": "Wähle zwischen {min} und {max} Credits",
+    "buyAmount": "{credits} Credits kaufen",
+    "buy": "Credits kaufen",
+    "planRate": "Aufladen zum Preis deines {plan}-Tarifs"
   },
   "BuyButton": {
-    "failed": "Checkout failed",
-    "pricingChanged": "Die Preise haben sich geändert. Lade die Seite neu und versuch es noch einmal."
+    "failed": "Zahlung konnte nicht gestartet werden",
+    "pricingChanged": "Die Preise haben sich geändert. Lade die Seite neu und versuche es erneut."
   },
   "Auth": {
     "signUp": "Sign up",
@@ -875,7 +879,7 @@
   "Studio": {
     "hero": {
       "title": "Aus dem Produktfoto wird ein 3D-Modell.",
-      "cta": "Jetzt starten",
+      "cta": "Kostenlos testen",
       "note": "Vorschau kostenlos · ohne Kreditkarte",
       "stackLabel": "Ein Objekt in fünf Durchläufen der Engine. Zum Drehen ziehen.",
       "photo": "Ausgangsfoto",
@@ -939,7 +943,7 @@
     "tools": {
       "lead": "Erst die Form prüfen, dann Credits ausgeben.",
       "body": "Du siehst jedes Element so, wie die Engine es gebaut hat: Mesh, Materialien und Texturen.",
-      "link": "Datenblatt ansehen",
+      "link": "Kreationen entdecken",
       "topology": "Topologie",
       "triangles": "Dreiecke",
       "material": "PBR-Material",
@@ -1000,7 +1004,7 @@
     },
     "cta": {
       "title": "Dein Katalog muss nicht mehr auf ein 3D-Team warten",
-      "button": "Jetzt starten"
+      "button": "Kostenlos testen"
     },
     "shelf": {
       "lead": "Entdecke den Hub.",

@@ -1,8 +1,8 @@
 'use client';
 
 import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
+import { SiteLink as Link } from '@/components/site-link';
 import { photoUrl } from '@/lib/studio/catalog';
 import { useSection } from './use-section';
 

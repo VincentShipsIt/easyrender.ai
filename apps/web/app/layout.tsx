@@ -52,7 +52,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         </Script>
       </head>
       <body className="flex min-h-dvh flex-col font-sans antialiased">
-        <NextIntlClientProvider messages={pickClientMessages(messages)}>
+        <NextIntlClientProvider locale={locale} messages={pickClientMessages(messages)}>
           {children}
           <Analytics />
         </NextIntlClientProvider>

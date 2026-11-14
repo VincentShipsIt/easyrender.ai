@@ -56,7 +56,10 @@ export const SUBSCRIPTION_PLANS = {
 } as const;
 
 export type PlanId = keyof typeof SUBSCRIPTION_PLANS;
+// Keep every billed plan for renewals, portal changes and historical reporting.
 export const PLAN_IDS = Object.keys(SUBSCRIPTION_PLANS) as PlanId[];
+// Only Pro is offered to new subscribers. Creator and Scale are grandfathered.
+export const PUBLIC_PLAN_IDS: readonly PlanId[] = ['pro'];
 export const isPlanId = (value: unknown): value is PlanId =>
   typeof value === 'string' && Object.hasOwn(SUBSCRIPTION_PLANS, value);
 
@@ -154,5 +157,35 @@ export const isValidPaygCredits = (credits: number, variant: PricingVariant = 'c
 
 export const paygPriceCents = (credits: number, variant: PricingVariant = 'control') =>
   Math.round(credits * pricingFor(variant).creditUsd * 100);
+
+/** A rational rate: retain the plan's exact cents/credits until the whole pack is rounded. */
+export function topupPricing(
+  subscription: { status: string | null; plan: string | null; variant: PricingVariant } | null,
+  paygVariant: PricingVariant = 'control',
+  currency: ChargeCurrency = 'usd',
+) {
+  const plan =
+    subscription &&
+    (subscription.status === 'active' || subscription.status === 'trialing') &&
+    isPlanId(subscription.plan)
+      ? subscription.plan
+      : null;
+  const variant = plan && subscription ? subscription.variant : paygVariant;
+  return {
+    plan,
+    variant,
+    currency,
+    priceCents: unitAmountCents(plan ?? 'payg', variant, currency),
+    creditsPerUnit: plan ? pricingFor(variant).plans[plan].monthlyCredits : 1,
+  };
+}
+
+/** Round once, half up to the nearest cent; never round the per-credit rate first. */
+export function topupAmountCents(
+  credits: number,
+  rate: Pick<ReturnType<typeof topupPricing>, 'priceCents' | 'creditsPerUnit'>,
+) {
+  return Math.round((credits * rate.priceCents) / rate.creditsPerUnit);
+}
 
 export const rendersFor = (credits: number) => Math.floor(credits / RENDER_CREDITS);

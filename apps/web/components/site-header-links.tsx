@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
+import { SiteLink as Link } from '@/components/site-link';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/i18n/config';
 import { isPublished, ROUTES } from '@/lib/seo/routes';

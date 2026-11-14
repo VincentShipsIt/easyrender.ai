@@ -10,12 +10,16 @@ describe('pickerPaths', () => {
     expect(pickerPaths('/es').map((option) => option.path)).toEqual(homes);
   });
 
-  it('links the pricing page to its Spanish twin and back', () => {
+  it('links the pricing page in all six languages', () => {
     expect(equivalentPaths('/pricing').map((option) => option.path)).toEqual([
       '/pricing',
       '/es/precios',
+      '/de/preise',
+      '/fr/tarifs',
+      '/it/prezzi',
+      '/pt/precos',
     ]);
-    expect(equivalentPaths('/es/precios').map((option) => option.locale)).toEqual(['en', 'es']);
+    expect(equivalentPaths('/es/precios').map((option) => option.locale)).toEqual(LOCALES);
   });
 
   it('keeps the picker on a page in one language, linking the other homes', () => {

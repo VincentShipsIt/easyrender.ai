@@ -2,6 +2,7 @@ import 'server-only';
 import {
   assignedPricing,
   buyerCurrency,
+  getTopupPricing,
   isPricingExperimentConfigured,
   pricingSubject,
 } from '@easyrender/core';
@@ -22,4 +23,10 @@ export const currentPricing = cache(async () => {
     ...displayPricing(variant, currency),
     subject: await pricingSubject(userId ?? null, anonId),
   };
+});
+
+// Subscriber quotes are personal, request-scoped, and shared by Credits and pricing.
+export const currentTopupPricing = cache(async () => {
+  const [{ userId }, pricing] = await Promise.all([resolveActor(), currentPricing()]);
+  return getTopupPricing(userId, pricing.variant, pricing.currency);
 });

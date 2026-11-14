@@ -1,6 +1,6 @@
 import { deflateSync } from 'node:zlib';
 import { db } from '@easyrender/db';
-import { RENDER_CREDITS, SHEET_CREDITS } from '@easyrender/harness';
+import { RENDER_CREDITS, SHEET_CREDITS, topupAmountCents, topupPricing } from '@easyrender/harness';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Runs against a real Postgres: set TEST_DATABASE_URL (a scratch database with the schema pushed).
@@ -576,6 +576,96 @@ run('credits and generation billing (real database)', () => {
         (await db().purchase.findUniqueOrThrow({ where: { stripeSessionId: sessionId } })).status,
       ).toBe('paid');
     });
+
+    it.each(['creator', 'pro', 'scale'])(
+      'keeps %s unchanged after a top-up, duplicate webhook and cancellation',
+      async (plan) => {
+        const { getBillingStatus } = await import('./billing');
+        const userId = await newUser(120);
+        await db().user.update({
+          where: { id: userId },
+          data: {
+            subscriptionPlan: plan,
+            subscriptionStatus: 'active',
+            subscriptionId: `sub_${userId}`,
+          },
+        });
+        const sessionId = `cs_topup_${userId}`;
+        const purchase = await db().purchase.create({
+          data: {
+            userId,
+            stripeSessionId: sessionId,
+            packId: `topup_${plan}`,
+            currency: 'eur',
+            credits: 1000,
+            amountCents: topupAmountCents(
+              1000,
+              topupPricing({ status: 'active', plan, variant: 'control' }, 'control', 'eur'),
+            ),
+          },
+        });
+        const event = {
+          type: 'checkout.session.completed',
+          data: {
+            object: {
+              id: sessionId,
+              mode: 'payment',
+              amount_total: purchase.amountCents,
+              currency: 'eur',
+              metadata: { credits: '999999', topup_plan: 'forged' },
+              payment_status: 'paid',
+              client_reference_id: userId,
+              customer: `cus_${userId}`,
+            },
+          },
+        };
+        // Unpaid and mismatched deliveries must not grant; delayed success and replay grant once.
+        await send({
+          ...event,
+          data: { object: { ...event.data.object, payment_status: 'unpaid' } },
+        });
+        expect(await balance(userId)).toBe(120);
+        await expect(
+          send({ ...event, data: { object: { ...event.data.object, amount_total: 1 } } }),
+        ).rejects.toMatchObject({ code: 'purchase_mismatch' });
+        await expect(
+          send({ ...event, data: { object: { ...event.data.object, currency: 'usd' } } }),
+        ).rejects.toMatchObject({ code: 'purchase_mismatch' });
+        expect(await balance(userId)).toBe(120);
+        await send({ ...event, type: 'checkout.session.async_payment_succeeded' });
+        await send(event);
+        expect(await balance(userId)).toBe(1120);
+        expect(await getBillingStatus(userId)).toEqual({ plan, canManage: true });
+        expect(
+          await db().creditLedger.findMany({
+            where: { userId },
+            select: { delta: true, reason: true, purchaseId: true },
+          }),
+        ).toEqual([{ delta: 1000, reason: 'purchase', purchaseId: purchase.id }]);
+        await send({
+          type: 'customer.subscription.deleted',
+          data: {
+            object: {
+              id: `sub_${userId}`,
+              status: 'canceled',
+              customer: `cus_${userId}`,
+              metadata: { userId, plan },
+            },
+          },
+        });
+        expect((await getBillingStatus(userId)).plan).toBeNull();
+        expect(await balance(userId)).toBe(1120);
+        const future = new Date();
+        future.setFullYear(future.getFullYear() + 2);
+        vi.useFakeTimers({ toFake: ['Date'] });
+        try {
+          vi.setSystemTime(future);
+          expect(await balance(userId)).toBe(1120);
+        } finally {
+          vi.useRealTimers();
+        }
+      },
+    );
 
     it('does not credit an unpaid checkout', async () => {
       const userId = await newUser(0);
