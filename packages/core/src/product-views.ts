@@ -28,6 +28,7 @@ import {
   selectSkillFrom,
   sheetOutputUrl,
   sheetRequest,
+  UPSCALE_CREDITS,
   UPSCALE_MODEL,
   upscaleFactor,
   upscaleRequest,
@@ -708,6 +709,7 @@ export type ViewSetView = {
   viewCount: number;
   credits: number;
   polishCredits: number;
+  upscaleCredits: number;
   buildCredits: number;
   renderId: string | null;
   createdAt: string;
@@ -740,6 +742,7 @@ export function toViewSetView(set: ViewSetWithViews): ViewSetView {
     viewCount: VIEWS.length,
     credits: set.status === 'failed' ? 0 : set.credits,
     polishCredits: VIEW_POLISH_CREDITS,
+    upscaleCredits: UPSCALE_CREDITS,
     buildCredits: BUILD_FROM_VIEWS_CREDITS,
     renderId: set.renderId,
     createdAt: set.createdAt.toISOString(),

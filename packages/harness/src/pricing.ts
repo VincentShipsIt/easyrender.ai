@@ -24,6 +24,12 @@ export const RENDER_CREDITS = creditsFor(RENDER_COST_USD);
 // once, each view is upscaled to the packshot size, and the price keeps room for one view the
 // checks send back for a redraw (a 1K single view plus its upscale). Nothing in it is 3D.
 export const PRODUCT_VIEW_COUNT = 9;
+
+// The paid Upscale action: one finished picture (a product view, the angle sheet of a paid render)
+// enlarged to print size. A flat price, because the upscaler charges per picture.
+export const ENLARGE_COST_USD = 0.006;
+export const UPSCALE_CREDITS = creditsFor(ENLARGE_COST_USD);
+
 export const UPSCALE_COST_USD = 0.002; // Real-ESRGAN, per output image
 export const VIEW_REDRAW_COST_USD = SHEET_COST_USD + UPSCALE_COST_USD;
 export const PRODUCT_VIEWS_COST_USD =

@@ -26,6 +26,7 @@ export const CLIENT_NAMESPACES = [
   'McpSetup',
   'PaygPicker',
   'ProductViews',
+  'Upscale',
   'PromptBar',
   'Render',
   'Showcase',

@@ -26,6 +26,7 @@ import {
   selectSkillFrom,
   sheetOutputUrl,
   sheetRequest,
+  UPSCALE_CREDITS,
 } from '@easyrender/harness';
 import { captureRender, deferAnalytics } from './analytics';
 import { type Attribution, classifyCountry, normalizeAttribution } from './attribution';
@@ -706,6 +707,9 @@ export type RenderView = {
   credits: number;
   renderCredits: number;
   sheetCredits: number;
+  // What enlarging the angle sheet costs, and whether it can be done yet (the 3D model is paid).
+  upscaleCredits: number;
+  canUpscale: boolean;
   isPublic: boolean;
   source: RenderSource;
   createdAt: string;
@@ -727,6 +731,8 @@ export function toView(render: Render): RenderView {
     credits: render.status === 'failed' ? 0 : render.credits,
     renderCredits: buildTotal(render),
     sheetCredits: SHEET_CREDITS,
+    upscaleCredits: UPSCALE_CREDITS,
+    canUpscale: Boolean(render.sheetKey) && (render.status === 'ready' || render.hasFinalSheet),
     isPublic: render.isPublic,
     source: render.source as RenderSource,
     createdAt: render.createdAt.toISOString(),

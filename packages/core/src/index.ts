@@ -21,3 +21,4 @@ export * from './shopify-app';
 export * from './signup-attribution';
 export * from './signup-receipt';
 export * from './storage';
+export * from './upscale';
