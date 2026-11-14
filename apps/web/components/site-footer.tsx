@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { BrandMark } from '@/components/brand-mark';
+import { SiteLink as Link } from '@/components/site-link';
 import { Separator } from '@/components/ui/separator';
 import type { Locale } from '@/i18n/config';
 import { isPublished, ROUTES } from '@/lib/seo/routes';

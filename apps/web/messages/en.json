@@ -84,7 +84,7 @@
       "title": "What is easyrender?",
       "body": "easyrender is an image-to-3D tool: it turns one photo of a piece of furniture, a decor object or a building exterior into a 3D model. First it draws the object from every side, a free angle sheet you can check before you spend anything. If the preview looks right, one click turns it into a 3D model you can spin and download as GLB and USDZ.",
       "scope": "It does not model whole rooms. It does not invent measurements. You get the file; you decide if it is good enough to keep.",
-      "primaryCta": "Upload a photo",
+      "primaryCta": "Try it free",
       "secondaryCta": "See models made from a photo"
     }
   },
@@ -94,16 +94,6 @@
       "description": "Previews are free. A finished 3D model costs {credits} credits ({price}).",
       "seeAll": "See all pricing",
       "bestValue": "Best value",
-      "free": {
-        "name": "Free",
-        "note": "to try it",
-        "features": {
-          "mcp": "Connect your agent over MCP",
-          "previews": "Free previews of every angle",
-          "noCard": "No credit card"
-        },
-        "cta": "Start free"
-      },
       "payg": {
         "name": "Pay as you go",
         "note": "per credit",
@@ -121,7 +111,8 @@
           "credits": "{credits} credits every month",
           "models": "About {count} 3D models",
           "rollover": "Unused credits roll over",
-          "cancel": "Cancel anytime"
+          "cancel": "Cancel anytime",
+          "topUp": "Need more? Top up anytime at pay-as-you-go rates."
         },
         "cta": "Go {plan}"
       },
@@ -136,7 +127,9 @@
           "onboarding": "Onboarding call"
         },
         "cta": "Book a call"
-      }
+      },
+      "tryFree": "Try it free",
+      "noCard": "Free previews. No credit card required."
     },
     "faq": {
       "title": "Questions, answered",
@@ -728,7 +721,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Top up with pay as you go anytime",
+        "topUp": "Need more? Top up anytime at pay-as-you-go rates.",
         "cancel": "Cancel anytime"
       }
     },
@@ -745,7 +738,12 @@
       "cta": "Book a call"
     },
     "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month."
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
+    "topUp": {
+      "title": "Top up credits",
+      "description": "Buy extra credits from {price} at the pay-as-you-go rate, without changing your plan.",
+      "noExpiry": "Top-up credits never expire."
+    }
   },
   "Pricing": {
     "metaTitle": "Pricing: pay per 3D model · easyrender",
@@ -755,10 +753,10 @@
     "eyebrow": "Pricing",
     "title": "Pay per 3D model. Previews are free.",
     "description": "A finished 3D model costs {credits} credits ({price}). Buy credits as you go, or pick a monthly plan for a cheaper credit. Credits never expire.",
-    "note": "Prices in USD. Credits never expire. If a 3D build fails, its credits are refunded.",
+    "note": "Credits never expire. If a 3D build fails, its credits are refunded.",
     "compare": {
       "title": "Compare plans",
-      "description": "Pay as you go is {unit} a credit. Every monthly plan makes the credit cheaper, and a bigger plan cheaper still.",
+      "description": "Pay as you go is {unit} a credit. Pro includes monthly credits at a lower rate. Contact us for Enterprise volume pricing.",
       "plan": "Plan",
       "price": "Price",
       "credits": "Credits",
@@ -788,7 +786,7 @@
       "items": {
         "cost": {
           "q": "How much does a 3D model cost?",
-          "a": "Previews are free. A finished 3D model costs {credits} credits. On pay as you go a credit costs {unit}, so a model is {price}. Monthly plans make each credit cheaper."
+          "a": "Previews are free. A finished 3D model costs {credits} credits. On pay as you go a credit costs {unit}, so a model is {price}. Pro makes each credit cheaper."
         },
         "freePreview": {
           "q": "Why is the preview free?",
@@ -796,7 +794,7 @@
         },
         "plans": {
           "q": "Pay as you go or a monthly plan?",
-          "a": "Pay as you go suits occasional use: buy from {min} credits ({minPrice}) whenever you need them. A monthly plan adds credits every month at a lower price per credit. {plan}, for example, is {planPrice} a month for {planCredits} credits, about {planModels} 3D models."
+          "a": "Pay as you go suits occasional use: buy from {min} credits ({minPrice}) whenever you need them. {plan} is {planPrice} a month for {planCredits} credits, about {planModels} 3D models. Contact us for Enterprise volume pricing."
         },
         "expire": {
           "q": "Do credits expire?",
@@ -813,6 +811,10 @@
         "enterprise": {
           "q": "Do you offer volume pricing or invoices?",
           "a": "Yes, on Enterprise: volume credit pricing, invoice billing, priority support and an onboarding call. Book a call and we will set it up."
+        },
+        "topUp": {
+          "q": "Can I buy more credits without upgrading?",
+          "a": "Yes. Open Credits in your account and buy a top-up at the displayed pay-as-you-go rate. Your monthly plan stays the same, and the extra credits never expire."
         }
       }
     }
@@ -873,7 +875,7 @@
   "Studio": {
     "hero": {
       "title": "3D model from a photo.",
-      "cta": "Get started",
+      "cta": "Try it free",
       "note": "Free preview · no card",
       "stackLabel": "One object seen through five passes of the engine. Drag to turn it.",
       "photo": "Input photo",
@@ -937,7 +939,7 @@
     "tools": {
       "lead": "See the shape before you spend a credit.",
       "body": "Every element is shown the way the engine built it: mesh, materials and textures.",
-      "link": "Explore the spec sheet",
+      "link": "Explore creations",
       "topology": "Topology",
       "triangles": "Triangles",
       "material": "PBR material",
@@ -998,7 +1000,7 @@
     },
     "cta": {
       "title": "Your catalogue no longer has to wait for a 3D team",
-      "button": "Get started"
+      "button": "Try it free"
     },
     "shelf": {
       "lead": "Explore the hub.",

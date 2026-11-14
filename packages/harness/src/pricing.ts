@@ -56,7 +56,10 @@ export const SUBSCRIPTION_PLANS = {
 } as const;
 
 export type PlanId = keyof typeof SUBSCRIPTION_PLANS;
+// Keep every billed plan for renewals, portal changes and historical reporting.
 export const PLAN_IDS = Object.keys(SUBSCRIPTION_PLANS) as PlanId[];
+// Only Pro is offered to new subscribers. Creator and Scale are grandfathered.
+export const PUBLIC_PLAN_IDS: readonly PlanId[] = ['pro'];
 export const isPlanId = (value: unknown): value is PlanId =>
   typeof value === 'string' && Object.hasOwn(SUBSCRIPTION_PLANS, value);
 

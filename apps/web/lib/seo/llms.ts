@@ -1,7 +1,7 @@
 import {
   CREDIT_USD,
   PAYG,
-  PLAN_IDS,
+  PUBLIC_PLAN_IDS,
   RENDER_CREDITS,
   SUBSCRIPTION_PLANS,
 } from '@easyrender/harness';
@@ -61,6 +61,15 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
     title: 'easyrender em português (Portugal)',
     note: 'A mesma página em português de Portugal: de uma imagem para 3D com uma só fotografia.',
   },
+  ...Object.fromEntries(
+    (['de', 'fr', 'it', 'pt'] as const).map((locale) => [
+      ROUTES.pricing.paths[locale],
+      {
+        title: { de, fr, it, pt }[locale].Pricing.breadcrumb,
+        note: { de, fr, it, pt }[locale].Pricing.title,
+      },
+    ]),
+  ),
   [ROUTES.pricing.paths.en]: {
     title: 'Pricing',
     note: 'Pay as you go credits and the monthly plans, as currently charged.',
@@ -99,7 +108,7 @@ const PAGE_LABELS: Record<string, { title: string; note: string }> = {
 
 function summary(): string[] {
   const modelPrice = usd(RENDER_CREDITS * CREDIT_USD);
-  const plans = PLAN_IDS.map((id) => {
+  const plans = PUBLIC_PLAN_IDS.map((id) => {
     const plan = SUBSCRIPTION_PLANS[id];
     return `${plan.label} ${usd(plan.priceCents / 100)} for ${plan.monthlyCredits.toLocaleString('en-US')} credits`;
   }).join(', ');
@@ -112,7 +121,7 @@ function summary(): string[] {
     '',
     '- Input: one photo of a single object (furniture, decor, building exterior).',
     '- Free step: an angle sheet that draws the object from every side, so you can check the shape before paying.',
-    `- Paid step: a finished, textured 3D model for ${RENDER_CREDITS} credits (${modelPrice}). Credits cost ${usd(CREDIT_USD)} each, from ${PAYG.min.toLocaleString('en-US')} credits; monthly plans: ${plans}. Credits never expire. If a 3D build fails, its credits are refunded.`,
+    `- Paid step: a finished, textured 3D model for ${RENDER_CREDITS} credits (${modelPrice}). Credits cost ${usd(CREDIT_USD)} each, from ${PAYG.min.toLocaleString('en-US')} credits; monthly plan: ${plans}. Enterprise offers custom volume pricing by contacting the team. Monthly subscribers can top up at the displayed pay-as-you-go rate from Credits without changing plans. Credits never expire. If a 3D build fails, its credits are refunded.`,
     '- Downloads: GLB and USDZ.',
     '- Augmented reality (see the model in your room from a phone) is coming soon.',
     '- Limits: one object at a time, not whole interior rooms. The model keeps shape and materials, not real-world measurements or scale.',

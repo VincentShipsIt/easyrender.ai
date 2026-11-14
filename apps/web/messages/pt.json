@@ -84,7 +84,7 @@
       "title": "O que é o easyrender?",
       "body": "O easyrender é uma ferramenta de imagem para 3D: transforma a fotografia de um móvel, de uma peça de decoração ou da fachada de um edifício num modelo 3D. Primeiro desenha o objeto de todos os lados, numa folha de ângulos grátis que podes rever antes de gastares seja o que for. Se a pré-visualização te convencer, um clique transforma-a num modelo 3D para rodar e descarregar em GLB e USDZ.",
       "scope": "Não modela divisões inteiras nem inventa medidas. Recebes o ficheiro e decides tu se vale a pena ficar com ele.",
-      "primaryCta": "Carregar uma fotografia",
+      "primaryCta": "Experimenta grátis",
       "secondaryCta": "Ver a galeria"
     }
   },
@@ -94,16 +94,6 @@
       "description": "As pré-visualizações são grátis. Um modelo 3D pronto custa {credits} créditos ({price}).",
       "seeAll": "Ver todos os preços",
       "bestValue": "Mais vantajoso",
-      "free": {
-        "name": "Grátis",
-        "note": "para experimentar",
-        "features": {
-          "mcp": "Liga o teu agente por MCP",
-          "previews": "Pré-visualizações grátis de todos os ângulos",
-          "noCard": "Sem cartão de crédito"
-        },
-        "cta": "Começar grátis"
-      },
       "payg": {
         "name": "Pagamento por uso",
         "note": "por crédito",
@@ -121,7 +111,8 @@
           "credits": "{credits} créditos por mês",
           "models": "Cerca de {count} modelos 3D",
           "rollover": "Os créditos não usados passam para o mês seguinte",
-          "cancel": "Podes cancelar quando quiseres"
+          "cancel": "Podes cancelar quando quiseres",
+          "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa de pagamento por utilização."
         },
         "cta": "Passar a {plan}"
       },
@@ -136,7 +127,9 @@
           "onboarding": "Sessão de arranque"
         },
         "cta": "Marcar uma chamada"
-      }
+      },
+      "tryFree": "Experimenta grátis",
+      "noCard": "Pré-visualizações grátis. Sem cartão de crédito."
     },
     "faq": {
       "title": "Perguntas frequentes",
@@ -728,7 +721,7 @@
       "features": {
         "credits": "{credits} credits added each month",
         "rollover": "Unused credits roll over",
-        "topUp": "Top up with pay as you go anytime",
+        "topUp": "Precisas de mais? Recarrega quando quiseres à tarifa de pagamento por utilização.",
         "cancel": "Cancel anytime"
       }
     },
@@ -745,74 +738,83 @@
       "cta": "Book a call"
     },
     "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month."
+    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
+    "topUp": {
+      "title": "Recarregar créditos",
+      "description": "Compra créditos extra a partir de {price} à tarifa de pagamento por utilização, sem mudar de plano.",
+      "noExpiry": "Os créditos das recargas nunca expiram."
+    }
   },
   "Pricing": {
-    "metaTitle": "Pricing: pay per 3D model · easyrender",
-    "metaDescription": "Previews are free. A finished 3D model costs {credits} credits ({price}) and credits never expire. Pay as you go, or go Pro for {proCredits} credits a month.",
-    "home": "Home",
-    "breadcrumb": "Pricing",
-    "eyebrow": "Pricing",
-    "title": "Pay per 3D model. Previews are free.",
-    "description": "A finished 3D model costs {credits} credits ({price}). Buy credits as you go, or pick a monthly plan for a cheaper credit. Credits never expire.",
-    "note": "Prices in USD. Credits never expire. If a 3D build fails, its credits are refunded.",
+    "metaTitle": "Preços: paga por modelo 3D · easyrender",
+    "metaDescription": "As pré-visualizações são grátis. Um modelo 3D completo custa {credits} créditos ({price}), sem validade. Paga por utilização ou escolhe Pro com {proCredits} créditos por mês.",
+    "home": "Início",
+    "breadcrumb": "Preços",
+    "eyebrow": "Preços",
+    "title": "Paga por modelo 3D. As pré-visualizações são grátis.",
+    "description": "Um modelo 3D completo custa {credits} créditos ({price}). Compra créditos por utilização ou escolhe Pro para um preço mensal inferior por crédito. Os créditos nunca expiram.",
+    "note": "Os créditos nunca expiram. Se a criação de um modelo 3D falhar, os créditos são devolvidos.",
     "compare": {
-      "title": "Compare plans",
-      "description": "Pay as you go is {unit} a credit. Every monthly plan makes the credit cheaper, and a bigger plan cheaper still.",
-      "plan": "Plan",
-      "price": "Price",
-      "credits": "Credits",
-      "models": "3D models",
-      "perCredit": "Per credit",
-      "from": "From {value}",
-      "perMonth": "{value} / month"
+      "title": "Comparar planos",
+      "description": "No pagamento por utilização, cada crédito custa {unit}. Pro inclui créditos mensais a um preço inferior. Contacta-nos para preços por volume de Empresa.",
+      "plan": "Plano",
+      "price": "Preço",
+      "credits": "Créditos",
+      "models": "Modelos 3D",
+      "perCredit": "Por crédito",
+      "from": "A partir de {value}",
+      "perMonth": "{value} / mês"
     },
     "how": {
-      "title": "How credits work",
-      "step": "Step {number}",
+      "title": "Como funcionam os créditos",
+      "step": "Passo {number}",
       "preview": {
-        "title": "Previews cost nothing",
-        "body": "Upload a photo and check a free sheet that shows the object from every angle before you spend anything."
+        "title": "As pré-visualizações não custam nada",
+        "body": "Envia uma fotografia e verifica gratuitamente o objeto de todos os ângulos antes de gastares créditos."
       },
       "build": {
-        "title": "A 3D model costs {credits} credits",
-        "body": "That is {price}. The button shows the cost before you click, and you download the model as GLB and USDZ."
+        "title": "Um modelo 3D custa {credits} créditos",
+        "body": "São {price}. O botão mostra o custo antes de clicares e podes transferir o modelo em GLB e USDZ."
       },
       "refund": {
-        "title": "Failed builds are refunded",
-        "body": "If a 3D model fails to build, the credits for that render go back to your balance automatically."
+        "title": "As criações que falham são reembolsadas",
+        "body": "Se a criação de um modelo 3D falhar, os créditos são automaticamente devolvidos ao teu saldo."
       }
     },
     "faq": {
-      "title": "Pricing questions",
+      "title": "Perguntas sobre preços",
       "items": {
         "cost": {
-          "q": "How much does a 3D model cost?",
-          "a": "Previews are free. A finished 3D model costs {credits} credits. On pay as you go a credit costs {unit}, so a model is {price}. Monthly plans make each credit cheaper."
+          "q": "Quanto custa um modelo 3D?",
+          "a": "As pré-visualizações são grátis. Um modelo 3D completo custa {credits} créditos. Por utilização, cada crédito custa {unit}, ou seja, {price} por modelo. Pro reduz o preço por crédito."
         },
         "freePreview": {
-          "q": "Why is the preview free?",
-          "a": "Before the 3D model is built we draw the object from every angle. You check that preview at no cost and only spend credits when the shape and the details look right."
+          "q": "Porque é que a pré-visualização é grátis?",
+          "a": "Antes de criar o modelo 3D, desenhamos o objeto de todos os ângulos. Verificas a pré-visualização gratuitamente e só gastas créditos quando a forma e os detalhes te agradam."
         },
         "plans": {
-          "q": "Pay as you go or a monthly plan?",
-          "a": "Pay as you go suits occasional use: buy from {min} credits ({minPrice}) whenever you need them. A monthly plan adds credits every month at a lower price per credit. {plan}, for example, is {planPrice} a month for {planCredits} credits, about {planModels} 3D models."
+          "q": "Pagamento por utilização ou Pro?",
+          "a": "Para uso ocasional, compra a partir de {min} créditos ({minPrice}) quando precisares. {plan} custa {planPrice} por mês por {planCredits} créditos, cerca de {planModels} modelos 3D. Contacta-nos para preços por volume de Empresa."
         },
         "expire": {
-          "q": "Do credits expire?",
-          "a": "No. Credits never expire, and unused credits from a monthly plan roll over to the next month."
+          "q": "Os créditos expiram?",
+          "a": "Não. Os créditos nunca expiram e os créditos mensais não utilizados passam para o mês seguinte."
         },
         "cancel": {
-          "q": "Can I change or cancel my plan?",
-          "a": "Yes. Change or cancel your plan at any time from Credits in your account, where you can manage your subscription."
+          "q": "Posso alterar ou cancelar o plano?",
+          "a": "Sim. Podes gerir, alterar ou cancelar a subscrição a qualquer momento em Créditos na tua conta."
         },
         "failed": {
-          "q": "What if a render fails?",
-          "a": "If the 3D model fails to build, the credits for that render go back to your balance automatically."
+          "q": "O que acontece se um render falhar?",
+          "a": "Se a criação do modelo 3D falhar, os créditos são automaticamente devolvidos ao teu saldo."
         },
         "enterprise": {
-          "q": "Do you offer volume pricing or invoices?",
-          "a": "Yes, on Enterprise: volume credit pricing, invoice billing, priority support and an onboarding call. Book a call and we will set it up."
+          "q": "Há preços por volume ou faturação?",
+          "a": "Sim, com Empresa: preços por volume, pagamento por fatura, apoio prioritário e uma chamada de apresentação. Marca uma chamada para combinarmos os detalhes."
+        },
+        "topUp": {
+          "q": "Posso comprar mais créditos sem mudar de plano?",
+          "a": "Sim. Abre Créditos na tua conta e recarrega à tarifa de pagamento por utilização apresentada. O plano mensal mantém-se e os créditos extra nunca expiram."
         }
       }
     }
@@ -873,7 +875,7 @@
   "Studio": {
     "hero": {
       "title": "A fotografia do produto transforma-se num modelo 3D.",
-      "cta": "Começar",
+      "cta": "Experimenta grátis",
       "note": "Pré-visualização grátis · sem cartão",
       "stackLabel": "O mesmo objeto em cinco camadas do motor. Arrasta para o rodar.",
       "photo": "Fotografia original",
@@ -937,7 +939,7 @@
     "tools": {
       "lead": "Vê a forma antes de gastares um crédito.",
       "body": "Cada elemento aparece tal como o motor o construiu: malha, materiais e texturas.",
-      "link": "Ver a ficha técnica",
+      "link": "Explora criações",
       "topology": "Topologia",
       "triangles": "Triângulos",
       "material": "Material PBR",
@@ -998,7 +1000,7 @@
     },
     "cta": {
       "title": "O teu catálogo já não tem de esperar por uma equipa de 3D",
-      "button": "Começar"
+      "button": "Experimenta grátis"
     },
     "shelf": {
       "lead": "Explora o hub.",

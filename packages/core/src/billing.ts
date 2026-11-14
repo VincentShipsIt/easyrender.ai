@@ -9,6 +9,7 @@ import {
   type PlanId,
   PRICING_FLAG,
   type PricingVariant,
+  PUBLIC_PLAN_IDS,
   pricingFor,
   unitAmountCents,
 } from '@easyrender/harness';
@@ -43,7 +44,7 @@ export function parseCheckout(
   body: { plan?: unknown; credits?: unknown },
   variant: PricingVariant = 'control',
 ): CheckoutRequest {
-  if (isPlanId(body.plan)) return { plan: body.plan };
+  if (isPlanId(body.plan) && PUBLIC_PLAN_IDS.includes(body.plan)) return { plan: body.plan };
   if (body.plan === 'payg') {
     const credits = Number(body.credits);
     if (!isValidPaygCredits(credits, variant)) {

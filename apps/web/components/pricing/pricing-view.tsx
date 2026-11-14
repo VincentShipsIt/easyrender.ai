@@ -1,9 +1,11 @@
-import { PLAN_IDS, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
+import { PUBLIC_PLAN_IDS, RENDER_CREDITS, rendersFor } from '@easyrender/harness';
 import { ChevronDown } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { PlanCards } from '@/components/pricing/plan-cards';
 import { PricingExposure } from '@/components/pricing-exposure';
+import { SiteLink as Link } from '@/components/site-link';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
@@ -16,6 +18,7 @@ import {
 import type { Locale } from '@/i18n/config';
 import { formatCount, formatMoney } from '@/lib/price-format';
 import { currentPricing } from '@/lib/pricing';
+import { ROUTES } from '@/lib/seo/routes';
 import { FAQ_ITEM_KEYS } from './faq-keys';
 
 /** Money in the visitor's language and currency: whole units without cents, the rest with two. */
@@ -81,7 +84,7 @@ export async function PricingView({ locale }: { locale: Locale }) {
       models: t('compare.from', { value: rendersFor(payg.min) }),
       unit: perCredit(creditPrice),
     },
-    ...PLAN_IDS.map((id) => ({
+    ...PUBLIC_PLAN_IDS.map((id) => ({
       key: id,
       name: plans[id].label,
       price: t('compare.perMonth', { value: usd(plans[id].priceCents) }),
@@ -112,6 +115,10 @@ export async function PricingView({ locale }: { locale: Locale }) {
         <p className="text-lg text-muted-foreground text-pretty">
           {t('description', { credits: RENDER_CREDITS, price })}
         </p>
+        <Button size="lg" asChild>
+          <Link href={`${ROUTES.home.paths[locale]}#try`}>{tPlans('tryFree')}</Link>
+        </Button>
+        <p className="text-sm text-muted-foreground">{tPlans('noCard')}</p>
       </header>
 
       <div id="plans" className="mt-12">

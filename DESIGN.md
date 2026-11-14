@@ -173,7 +173,7 @@ error says what failed and whether credits were refunded.
 
 ## Money and credits
 
-- Credits are the only unit shown in the product. 1 credit = $0.01 (pay as you go); Pro is 5,000
+- Credits are the only unit shown in the product. 1 credit = $0.01 (pay as you go); Pro is 5,500
   credits for $49 a month. Prices come from `@easyrender/harness` pricing, never hard-coded in a
   component.
 - Show the cost on the button that spends it ("Build 3D, 64 credits") before the click.

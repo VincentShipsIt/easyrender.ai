@@ -4,7 +4,9 @@
   provider cost divided by (1 - margin), margin 70%, rounded up. Change the cost constants, not
   the credit numbers.
 - Pay as you go: any number of credits from 500 to 100,000 through one $0.01 Stripe price, bought
-  with `quantity = credits`. Pro: $49 a month for 5,000 credits.
+  with `quantity = credits`. Pro: $49 a month for 5,500 credits. Public plans are PAYG, Pro and Enterprise. Creator and
+  Scale remain in billing for existing subscribers. Monthly subscribers can top up through the
+  same PAYG price without changing plans; all credits are non-expiring.
 - A 3D build is `RENDER_CREDITS`; the angle sheet is `SHEET_CREDITS` and counts toward the 3D
   price. Free previews are limited per day (`FREE_PREVIEWS_PER_DAY`). Redrawing a sheet with a fix
   note (`redrawSheet`) costs `SHEET_CREDITS` each time, does not count toward the 3D price, and is

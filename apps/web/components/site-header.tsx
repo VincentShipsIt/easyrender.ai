@@ -1,10 +1,10 @@
 import { LayoutDashboard } from 'lucide-react';
 import { headers } from 'next/headers';
-import Link from 'next/link';
 import { connection } from 'next/server';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { BrandMark } from '@/components/brand-mark';
 import { LocaleSwitcher } from '@/components/locale-switcher';
+import { SiteLink as Link } from '@/components/site-link';
 import { SiteMenu } from '@/components/site-menu';
 import { Button } from '@/components/ui/button';
 import { type Locale, PATH_HEADER } from '@/i18n/config';

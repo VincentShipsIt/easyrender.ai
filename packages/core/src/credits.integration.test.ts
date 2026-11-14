@@ -577,6 +577,76 @@ run('credits and generation billing (real database)', () => {
       ).toBe('paid');
     });
 
+    it.each(['creator', 'pro', 'scale'])(
+      'keeps %s unchanged after a top-up, duplicate webhook and cancellation',
+      async (plan) => {
+        const { getBillingStatus } = await import('./billing');
+        const userId = await newUser(120);
+        await db().user.update({
+          where: { id: userId },
+          data: {
+            subscriptionPlan: plan,
+            subscriptionStatus: 'active',
+            subscriptionId: `sub_${userId}`,
+          },
+        });
+        const sessionId = `cs_topup_${userId}`;
+        const purchase = await db().purchase.create({
+          data: {
+            userId,
+            stripeSessionId: sessionId,
+            packId: 'payg',
+            credits: 1000,
+            amountCents: 1000,
+          },
+        });
+        const event = {
+          type: 'checkout.session.completed',
+          data: {
+            object: {
+              id: sessionId,
+              mode: 'payment',
+              payment_status: 'paid',
+              client_reference_id: userId,
+              customer: `cus_${userId}`,
+            },
+          },
+        };
+        await send(event);
+        await send(event);
+        expect(await balance(userId)).toBe(1120);
+        expect(await getBillingStatus(userId)).toEqual({ plan, canManage: true });
+        expect(
+          await db().creditLedger.findMany({
+            where: { userId },
+            select: { delta: true, reason: true, purchaseId: true },
+          }),
+        ).toEqual([{ delta: 1000, reason: 'purchase', purchaseId: purchase.id }]);
+        await send({
+          type: 'customer.subscription.deleted',
+          data: {
+            object: {
+              id: `sub_${userId}`,
+              status: 'canceled',
+              customer: `cus_${userId}`,
+              metadata: { userId, plan },
+            },
+          },
+        });
+        expect((await getBillingStatus(userId)).plan).toBeNull();
+        expect(await balance(userId)).toBe(1120);
+        const future = new Date();
+        future.setFullYear(future.getFullYear() + 2);
+        vi.useFakeTimers({ toFake: ['Date'] });
+        try {
+          vi.setSystemTime(future);
+          expect(await balance(userId)).toBe(1120);
+        } finally {
+          vi.useRealTimers();
+        }
+      },
+    );
+
     it('does not credit an unpaid checkout', async () => {
       const userId = await newUser(0);
       const sessionId = `cs_unpaid_${userId}`;

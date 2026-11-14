@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { BrandMark } from '@/components/brand-mark';
+import { SiteLink as Link } from '@/components/site-link';
 
 // Formats the models ship in, and tools that open them.
 const WORKS_WITH = ['GLB', 'USDZ', 'Blender', 'SketchUp', 'three.js', 'Shopify', 'ARKit', 'ARCore'];

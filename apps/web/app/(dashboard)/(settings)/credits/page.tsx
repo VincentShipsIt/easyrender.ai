@@ -1,8 +1,8 @@
 import { getBalance, getBillingStatus } from '@easyrender/core';
 import {
   ENTERPRISE_BOOKING_URL,
-  PLAN_IDS,
   type PlanId,
+  PUBLIC_PLAN_IDS,
   RENDER_CREDITS,
   rendersFor,
 } from '@easyrender/harness';
@@ -174,6 +174,13 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
               : t('balance', { credits: credits(balance) })}
           </p>
         )}
+        {billing.plan && billing.canManage && (
+          <BuyButton
+            label={t('manageSubscription')}
+            endpoint="/api/billing/portal"
+            variant="outline"
+          />
+        )}
         {status === 'success' && (
           <Alert>
             <CircleCheck />
@@ -188,13 +195,13 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
       </div>
       <div className="grid gap-4 lg:grid-cols-3">
         <PlanCard
-          title={t('payg.title')}
-          description={t('payg.description', {
+          title={t(billing.plan ? 'topUp.title' : 'payg.title')}
+          description={t(billing.plan ? 'topUp.description' : 'payg.description', {
             price: usd(pricing.payg.min * pricing.creditPrice * 100),
           })}
           price={usd(pricing.creditPrice * 100)}
           note={t('payg.note')}
-          features={[t('payg.features.downloads'), t('payg.features.ar'), t('payg.features.api')]}
+          features={[t('payg.features.downloads'), t('payg.features.api'), t('topUp.noExpiry')]}
           footer={
             user ? (
               <PaygPicker pricingVariant={pricing.variant} currency={pricing.currency} />
@@ -203,7 +210,7 @@ export default async function CreditsPage({ searchParams }: PageProps<'/credits'
             )
           }
         />
-        {PLAN_IDS.map((id) => {
+        {PUBLIC_PLAN_IDS.map((id) => {
           const plan = SUBSCRIPTION_PLANS[id];
           return (
             <PlanCard

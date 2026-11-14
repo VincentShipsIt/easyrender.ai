@@ -42,9 +42,13 @@ describe('the per-language sitemaps', () => {
       '/es/modelos',
       '/es/cookies',
     ]);
-    // Homes and cookie information are open; guides and pricing remain unpublished.
+    // Homes and cookie information are open; guides remain unpublished.
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
+      expect(paths(locale), locale).toEqual([
+        `/${locale}`,
+        ROUTES.pricing.paths[locale],
+        ROUTES.cookies.paths[locale],
+      ]);
     }
   });
 
@@ -67,7 +71,11 @@ describe('the per-language sitemaps', () => {
       '/learn/how-to-make-a-3d-model-from-photos',
     ]);
     for (const locale of ['de', 'fr', 'it', 'pt'] as const) {
-      expect(paths(locale), locale).toEqual([`/${locale}`, ROUTES.cookies.paths[locale]]);
+      expect(paths(locale), locale).toEqual([
+        `/${locale}`,
+        ROUTES.pricing.paths[locale],
+        ROUTES.cookies.paths[locale],
+      ]);
     }
   });
 
