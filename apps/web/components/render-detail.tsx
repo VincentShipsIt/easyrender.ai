@@ -20,6 +20,7 @@ export function RenderDetail({
   meta,
   actions,
   isInApp = false,
+  isViewerFirst = true,
 }: {
   title: string;
   prompt: string | null;
@@ -31,6 +32,9 @@ export function RenderDetail({
   actions?: ReactNode;
   // Inside the signed-in shell the shell's breadcrumb and padding apply, so this page adds neither.
   isInApp?: boolean;
+  // A finished model leads the page. Until there is one, the photo and its angles come first and
+  // the viewer waits below them.
+  isViewerFirst?: boolean;
 }) {
   const t = useTranslations('Render');
   return (
@@ -47,7 +51,7 @@ export function RenderDetail({
 
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
         <div className="min-w-0 space-y-6">
-          {viewer}
+          {isViewerFirst && viewer}
           <div className="grid items-start gap-4 sm:grid-cols-[1fr_2fr]">
             <Card className="gap-3 py-4">
               <CardHeader className="px-4">
@@ -73,6 +77,7 @@ export function RenderDetail({
               <CardContent className="px-4">{angles}</CardContent>
             </Card>
           </div>
+          {!isViewerFirst && viewer}
         </div>
 
         <div

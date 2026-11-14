@@ -55,7 +55,6 @@ export default async function RenderPage({ params }: PageProps<'/r/[id]'>) {
         }
         meta={[
           { label: t('Render.meta.status'), value: t('Render.status.ready') },
-          { label: t('Render.meta.engine'), value: demo.engine },
           { label: t('Render.meta.dimensions'), value: demo.dimensions },
           { label: t('Render.meta.formats'), value: 'GLB · USDZ' },
           {

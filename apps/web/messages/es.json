@@ -278,7 +278,6 @@
     "modelAlt": "Modelo 3D: {name}",
     "meta": {
       "status": "Estado",
-      "engine": "Motor",
       "dimensions": "Medidas",
       "formats": "Formatos",
       "visibility": "Visibilidad",
@@ -294,7 +293,7 @@
     },
     "drafting": "Dibujando tu objeto desde todos los ángulos. Tarda alrededor de un minuto.",
     "rendering": "Construyendo el modelo 3D. Tarda unos dos minutos.",
-    "previewReady": "Tu vista previa está lista más abajo. Revisa todos los ángulos y después genera el modelo 3D.",
+    "previewReady": "Tu vista previa está lista. Revisa todos los ángulos de arriba y después genera el modelo 3D.",
     "previewAlt": "Vista previa de todos los ángulos",
     "noPreview": "Sin vista previa",
     "signUpToRender": "Crea una cuenta para generarlo en 3D",
@@ -305,9 +304,15 @@
     "finishedOnly": "Solo modelos terminados",
     "errors": {
       "start": "No se pudo iniciar el render",
-      "sheet": "No se pudo generar la hoja de ángulos"
+      "sheet": "No se pudo generar la hoja de ángulos",
+      "redraw": "No se pudo redibujar la hoja de ángulos"
     },
     "generateSheet": "Generar hoja de ángulos ({credits} créditos)",
+    "fixSheetLabel": "¿Algún ángulo no es correcto?",
+    "fixSheetHint": "Describe qué corregir y volvemos a dibujar todos los ángulos desde tu foto, así que menciona todo lo que quieras cambiar. Si el redibujado falla, te devolvemos los créditos.",
+    "fixSheetPlaceholder": "p. ej. Las patas traseras deben ser iguales que las delanteras y el asiento es plano",
+    "redrawSheet": "Redibujar ángulos ({credits} créditos)",
+    "buyToRedraw": "Comprar créditos para redibujar",
     "materials": {
       "title": "Materiales",
       "hint": "Cambia el aspecto de cada material. Los cambios guardados se incluyen en las descargas GLB y USDZ.",
