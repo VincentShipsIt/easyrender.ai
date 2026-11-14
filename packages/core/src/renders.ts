@@ -32,6 +32,7 @@ import { type Attribution, classifyCountry, normalizeAttribution } from './attri
 import { config } from './config';
 import { grantCredits, spendCredits } from './credits';
 import { AppError, notFound } from './errors';
+import { type RenderEditView, recordEdit, toEditView } from './render-edits';
 import { type RenderQuality, withQuality } from './render-quality';
 import { reportError } from './report';
 import { getFile, putFile } from './storage';
@@ -458,6 +459,7 @@ export async function startBuild(id: string, actor: Actor): Promise<Render> {
     throw error;
   }
 
+  await recordEdit(id, 'build', { credits: owed });
   captureRender(
     'render_start',
     { ...render, userId: actor.userId, credits: alreadyPaid + owed },
@@ -563,6 +565,7 @@ export async function startSheet(id: string, actor: Actor): Promise<Render> {
     throw error;
   }
 
+  await recordEdit(id, 'sheet', { credits: SHEET_CREDITS });
   captureRender(
     'preview_start',
     { ...render, userId: actor.userId },
@@ -668,6 +671,7 @@ export async function redrawSheet(id: string, actor: Actor, note: string): Promi
     throw error;
   }
 
+  await recordEdit(id, 'sheet_redraw', { note: fix, credits: SHEET_CREDITS });
   try {
     return await startSheetPrediction(claimed);
   } catch (error) {
@@ -731,6 +735,19 @@ export function toView(render: Render): RenderView {
 
 // Reads a render the actor may see (their own, or a public one), nudging its pipeline forward
 // when it is still running.
+// The render's history, newest first. Only the owner can read it.
+export async function listEdits(id: string, actor: Actor): Promise<RenderEditView[]> {
+  const render = await db().render.findUnique({ where: { id } });
+  if (!render || !canAccess(render, actor)) throw notFound();
+  if (!actor.userId || render.userId !== actor.userId) return [];
+  const rows = await db().renderEdit.findMany({
+    where: { renderId: id },
+    orderBy: { createdAt: 'desc' },
+    take: 100,
+  });
+  return rows.map(toEditView).filter((edit): edit is RenderEditView => edit !== null);
+}
+
 export async function getRender(id: string, actor: Actor): Promise<Render> {
   const render = await db().render.findUnique({ where: { id } });
   if (!render || !canView(render, actor)) throw notFound();

@@ -1,12 +1,15 @@
 'use client';
 
-import type { RenderView as View } from '@easyrender/core';
+import type { RenderEditView, RenderView as View } from '@easyrender/core';
 import { Box, Globe, Grid3x3, Loader2, Lock, RefreshCw, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { ShellPanel } from '@/components/app-shell/shell-context';
 import { ModelView } from '@/components/model-view';
 import { DATE_FORMAT, RenderDetail } from '@/components/render-detail';
+import { RenderHistory } from '@/components/render-history';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -20,17 +23,23 @@ const NOTE_MAX_LENGTH = 500;
 
 export function RenderView({
   initial,
+  edits,
+  now,
   signedIn,
   balance,
   owner,
 }: {
   initial: View;
+  // The owner's history of this render, read on the server. A new step refreshes it.
+  edits: RenderEditView[];
+  now: number;
   signedIn: boolean;
   balance: number;
   owner: boolean;
 }) {
   const t = useTranslations('Render');
   const format = useFormatter();
+  const router = useRouter();
   const [render, setRender] = useState(initial);
   const [error, setError] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
@@ -58,6 +67,7 @@ export function RenderView({
     const data = await response.json();
     if (response.ok) {
       setRender(data);
+      router.refresh();
       captureBrowser('render_generation_started', { source: 'render_detail', credits: owed });
     } else setError(data.error ?? t('errors.start'));
     setStarting(false);
@@ -70,6 +80,7 @@ export function RenderView({
     const data = await response.json().catch(() => ({}));
     if (response.ok) {
       setRender(data);
+      router.refresh();
       captureBrowser('render_sheet_generation_started', {
         source: 'render_detail',
         credits: render.sheetCredits,
@@ -89,6 +100,7 @@ export function RenderView({
     const data = await response.json().catch(() => ({}));
     if (response.ok) {
       setRender(data);
+      router.refresh();
       captureBrowser('render_sheet_redraw_started', {
         source: 'render_detail',
         credits: render.sheetCredits,
@@ -267,42 +279,51 @@ export function RenderView({
   );
 
   return (
-    <RenderDetail
-      isInApp={signedIn}
-      title={title}
-      prompt={render.prompt}
-      badges={[t(`status.${render.status}`)]}
-      viewer={viewer}
-      isViewerFirst={render.status === 'ready'}
-      input={`${base}/source`}
-      angles={angles}
-      meta={[
-        {
-          label: t('meta.status'),
-          value: (
-            <span className="inline-flex items-center gap-1.5">
-              {RUNNING.has(render.status) && <Loader2 className="size-3.5 animate-spin" />}
-              {t(`status.${render.status}`)}
-            </span>
-          ),
-        },
-        { label: t('meta.formats'), value: 'GLB · USDZ' },
-        ...(owner ? [{ label: t('meta.creditsUsed'), value: format.number(render.credits) }] : []),
-        {
-          label: t('meta.visibility'),
-          value: (
-            <span className="inline-flex items-center gap-1.5">
-              {render.isPublic ? <Globe className="size-3.5" /> : <Lock className="size-3.5" />}
-              {render.isPublic ? t('public') : t('private')}
-            </span>
-          ),
-        },
-        {
-          label: t('meta.created'),
-          value: format.dateTime(new Date(render.createdAt), DATE_FORMAT),
-        },
-      ]}
-      actions={actions}
-    />
+    <>
+      <RenderDetail
+        isInApp={signedIn}
+        title={title}
+        prompt={render.prompt}
+        badges={[t(`status.${render.status}`)]}
+        viewer={viewer}
+        isViewerFirst={render.status === 'ready'}
+        input={`${base}/source`}
+        angles={angles}
+        meta={[
+          {
+            label: t('meta.status'),
+            value: (
+              <span className="inline-flex items-center gap-1.5">
+                {RUNNING.has(render.status) && <Loader2 className="size-3.5 animate-spin" />}
+                {t(`status.${render.status}`)}
+              </span>
+            ),
+          },
+          { label: t('meta.formats'), value: 'GLB · USDZ' },
+          ...(owner
+            ? [{ label: t('meta.creditsUsed'), value: format.number(render.credits) }]
+            : []),
+          {
+            label: t('meta.visibility'),
+            value: (
+              <span className="inline-flex items-center gap-1.5">
+                {render.isPublic ? <Globe className="size-3.5" /> : <Lock className="size-3.5" />}
+                {render.isPublic ? t('public') : t('private')}
+              </span>
+            ),
+          },
+          {
+            label: t('meta.created'),
+            value: format.dateTime(new Date(render.createdAt), DATE_FORMAT),
+          },
+        ]}
+        actions={actions}
+      />
+      {signedIn && owner && (
+        <ShellPanel side="left">
+          <RenderHistory edits={edits} now={now} />
+        </ShellPanel>
+      )}
+    </>
   );
 }
