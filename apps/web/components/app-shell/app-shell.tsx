@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { AppBreadcrumb } from './app-breadcrumb';
 import { ACCOUNT_NAV, APP_NAV, isActivePath } from './nav';
+import { RailItem } from './rail-item';
 import { RailPreview } from './rail-preview';
 import { RendersPanel } from './renders-panel';
 import { StatusDot } from './status-dot';
@@ -97,7 +98,20 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
           const isActive = isActivePath(pathname, item.href);
           const isBottom = item.href === account.href;
           return (
-            <div key={item.href} className={cn('group/rail relative', isBottom && 'mt-auto')}>
+            <RailItem
+              key={item.href}
+              isActive={isActive}
+              isBottom={isBottom}
+              className={cn('relative', isBottom && 'mt-auto')}
+              preview={
+                <RailPreview
+                  kind={RAIL_KINDS[item.key] ?? 'overview'}
+                  label={nav(item.key)}
+                  href={item.href}
+                  data={data}
+                />
+              }
+            >
               <Button
                 variant="ghost"
                 size="icon"
@@ -121,22 +135,7 @@ export function AppShell({ data, children }: { data: ShellData; children: ReactN
                   )}
                 </Link>
               </Button>
-              <div
-                className={cn(
-                  'invisible absolute left-12 z-40 w-72 -translate-x-1 rounded-xl border bg-card p-3.5 text-card-foreground opacity-0 shadow-lg transition-[opacity,transform,visibility] delay-100',
-                  DRAWER,
-                  'group-focus-within/rail:visible group-focus-within/rail:translate-x-0 group-focus-within/rail:opacity-100 group-hover/rail:visible group-hover/rail:translate-x-0 group-hover/rail:opacity-100',
-                  isBottom ? 'bottom-0' : '-top-1.5',
-                )}
-              >
-                <RailPreview
-                  kind={RAIL_KINDS[item.key] ?? 'overview'}
-                  label={nav(item.key)}
-                  href={item.href}
-                  data={data}
-                />
-              </div>
-            </div>
+            </RailItem>
           );
         })}
       </aside>
