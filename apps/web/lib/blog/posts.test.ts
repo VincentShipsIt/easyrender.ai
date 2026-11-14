@@ -7,7 +7,9 @@ import { parseFrontMatter } from './frontmatter';
 import {
   faqFromBody,
   getPost,
+  isLiveBlogLink,
   isPublishedPost,
+  listPosts,
   modifiedDate,
   parsePost,
   postPath,
@@ -259,5 +261,16 @@ describe('relatedPosts', () => {
       new Date('2026-11-11T12:00:00Z'),
     );
     expect(related).toEqual([]);
+  });
+});
+
+// This guide is already linked from the comparison hub and existing guides.
+describe('the GLB guide linked on November 14', () => {
+  const now = new Date('2026-11-14T00:00:00Z');
+  it('resolves its canonical URL and appears in publication consumers', () => {
+    expect(getPost('en', 'glb-file', now)?.path).toBe('/learn/glb-file');
+    expect(listPosts('en', now).some((entry) => entry.slug === 'glb-file')).toBe(true);
+    expect(isLiveBlogLink('en', now)('/learn/glb-file')).toBe(true);
+    expect(getPost('en', 'usdz-file', now)).toBeNull();
   });
 });
