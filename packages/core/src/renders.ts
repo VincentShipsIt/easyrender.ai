@@ -31,6 +31,7 @@ import { type Attribution, classifyCountry, normalizeAttribution } from './attri
 import { config } from './config';
 import { grantCredits, spendCredits } from './credits';
 import { AppError, notFound } from './errors';
+import { finishMaterialFidelity } from './render-fidelity';
 import { type RenderQuality, withQuality } from './render-quality';
 import { reportError } from './report';
 import { getFile, putFile } from './storage';
@@ -369,13 +370,17 @@ export async function advance(id: string): Promise<Render | null> {
       const glb = await download(url);
       const quality = checkGlb(glb);
       if (!quality.ok) throw new Error(`model rejected (${quality.code}): ${quality.message}`);
-      const glbKey = await putFile('models/model.glb', glb, 'model/gltf-binary');
+      const finished = await finishMaterialFidelity(glb, render);
+      const glbKey = await putFile('models/model.glb', finished.bytes, 'model/gltf-binary');
       const { count } = await db().render.updateMany({
         where: { id, status: 'rendering' },
         data: {
           status: 'ready',
           glbKey,
-          quality: withQuality(render, { glb: quality.measures }),
+          quality: withQuality(render, {
+            glb: { ...quality.measures, bytes: finished.bytes.byteLength },
+            fidelity: finished.fidelity,
+          }),
           costUsd: { increment: buildCostUsd(prediction.metrics?.predict_time) },
         },
       });
